@@ -5,9 +5,12 @@ import { FiEyeOff, FiCheckCircle } from 'react-icons/fi'
 
 export default function SymbolicAnchor() {
     return (
-        <section className="bg-[url('/texture2-bg.jpg')] bg-cover bg-center bg-no-repeat opacity-90 pointer-events-none relative px-6 py-36 text-neutral-900 overflow-hidden border-t border-neutral-200">
-            {/* Background simbólico com textura */}
-            <div className="absolute inset-0 z-0 " />
+        <section className="relative px-6 py-36 text-neutral-900 overflow-hidden border-t border-neutral-200 bg-white">
+            {/* Imagem de fundo simbólica */}
+            <div
+                className="absolute inset-0 z-0 bg-[url('/texture2-bg.png')] bg-fill bg-center bg-repeat opacity-30 pointer-events-none"
+                aria-hidden="true"
+            />
 
             {/* Conteúdo sobreposto */}
             <div className="relative z-10 max-w-5xl mx-auto space-y-24">
@@ -31,7 +34,7 @@ export default function SymbolicAnchor() {
                     </p>
                 </motion.div>
 
-                {/* Tensão simbólica: comparação implícita */}
+                {/* Tensão simbólica */}
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +65,7 @@ export default function SymbolicAnchor() {
                     </div>
                 </motion.div>
 
-                {/* Call to Index */}
+                {/* CTA final */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

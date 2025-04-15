@@ -4,21 +4,21 @@ import { motion } from 'framer-motion'
 
 export default function HeroARCO() {
     return (
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-24 bg-neutral-100 text-neutral-900 overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center px-6 py-24 bg-neutral-100 text-neutral-900 overflow-hidden mt-16">
 
             {/* Fundo simbólico institucional */}
             <div
                 className="absolute top-0 left-0 w-full h-full z-1 bg-fill bg-center"
                 style={{
-                    backgroundImage: "url('/texture1.png')",
-                    opacity: 0.35,
+                    backgroundImage: "url('/bg1.jpg')",
+                    opacity: 0.25,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                 }}
             />
 
             {/* Conteúdo editorial */}
-            <div className="z-10 max-w-4xl text-center space-y-10">
+            <div className="z-10 max-w-6xl text-center space-y-10">
 
                 {/* Headline institucional */}
                 <motion.h1
@@ -49,7 +49,7 @@ export default function HeroARCO() {
                 >
                     <a
                         href="/index"
-                        className="inline-block mt-4 px-6 py-3 border border-neutral-800 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm font-medium"
+                        className="inline-block mt-4 px-6 py-3 border border-neutral-800 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm font-medium bg-white rounded-2xl shadow-sm"
                     >
                         Learn more about Arco
                     </a>
