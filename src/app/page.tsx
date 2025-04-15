@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import NavBar from "../../components/NavBar";
 import HeroARCO from "../../components/HeroARCO";
 import SymbolicAnchor from "../../components/SymbolicAnchor";
