@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
+import { EB_Garamond } from "next/font/google";
 import "./globals.css";
 
 const ebGaramond = EB_Garamond({
