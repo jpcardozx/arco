@@ -8,7 +8,7 @@ import { Menu, X } from 'lucide-react'; // Importando ícones para o menu móvel
 
 const navItems = [
     { label: 'About', href: '#about' },
-    { label: 'Framework', href: '#framework' },
+    { label: 'Index™', href: '/diagnose' },
     { label: 'Verified Clients', href: '#clients' },
 ];
 

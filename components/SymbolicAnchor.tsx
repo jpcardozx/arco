@@ -5,9 +5,12 @@ import { FiEyeOff, FiCheckCircle } from 'react-icons/fi'
 
 export default function SymbolicAnchor() {
     return (
-        <section className="relative px-6 py-36 bg-white text-neutral-900 overflow-hidden border-t border-neutral-200">
-            <div className="max-w-5xl mx-auto space-y-24">
+        <section className="bg-[url('/texture2-bg.jpg')] bg-cover bg-center bg-no-repeat opacity-90 pointer-events-none relative px-6 py-36 text-neutral-900 overflow-hidden border-t border-neutral-200">
+            {/* Background simbólico com textura */}
+            <div className="absolute inset-0 z-0 " />
 
+            {/* Conteúdo sobreposto */}
+            <div className="relative z-10 max-w-5xl mx-auto space-y-24">
                 {/* Introdução: clareza + tensão reputacional */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -36,7 +39,6 @@ export default function SymbolicAnchor() {
                     transition={{ delay: 0.4, duration: 1 }}
                     className="grid md:grid-cols-2 gap-12"
                 >
-                    {/* Estado mal calibrado */}
                     <div className="bg-neutral-50 p-8 border-l-4 border-red-400 shadow-sm rounded-sm">
                         <FiEyeOff className="text-red-500 text-3xl mb-4" />
                         <h3 className="text-xl font-semibold mb-3">When misalignment is present</h3>
@@ -48,7 +50,6 @@ export default function SymbolicAnchor() {
                         </ul>
                     </div>
 
-                    {/* O que o Index entrega */}
                     <div className="bg-neutral-50 p-8 border-l-4 border-green-500 shadow-sm rounded-sm">
                         <FiCheckCircle className="text-green-600 text-3xl mb-4" />
                         <h3 className="text-xl font-semibold mb-3">What the Index delivers</h3>
@@ -61,7 +62,7 @@ export default function SymbolicAnchor() {
                     </div>
                 </motion.div>
 
-                {/* Call to Index (com escassez simbólica) */}
+                {/* Call to Index */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
