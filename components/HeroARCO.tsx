@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 export default function HeroARCO() {
     return (
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-24 bg-neutral-100 text-neutral-900 overflow-hidden mt-16">
+        <section className="relative min-h-screen flex items-center justify-center px-6 py-24 bg-neutral-100 text-neutral-900 overflow-hidden mt-12">
 
             {/* Fundo simbólico institucional */}
             <div

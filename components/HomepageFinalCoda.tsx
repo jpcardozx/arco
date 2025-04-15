@@ -5,22 +5,22 @@ import Image from 'next/image'
 
 export default function HomepageFinalCoda() {
     return (
-        <section className="relative px-6 pt-24 pb-32 bg-neutral-100 text-neutral-900 overflow-hidden border-t border-neutral-300">
-            <div className="max-w-3xl mx-auto text-center space-y-16">
+        <section className="relative px-6 pt-24 pb-32 text-neutral-900 overflow-hidden border-t border-neutral-300 bg-[url('/blankpaper.jpg')] bg-cover bg-no-repeat">
+            <div className="max-w-3xl mx-auto text-center space-y-12 rounded-2xl bg-white/80 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.05)] p-8">
 
                 {/* Marca editorial leve */}
                 <motion.div
                     initial={{ opacity: 0, y: -12 }}
-                    whileInView={{ opacity: 0.06, y: 0 }}
+                    whileInView={{ opacity: 0.6, y: 0 }}
                     transition={{ duration: 1.2 }}
                     viewport={{ once: true }}
                 >
                     <Image
-                        src="/symbolic-anchor.svg"
+                        src="/index-mark.png"
                         alt="ARCO Symbolic Mark"
                         width={64}
                         height={64}
-                        className="mx-auto"
+                        className="mx-auto my-[-6px] rounded-4xl"
                     />
                 </motion.div>
 
@@ -30,7 +30,7 @@ export default function HomepageFinalCoda() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                     viewport={{ once: true }}
-                    className="text-2xl md:text-3xl font-serif font-medium leading-snug tracking-tight text-neutral-900"
+                    className="text-2xl md:text-3xl font-serif font-medium leading-snug tracking-tight text-neutral-900 mb-0"
                 >
                     Every signal you’ve shown is already forming a story.
                     <br className="hidden md:block" />

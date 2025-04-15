@@ -1,34 +1,112 @@
-'use client'
+"use client"
 
-import Image from 'next/image'
+import { ExternalLink } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
 export default function FooterARCO() {
+    const [year] = useState(new Date().getFullYear())
+
     return (
-        <footer className="relative bg-white text-neutral-900 border-t border-neutral-200 px-6 pt-24 pb-16">
-            <div className="max-w-5xl mx-auto flex flex-col items-center space-y-10">
-
-                {/* Marca como selo editorial */}
+        <footer className="relative w-full bg-[#111827] text-[#DAD6CE] overflow-hidden border-t border-neutral-800">
+            {/* Background com textura e vinheta */}
+            <div className="absolute inset-0">
                 <Image
-                    src="/logo.png"
-                    alt="ARCO"
-                    width={100}
-                    height={100}
-                    className="opacity-80"
+                    src="/texture1.png"
+                    alt="Textured background"
+                    fill
+                    className="object-cover opacity-10"
+                    priority
                 />
-
-                {/* Frase institucional editorial */}
-                <p className="text-center text-base md:text-lg font-serif font-medium text-neutral-700 max-w-xl leading-snug">
-                    Symbolic realignment for professionals who no longer explain — but must still be understood.
-                </p>
-
-                {/* Assinatura técnica sutil */}
-                <p className="text-[11px] tracking-widest uppercase text-neutral-400 font-light mt-4">
-                    © {new Date().getFullYear()} ARCO — Silent Diagnostic Unit
-                </p>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
             </div>
 
-            {/* Linha técnica inferior */}
-            <div className="mt-12 h-[1px] bg-neutral-200 opacity-20 w-full" />
+            <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-16 space-y-20">
+                {/* Frase simbólica de abertura */}
+                <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1 }}
+                    className="text-base font-serif tracking-tight text-white text-center max-w-2xl mx-auto italic"
+                >
+                    Not every presence is structured. But every signal is already forming a verdict.
+                </motion.p>
+
+                {/* Três colunas simbólicas */}
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 text-sm text-neutral-400">
+                    <Image
+                        src="/logo-v2.png"
+                        alt="ARCO Symbolic Seal"
+                        width={180}
+                        height={36}
+                        className="mx-auto mb-3 invert"
+                    />
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Traceability</h4>
+                        <ul className="space-y-3">
+                            <li><Link href="/index" className="hover:text-white transition-colors">The Index™</Link></li>
+                            <li><Link href="/about" className="hover:text-white transition-colors">About ARCO</Link></li>
+                            <li><Link href="/verified-clients" className="hover:text-white transition-colors">Verified Clients</Link></li>
+                        </ul>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2, duration: 0.8 }}
+                    >
+                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Interpretive Axes</h4>
+                        <ul className="space-y-3">
+                            <li><span className="text-neutral-500">Tension Mapping</span></li>
+                            <li><span className="text-neutral-500">Symbolic Readability</span></li>
+                            <li><span className="text-neutral-500">Legacy Realignment</span></li>
+                        </ul>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4, duration: 0.8 }}
+                    >
+                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Curated Access</h4>
+                        <a
+                            href="/request-entry"
+                            className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-white text-sm text-white hover:bg-white/10 transition-all rounded-sm"
+                        >
+                            Submit for Review
+                            <ExternalLink className="w-4 h-4" />
+                        </a>
+                        <p className="text-xs text-neutral-500 mt-3 italic">
+                            Entry to the Index™ is by symbolic eligibility.
+                        </p>
+                    </motion.div>
+                </div>
+
+                {/* Marca simbólica como selo de encerramento */}
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1 }}
+                    className="text-center"
+                >
+
+                    <p className="text-xs text-neutral-500 italic">
+                        © {year} ARCO • Interpretive Authority Consultancy
+                        <br />Formed for those whose signal deserves architecture — not amplification.
+                    </p>
+                </motion.div>
+            </div>
         </footer>
     )
 }

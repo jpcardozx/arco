@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export default function EditorialCTA() {
     return (
-        <section className="relative px-6 py-36 bg-neutral-100 text-neutral-900 overflow-hidden border-t border-neutral-300">
+        <section className="relative px-6 py-36 bg-neutral-100 bg-[url('/axiom.png')] text-neutral-900 overflow-hidden border-t border-neutral-300">
             <div className="max-w-4xl mx-auto text-center space-y-20">
 
                 {/* Veredicto editorial */}
@@ -46,9 +46,9 @@ export default function EditorialCTA() {
                 >
                     <a
                         href="/index"
-                        className="inline-block mt-2 px-6 py-3 border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm font-medium"
+                        className="inline-block mt-2 px-6 py-3 border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm font-medium rounded-2xl shadow-2xs bg-white/50"
                     >
-                        Check your Index™
+                        Authority Positioning Index™
                     </a>
                     <p className="text-xs text-neutral-500 italic">
                         ARCO doesn’t offer the Index for PMEs, influencers and non-consolidated brands. <br />
