@@ -16,12 +16,12 @@ export default function EditorialCTA() {
                     viewport={{ once: true }}
                 >
                     <h2 className="text-3xl md:text-4xl font-serif font-medium tracking-tight leading-snug max-w-3xl mx-auto">
-                        You’ve never needed to clarify your presence.
-                        <br />Until now.
+                        You’ve built a presence.<br />
+                        The market has built its version of it.
                     </h2>
                 </motion.div>
 
-                {/* Texto de transição simbólica */}
+                {/* Tensão simbólica */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -30,9 +30,9 @@ export default function EditorialCTA() {
                     className="max-w-xl mx-auto"
                 >
                     <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed">
-                        You’ve built trust through silence — not assertion.
-                        But legacy, when left undefined, invites misinterpretation.
-                        The Index isn’t public. It’s performed where symbolic presence requires structural verification.
+                        If your presence hasn’t been structured intentionally, it has already been interpreted by default — through context, tone, and omission.
+                        <br className="hidden md:block" />
+                        The Index™ is not here to brand you. It exists to diagnose and work on how you’re currently being read — and whether that aligns with your intent.
                     </p>
                 </motion.div>
 
@@ -48,14 +48,15 @@ export default function EditorialCTA() {
                         href="/index"
                         className="inline-block mt-2 px-6 py-3 border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm font-medium"
                     >
-                        Request symbolic reading
+                        Check your Index™
                     </a>
                     <p className="text-xs text-neutral-500 italic">
-                        ARCO doesn’t assess desire. It interprets readiness.
+                        ARCO doesn’t offer the Index for PMEs, influencers and non-consolidated brands. <br />
+                        If you’re interested in a custom solution, please reach out to us.
                     </p>
                 </motion.div>
 
-                {/* Marca institucional flutuante */}
+                {/* Marca editorial flutuante */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 0.05 }}

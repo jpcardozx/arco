@@ -6,7 +6,7 @@ import HeroARCO from "../../components/HeroARCO";
 import SymbolicAnchor from "../../components/SymbolicAnchor";
 import TheMisalignment from "../../components/TheMisalignment";
 import EditorialCTA from "../../components/EditorialCTA";
-import HomepageFinalCoda from "../../components/HomePageFinalCoda";
+import HomepageFinalCoda from "../../components/HomepageFinalCoda";
 import SymbolicVerdicts from "../../components/SymbolicVeredicts";
 import FooterARCO from "../../components/FooterARCO";
 

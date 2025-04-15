@@ -5,21 +5,21 @@ import Image from 'next/image'
 
 export default function HomepageFinalCoda() {
     return (
-        <section className="relative px-6 pt-20 pb-28 bg-neutral-100 text-neutral-900 overflow-hidden border-t border-neutral-300">
-            <div className="max-w-3xl mx-auto text-center space-y-14">
+        <section className="relative px-6 pt-24 pb-32 bg-neutral-100 text-neutral-900 overflow-hidden border-t border-neutral-300">
+            <div className="max-w-3xl mx-auto text-center space-y-16">
 
-                {/* Marca vetorial como selo editorial */}
+                {/* Marca editorial leve */}
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    whileInView={{ opacity: 0.08, y: 0 }}
+                    initial={{ opacity: 0, y: -12 }}
+                    whileInView={{ opacity: 0.06, y: 0 }}
                     transition={{ duration: 1.2 }}
                     viewport={{ once: true }}
                 >
                     <Image
-                        src="/symbolic-anchor.svg" // ou index-mark.svg
-                        alt="Symbolic Mark"
-                        width={60}
-                        height={60}
+                        src="/symbolic-anchor.svg"
+                        alt="ARCO Symbolic Mark"
+                        width={64}
+                        height={64}
                         className="mx-auto"
                     />
                 </motion.div>
@@ -30,14 +30,14 @@ export default function HomepageFinalCoda() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                     viewport={{ once: true }}
-                    className="text-2xl md:text-3xl font-serif font-medium leading-snug tracking-tight"
+                    className="text-2xl md:text-3xl font-serif font-medium leading-snug tracking-tight text-neutral-900"
                 >
-                    An unstructured presence invites interpretation.
+                    Every signal you’ve shown is already forming a story.
                     <br className="hidden md:block" />
-                    The Index restores control — symbolically and strategically.
+                    The Index™ determines whether that story serves you — or distorts you.
                 </motion.h2>
 
-                {/* Texto de indução simbólica */}
+                {/* Indução simbólica */}
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1 }}
@@ -45,9 +45,8 @@ export default function HomepageFinalCoda() {
                     viewport={{ once: true }}
                     className="text-base md:text-lg font-light text-neutral-700 leading-relaxed"
                 >
-                    You’ve already acknowledged the gap.
-                    <br />
-                    The only choice is whether you define it — or let interpretation fill the silence.
+                    You’ve recognized the friction.
+                    The question now is not whether interpretation exists — but whether you intend to structure it, or let it harden.
                 </motion.p>
 
                 {/* CTA simbólico final */}
@@ -56,16 +55,16 @@ export default function HomepageFinalCoda() {
                     whileInView={{ opacity: 1 }}
                     transition={{ delay: 0.8, duration: 1 }}
                     viewport={{ once: true }}
-                    className="space-y-3"
+                    className="space-y-4"
                 >
                     <a
                         href="/index"
-                        className="inline-block mt-2 px-6 py-3 border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm font-medium"
+                        className="inline-block px-6 py-3 border border-neutral-900 text-neutral-900 font-medium text-sm uppercase tracking-wide transition-all duration-300 hover:bg-neutral-900 hover:text-white shadow-md hover:shadow-lg rounded-sm"
                     >
-                        Proceed to the Index
+                        Require Positioning Diagnosis
                     </a>
                     <p className="text-xs text-neutral-500 italic">
-                        What comes next isn’t a submission. It’s a shift in structure.
+                        *if elegible for the Index™
                     </p>
                 </motion.div>
             </div>
