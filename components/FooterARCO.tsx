@@ -3,7 +3,7 @@
 import { ExternalLink } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 
 export default function FooterARCO() {
