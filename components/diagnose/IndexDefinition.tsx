@@ -2,26 +2,21 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { useInView } from 'react-intersection-observer'
 
 export default function IndexDefinition() {
-    const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.4 })
-
     return (
         <section className="relative w-full bg-white py-32 px-6 overflow-hidden">
             {/* Fundo interpretativo simbólico */}
             <div className="absolute inset-0 bg-[url('/seal-grid.png')] bg-center bg-no-repeat opacity-5 pointer-events-none z-0" />
 
-            <div
-                ref={ref}
-                className="relative z-10 max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16"
-            >
+            <div className="relative z-10 max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16">
                 {/* Coluna textual */}
                 <div className="flex-1 space-y-12">
                     {/* Headline institucional */}
                     <motion.h2
                         initial={{ opacity: 0, x: -30 }}
-                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 1 }}
                         className="text-4xl md:text-5xl font-serif font-medium tracking-tight leading-tight text-neutral-900"
                     >
@@ -33,7 +28,8 @@ export default function IndexDefinition() {
                     <div className="space-y-6 text-neutral-700 text-lg md:text-xl font-light tracking-wide leading-relaxed">
                         <motion.p
                             initial={{ opacity: 0, y: 24 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             transition={{ duration: 1, delay: 0.2 }}
                         >
                             It doesn’t measure visibility.
@@ -42,7 +38,8 @@ export default function IndexDefinition() {
 
                         <motion.p
                             initial={{ opacity: 0, y: 24 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             transition={{ duration: 1, delay: 0.4 }}
                             className="text-neutral-600"
                         >
@@ -54,7 +51,8 @@ export default function IndexDefinition() {
                     {/* Fratura interpretativa */}
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
-                        animate={inView ? { opacity: 1, y: 0 } : {}}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ delay: 0.8, duration: 1 }}
                         className="pt-6 border-t border-neutral-200"
                     >
@@ -70,7 +68,8 @@ export default function IndexDefinition() {
                 {/* Selo simbólico reposicionado como emissão interpretativa */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 1, delay: 0.6 }}
                     className="flex-shrink-0 relative"
                 >
