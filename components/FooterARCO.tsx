@@ -30,7 +30,7 @@ export default function FooterARCO() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
-                    className="text-base font-serif tracking-tight text-white text-center max-w-2xl mx-auto italic"
+                    className="tracking-tight text-white text-center max-w-2xl mx-auto font-serif italic text-pretty"
                 >
                     Not every presence is structured. But every signal is already forming a verdict.
                 </motion.p>

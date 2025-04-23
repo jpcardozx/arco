@@ -73,7 +73,7 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 z-50 w-full bg-neutral-50 border-b border-neutral-200 transition-all duration-300 backdrop-blur-sm ${scrolled ? 'shadow-sm py-3' : 'py-5'}`}
+            className={`fixed top-0 z-50 w-full bg-neutral-50 border-b border-neutral-200 transition-all duration-900 backdrop-blur-sm ${scrolled ? 'shadow-xl py-4' : 'shadow-2xl py-8'}`}
         >
             <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 flex items-center justify-between">
                 {/* Logo */}
