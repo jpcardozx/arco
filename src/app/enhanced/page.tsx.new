@@ -1,0 +1,112 @@
+'use client'
+
+import React, { useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+// Import components with dynamic loading
+const NavBarEnhanced = dynamic(() => import('../../../components/NavBarEnhanced'), {
+    loading: () => <div className="h-16 bg-neutral-900" />
+});
+
+const MarketHero = dynamic(() => import('../../../components/enhanced/MarketHero'), {
+    loading: () => <div className="min-h-[90vh] bg-neutral-900 animate-pulse" />
+});
+
+const ValuePropositioning = dynamic(() => import('../../../components/enhanced/ValuePropositioning'), {
+    loading: () => <div className="min-h-[60vh] bg-white animate-pulse" />
+});
+
+const PerceptionGapAnalyzer = dynamic(() => import('../../../components/enhanced/PerceptionGapAnalyzer'), {
+    loading: () => <div className="min-h-[70vh] bg-neutral-950 animate-pulse" />
+});
+
+const CaseStudiesEnhanced = dynamic(() => import('../../../components/CaseStudiesEnhanced'), {
+    loading: () => <div className="min-h-[80vh] bg-white animate-pulse" id="case-studies" />
+});
+
+const ProcessEnhanced = dynamic(() => import('../../../components/ProcessEnhanced'), {
+    loading: () => <div className="min-h-[70vh] bg-neutral-900 animate-pulse" id="process" />
+});
+
+const MarketLeadershipProof = dynamic(() => import('../../../components/enhanced/MarketLeadershipProof'), {
+    loading: () => <div className="min-h-[60vh] bg-white animate-pulse" />
+});
+
+const CompetitiveAdvantage = dynamic(() => import('../../../components/enhanced/CompetitiveAdvantage'), {
+    loading: () => <div className="min-h-[70vh] bg-neutral-900 animate-pulse" />
+});
+
+const ConversionPath = dynamic(() => import('../../../components/enhanced/ConversionPath'), {
+    loading: () => <div className="min-h-[60vh] bg-neutral-50 animate-pulse" />
+});
+
+const FooterARCO = dynamic(() => import('../../../components/FooterARCO'), {
+    loading: () => <div className="min-h-[40vh] bg-neutral-950 animate-pulse" />
+});
+
+const ScrollToTop = dynamic(() => import('../../../components/portfolio/ScrollToTop'), {
+    ssr: false
+});
+
+/**
+ * Enhanced Homepage with strategic market positioning focus
+ * This version implements deep market strategies for improved conversion
+ */
+export default function EnhancedHomePage() {
+    // Update document title for better SEO
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            document.title = 'ARCO | Transform Value Perception Into Revenue Growth | Financial Decision Architecture';
+        }
+        
+        // Track page view with analytics
+        if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+            window.gtag('event', 'page_view', {
+                event_category: 'enhanced_homepage',
+                event_label: 'page_load'
+            });
+        }
+    }, []);
+    
+    return (
+        <>
+            <NavBarEnhanced />
+            <ScrollToTop threshold={600} />
+            
+            <main id="market-enhanced-content">
+                {/* Strategic hero with clear market positioning */}
+                <MarketHero />
+                
+                {/* Value proposition that addresses market pain points */}
+                <ValuePropositioning />
+                
+                {/* Interactive perception gap analyzer */}
+                <PerceptionGapAnalyzer />
+                
+                {/* Enhanced case studies with market impact */}
+                <CaseStudiesEnhanced />
+                
+                {/* Enhanced process with clear methodology */}
+                <ProcessEnhanced />
+                
+                {/* Market leadership proof with testimonials and metrics */}
+                <MarketLeadershipProof />
+                
+                {/* Competitive advantage section */}
+                <CompetitiveAdvantage />
+                
+                {/* Strategic conversion path */}
+                <ConversionPath />
+            </main>
+            
+            <FooterARCO />
+        </>
+    );
+}
+
+// Add TypeScript declaration for global gtag
+declare global {
+    interface Window {
+        gtag: (command: string, action: string, params: any) => void;
+    }
+}

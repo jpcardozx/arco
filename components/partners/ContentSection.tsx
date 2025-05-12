@@ -1,127 +1,218 @@
 "use client";
 
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import clsx from "clsx";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-
-// Helper para caminhos de assets
-const getAssetPath = (src: string): string => src.startsWith("/") ? src : `/${src}`;
+import clsx from "clsx";
 
 /* -------------------------------------------------------------------------- */
-/*                           INTERFACES E DADOS                               */
+/*                          ARCO STRATEGIC FRAMEWORK                          */
 /* -------------------------------------------------------------------------- */
 
-interface MetricItem {
-    id: string;
-    value: string;
-    label: string;
-    icon: React.ReactNode;
-    description: string;
-    color: string;
-}
-
-interface CaseItem {
-    id: string;
-    client: string;
-    title: string;
-    description: string;
-    result: string;
-    tags: string[];
-    image: string;
-    logo: string;
-    color: string;
-}
-
-// Dados de métricas mais legíveis e impactantes
-const METRICS: MetricItem[] = [
+// Real ARCO product structure based on May 2025 strategy
+const ARCO_PRODUCTS = [
     {
-        id: "m1",
-        value: "285%",
-        label: "Aumento em leads B2B",
-        icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z" clipRule="evenodd" />
-                <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zM6 12a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 15a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V15zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 18a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V18zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75z" clipRule="evenodd" />
-            </svg>
-        ),
-        description: "Otimização do funil B2B para NovaIpê",
-        color: "from-blue-500 to-indigo-600"
+        id: "snapshot",
+        tier: "T1",
+        name: "ArcSight Snapshot™",
+        price: "$147",
+        scope: "10-page PDF + 60s Loom + 3 prioritized recommendations (no-code)",
+        impact: "3 actionable insights within 24 hours",
+        timeframe: "24 hours",
+        for: ["SaaS with Trial→Paid < 10%", "DTC with checkout abandonment > 75%"],
+        description: "Diagnostic that identifies perception gaps with one applied correction example.",
+        isEntry: true,
+        color: "neutral",
+        iconPath: "/icon-snapshot.svg"
     },
     {
-        id: "m2",
-        value: "8.2%",
-        label: "Taxa de conversão mobile",
-        icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                <path d="M10.5 18.75a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" />
-                <path fillRule="evenodd" d="M8.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h6.75c1.035 0 1.875-.84 1.875-1.875V3.375c0-1.036-.84-1.875-1.875-1.875h-6.75zM7.5 3.375c0-.207.168-.375.375-.375h8.25c.207 0 .375.168.375.375v17.25c0 .207-.168.375-.375.375h-8.25a.375.375 0 01-.375-.375V3.375z" clipRule="evenodd" />
-            </svg>
-        ),
-        description: "Aumento de 1.9% para 8.2% em 60 dias",
-        color: "from-emerald-500 to-teal-600"
+        id: "sprint",
+        tier: "T2",
+        name: "ArcLift Sprint™",
+        price: "$897",
+        scope: "1 Quick-Win implemented + live A/B test in 14 days",
+        impact: "≥ +8% conversion (guarantee: $300 credit toward Booster if target not met)",
+        timeframe: "14 days",
+        for: ["SaaS seeking conversion lift", "DTC reducing abandonment"],
+        description: "Implementation with A/B testing and results guarantee.",
+        isEntry: false,
+        color: "primary",
+        iconPath: "/icon-sprint.svg"
     },
     {
-        id: "m3",
-        value: "0.4s",
-        label: "Tempo de carregamento",
-        icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                <path fillRule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clipRule="evenodd" />
-            </svg>
-        ),
-        description: "Core Web Vitals 100/100",
-        color: "from-amber-500 to-orange-600"
-    },
-    {
-        id: "m4",
-        value: "42%",
-        label: "Redução em CAC",
-        icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
-                <path fillRule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" clipRule="evenodd" />
-                <path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z" />
-            </svg>
-        ),
-        description: "Otimização de campanhas de aquisição",
-        color: "from-purple-500 to-violet-600"
+        id: "booster",
+        tier: "T3",
+        name: "ArcBooster™",
+        price: "$1,497",
+        scope: "Key section redesign + 3 activation emails + analytics/heatmap setup",
+        impact: "+15% qualified leads",
+        timeframe: "30 days",
+        for: ["Companies ready to scale conversion", "Teams needing advanced analysis"],
+        description: "Strategic redesign with full implementation and analytics integration.",
+        isEntry: false,
+        color: "advanced",
+        iconPath: "/icon-booster.svg"
     }
 ];
 
-// Casos de estudo simplificados para melhor legibilidade
-const CASE_STUDIES: CaseItem[] = [
+// ARCO's specific ICPs from acquisition strategy
+const ARCO_ICPS = [
     {
-        id: "case1",
-        client: "Ipê",
-        title: "Otimização do funil de conversão",
-        description: "Redesenho da jornada mobile com foco em redução de atrito e aumento de conversão qualificada.",
-        result: "Crescimento em receita de 180% em 45 dias",
-        tags: ["E-commerce", "UX Design", "CRO"],
-        image: "/case-thumb-ipe.jpg",
-        logo: "/logo-novaipe.svg",
-        color: "emerald"
+        id: "saas",
+        name: "SaaS Dev-Tools",
+        painPoint: "Trial → Paid < 10%",
+        industryAvg: "Industry average ≈ 18%",
+        iconPath: "/icon-saas.svg",
+        examples: ["Development platforms", "APIs as service", "Analytics tools"],
+        targetedAt: "snapshot",
+        metricsToTrack: ["Trial→Paid conversion rate", "Average time in trial", "User activations"],
+        description: "SaaS companies with technical excellence but conversion below benchmark due to inadequate symbolic representation."
     },
     {
-        id: "case2",
-        client: "Xora",
-        title: "Reengenharia de performance SaaS",
-        description: "Implementação de arquitetura headless com otimização completa de Core Web Vitals.",
-        result: "Aumento de 62% em conversões de trial",
-        tags: ["SaaS", "Performance", "Front-end"],
-        image: "/case-xora-full.jpg",
-        logo: "/logo-xora.svg",
-        color: "blue"
+        id: "dtc",
+        name: "DTC High-Ticket",
+        painPoint: "Checkout abandonment > 75% + mobile PSI < 50",
+        industryAvg: "Global average abandonment = 70%",
+        iconPath: "/icon-dtc.svg",
+        examples: ["Premium e-commerce", "Subscription services", "Custom products"],
+        targetedAt: "sprint",
+        metricsToTrack: ["Checkout abandonment rate", "Average Order Value", "ROAS"],
+        description: "Premium e-commerce businesses facing high abandonment rates due to inadequate value signals."
+    }
+];
+
+// Real transformation results
+const ARCO_RESULTS = [
+    {
+        client: "Nova Ipê",
+        clientLogo: "/logo-novaipe.svg",
+        industry: "Premium E-commerce",
+        productUsed: "sprint",
+        problemStatement: "Product excellence filtered through mid-tier visual signaling",
+        solution: "Information hierarchy realignment for precise value signal transmission",
+        keyResults: [
+            { metric: "Mobile Conversion", before: "1.9%", after: "8.2%", timeframe: "45 days" },
+            { metric: "Price Objections", before: "72%", after: "18%", timeframe: "30 days" },
+            { metric: "Average Order Value", before: "$67", after: "$110", timeframe: "60 days" }
+        ],
+        visualPath: "/case-thumb-ipe.jpg"
+    },
+    {
+        client: "Project Xora",
+        clientLogo: "/logo-xora.svg",
+        industry: "Enterprise SaaS",
+        productUsed: "booster",
+        problemStatement: "Complex technical excellence obscuring strategic value",
+        solution: "Narrative reconstruction and decision-path simplification",
+        keyResults: [
+            { metric: "Trial → Paid", before: "4.3%", after: "16.7%", timeframe: "60 days" },
+            { metric: "C-level Engagement", before: "12%", after: "87%", timeframe: "30 days" },
+            { metric: "Technical Objections", before: "63%", after: "7%", timeframe: "45 days" }
+        ],
+        visualPath: "/case-xora-full.jpg"
     }
 ];
 
 /* -------------------------------------------------------------------------- */
-/*                       COMPONENTES AUXILIARES                               */
+/*                      EDITORIAL TYPOGRAPHY SYSTEM                           */
 /* -------------------------------------------------------------------------- */
 
-// Card de métrica com layout simplificado e mais legível
-const MetricCard = ({ metric }: { metric: MetricItem }) => {
+// Typography system aligned with ARCO editorial hierarchy
+const Typography = {
+    Editorial: ({
+        children,
+        element = "p",
+        className = "",
+        ...props
+    }: {
+        children: React.ReactNode;
+        element?: keyof React.JSX.IntrinsicElements;
+        className?: string;
+        [key: string]: any;
+    }) => {
+        const Element = element as any;
+        return (
+            <Element className={`font-serif ${className}`} {...props}>
+                {children}
+            </Element>
+        );
+    },
+
+    Technical: ({
+        children,
+        element = "p",
+        className = "",
+        ...props
+    }: {
+        children: React.ReactNode;
+        element?: keyof React.JSX.IntrinsicElements;
+        className?: string;
+        [key: string]: any;
+    }) => {
+        const Element = element as any;
+        return (
+            <Element className={`font-sans ${className}`} {...props}>
+                {children}
+            </Element>
+        );
+    },
+
+    Data: ({
+        children,
+        element = "span",
+        className = "",
+        ...props
+    }: {
+        children: React.ReactNode;
+        element?: keyof React.JSX.IntrinsicElements;
+        className?: string;
+        [key: string]: any;
+    }) => {
+        const Element = element as any;
+        return (
+            <Element className={`font-mono tabular-nums tracking-tight ${className}`} {...props}>
+                {children}
+            </Element>
+        );
+    }
+};
+
+/* -------------------------------------------------------------------------- */
+/*                           SECTION COMPONENTS                              */
+/* -------------------------------------------------------------------------- */
+
+// Editorial section title
+const SectionTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <Typography.Editorial
+        element="h2"
+        className={`text-3xl md:text-4xl font-light text-gray-900 mb-10 max-w-3xl leading-tight ${className}`}
+    >
+        {children}
+    </Typography.Editorial>
+);
+
+// Conceptual grouping label
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+    <Typography.Technical
+        element="div"
+        className="text-xs uppercase tracking-wider text-gray-500 mb-4"
+    >
+        {children}
+    </Typography.Technical>
+);
+
+// Strategic perception problem card
+const PerceptionProblemCard = ({
+    icp,
+    isActive,
+    onSelect
+}: {
+    icp: typeof ARCO_ICPS[0];
+    isActive: boolean;
+    onSelect: () => void;
+}) => {
     const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
 
     return (
@@ -129,137 +220,345 @@ const MetricCard = ({ metric }: { metric: MetricItem }) => {
             ref={ref}
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300"
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className={clsx(
+                "group cursor-pointer rounded-lg border transition-all duration-300",
+                isActive
+                    ? "bg-gray-900 text-white border-gray-700 shadow-lg transform scale-[1.02]"
+                    : "bg-white border-gray-200 hover:border-gray-300 hover:shadow"
+            )}
+            onClick={onSelect}
         >
-            <div className="flex items-center mb-4">
+            <div className="p-6">
+                <div className="flex justify-between items-start mb-5">
+                    <div>
+                        <Typography.Technical
+                            element="div"
+                            className={clsx(
+                                "mb-2",
+                                isActive ? "text-gray-300" : "text-gray-500"
+                            )}
+                        >
+                            {icp.name}
+                        </Typography.Technical>
+
+                        <Typography.Editorial
+                            element="h3"
+                            className={clsx(
+                                "text-xl",
+                                isActive ? "text-white" : "text-gray-900"
+                            )}
+                        >
+                            {icp.painPoint}
+                        </Typography.Editorial>
+                    </div>
+
+                    {icp.iconPath && (
+                        <div className={clsx(
+                            "p-2 rounded-full transition-colors duration-300",
+                            isActive ? "bg-gray-700" : "bg-gray-100 group-hover:bg-gray-200"
+                        )}>
+                            <Image
+                                src={icp.iconPath}
+                                alt={icp.name}
+                                width={24}
+                                height={24}
+                                className={isActive ? "text-white" : "text-gray-500"}
+                            />
+                        </div>
+                    )}
+                </div>
+
+                <Typography.Technical
+                    element="p"
+                    className={clsx(
+                        "text-sm mb-6",
+                        isActive ? "text-gray-300" : "text-gray-600"
+                    )}
+                >
+                    {icp.description}
+                </Typography.Technical>
+
                 <div className={clsx(
-                    "flex items-center justify-center p-2 rounded-xl",
-                    `bg-gradient-to-r ${metric.color} text-white`
+                    "text-sm p-4 rounded-md transition-colors duration-300",
+                    isActive ? "bg-gray-800" : "bg-gray-50 group-hover:bg-gray-100"
                 )}>
-                    {metric.icon}
+                    <Typography.Technical element="div" className={isActive ? "text-gray-300" : "text-gray-600"}>
+                        <strong>Industry Benchmark:</strong> {icp.industryAvg}
+                    </Typography.Technical>
                 </div>
-                <div className="ml-3">
-                    <span className={clsx(
-                        "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r",
-                        metric.color
-                    )}>
-                        {metric.value}
-                    </span>
-                </div>
+
+                {isActive && (
+                    <div className="mt-6 pt-5 border-t border-gray-700">
+                        <Typography.Technical
+                            element="div"
+                            className="text-gray-300 text-xs uppercase tracking-wider mb-3"
+                        >
+                            Critical Metrics
+                        </Typography.Technical>
+
+                        <ul className="space-y-2">
+                            {icp.metricsToTrack.map((metric, index) => (
+                                <li key={index} className="flex items-center text-sm text-gray-300">
+                                    <div className="w-1.5 h-1.5 bg-gray-500 rounded-full mr-3"></div>
+                                    {metric}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
-
-            <h3 className="text-base font-semibold text-slate-900 mb-2">
-                {metric.label}
-            </h3>
-
-            <p className="text-sm text-slate-600">
-                {metric.description}
-            </p>
         </motion.div>
     );
 };
 
-// Card de caso de estudo com layout melhorado
-const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
-    const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: true });
+// Product card with sophisticated design
+const ProductCard = ({
+    product,
+    isActive,
+    onSelect
+}: {
+    product: typeof ARCO_PRODUCTS[0];
+    isActive: boolean;
+    onSelect: () => void;
+}) => {
+    const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
 
     return (
         <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className={clsx(
+                "relative group cursor-pointer rounded-lg border transition-all duration-300",
+                isActive
+                    ? "bg-gray-900 text-white border-gray-700 shadow-lg transform scale-[1.02]"
+                    : "bg-white border-gray-200 hover:border-gray-300 hover:shadow"
+            )}
+            onClick={onSelect}
+        >
+            {/* Tier indicator */}
+            <div className={clsx(
+                "absolute top-0 right-6 px-2 py-1 text-xs uppercase font-medium rounded-b-md transition-colors",
+                isActive ? "bg-gray-700 text-gray-300" : "bg-gray-100 text-gray-600 group-hover:bg-gray-200"
+            )}>
+                {product.tier}
+            </div>
+
+            <div className="p-6 pt-8">
+                <div className="flex justify-between items-start mb-4">
+                    <Typography.Editorial
+                        element="h3"
+                        className={clsx(
+                            "text-xl transition-colors duration-300",
+                            isActive ? "text-white" : "text-gray-900"
+                        )}
+                    >
+                        {product.name}
+                    </Typography.Editorial>
+
+                    <Typography.Data
+                        element="div"
+                        className={clsx(
+                            "text-lg transition-colors duration-300",
+                            isActive ? "text-white" : "text-gray-900"
+                        )}
+                    >
+                        {product.price}
+                    </Typography.Data>
+                </div>
+
+                <Typography.Technical
+                    element="p"
+                    className={clsx(
+                        "text-sm mb-6 transition-colors duration-300",
+                        isActive ? "text-gray-300" : "text-gray-600"
+                    )}
+                >
+                    {product.description}
+                </Typography.Technical>
+
+                <div className={clsx(
+                    "flex items-center gap-2 mb-6 text-sm p-4 rounded-md transition-colors duration-300",
+                    isActive ? "bg-gray-800" : "bg-gray-50 group-hover:bg-gray-100"
+                )}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                        className={clsx("w-4 h-4 transition-colors duration-300", isActive ? "text-gray-300" : "text-gray-500")}>
+                        <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                        <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                    </svg>
+                    <Typography.Technical element="span" className={clsx("transition-colors duration-300", isActive ? "text-gray-300" : "text-gray-600")}>
+                        {product.impact}
+                    </Typography.Technical>
+                </div>
+
+                {isActive && (
+                    <div className="mt-6 pt-5 border-t border-gray-700">
+                        <Typography.Technical
+                            element="div"
+                            className="text-gray-300 text-xs uppercase tracking-wider mb-3"
+                        >
+                            Deliverables
+                        </Typography.Technical>
+
+                        <Typography.Technical element="p" className="text-sm text-gray-300 mb-6">
+                            {product.scope}
+                        </Typography.Technical>
+
+                        <div className="flex justify-between items-center">
+                            <Typography.Technical
+                                element="div"
+                                className="text-xs text-gray-400"
+                            >
+                                {product.timeframe}
+                            </Typography.Technical>
+
+                            <Link
+                                href={`/diagnose?product=${product.id}`}
+                                className={clsx(
+                                    "px-4 py-2 rounded-md transition-colors duration-200",
+                                    product.isEntry
+                                        ? "bg-white text-gray-900 hover:bg-gray-100"
+                                        : "bg-gray-800 text-gray-200 hover:bg-gray-700 border border-gray-700"
+                                )}
+                            >
+                                {product.isEntry ? 'Request Assessment' : 'Learn More'}
+                            </Link>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+};
+
+// Transformation case study with visual sophistication
+const TransformationCaseCard = ({
+    result,
+    isActive
+}: {
+    result: typeof ARCO_RESULTS[0];
+    isActive: boolean;
+}) => {
+    const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: true });
+
+    // Get product name for display
+    const productName = ARCO_PRODUCTS.find(p => p.id === result.productUsed)?.name || result.productUsed;
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className={clsx(
+                "rounded-lg overflow-hidden transition-all duration-300",
+                isActive
+                    ? "bg-white border border-gray-300 shadow-xl"
+                    : "bg-white border border-gray-200 shadow"
+            )}
         >
             <div className="grid md:grid-cols-2 gap-0">
-                {/* Imagem */}
-                <div className="relative h-60 md:h-full">
+                {/* Case image with visual overlay */}
+                <div className="relative h-64 md:h-auto">
                     <Image
-                        src={getAssetPath(caseItem.image)}
-                        alt={`${caseItem.client} projeto`}
+                        src={result.visualPath}
+                        alt={`${result.client} case study`}
                         fill
                         className="object-cover"
                         sizes="(min-width: 768px) 50vw, 100vw"
                     />
-                    <div className={clsx(
-                        "absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r",
-                        caseItem.color === "emerald" ? "from-emerald-900/80 to-transparent" :
-                            "from-blue-900/80 to-transparent"
-                    )} />
+                    <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-gray-900/90 via-gray-900/50 to-transparent" />
 
-                    <div className="absolute left-4 bottom-4 flex items-center bg-white/90 rounded-lg p-2 backdrop-blur-sm">
-                        <Image
-                            src={getAssetPath(caseItem.logo)}
-                            alt={caseItem.client}
-                            width={24}
-                            height={24}
-                        />
-                        <span className="ml-2 font-medium text-slate-900">
-                            {caseItem.client}
-                        </span>
+                    <div className="absolute left-5 bottom-5">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 flex items-center mb-2 shadow-md">
+                            <Image
+                                src={result.clientLogo}
+                                alt={result.client}
+                                width={24}
+                                height={24}
+                                className="rounded-sm"
+                            />
+                            <Typography.Technical element="span" className="ml-2 font-medium text-gray-900">
+                                {result.client}
+                            </Typography.Technical>
+                        </div>
+                        <div className="bg-gray-900/80 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow">
+                            <Typography.Technical element="span" className="text-xs text-white">
+                                {result.industry}
+                            </Typography.Technical>
+                        </div>
                     </div>
                 </div>
 
-                {/* Conteúdo */}
-                <div className="p-6">
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {caseItem.tags.map((tag, idx) => (
-                            <span
-                                key={idx}
-                                className={clsx(
-                                    "px-2 py-1 text-xs font-medium rounded-full",
-                                    caseItem.color === "emerald" ? "bg-emerald-100 text-emerald-700" :
-                                        "bg-blue-100 text-blue-700"
-                                )}
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
+                {/* Case content with editorial structure */}
+                <div className="p-7">
+                    <div className="mb-5 flex justify-between items-start">
+                        <Typography.Editorial element="h3" className="text-xl text-gray-900">
+                            {result.client}
+                        </Typography.Editorial>
 
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">
-                        {caseItem.title}
-                    </h3>
-
-                    <p className="text-slate-600 text-sm mb-4">
-                        {caseItem.description}
-                    </p>
-
-                    <div className={clsx(
-                        "p-3 rounded-lg mb-4",
-                        caseItem.color === "emerald" ? "bg-emerald-50" : "bg-blue-50"
-                    )}>
-                        <div className="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                className={clsx(
-                                    "w-4 h-4 mr-2",
-                                    caseItem.color === "emerald" ? "text-emerald-600" : "text-blue-600"
-                                )}>
-                                <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
-                            </svg>
-                            <span className={clsx(
-                                "text-sm font-bold",
-                                caseItem.color === "emerald" ? "text-emerald-700" : "text-blue-700"
-                            )}>
-                                {caseItem.result}
-                            </span>
+                        <div className="bg-gray-100 rounded-full px-3 py-1 shadow-sm">
+                            <Typography.Technical element="span" className="text-xs text-gray-700">
+                                {productName}
+                            </Typography.Technical>
                         </div>
                     </div>
 
-                    <Link
-                        href={`/cases/${caseItem.id}`}
-                        className={clsx(
-                            "inline-flex items-center text-sm font-medium",
-                            caseItem.color === "emerald" ? "text-emerald-600" : "text-blue-600"
-                        )}
-                    >
-                        Ver estudo completo
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 ml-1">
-                            <path fillRule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clipRule="evenodd" />
-                        </svg>
-                    </Link>
+                    <div className="space-y-5 mb-7">
+                        <div>
+                            <Typography.Technical element="div" className="text-xs uppercase tracking-wider text-gray-500 mb-1.5">
+                                Perception Gap
+                            </Typography.Technical>
+                            <Typography.Technical element="p" className="text-sm text-gray-700">
+                                {result.problemStatement}
+                            </Typography.Technical>
+                        </div>
+
+                        <div>
+                            <Typography.Technical element="div" className="text-xs uppercase tracking-wider text-gray-500 mb-1.5">
+                                Applied Solution
+                            </Typography.Technical>
+                            <Typography.Technical element="p" className="text-sm text-gray-700">
+                                {result.solution}
+                            </Typography.Technical>
+                        </div>
+                    </div>
+
+                    <div className="border-t border-gray-200 pt-5">
+                        <Typography.Technical element="div" className="text-xs uppercase tracking-wider text-gray-500 mb-4">
+                            Economic Impact
+                        </Typography.Technical>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            {result.keyResults.map((impact, idx) => (
+                                <div key={idx} className="bg-gray-50 rounded-lg p-3 shadow-sm border border-gray-100">
+                                    <Typography.Technical element="div" className="text-xs text-gray-600 mb-1.5">
+                                        {impact.metric}
+                                    </Typography.Technical>
+
+                                    <div className="flex items-center space-x-2">
+                                        <Typography.Data element="span" className="text-xs text-gray-500">
+                                            {impact.before}
+                                        </Typography.Data>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 text-gray-400">
+                                            <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                                        </svg>
+
+                                        <Typography.Data element="span" className="text-xs text-gray-900 font-bold">
+                                            {impact.after}
+                                        </Typography.Data>
+                                    </div>
+
+                                    <Typography.Technical element="div" className="text-xs text-gray-500 mt-1.5">
+                                        {impact.timeframe}
+                                    </Typography.Technical>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </motion.div>
@@ -267,84 +566,171 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
 };
 
 /* -------------------------------------------------------------------------- */
-/*                           COMPONENTE PRINCIPAL                             */
+/*                             MAIN COMPONENT                                */
 /* -------------------------------------------------------------------------- */
 
 export function ContentSection() {
-    const [introRef, introInView] = useInView({ threshold: 0.1, triggerOnce: true });
-    const [ctaRef, ctaInView] = useInView({ threshold: 0.1, triggerOnce: true });
+    // Interactive component state
+    const [activeProductId, setActiveProductId] = useState("snapshot");
+    const [activeIcpId, setActiveIcpId] = useState("saas");
+
+    // Update ICP when product changes
+    useEffect(() => {
+        const product = ARCO_PRODUCTS.find(p => p.id === activeProductId);
+        if (product && product.id === "sprint") {
+            setActiveIcpId("dtc");
+        } else if (product && product.id === "snapshot") {
+            setActiveIcpId("saas");
+        }
+    }, [activeProductId]);    // Viewing tracking refs
+    const { ref: introInViewRef, inView: introInView } = useInView({ threshold: 0.1, triggerOnce: true });
+    const { ref: ctaInViewRef, inView: ctaInView } = useInView({ threshold: 0.1, triggerOnce: true });
 
     return (
-        <section className="py-16 px-4 md:py-24 lg:py-32 bg-slate-50">
+        <section className="py-20 px-6 md:py-32 bg-gradient-to-b from-gray-50 to-white">
             <div className="container mx-auto max-w-6xl">
-                {/* Introdução simplificada e mais legível */}
+                {/* Editorial Introduction */}
                 <motion.div
-                    ref={introRef}
+                    ref={introInViewRef}
                     initial={{ opacity: 0, y: 20 }}
                     animate={introInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center max-w-3xl mx-auto mb-16"
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="max-w-3xl mb-24"
                 >
-                    <div className="inline-flex items-center mb-3 bg-slate-100 px-3 py-1 rounded-full">
-                        <span className="text-sm font-medium text-slate-700">Resultados comprovados</span>
-                    </div>
+                    <SectionLabel>The Perception-Value Framework</SectionLabel>
 
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                        Convertemos visitantes em{" "}
-                        <span className="text-emerald-600">clientes fiéis</span>
-                    </h2>
+                    <SectionTitle>
+                        Technical excellence remains financially undervalued when filtered through inadequate symbolic representation.
+                    </SectionTitle>
 
-                    <p className="text-lg text-slate-600">
-                        Nossa metodologia foca em <strong>resultados mensuráveis</strong> que
-                        impactam diretamente seu faturamento.
-                    </p>
+                    <Typography.Technical
+                        element="p"
+                        className="text-lg text-gray-700 mb-7 max-w-2xl"
+                    >
+                        This misalignment creates quantifiable gaps between actual value delivery and market perception, resulting in systematic underpricing, inappropriate market categorization, and reduced conversion rates.
+                    </Typography.Technical>
+
+                    <Typography.Technical
+                        element="p"
+                        className="text-base text-gray-600 mb-8"
+                    >
+                        ARCO has identified specific perception-value gap patterns in two primary verticals: <strong>SaaS with low trial conversion</strong> and <strong>e-commerce with high checkout abandonment</strong> — both problems that can be corrected with precise symbolic alignment.
+                    </Typography.Technical>
                 </motion.div>
 
-                {/* Grid de métricas */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                    {METRICS.map(metric => (
-                        <MetricCard key={metric.id} metric={metric} />
-                    ))}
+                {/* Specific Perception Problems by ICP */}
+                <div className="mb-24">
+                    <SectionLabel>Documented Perception Problems</SectionLabel>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                        {ARCO_ICPS.map(icp => (
+                            <PerceptionProblemCard
+                                key={icp.id}
+                                icp={icp}
+                                isActive={icp.id === activeIcpId}
+                                onSelect={() => setActiveIcpId(icp.id)}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="bg-white border border-gray-200 rounded-lg p-7 shadow-sm">
+                        <Typography.Editorial element="h3" className="text-lg text-gray-800 mb-3">
+                            The Economics of Perception
+                        </Typography.Editorial>
+
+                        <Typography.Technical element="p" className="text-gray-700">
+                            Precisely identifying these perception-value gaps is the first step toward correcting them. Our methodology develops specific corrections for each vertical, with measurable economic outcomes.
+                        </Typography.Technical>
+                    </div>
                 </div>
 
-                {/* Casos de estudo */}
-                <div className="space-y-8 mb-16">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-6">
-                        Cases de sucesso
-                    </h3>
+                {/* Perception Correction Products */}
+                <div className="mb-24">
+                    <SectionLabel>Perception Correction System</SectionLabel>
 
-                    {CASE_STUDIES.map((caseItem) => (
-                        <CaseCard key={caseItem.id} caseItem={caseItem} />
-                    ))}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        {ARCO_PRODUCTS.map(product => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                isActive={product.id === activeProductId}
+                                onSelect={() => setActiveProductId(product.id)}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="bg-gray-900 text-white rounded-lg p-7 shadow-lg">
+                        <div className="flex items-start gap-5">
+                            <div className="p-2 bg-gray-800 rounded-full shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                    <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+
+                            <div>
+                                <Typography.Editorial element="h3" className="text-lg text-white mb-2">
+                                    Conditional Guarantee on All Sprint Services
+                                </Typography.Editorial>
+
+                                <Typography.Technical element="p" className="text-gray-300">
+                                    If your Sprint doesn't achieve at least +8% conversion improvement, you receive a $300 credit applicable toward ArcBooster. Our commitment to measurable results.
+                                </Typography.Technical>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {/* CTA Final simplificado */}
+                {/* Transformation Cases */}
+                <div className="mb-24">
+                    <SectionLabel>Documented Perception-Value Transformations</SectionLabel>
+
+                    <div className="space-y-12">
+                        {ARCO_RESULTS.map((result) => (
+                            <TransformationCaseCard
+                                key={result.client}
+                                result={result}
+                                isActive={result.productUsed === activeProductId || ARCO_ICPS.find(icp => icp.id === activeIcpId)?.targetedAt === result.productUsed}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Strategic CTA */}
                 <motion.div
-                    ref={ctaRef}
+                    ref={ctaInViewRef}
                     initial={{ opacity: 0, y: 20 }}
                     animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ duration: 0.6 }}
-                    className="bg-white rounded-xl p-8 shadow-lg border border-slate-100"
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="bg-white rounded-lg p-8 shadow-lg border border-gray-200"
                 >
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                         <div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                                Pronto para aumentar suas conversões?
-                            </h3>
-                            <p className="text-slate-600">
-                                Agende um diagnóstico gratuito e descubra oportunidades de crescimento.
-                            </p>
+                            <Typography.Editorial
+                                element="h3"
+                                className="text-2xl text-gray-900 mb-3"
+                            >
+                                Begin with a Precise Diagnosis
+                            </Typography.Editorial>
+
+                            <Typography.Technical
+                                element="p"
+                                className="text-gray-700 max-w-xl"
+                            >
+                                Each day of misalignment represents quantifiable financial loss. The ArcSight Snapshot™ provides immediate visibility into specific perception-value gaps and actionable first steps.
+                            </Typography.Technical>
                         </div>
 
-                        <Link
-                            href="/contato"
-                            className="inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 transition-colors px-6 py-3 rounded-lg text-white font-medium"
-                        >
-                            Agendar diagnóstico
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 ml-2">
-                                <path fillRule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clipRule="evenodd" />
-                            </svg>
-                        </Link>
+                        <div className="flex flex-col items-center">
+                            <Link
+                                href="/diagnose"
+                                className="inline-flex items-center justify-center bg-gray-900 hover:bg-gray-800 transition-colors px-7 py-3 rounded-md text-white font-medium mb-2 shadow-md"
+                            >
+                                Request ArcSight Snapshot™
+                            </Link>
+                            <Typography.Data element="div" className="text-gray-700">
+                                $147 • 24 hours
+                            </Typography.Data>
+                        </div>
                     </div>
                 </motion.div>
             </div>
@@ -352,17 +738,9 @@ export function ContentSection() {
     );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                              INTEGRAÇÃO                                    */
-/* -------------------------------------------------------------------------- */
-
 export default function IntegratedPage() {
     return (
         <main>
-            {/* Importar o HeroCaseShowcase */}
-            {/* <HeroCaseShowcase /> */}
-
-            {/* Componente ContentSection otimizado */}
             <ContentSection />
         </main>
     );

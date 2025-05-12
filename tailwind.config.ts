@@ -1,19 +1,22 @@
 // tailwind.config.ts
 import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
+import { nextui } from '@nextui-org/react'
+import animatePlugin from 'tailwindcss-animate'
 
 export default <Config>{
   /** ----------------------------------------------------------------
-   * 1. Onde o Tailwind deve buscar classes (Next.js / app dir)
+   * 1. Where Tailwind should look for classes (Next.js / app dir)
    * ---------------------------------------------------------------- */
   content: [
     './app/**/*.{ts,tsx,mdx}',
     './components/**/*.{ts,tsx}',
     './lib/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
-
   /** ----------------------------------------------------------------
-   * 2. Ative "class" dark-mode (preferível em sites institucionais)
+   * 2. Use "class" dark-mode (preferable for institutional sites)
    * ---------------------------------------------------------------- */
   darkMode: 'class',
 
@@ -37,17 +40,18 @@ export default <Config>{
     extend: {
       /* ---- COLOR SYSTEM ----------------------------------------- */
       colors: {
-        /* brand greens */
+        /* brand colors */
         brand: {
-          deep : '#014737',
-          mid  : '#0f766e',
-          light: '#9ae6b4',
+          primary: '#1A365D', // deep navy blue
+          secondary: '#2C5282', // professional blue
+          accent: '#90CDF4', // subtle highlight
         },
         /* surface layers */
         surface: {
-          base : '#ffffff',
-          tint : '#f7fdfb',
-          dark : '#0a0a0a',
+          base: '#ffffff',
+          tint: '#F7FAFC',
+          dark: '#1A202C',
+          muted: '#E2E8F0',
         },
         /* text */
         text: {
@@ -102,24 +106,31 @@ export default <Config>{
         70: '70',
       },
     },
-  },
-
-  /** ----------------------------------------------------------------
-   * 4. Safelist – classes geradas dinamicamente (CVA, Markdown)
+  },  /** ----------------------------------------------------------------
+   * 4. Safelist – dynamically generated classes (CVA, Markdown)
    * ---------------------------------------------------------------- */
   safelist: [
     { pattern: /bg-brand-(deep|mid|light)/ },
     { pattern: /text-brand-(deep|mid|light)/ },
     { pattern: /ring-brand-(deep|mid)/ },
     { pattern: /shadow-(card|glass)/ },
+    'animate-in', 
+    'fade-in', 
+    'slide-in-from-top', 
+    'slide-in-from-bottom',
+    'slide-in-from-left',
+    'slide-in-from-right',
+    'zoom-in',
+    'zoom-out',
   ],
 
   /** ----------------------------------------------------------------
-   * 5. Plugins – oficiais + radial-mask utilitário
+   * 5. Plugins – official + NextUI + animation utilities
    * ---------------------------------------------------------------- */
   plugins: [
     require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
+    nextui(),
+    animatePlugin,
 
     /* radial-mask:bg-[mask-radial] */
     plugin(({ matchUtilities, theme }) => {

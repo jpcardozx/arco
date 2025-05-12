@@ -1,0 +1,221 @@
+/*
+  Estratégia Visual Premium - ARCO Portfolio
+  
+  Este arquivo contém definições de estilo premium para o portfólio estratégico.
+*/
+
+/* Typography Enhancements */
+.premium-font-serif {
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.02em;
+}
+
+.premium-font-sans {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.premium-font-mono {
+  font-family: monospace;
+  letter-spacing: -0.03em;
+}
+
+.premium-heading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Premium UI Components */
+.premium-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid #262626;
+  background-color: #171717;
+  padding: 1.5rem;
+  transition: all 300ms ease;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px -15px rgba(0, 0, 0, 0.4);
+}
+
+.premium-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  transition: all 300ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.premium-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Premium Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.animate-float {
+  animation: subtleFloat 4s ease-in-out infinite;
+}
+
+/* Gradient Elements */
+.premium-gradient-text {
+  background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #4F46E5, #06B6D4);
+}
+
+.premium-border-gradient {
+  position: relative;
+  border-radius: 0.75rem;
+  padding: 1px;
+  background: linear-gradient(to right, #4F46E5, #06B6D4);
+}
+
+.premium-border-gradient > * {
+  border-radius: 0.7rem;
+  background: #0F172A;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* Utility Classes for Layout */
+.premium-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .premium-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.premium-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Special Animated Elements */
+.animated-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.animated-bg::before, 
+.animated-bg::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: orbs 15s linear infinite;
+}
+
+.animated-bg::before {
+  background: linear-gradient(to right, #4F46E5, #06B6D4);
+  top: 20%;
+  left: 20%;
+}
+
+.animated-bg::after {
+  background: linear-gradient(to right, #8B5CF6, #EC4899);
+  bottom: 20%;
+  right: 20%;
+  animation-delay: -5s;
+  animation-duration: 25s;
+}
+
+@keyframes orbs {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-30px, 30px) rotate(90deg); }
+  50% { transform: translate(0, 60px) rotate(180deg); }
+  75% { transform: translate(30px, 30px) rotate(270deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Overlays and Backgrounds */
+.premium-overlay {
+  position: relative;
+}
+
+.premium-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0), rgba(15, 23, 42, 0.9));
+  z-index: 1;
+}
+
+.premium-overlay > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Grid Patterns */
+.grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.dot-pattern {
+  background-image: radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+}

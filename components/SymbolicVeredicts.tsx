@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const veredictos = [
-    "Digital presence: consistent, but culturally inert.",
-    "Reputation precedes — but does not project.",
-    "Narrative fragmentation detected across channels.",
-    "Perception drift active. Core expertise under-indexed.",
-    "Authority distributed. Signal coherence: low.",
-    "Presence interpretable. Not authored.",
-    "Tone of communication misaligned with strategic status.",
-    "Trust capital accumulated. Not symbolically translated.",
+    "Core Web Vitals: Critical threshold exceeded.",
+    "Performance debt accumulating: 7% revenue loss per second.",
+    "Technical optimization potential: $150K+ monthly.",
+    "Server response time: 2.8s above industry standard.",
+    "Conversion recovery zone identified: 28% potential.",
+    "Load time inefficiencies detected across key routes.",
+    "Performance metrics indicate significant revenue leakage.",
+    "Technical debt translating to measurable profit loss.",
 ]
 
 export default function SymbolicVerdicts() {

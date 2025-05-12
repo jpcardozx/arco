@@ -28,7 +28,7 @@ const misalignments = [
 export default function MisreadingSymptoms() {
     return (
         <section className="relative w-full bg-white py-32 px-6 overflow-hidden">
-            {/* Linha vetorial simbólica (fratura) */}
+            {/* Symbolic vector line (fracture) */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <line

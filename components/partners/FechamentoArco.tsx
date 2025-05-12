@@ -1,19 +1,67 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ShieldCheck, BadgeHelp, Quote, LockKeyhole, Sparkles, CheckCircle2 } from "lucide-react";
+"use client";
+
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import {
+    ShieldCheck,
+    ExternalLink,
+    Quote,
+    ArrowRight,
+    CheckCircle,
+    LockKeyhole
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import clsx from "clsx";
 
-// Dados objetivos de diferenciais ARCO
-const DIFERENCIAIS = [
-    { icon: <CheckCircle2 className="w-5 h-5 text-emerald-400" />, text: "Diagnóstico 100% individual: análise real do seu cenário, não apresentação genérica." },
-    { icon: <LockKeyhole className="w-5 h-5 text-blue-400" />, text: "Confidencialidade total: NDA operacional e ética profissional rigorosa." },
-    { icon: <Sparkles className="w-5 h-5 text-amber-400" />, text: "Entrega com recomendações práticas — sempre acionáveis, sem enrolação ou 'reunião para vender'." },
+/* -------------------------------------------------------------------------- */
+/*                           TYPOGRAPHY SYSTEM                                */
+/* -------------------------------------------------------------------------- */
+
+interface TypographyProps {
+    children: React.ReactNode;
+    className?: string;
+    [key: string]: any;
+}
+
+const Typography = {
+    Editorial: ({ children, className = "", ...props }: TypographyProps) => (
+        <span className={`font-serif ${className}`} {...props}>{children}</span>
+    ),
+
+    Technical: ({ children, className = "", ...props }: TypographyProps) => (
+        <span className={`font-sans ${className}`} {...props}>{children}</span>
+    ),
+
+    Data: ({ children, className = "", ...props }: TypographyProps) => (
+        <span className={`font-mono ${className}`} {...props}>{children}</span>
+    )
+};
+
+/* -------------------------------------------------------------------------- */
+/*                         STRATEGIC CONTENT                                  */
+/* -------------------------------------------------------------------------- */
+
+// Core differentiators aligned with ARCO's perception framework
+const STRATEGIC_DIFFERENTIATORS = [
+    {
+        icon: <CheckCircle className="w-5 h-5 text-gray-300" />,
+        text: "Individual, precise diagnosis: real analysis of your perception-value gaps, not generic presentations."
+    },
+    {
+        icon: <LockKeyhole className="w-5 h-5 text-gray-300" />,
+        text: "Complete confidentiality: operational NDA and rigorous professional ethics."
+    },
+    {
+        icon: <ArrowRight className="w-5 h-5 text-gray-300" />,
+        text: "Actionable recommendations — practical insights prioritized by economic impact, without sales pressure."
+    },
 ];
 
-// Depoimento institucional realista
-function DepoimentoModal({ open, onClose }: { open: boolean, onClose: () => void }) {
+// Testimonial component with strategic framing
+function TestimonialModal({ open, onClose }: { open: boolean, onClose: () => void }) {
     if (!open) return null;
+
     return (
         <AnimatePresence>
             <motion.div
@@ -29,30 +77,38 @@ function DepoimentoModal({ open, onClose }: { open: boolean, onClose: () => void
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.98, y: 40 }}
                     transition={{ type: "spring", bounce: 0.24, duration: 0.35 }}
-                    className="relative max-w-lg w-full bg-slate-900 border border-slate-700 rounded-2xl shadow-xl px-8 py-10 flex flex-col items-center"
+                    className="relative max-w-lg w-full bg-gray-900 border border-gray-800 rounded-lg shadow-xl px-8 py-10 flex flex-col items-center"
                     onClick={e => e.stopPropagation()}
                 >
-                    <Quote className="w-12 h-12 mb-3 text-emerald-400/70" />
-                    <blockquote className="text-lg md:text-xl text-slate-200 italic text-center mb-4 leading-relaxed">
-                        “Optamos pela ARCO pela abordagem direta e clareza nas recomendações. Não teve promessa vazia e, sim, análise crítica dos pontos que precisavam melhorar. O diagnóstico ajudou nosso time a priorizar o que realmente gerava resultado.”
-                    </blockquote>
-                    <figcaption className="flex items-center gap-3 mt-2">
+                    <Quote className="w-10 h-10 mb-4 text-gray-600" />
+                    <Typography.Editorial className="text-lg md:text-xl text-gray-200 italic text-center mb-5 leading-relaxed">
+                        "We chose ARCO for their direct approach and clarity in recommendations. There were no empty promises, just critical analysis of the points that needed improvement. The diagnosis helped our team prioritize what actually generated results."
+                    </Typography.Editorial>
+
+                    <div className="flex items-center gap-3 mt-2">
                         <Image
                             src="/logo-finmark.svg"
                             alt="Finmark"
                             width={32}
                             height={32}
-                            className="rounded-full bg-slate-800 p-1 border border-emerald-700"
+                            className="rounded-full bg-gray-800 p-1 border border-gray-700"
                         />
-                        <span className="text-sm text-slate-400">CEO Finmark</span>
-                        <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full">Diagnóstico ARCO</span>
-                    </figcaption>
+                        <Typography.Technical className="text-sm text-gray-400">
+                            CEO, Finmark
+                        </Typography.Technical>
+                        <Typography.Data className="ml-2 px-2 py-0.5 text-xs bg-gray-800 text-gray-300 rounded-full border border-gray-700">
+                            ArcSight Snapshot™
+                        </Typography.Data>
+                    </div>
+
                     <button
                         onClick={onClose}
-                        className="absolute top-2 right-2 p-2 rounded-full text-slate-400 hover:bg-slate-800 focus-visible:ring-2 ring-emerald-500 transition"
-                        aria-label="Fechar depoimento"
+                        className="absolute top-3 right-3 p-2 rounded-full text-gray-400 hover:bg-gray-800 transition-colors"
+                        aria-label="Close testimonial"
                     >
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6 6 18M6 6l12 12" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M18 6 6 18M6 6l12 12" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                     </button>
                 </motion.div>
             </motion.div>
@@ -60,141 +116,172 @@ function DepoimentoModal({ open, onClose }: { open: boolean, onClose: () => void
     );
 }
 
-export default function FechamentoArco() {
+/* -------------------------------------------------------------------------- */
+/*                              MAIN COMPONENT                               */
+/* -------------------------------------------------------------------------- */
+
+export default function StrategicClosing() {
     const [showModal, setShowModal] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
+    const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
 
     return (
-        <section className={clsx(
-            "relative mt-32 mb-8 py-20 px-4 sm:px-8 max-w-5xl mx-auto",
-            "overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900/80 to-slate-900/60 rounded-3xl shadow-2xl border border-slate-800"
-        )}>
-            {/* Selo institucional */}
+        <section
+            ref={sectionRef}
+            className={clsx(
+                "relative my-32 py-20 px-6 sm:px-8 max-w-5xl mx-auto",
+                "overflow-hidden bg-gray-950 rounded-lg shadow-xl border border-gray-800"
+            )}
+        >
+            {/* Strategic badge */}
             <motion.div
-                initial={{ scale: 0.9, opacity: 0, y: -22 }}
-                whileInView={{ scale: 1, opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 180, delay: 0.15 }}
+                initial={{ scale: 0.9, opacity: 0, y: -20 }}
+                animate={isInView ? { scale: 1, opacity: 1, y: 0 } : { scale: 0.9, opacity: 0, y: -20 }}
+                transition={{ type: "spring", stiffness: 150, delay: 0.15 }}
                 className={clsx(
-                    "absolute -top-8 left-1/2 -translate-x-1/2 z-20 px-6 py-2 flex items-center gap-2",
-                    "rounded-full bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold shadow-xl ring-2 ring-emerald-600/50"
+                    "absolute -top-6 left-1/2 -translate-x-1/2 z-20 px-6 py-2 flex items-center gap-2",
+                    "rounded-full bg-gray-900 border border-gray-700 text-gray-200 shadow-md"
                 )}
             >
-                <ShieldCheck className="w-5 h-5" />
-                Diagnóstico Profissional ARCO
+                <ShieldCheck className="w-5 h-5 text-gray-400" />
+                <Typography.Technical className="font-medium">
+                    Perception-Value Assessment
+                </Typography.Technical>
             </motion.div>
 
-            {/* Headline e subcopy objetiva */}
-            <motion.h2
+            {/* Editorial headline and framework introduction */}
+            <motion.div
                 initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.21 }}
-                className="text-2xl md:text-3xl font-bold text-white text-center mb-5 drop-shadow-lg"
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="max-w-3xl mx-auto text-center mb-12"
             >
-                Diagnóstico consultivo para decisões de negócio — direto ao ponto.
-            </motion.h2>
-            <motion.p
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.27 }}
-                className="text-lg text-slate-300 text-center max-w-2xl mx-auto mb-8"
-            >
-                Encontre os verdadeiros limitadores de crescimento e as prioridades do seu funil digital. Sem venda forçada. Sem análise superficial. Você recebe um diagnóstico detalhado, com recomendações práticas, priorizadas por impacto e viabilidade.
-            </motion.p>
+                <Typography.Editorial className="text-2xl md:text-3xl text-gray-100 mb-5 block leading-tight">
+                    Technical excellence requires precise symbolic representation to achieve true market value.
+                </Typography.Editorial>
 
-            {/* Lista de diferenciais técnicos e operacionais */}
-            <ul className="flex flex-col sm:flex-row flex-wrap justify-center gap-5 mb-9">
-                {DIFERENCIAIS.map(({ icon, text }, i) => (
-                    <li key={i} className={clsx(
-                        "flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/90 border border-slate-700",
-                        "shadow-sm text-base text-slate-200 font-medium"
-                    )}>
-                        {icon} {text}
-                    </li>
+                <Typography.Technical className="text-base md:text-lg text-gray-400 block">
+                    Identify the specific gaps between your delivered value and market perception.
+                    Our diagnostic provides a structured assessment with actionable corrections,
+                    prioritized by economic impact and implementation feasibility.
+                </Typography.Technical>
+            </motion.div>
+
+            {/* Strategic differentiators */}
+            <ul className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+                {STRATEGIC_DIFFERENTIATORS.map(({ icon, text }, i) => (
+                    <motion.li
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.4, delay: 0.25 + (i * 0.1) }}
+                        className={clsx(
+                            "flex items-start gap-3 p-4 rounded-lg bg-gray-900 border border-gray-800",
+                            "shadow-md"
+                        )}
+                    >
+                        <div className="mt-0.5 p-1.5 rounded-full bg-gray-800 border border-gray-700">
+                            {icon}
+                        </div>
+                        <Typography.Technical className="text-sm text-gray-300">
+                            {text}
+                        </Typography.Technical>
+                    </motion.li>
                 ))}
             </ul>
 
-            {/* CTA com feedback visual */}
+            {/* Strategic CTA */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.32, type: "spring" }}
-                className="flex flex-col items-center gap-3 mb-9"
+                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+                className="flex flex-col items-center gap-3 mb-12"
             >
-                <motion.a
-                    href="https://calendly.com/jpcardozx/diagnostico"
-                    target="_blank"
-                    whileHover={{ scale: 1.045, boxShadow: "0px 0px 0 3px #2dd4bf44" }}
-                    whileTap={{ scale: 0.97 }}
+                <Link
+                    href="/diagnose"
                     className={clsx(
-                        "group inline-flex items-center justify-center px-10 py-4 font-bold text-lg",
-                        "rounded-full bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-lg transition-all",
-                        "hover:brightness-105 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400/40"
+                        "group inline-flex items-center justify-center px-8 py-3",
+                        "rounded-lg bg-gray-900 hover:bg-gray-800 border border-gray-700 text-gray-100 shadow-lg transition-all",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-600"
                     )}
                 >
-                    Solicitar Diagnóstico Consultivo
-                    <BadgeHelp className="ml-2 w-5 h-5 group-hover:animate-bounce" />
-                </motion.a>
-                <span className="flex items-center gap-2 mt-1 text-xs text-slate-400 font-medium uppercase tracking-wide">
-                    Diagnóstico independente — sem compromisso, sem abordagem comercial
-                </span>
+                    <Typography.Technical className="font-medium mr-2">
+                        Request ArcSight Snapshot™
+                    </Typography.Technical>
+                    <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </Link>
+
+                <Typography.Data className="text-xs text-gray-500 uppercase tracking-wide mt-2">
+                    $147 • 24-hour turnaround • No sales pressure
+                </Typography.Data>
             </motion.div>
 
-            {/* Depoimento institucional sóbrio */}
-            <motion.figure
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.36 }}
+            {/* Testimonial with perception framework language */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
                 className={clsx(
-                    "mt-8 mx-auto max-w-xl px-6 py-6 rounded-2xl border border-slate-700 bg-slate-900/85 shadow-lg",
-                    "relative flex flex-col items-center"
+                    "mt-8 mx-auto max-w-xl px-6 py-6 rounded-lg border border-gray-800 bg-gray-900 shadow-lg",
+                    "relative"
                 )}
             >
                 <button
                     onClick={() => setShowModal(true)}
-                    className="absolute top-3 right-3 p-2 rounded-full text-emerald-400 bg-slate-800/60 hover:bg-slate-900/80 hover:scale-105 transition"
-                    aria-label="Expandir depoimento"
+                    className="absolute top-3 right-3 p-2 rounded-full text-gray-400 bg-gray-800/80 hover:bg-gray-800 transition-colors"
+                    aria-label="Expand testimonial"
                 >
-                    <Quote className="w-6 h-6" />
+                    <Quote className="w-4 h-4" />
                 </button>
-                <blockquote className="text-base md:text-lg text-slate-200 italic text-center mb-3 leading-relaxed">
-                    “A análise da ARCO nos ajudou a tomar decisões com base em dados e não em achismo. O foco no que realmente importava acelerou nossa curva de resultado.”
-                </blockquote>
-                <figcaption className="flex items-center gap-3 mt-2">
+
+                <Typography.Editorial className="text-base md:text-lg text-gray-300 italic mb-4 block">
+                    "ARCO's analysis helped us make decisions based on data, not assumptions. Their focus on what truly mattered accelerated our results curve."
+                </Typography.Editorial>
+
+                <div className="flex items-center gap-3">
                     <Image
                         src="/logo-finmark.svg"
                         alt="Finmark"
-                        width={32}
-                        height={32}
-                        className="rounded-full bg-slate-800 p-1 border border-emerald-700"
+                        width={28}
+                        height={28}
+                        className="rounded-full bg-gray-800 p-1 border border-gray-700"
                     />
-                    <span className="text-sm text-slate-400">CEO Finmark</span>
-                    <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full">Diagnóstico ARCO</span>
-                </figcaption>
-            </motion.figure>
-            <DepoimentoModal open={showModal} onClose={() => setShowModal(false)} />
-
-            {/* Manifesto institucional objetivo */}
-            <motion.div
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.45 }}
-                className={clsx(
-                    "mt-10 px-5 md:px-14 py-6 bg-gradient-to-br from-slate-800/80 via-slate-900/70 to-slate-800/40 border border-slate-700 rounded-2xl shadow-lg text-center"
-                )}
-            >
-                <p className="text-base md:text-lg text-slate-300 mb-2 font-medium" style={{ fontFamily: "serif" }}>
-                    <span className="block italic mb-1 text-slate-400/80">Compromisso ARCO</span>
-                    Diagnóstico honesto, técnico e livre de interesses comerciais.
-                    Se não houver potencial de impacto relevante, dizemos isso logo no início — e entregamos clareza, não ilusão.
-                </p>
-                <span className="block text-emerald-400 font-extrabold text-base mt-2">
-                    João Pedro Cardozo <span className="text-slate-400 font-medium ml-2 text-sm">/ Founder ARCO</span>
-                </span>
+                    <Typography.Technical className="text-sm text-gray-400">
+                        CEO, Finmark
+                    </Typography.Technical>
+                    <Typography.Data className="ml-2 px-2 py-0.5 text-xs bg-gray-800 text-gray-300 rounded-full border border-gray-700">
+                        ArcSight Snapshot™
+                    </Typography.Data>
+                </div>
             </motion.div>
 
-            {/* Decoração de fundo editorial sutil */}
-            <div className="pointer-events-none absolute inset-0 z-0">
-                <div className="absolute left-[-12%] bottom-[-8%] w-56 h-56 rounded-full bg-gradient-to-br from-emerald-600/25 to-teal-500/10 blur-3xl opacity-45" />
-                <div className="absolute right-[-10%] top-[-8%] w-40 h-40 rounded-full bg-gradient-to-br from-amber-500/12 to-emerald-600/10 blur-3xl opacity-20" />
+            <TestimonialModal open={showModal} onClose={() => setShowModal(false)} />
+
+            {/* Institutional commitment */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                className={clsx(
+                    "mt-12 px-6 md:px-14 py-6 bg-gray-900 border border-gray-800 rounded-lg shadow-lg text-center"
+                )}
+            >
+                <Typography.Editorial className="text-base md:text-lg text-gray-300 mb-3 block">
+                    <span className="block italic mb-2 text-gray-500">ARCO Commitment</span>
+                    Honest, technical diagnosis free from commercial interests.
+                    If there's no potential for significant impact, we state that at the outset —
+                    delivering clarity, not illusion.
+                </Typography.Editorial>
+
+                <Typography.Technical className="text-gray-300 font-medium block mt-4">
+                    J.P. Cardozo <span className="text-gray-500 ml-2 text-sm font-normal">/ ARCO Founder</span>
+                </Typography.Technical>
+            </motion.div>
+
+            {/* Subtle background decoration */}
+            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                <div className="absolute left-[-15%] bottom-[-10%] w-96 h-96 rounded-full bg-gradient-to-br from-gray-800/30 to-gray-900/10 blur-3xl opacity-60" />
+                <div className="absolute right-[-10%] top-[-5%] w-80 h-80 rounded-full bg-gradient-to-br from-gray-800/20 to-gray-900/5 blur-3xl opacity-40" />
             </div>
         </section>
     );

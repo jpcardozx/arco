@@ -4,12 +4,8 @@ import { motion } from 'framer-motion'
 
 export default function HeroIndex() {
     return (
-        <section className="relative z-0 min-h-screen w-full flex items-center justify-center bg-[url('/bg2.png')] bg-cover bg-center text-neutral-900 px-6 overflow-hidden">
-
-            {/* Camada simbólica: vinheta editorial ultra-leve */}
-            <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/80 via-white/50 to-white/30 pointer-events-none" />
-
-            {/* Conteúdo central */}
+        <section className="relative z-0 min-h-screen w-full flex items-center justify-center bg-[url('/bg2.png')] bg-cover bg-center text-neutral-900 px-6 overflow-hidden">            {/* Symbolic layer: ultra-light editorial vignette */}
+            <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/80 via-white/50 to-white/30 pointer-events-none" />            {/* Central content */}
             <div className="relative z-10 max-w-4xl mx-auto text-center">
                 <motion.h1
                     initial={{ opacity: 0, y: 32 }}

@@ -32,14 +32,14 @@ export default function FooterARCO() {
                     transition={{ duration: 1 }}
                     className="tracking-tight text-white text-center max-w-2xl mx-auto font-serif italic text-pretty"
                 >
-                    Not every presence is structured. But every signal is already forming a verdict.
+                    Every millisecond of technical debt accumulates into lost revenue. We turn performance metrics into profit.
                 </motion.p>
 
                 {/* Três colunas simbólicas */}
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 text-sm text-neutral-400">
                     <Image
                         src="/logo-v2.png"
-                        alt="ARCO Symbolic Seal"
+                        alt="ARCO Performance Optimization"
                         width={180}
                         height={36}
                         className="mx-auto mb-3 invert"
@@ -50,11 +50,11 @@ export default function FooterARCO() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Traceability</h4>
+                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Performance</h4>
                         <ul className="space-y-3">
-                            <li><Link href="/index" className="hover:text-white transition-colors">The Index™</Link></li>
-                            <li><Link href="/about" className="hover:text-white transition-colors">About ARCO</Link></li>
-                            <li><Link href="/verified-clients" className="hover:text-white transition-colors">Verified Clients</Link></li>
+                            <li><Link href="/diagnose" className="hover:text-white transition-colors">Revenue Impact Analysis</Link></li>
+                            <li><Link href="/case-studies" className="hover:text-white transition-colors">Success Stories</Link></li>
+                            <li><Link href="/methodology" className="hover:text-white transition-colors">Our Approach</Link></li>
                         </ul>
                     </motion.div>
 
@@ -64,11 +64,11 @@ export default function FooterARCO() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.2, duration: 0.8 }}
                     >
-                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Interpretive Axes</h4>
+                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Core Metrics</h4>
                         <ul className="space-y-3">
-                            <li><span className="text-neutral-500">Tension Mapping</span></li>
-                            <li><span className="text-neutral-500">Symbolic Readability</span></li>
-                            <li><span className="text-neutral-500">Legacy Realignment</span></li>
+                            <li><span className="text-neutral-500">Load Time Optimization</span></li>
+                            <li><span className="text-neutral-500">Conversion Recovery</span></li>
+                            <li><span className="text-neutral-500">ROI Acceleration</span></li>
                         </ul>
                     </motion.div>
 
@@ -78,16 +78,16 @@ export default function FooterARCO() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.4, duration: 0.8 }}
                     >
-                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Curated Access</h4>
+                        <h4 className="text-xs uppercase tracking-widest font-semibold text-neutral-300 mb-4">Get Started</h4>
                         <a
-                            href="/request-entry"
-                            className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-white text-sm text-white hover:bg-white/10 transition-all rounded-sm"
+                            href="/diagnose"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-sm text-white transition-all rounded-lg shadow-md"
                         >
-                            Submit for Review
+                            Calculate Revenue Impact
                             <ExternalLink className="w-4 h-4" />
                         </a>
-                        <p className="text-xs text-neutral-500 mt-3 italic">
-                            Entry to the Index™ is by symbolic eligibility.
+                        <p className="text-xs text-neutral-500 mt-3">
+                            For B2B platforms with $500K+ monthly revenue
                         </p>
                     </motion.div>
                 </div>

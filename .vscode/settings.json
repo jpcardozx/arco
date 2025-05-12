@@ -1,0 +1,29 @@
+{
+  // Disable CSS validation for Tailwind directives
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  
+  // Use the PostCSS language mode for CSS files
+  "files.associations": {
+    "*.css": "postcss"
+  },
+  
+  // Enable Tailwind CSS IntelliSense
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  
+  // Tailwind CSS-specific settings
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  
+  // Optional: Enable emmet in JSX
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  }
+}

@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import CTAButton from './CTAButton';
-import { Menu, X } from 'lucide-react'; // Importando ícones para o menu móvel
+import { Menu, X, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
-    { label: 'About', href: '#about' },
-    { label: 'Index™', href: '/diagnose' },
-    { label: 'Verified Clients', href: '#clients' },
+    { label: 'Methodology', href: '#methodology' },
+    { label: 'Case Studies', href: '#case-studies' },
+    { label: 'Results', href: '#results' },
 ];
 
 export default function Navbar() {

@@ -1,0 +1,226 @@
+/*
+  Enhanced Portfolio Visual Strategy - ARCO Portfolio
+  
+  This file contains style definitions to create a premium and consistent visual experience
+  throughout the portfolio site, with a special focus on professional presentation and value communication.
+  
+  Key features:
+  - Sophisticated typography with clear visual hierarchy
+  - High-contrast color system for improved readability
+  - Premium UI elements with subtle micro-interactions
+  - Scroll-driven progressive animations
+  - Responsive design optimizations
+*/
+
+/* Typography - Base Styles */
+.portfolio-font-serif {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+.portfolio-font-sans {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.portfolio-font-mono {
+  font-family: monospace;
+  letter-spacing: -0.03em;
+}
+
+.portfolio-heading {
+  @apply font-serif font-medium tracking-tight text-neutral-900 dark:text-white;
+}
+
+/* Premium UI Components */
+.portfolio-card {
+  @apply relative overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900 p-6 transition-all duration-300 shadow-sm;
+}
+
+.portfolio-card:hover {
+  @apply shadow-md dark:shadow-lg dark:shadow-neutral-900/50;
+  transform: translateY(-2px);
+}
+
+.portfolio-button {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-300;
+}
+
+.portfolio-button-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.portfolio-button-secondary {
+  @apply bg-white text-neutral-900 border border-neutral-200 hover:bg-neutral-50 dark:bg-neutral-800 dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700;
+}
+
+/* Enhanced Section Styles */
+.portfolio-section {
+  @apply py-24 relative overflow-hidden;
+}
+
+.portfolio-section-light {
+  @apply bg-white text-neutral-900;
+}
+
+.portfolio-section-dark {
+  @apply bg-neutral-900 text-white;
+}
+
+.portfolio-section-neutral {
+  @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-800 dark:text-white;
+}
+
+/* Grid Patterns and Visual Elements */
+.portfolio-grid-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M0 0h40v40H0V0zm1 1v38h38V1H1z' fill='%23f5f5f5' fill-opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.portfolio-dots-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23f5f5f5' fill-opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Animation Utilities */
+.portfolio-animate-fade-in {
+  animation: portfolioFadeIn 0.8s ease forwards;
+}
+
+.portfolio-animate-slide-up {
+  animation: portfolioSlideUp 0.8s ease forwards;
+}
+
+@keyframes portfolioFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes portfolioSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Optimizations */
+@media (max-width: 640px) {
+  .portfolio-mobile-stack {
+    @apply flex flex-col gap-4;
+  }
+
+  .portfolio-mobile-full {
+    @apply w-full;
+  }
+
+  .portfolio-mobile-compact {
+    @apply py-16 px-4;
+  }
+
+  .portfolio-heading-mobile {
+    @apply text-2xl md:text-4xl;
+  }
+
+  .portfolio-card-mobile {
+    @apply p-4;
+  }
+
+  .portfolio-hero-content-mobile {
+    @apply py-16 text-center px-4;
+  }
+
+  .portfolio-metrics-mobile {
+    @apply grid-cols-1 gap-4;
+  }
+}
+
+@media (max-width: 768px) {
+  .portfolio-section {
+    @apply py-12;
+  }
+
+  .portfolio-metrics {
+    @apply grid-cols-1 md:grid-cols-2;
+  }
+
+  .portfolio-button-group-mobile {
+    @apply flex-col w-full;
+  }
+
+  .portfolio-button-mobile {
+    @apply w-full justify-center mb-3;
+  }
+}
+
+/* Visual Improvements for Components */
+.portfolio-testimonial {
+  @apply relative rounded-xl overflow-hidden shadow-lg;
+}
+
+.portfolio-testimonial-content {
+  @apply relative z-10 p-8;
+}
+
+.portfolio-testimonial-backdrop {
+  @apply absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/30 opacity-90;
+}
+
+.portfolio-case-study {
+  @apply rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-700 transition-all duration-300;
+}
+
+.portfolio-case-study:hover {
+  @apply shadow-lg dark:shadow-neutral-900/50;
+}
+
+.portfolio-metrics {
+  @apply grid gap-6 md:grid-cols-2 lg:grid-cols-4;
+}
+
+.portfolio-metric-card {
+  @apply bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 flex flex-col;
+}
+
+.portfolio-expertise-grid {
+  @apply grid gap-8 md:grid-cols-2;
+}
+
+/* CTA Elements */
+.portfolio-cta-box {
+  @apply bg-gradient-to-br from-blue-600 to-blue-800 text-white p-8 rounded-xl shadow-lg;
+}
+
+/* Accessibility Enhancements */
+.portfolio-focus-visible:focus-visible {
+  @apply outline-2 outline-blue-500 outline-offset-2 rounded-sm;
+}
+
+.portfolio-sr-only {
+  @apply sr-only;
+}
+
+/* Typography Refinements */
+.portfolio-text-balance {
+  text-wrap: balance;
+}
+
+.portfolio-prose {
+  @apply max-w-prose mx-auto text-base md:text-lg leading-relaxed text-neutral-700 dark:text-neutral-300;
+}
+
+/* Print Styles */
+@media print {
+  .portfolio-print-friendly {
+    @apply bg-white text-black;
+  }
+
+  .portfolio-no-print {
+    @apply hidden;
+  }
+}

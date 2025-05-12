@@ -1,590 +1,703 @@
 "use client";
 
-import { useState, useEffect, useRef, KeyboardEvent } from "react";
+import React, { useState, useEffect, useRef, ReactNode } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, Variants } from "framer-motion";
-import clsx from "clsx";
-import { useInView } from "react-intersection-observer";
 
-// Helper para assets estáticos com tipo seguro
-const getAssetPath = (src: string): string => src.startsWith("/") ? src : `/${src}`;
-
-/* -------------------------------------------------------------------------- */
-/*                                DATA MODELS                                 */
-/* -------------------------------------------------------------------------- */
-
-export interface CaseStudy {
-    id: string;
-    label: string;
-    kpi: string;
-    img: string;
-    desc: string;
-    color: string; // Nova propriedade para personalização de cores
+// Typography components with proper TypeScript support
+interface TypographyProps {
+    children: ReactNode;
+    className?: string;
+    element?: keyof React.JSX.IntrinsicElements;
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 }
 
-// Dados aprimorados com cores personalizadas e métricas mais impactantes
-const CASE_STUDIES: CaseStudy[] = [
-    {
-        id: "ipe",
-        label: "Nova Ipê",
-        kpi: "+180% ROI",
-        img: "/case-thumb-ipe.png",
-        desc: "Conversão mobile 1,9% → 8,2% em 45 dias",
-        color: "from-emerald-500 to-teal-600"
-    },
-    {
-        id: "xora",
-        label: "Project Xora",
-        kpi: "2.1s → 0.4s",
-        img: "/case-thumb-xora.png",
-        desc: "Core Web Vitals 100/100 • +62% retenção",
-        color: "from-blue-500 to-indigo-600"
-    },
-    {
-        id: "api",
-        label: "API Showcase",
-        kpi: "+285% adoção",
-        img: "/case-thumb-api.png",
-        desc: "Docs interativas • -40% tickets de suporte",
-        color: "from-purple-500 to-violet-600"
-    }
-];
-
-/* -------------------------------------------------------------------------- */
-/*                               ANIMATION VARIANTS                           */
-/* -------------------------------------------------------------------------- */
-
-const fadeUp = (delay = 0): Variants => ({
-    hidden: { opacity: 0, y: 28 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }
-    }
-});
-
-const fadeScale = (delay = 0): Variants => ({
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-        opacity: 1,
-        scale: 1,
-        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay }
-    }
-});
-
-const staggerChildren: Variants = {
-    hidden: {},
-    visible: {
-        transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.35
-        }
-    }
-};
-
-/* -------------------------------------------------------------------------- */
-/*                               CUSTOM HOOKS                                 */
-/* -------------------------------------------------------------------------- */
-
-function useAccessibleTooltip(
-    activeId: string | null,
-    setActiveId: (id: string | null) => void
-) {
-    const ref = useRef<HTMLUListElement>(null);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (ref.current && !ref.current.contains(e.target as Node)) {
-                setActiveId(null);
-            }
+const Typography = {
+    Editorial: ({
+        children,
+        className = "",
+        element = "span",
+        size = "md",
+        ...props
+    }: TypographyProps) => {
+        const Element = element as any; // Required for dynamic element
+        const sizeClasses: Record<string, string> = {
+            xs: "text-sm font-normal leading-snug",
+            sm: "text-base font-normal leading-snug",
+            md: "text-lg font-normal leading-tight",
+            lg: "text-2xl font-normal leading-tight",
+            xl: "text-3xl font-light leading-tight",
+            "2xl": "text-4xl font-light leading-tight",
+            "3xl": "text-5xl font-light leading-tight",
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [setActiveId]);
-
-    return ref;
-}
-
-/* -------------------------------------------------------------------------- */
-/*                              SUB‑COMPONENTS                                */
-/* -------------------------------------------------------------------------- */
-
-interface KpiBadgeProps {
-    study: CaseStudy;
-    isActive: boolean;
-    toggle: (id: string) => void;
-    onKey: (e: KeyboardEvent, id: string) => void;
-}
-
-const KpiBadge = ({ study, isActive, toggle, onKey }: KpiBadgeProps) => {
-    return (
-        <li className="relative">
-            <button
-                type="button"
-                aria-expanded={isActive}
-                aria-controls={isActive ? `${study.id}-tip` : undefined}
-                aria-label={`${study.label}: ${study.kpi}. ${study.desc}`}
-                onClick={() => toggle(study.id)}
-                onKeyDown={(e) => onKey(e, study.id)}
-                className={clsx(
-                    "flex items-center gap-3 px-4 py-3 rounded-full text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                    "bg-white backdrop-blur-sm ring-1 shadow-lg transition-all duration-300 hover:shadow-xl",
-                    isActive
-                        ? `ring-2 ring-offset-2 ring-offset-white ring-${study.color.split(' ')[0]}`
-                        : "ring-slate-200/80"
-                )}
+        return (
+            <Element
+                className={`font-serif ${sizeClasses[size]} ${className}`}
+                {...props}
             >
-                <div className={clsx(
-                    "flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br",
-                    study.color
-                )}>
-                    <Image
-                        src={getAssetPath(study.img)}
-                        alt=""
-                        width={24}
-                        height={24}
-                        className="rounded-full"
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <span className="font-semibold text-slate-800">
-                        {study.label}
-                    </span>
-                    <span className={clsx(
-                        "font-bold text-transparent bg-clip-text bg-gradient-to-r",
-                        study.color
-                    )}>
-                        {study.kpi}
-                    </span>
-                </div>
-            </button>
-            {isActive && (
-                <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.2 }}
-                    id={`${study.id}-tip`}
-                    role="tooltip"
-                    className={clsx(
-                        "absolute top-full left-0 mt-3 z-10 w-64 rounded-lg bg-white p-4 text-sm shadow-xl",
-                        "ring-1 ring-slate-200 before:absolute before:-top-2 before:left-6 before:h-4 before:w-4",
-                        "before:rotate-45 before:bg-white before:rounded-sm"
-                    )}
-                >
-                    <div className="font-medium text-slate-900 mb-1">Resultado comprovado:</div>
-                    <div className="text-slate-700">{study.desc}</div>
-                </motion.div>
-            )}
-        </li>
-    );
+                {children}
+            </Element>
+        );
+    },
+    Technical: ({
+        children,
+        className = "",
+        element = "span",
+        size = "md",
+        ...props
+    }: TypographyProps) => {
+        const Element = element as any;
+        const sizeClasses: Record<string, string> = {
+            xs: "text-sm font-normal leading-normal",
+            sm: "text-base font-normal leading-normal",
+            md: "text-lg font-normal leading-normal",
+            lg: "text-xl font-normal leading-normal",
+            xl: "text-2xl font-normal leading-normal",
+        };
+
+        return (
+            <Element
+                className={`font-sans ${sizeClasses[size]} ${className}`}
+                {...props}
+            >
+                {children}
+            </Element>
+        );
+    },
+    Data: ({
+        children,
+        className = "",
+        element = "span",
+        size = "md",
+        ...props
+    }: TypographyProps) => {
+        const Element = element as any;
+        const sizeClasses: Record<string, string> = {
+            xs: "text-xs font-normal",
+            sm: "text-sm font-normal",
+            md: "text-base font-normal",
+            lg: "text-lg font-normal",
+            xl: "text-xl font-normal",
+        };
+
+        return (
+            <Element
+                className={`font-mono tabular-nums tracking-tight ${sizeClasses[size]} ${className}`}
+                {...props}
+            >
+                {children}
+            </Element>
+        );
+    }
 };
 
-interface CaseCardProps {
-    src: string;
-    alt: string;
-    large?: boolean;
-    gradient?: string;
+// Container components with proper TypeScript support
+interface AsymmetricContainerProps {
+    children: ReactNode;
+    className?: string;
+    reversed?: boolean;
 }
 
-const CaseCard = ({ src, alt, large = false, gradient = "from-black/75 via-black/25 to-transparent" }: CaseCardProps) => {
-    const prefersReducedMotion = useReducedMotion();
-
-    return (
-        <motion.div
-            whileHover={prefersReducedMotion ? {} : { y: -8, scale: 1.02 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative group overflow-hidden rounded-2xl shadow-lg aspect-[4/3]"
-        >
-            <Image
-                src={getAssetPath(src)}
-                alt={alt}
-                fill
-                sizes={large ? "(min-width:1024px) 460px, 92vw" : "(min-width:768px) 280px, 68vw"}
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                quality={90}
-                loading={large ? "eager" : "lazy"}
-                priority={large}
-            />
-            <div
-                className={clsx(
-                    "absolute inset-0 pointer-events-none bg-gradient-to-t opacity-60 group-hover:opacity-50 transition-opacity",
-                    gradient
-                )}
-            />
-        </motion.div>
-    );
-};
-
-interface StatBadgeProps {
-    value: string;
-    label: string;
-}
-
-const StatBadge = ({ value, label }: StatBadgeProps) => (
-    <div className="flex flex-col items-center bg-white/90 backdrop-blur-md rounded-xl p-3 shadow-lg">
-        <span className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
-            {value}
-        </span>
-        <span className="text-xs font-medium text-slate-600 text-center mt-1">
-            {label}
-        </span>
+const AsymmetricContainer: React.FC<AsymmetricContainerProps> = ({
+    children,
+    className = "",
+    reversed = false
+}) => (
+    <div className={`grid grid-cols-12 gap-x-4 gap-y-8 md:gap-x-6 lg:gap-x-8 ${className}`}>
+        <div className={`col-span-12 md:col-span-5 ${reversed ? 'md:col-start-7' : ''}`}>
+            {Array.isArray(children) ? children[0] : children}
+        </div>
+        <div className={`col-span-12 md:col-span-6 ${reversed ? 'md:col-start-1' : 'md:col-start-6'}`}>
+            {Array.isArray(children) ? children[1] : null}
+        </div>
     </div>
 );
 
-/* -------------------------------------------------------------------------- */
-/*                             CONTEÚDO PRINCIPAL                            */
-/* -------------------------------------------------------------------------- */
-
-interface HeroContentProps {
-    inView: boolean;
-    activeCase: string | null;
-    setActiveCase: (id: string | null) => void;
-    badgeListRef: React.RefObject<HTMLUListElement | null>;
-    handleBadgeKey: (e: KeyboardEvent, id: string) => void;
+interface EditorialRevealProps {
+    children: ReactNode;
+    delay?: number;
+    staggerItems?: number;
 }
 
-const HeroContent = ({
-    inView,
-    activeCase,
-    setActiveCase,
-    badgeListRef,
-    handleBadgeKey
-}: HeroContentProps) => {
-    return (
-        <motion.div
-            className="max-w-xl lg:max-w-lg"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={staggerChildren}
-        >
-            {/* Badge de confiança */}
-            <motion.div variants={fadeUp(0)}>
-                <div className="inline-flex items-center gap-3 rounded-full border border-slate-200/60 bg-white/90 px-4 py-2 backdrop-blur-md shadow-md">
-                    <Image src={getAssetPath("logo-v2.svg")} alt="Logo ARCO" width={24} height={24} />
-                    <span className="text-xs font-semibold tracking-wide text-slate-700">
-                        Agência Premiada 2024
-                    </span>
-                    <div className="flex gap-0.5">
-                        {[1, 2, 3, 4, 5].map(star => (
-                            <svg key={star} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 text-amber-400">
-                                <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                            </svg>
-                        ))}
-                    </div>
-                </div>
-            </motion.div>
+const EditorialReveal: React.FC<EditorialRevealProps> = ({
+    children,
+    delay = 0,
+    staggerItems = 0.15
+}) => {
+    const prefersReducedMotion = useReducedMotion();
 
-            {/* Título principal */}
-            <motion.h1
-                id="hero-heading"
-                className="mt-8 font-serif text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl"
-                variants={fadeUp(0.1)}
-            >
-                Transformamos
-                <br />
-                <span className="relative">
-                    <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-                        tráfego em receita
-                    </span>
-                    <svg className="absolute -bottom-4 left-0 w-full h-3 text-emerald-500/60" viewBox="0 0 200 8" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 5.5C36.8333 2.16667 93.6667 1.16667 171.5 2.5C187 3 199 4 199 4"
-                            stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-                    </svg>
-                </span>
-            </motion.h1>
+    const variants: Variants = {
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+                delay,
+                staggerChildren: staggerItems
+            }
+        }
+    };
 
-            {/* Subtexto estratégico */}
-            <motion.p
-                className="mt-8 text-lg leading-relaxed text-slate-700"
-                variants={fadeUp(0.2)}
-            >
-                Somos especialistas em converter visitantes em <strong className="font-bold text-emerald-700">clientes de alto valor</strong>.
-                Nossa abordagem orientada a dados aumenta a taxa de conversão em <strong className="font-bold text-emerald-700">38-65%</strong> em
-                apenas 90 dias.
-            </motion.p>
-
-            {/* Badges de cases */}
-            <motion.div variants={fadeUp(0.3)} className="mt-8">
-                <div className="font-medium text-slate-700 mb-3 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-emerald-600">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                    <span>Resultados comprovados</span>
-                </div>
-
-                <ul
-                    ref={badgeListRef}
-                    className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
-                >
-                    {CASE_STUDIES.map((study) => (
-                        <KpiBadge
-                            key={study.id}
-                            study={study}
-                            isActive={activeCase === study.id}
-                            toggle={setActiveCase}
-                            onKey={handleBadgeKey}
-                        />
-                    ))}
-                </ul>
-            </motion.div>
-
-            {/* CTA primário e secundário */}
-            <motion.div className="mt-10 flex flex-col sm:flex-row gap-4" variants={fadeUp(0.4)}>
-                <Link
-                    href="https://github.com/jpcardozx"
-                    className="group relative flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-6 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-emerald-500/25 hover:shadow-2xl hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-                >
-                    <span>Agendar diagnóstico gratuito</span>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                </Link>
-
-                <Link
-                    href="https://github.com/jpcardozx/portfolio"
-                    className="group flex items-center justify-center gap-x-2 rounded-xl bg-white px-6 py-4 text-sm font-medium text-slate-700 shadow-md ring-1 ring-slate-200 transition-all duration-300 hover:shadow-lg hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-                >
-                    <span>Ver portfólio completo</span>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                        aria-hidden="true"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                    </svg>
-                </Link>
-            </motion.div>
-        </motion.div>
-    );
-};
-
-/* -------------------------------------------------------------------------- */
-/*                              MOSAICO DE CASES                              */
-/* -------------------------------------------------------------------------- */
-
-interface CaseMosaicProps {
-    prefersReducedMotion: boolean | undefined;
-}
-
-const CaseMosaic = ({ prefersReducedMotion }: CaseMosaicProps) => {
-    return (
-        <motion.div
-            initial={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative grid grid-cols-12 gap-4 lg:ml-auto"
-        >
-            {/* Adiciona badge flutuante com estatística impressionante */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-                className="absolute -top-12 right-8 z-10"
-            >
-                <StatBadge value="+217%" label="Média de aumento em ROI" />
-            </motion.div>
-
-            <div className="relative col-span-8 row-span-2">
-                <CaseCard
-                    src="hero-case-mosaic-1.png"
-                    alt="Visual do projeto Nova Ipê"
-                    large
-                    gradient="from-emerald-900/75 via-emerald-800/20 to-transparent"
-                />
-
-                {/* Badge de informação sobreposta */}
-                <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <h3 className="font-bold text-slate-900">Nova Ipê</h3>
-                            <p className="text-sm text-emerald-700">+180% em conversões qualificadas</p>
-                        </div>
-                        <div className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-xs font-semibold">
-                            E-commerce
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="col-span-4">
-                <CaseCard
-                    src="hero-case-mosaic-2.png"
-                    alt="Visual do Project Xora"
-                    gradient="from-indigo-900/75 via-indigo-800/20 to-transparent"
-                />
-
-                {/* Badge de categoria */}
-                <div className="absolute top-3 right-3 bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-semibold">
-                    SaaS
-                </div>
-            </div>
-
-            <div className="col-span-4">
-                <CaseCard
-                    src="hero-case-mosaic-3.png"
-                    alt="Visual do API Showcase"
-                    gradient="from-violet-900/75 via-violet-800/20 to-transparent"
-                />
-
-                {/* Badge de categoria */}
-                <div className="absolute top-3 right-3 bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-semibold">
-                    DevTools
-                </div>
-            </div>
-
-            <motion.div
-                className="col-span-4 col-start-9 flex items-stretch"
-                variants={fadeScale()}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.9 }}
-            >
-                <div className="w-full flex flex-col justify-between rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-6 shadow-lg">
-                    <div className="space-y-1">
-                        <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 md:text-4xl">
-                            +25
-                        </span>
-                        <span className="block text-xs font-medium uppercase tracking-wider text-slate-500">
-                            Cases de sucesso
-                        </span>
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap gap-2">
-                        {["Fintech", "SaaS", "Varejo", "Imobiliário"].map(tag => (
-                            <span key={tag} className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-
-                    <Link
-                        href="https://github.com/jpcardozx"
-                        className="mt-6 group inline-flex items-center text-xs font-medium text-emerald-600 hover:text-emerald-700"
-                    >
-                        Ver todos os projetos
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                        </svg>
-                    </Link>
-                </div>
-            </motion.div>
-
-            {/* Badge de estatística flutuante no canto inferior */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5, duration: 0.6 }}
-                className="absolute -bottom-14 left-12 z-10"
-            >
-                <StatBadge value="12 dias" label="Tempo médio para primeiros resultados" />
-            </motion.div>
-        </motion.div>
-    );
-};
-
-/* -------------------------------------------------------------------------- */
-/*                            COMPONENTE PRINCIPAL                            */
-/* -------------------------------------------------------------------------- */
-
-export function HeroCaseShowcase() {
-    const prefersReducedMotionRaw = useReducedMotion();
-    const prefersReducedMotion = prefersReducedMotionRaw === null ? undefined : prefersReducedMotionRaw;
-    const [ref, inView] = useInView({ threshold: 0.25, triggerOnce: true });
-    const [activeCase, setActiveCase] = useState<string | null>(null);
-    const badgeListRef = useAccessibleTooltip(activeCase, setActiveCase);
-
-    // Gerenciamento de navegação por teclado
-    const handleBadgeKey = (e: KeyboardEvent, id: string) => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault(); // Evita rolagem com espaço
-            setActiveCase(activeCase === id ? null : id);
-        } else if (e.key === "Escape") {
-            setActiveCase(null);
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 15 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.7,
+                ease: [0.22, 1, 0.36, 1]
+            }
         }
     };
 
     return (
-        <section
-            ref={ref}
-            aria-labelledby="hero-heading"
-            className="relative isolate overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 py-24 lg:py-32"
+        <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={variants}
         >
-            {/* Grade decorativa com padrão mais sutil */}
-            <div
-                aria-hidden="true"
-                className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"
-            />
-
-            {/* Efeito de gradiente difuso */}
-            <div
-                aria-hidden="true"
-                className="absolute top-0 right-0 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-bl from-emerald-100 to-teal-100 opacity-40 blur-3xl"
-            />
-
-            <div
-                aria-hidden="true"
-                className="absolute bottom-0 left-0 -z-10 h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 opacity-30 blur-3xl"
-            />
-
-            <div className="mx-auto max-w-6xl px-6 lg:px-8">
-                <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-                    {/* Coluna de texto */}
-                    <HeroContent
-                        inView={inView}
-                        activeCase={activeCase}
-                        setActiveCase={setActiveCase}
-                        badgeListRef={badgeListRef}
-                        handleBadgeKey={handleBadgeKey}
-                    />
-
-                    {/* Coluna de mosaico */}
-                    <CaseMosaic prefersReducedMotion={prefersReducedMotion} />
-                </div>
-            </div>
-
-            {/* Marcador de confiança na parte inferior */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ delay: 1.8, duration: 0.6 }}
-                className="mt-20 flex justify-center"
-            >
-                <div className="flex items-center gap-8 flex-wrap justify-center">
-                    <span className="text-sm font-medium text-slate-500">Parceiros de confiança:</span>
-                    {['google.svg', 'aws.svg', 'salesforce.svg', 'hubspot.svg'].map((logo, i) => (
-                        <Image
-                            key={logo}
-                            src={getAssetPath(`partner-${logo}`)}
-                            alt="Logo de parceiro"
-                            width={i === 0 ? 80 : 120}
-                            height={32}
-                            className="h-8 w-auto grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
-                        />
-                    ))}
-                </div>
-            </motion.div>
-        </section>
+            {React.Children.map(children, child => (
+                <motion.div variants={itemVariants}>
+                    {child}
+                </motion.div>
+            ))}
+        </motion.div>
     );
+};
+
+interface ComparisonSliderProps {
+    beforeSrc: string;
+    afterSrc: string;
+    label: string;
+    alt: string;
+    className?: string;
 }
 
-export default HeroCaseShowcase;
+const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
+    beforeSrc,
+    afterSrc,
+    label,
+    alt,
+    className = ""
+}) => {
+    const [position, setPosition] = useState(50);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleMove = (e: React.MouseEvent | React.Touch) => {
+        if (!containerRef.current) return;
+        const box = containerRef.current.getBoundingClientRect();
+        const x = e.clientX - box.left;
+        const percent = Math.max(0, Math.min(100, (x / box.width) * 100));
+        setPosition(percent);
+    };
+
+    return (
+        <div className={`relative overflow-hidden rounded-lg shadow-lg ${className}`}>
+            <div
+                ref={containerRef}
+                className="aspect-w-16 aspect-h-10 relative cursor-ew-resize touch-none"
+                onMouseMove={(e) => handleMove(e)}
+                onTouchMove={(e) => {
+                    const touch = e.touches[0];
+                    handleMove(touch);
+                }}
+            >
+                <div className="absolute inset-0">
+                    <Image
+                        src={afterSrc}
+                        fill
+                        alt={`${alt} - After perception alignment`}
+                        className="object-cover"
+                    />
+                </div>
+                <div
+                    className="absolute inset-0 overflow-hidden"
+                    style={{ width: `${position}%` }}
+                >
+                    <Image
+                        src={beforeSrc}
+                        fill
+                        alt={`${alt} - Before perception alignment`}
+                        className="object-cover"
+                    />
+                </div>
+
+                <div
+                    className="absolute inset-y-0 w-0.5 bg-white shadow-lg"
+                    style={{ left: `${position}%` }}
+                >
+                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-8 w-8 bg-white rounded-full shadow-lg flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 17V3M10 3L4 9M10 3L16 9" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/80 text-white text-xs rounded-full">
+                    {label}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+interface MetricCardProps {
+    label: string;
+    value: string;
+    context: string;
+    className?: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ label, value, context, className = "" }) => (
+    <div className={`bg-white border border-gray-100 rounded-lg p-4 shadow-sm ${className}`}>
+        <Typography.Data element="div" size="lg" className="mb-1 text-gray-900">
+            {value}
+        </Typography.Data>
+        <Typography.Technical element="div" size="xs" className="font-medium text-gray-600 mb-2">
+            {label}
+        </Typography.Technical>
+        <Typography.Technical element="div" size="xs" className="text-gray-500">
+            {context}
+        </Typography.Technical>
+    </div>
+);
+
+// Data interfaces
+interface PerceptionGapItem {
+    id: string;
+    label: string;
+    statistic: string;
+    description: string;
+}
+
+interface EconomicImpact {
+    label: string;
+    value: string;
+    context: string;
+}
+
+interface CaseStudy {
+    id: string;
+    client: string;
+    industry: string;
+    beforeSrc: string;
+    afterSrc: string;
+    perceptionGap: string;
+    correction: string;
+    economicImpact: EconomicImpact[];
+}
+
+// Core data with actual values
+const valueGapData: PerceptionGapItem[] = [
+    {
+        id: "perception-value-gap",
+        label: "Perception-Value Gap",
+        statistic: "43%",
+        description: "Real value vs. perceived value in technically excellent companies"
+    },
+    {
+        id: "decision-friction",
+        label: "Decision Friction",
+        statistic: "4.2×",
+        description: "Extended decision time due to perception misalignment"
+    },
+    {
+        id: "conversion-loss",
+        label: "Conversion Loss",
+        statistic: "62%",
+        description: "Abandonment rate during value assessment"
+    }
+];
+
+// Case studies with real economic impact data
+const caseStudies: CaseStudy[] = [
+    {
+        id: "case-nova-ipe",
+        client: "Nova Ipê",
+        industry: "Premium E-commerce",
+        beforeSrc: "/case-ipe-before.jpg",
+        afterSrc: "/case-ipe-after.jpg",
+        perceptionGap: "Digital presence signaling mid-tier despite premium product quality",
+        correction: "Realignment of information hierarchy and typographic framework for value signaling",
+        economicImpact: [
+            {
+                label: "Average order value",
+                value: "+64%",
+                context: "Increase without changing products or prices"
+            },
+            {
+                label: "Discount requests",
+                value: "-87%",
+                context: "Reduction in negotiation attempts"
+            },
+            {
+                label: "Decision time",
+                value: "5.3d → 1.7d",
+                context: "Reduction in conversion cycle"
+            }
+        ]
+    },
+    {
+        id: "case-project-xora",
+        client: "Project Xora",
+        industry: "Enterprise SaaS",
+        beforeSrc: "/case-xora-before.jpg",
+        afterSrc: "/case-xora-after.jpg",
+        perceptionGap: "Technical signaling obscuring strategic value for C-level decision makers",
+        correction: "Narrative reconstruction and value presentation realignment",
+        economicImpact: [
+            {
+                label: "Executive engagement",
+                value: "+210%",
+                context: "Increase in board-level evaluations"
+            },
+            {
+                label: "Price positioning",
+                value: "2.3× higher",
+                context: "Sustainable price tier elevation"
+            },
+            {
+                label: "Commercial objections",
+                value: "-68%",
+                context: "Reduction in value questioning"
+            }
+        ]
+    }
+];
+
+// Main component with clear narrative progression
+const PartnerShowcase: React.FC = () => {
+    const [activeCase, setActiveCase] = useState<string>(caseStudies[0].id);
+    const [readingStage, setReadingStage] = useState<number>(0);
+    const showcaseRef = useRef<HTMLElement>(null);
+    const prefersReducedMotion = useReducedMotion();
+
+    const { scrollYProgress } = useScroll({
+        target: showcaseRef,
+        offset: ["start start", "end start"]
+    });
+
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+    // Advance reading stages as scrolling progresses
+    useEffect(() => {
+        const unsubscribe = scrollYProgress.onChange(v => {
+            if (v < 0.3) setReadingStage(0);
+            else if (v < 0.6) setReadingStage(1);
+            else setReadingStage(2);
+        });
+
+        return () => unsubscribe();
+    }, [scrollYProgress]);
+
+    const currentCase = caseStudies.find(c => c.id === activeCase);
+
+    // Ensure currentCase exists before rendering
+    if (!currentCase) return null;
+
+    return (
+        <section
+            ref={showcaseRef}
+            className="relative bg-gray-50 py-16 md:py-24 lg:py-32 overflow-hidden"
+        >
+            {/* Editorial background */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-gray-100 to-transparent opacity-80" />
+                <div className="absolute bottom-0 left-0 w-1/4 h-1/4 bg-gradient-to-tr from-gray-100 to-transparent opacity-70" />
+                <div className="absolute inset-0 bg-[url('/subtle-grid.svg')] opacity-[0.03]" />
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section 1: Establish the Problem */}
+                <div className="mb-24 md:mb-32">
+                    <AsymmetricContainer>
+                        <EditorialReveal>
+                            <Typography.Editorial
+                                element="h2"
+                                size="3xl"
+                                className="text-gray-900 mb-8"
+                            >
+                                Technical excellence<br />
+                                <span className="inline-block mt-1">remains undervalued.</span>
+                            </Typography.Editorial>
+
+                            <Typography.Technical
+                                element="p"
+                                size="lg"
+                                className="text-gray-700 mb-6"
+                            >
+                                The gap between <em>delivered value</em> and <em>perceived value</em> creates quantifiable financial loss that can be corrected through precise perception alignment.
+                            </Typography.Technical>
+
+                            <Typography.Technical
+                                element="p"
+                                size="md"
+                                className="text-gray-600 mb-12"
+                            >
+                                This is not an aesthetic problem, but an economic one. Inadequate perception creates decision friction, reduces conversions, and suppresses value recognition.
+                            </Typography.Technical>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                                {valueGapData.map(item => (
+                                    <div key={item.id} className="bg-white border border-gray-100 rounded-lg p-5 shadow-sm">
+                                        <Typography.Data element="div" size="xl" className="text-gray-900 mb-1">
+                                            {item.statistic}
+                                        </Typography.Data>
+                                        <Typography.Technical element="div" size="xs" className="font-medium text-gray-700 mb-2">
+                                            {item.label}
+                                        </Typography.Technical>
+                                        <Typography.Technical element="div" size="xs" className="text-gray-500">
+                                            {item.description}
+                                        </Typography.Technical>
+                                    </div>
+                                ))}
+                            </div>
+                        </EditorialReveal>
+
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1, delay: 0.5 }}
+                            className="relative"
+                        >
+                            <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-gray-200 to-white rounded-full opacity-80" />
+
+                            <div className="relative bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                                <Typography.Editorial element="h3" size="lg" className="text-gray-900 mb-4">
+                                    Perception-Value<br />Assessment
+                                </Typography.Editorial>
+
+                                <div className="space-y-4 mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">1</div>
+                                        <Typography.Technical size="sm" className="text-gray-700">
+                                            Reading of current presence
+                                        </Typography.Technical>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">2</div>
+                                        <Typography.Technical size="sm" className="text-gray-700">
+                                            Identification of misalignments
+                                        </Typography.Technical>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">3</div>
+                                        <Typography.Technical size="sm" className="text-gray-700">
+                                            Quantification of economic impact
+                                        </Typography.Technical>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                                    <Typography.Data size="lg" className="text-gray-900">
+                                        $147
+                                    </Typography.Data>
+                                    <Link
+                                        href="/diagnose"
+                                        className="text-sm bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-lg transition duration-200"
+                                    >
+                                        Request Assessment
+                                    </Link>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </AsymmetricContainer>
+                </div>
+
+                {/* Section 2: Demonstrate Transformation */}
+                <div className="mb-24 md:mb-32">
+                    <div className="mb-16 md:text-center">
+                        <Typography.Editorial element="h2" size="2xl" className="text-gray-900 mb-5">
+                            Documented Perception Corrections
+                        </Typography.Editorial>
+                        <Typography.Technical element="p" size="lg" className="text-gray-600 max-w-3xl md:mx-auto">
+                            Each case demonstrates the alignment process and its direct financial impact.
+                        </Typography.Technical>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                        {caseStudies.map(c => (
+                            <button
+                                key={c.id}
+                                className={`text-left p-4 rounded-lg transition duration-200 ${activeCase === c.id
+                                    ? "bg-gray-800 text-white ring-2 ring-gray-800"
+                                    : "bg-white border border-gray-200 text-gray-800 hover:bg-gray-50"
+                                    }`}
+                                onClick={() => setActiveCase(c.id)}
+                            >
+                                <div className="flex justify-between items-start mb-2">
+                                    <Typography.Editorial size="lg" className={activeCase === c.id ? "text-white" : "text-gray-900"}>
+                                        {c.client}
+                                    </Typography.Editorial>
+                                    <span className={`px-2 py-0.5 rounded text-xs ${activeCase === c.id
+                                        ? "bg-white/20 text-white"
+                                        : "bg-gray-100 text-gray-700"
+                                        }`}>
+                                        {c.industry}
+                                    </span>
+                                </div>
+                                <Typography.Technical size="sm" className={activeCase === c.id ? "text-gray-200" : "text-gray-600"}>
+                                    {c.perceptionGap}
+                                </Typography.Technical>
+                            </button>
+                        ))}
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeCase}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <AsymmetricContainer reversed>
+                                <div>
+                                    <ComparisonSlider
+                                        beforeSrc={currentCase.beforeSrc}
+                                        afterSrc={currentCase.afterSrc}
+                                        label="Slide to compare"
+                                        alt={currentCase.client}
+                                    />
+                                </div>
+
+                                <div className="flex flex-col h-full justify-center">
+                                    <div className="mb-8">
+                                        <Typography.Editorial element="h3" size="xl" className="text-gray-900 mb-4">
+                                            Perception Gap Analysis
+                                        </Typography.Editorial>
+                                        <Typography.Technical element="p" size="md" className="text-gray-700">
+                                            {currentCase.perceptionGap}
+                                        </Typography.Technical>
+                                    </div>
+
+                                    <div className="mb-8">
+                                        <Typography.Editorial element="h3" size="xl" className="text-gray-900 mb-4">
+                                            Applied Correction
+                                        </Typography.Editorial>
+                                        <Typography.Technical element="p" size="md" className="text-gray-700">
+                                            {currentCase.correction}
+                                        </Typography.Technical>
+                                    </div>
+
+                                    <div>
+                                        <Typography.Editorial element="h3" size="xl" className="text-gray-900 mb-4">
+                                            Economic Impact
+                                        </Typography.Editorial>
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                            {currentCase.economicImpact.map((impact, i) => (
+                                                <MetricCard
+                                                    key={i}
+                                                    label={impact.label}
+                                                    value={impact.value}
+                                                    context={impact.context}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </AsymmetricContainer>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                {/* Section 3: Path to Resolution */}
+                <div className="max-w-3xl mx-auto">
+                    <div className="text-center mb-12">
+                        <Typography.Editorial element="h2" size="2xl" className="text-gray-900 mb-5">
+                            The Correction Process
+                        </Typography.Editorial>
+                        <Typography.Technical element="p" size="lg" className="text-gray-600">
+                            The ARCO methodology transforms perception into economic value.
+                        </Typography.Technical>
+                    </div>
+
+                    <div className="relative">
+                        <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-gray-200" />
+
+                        <div className="relative grid grid-cols-1 gap-12">
+                            <div className="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 items-center">
+                                <div className="md:text-right">
+                                    <Typography.Editorial element="h3" size="lg" className="text-gray-900 mb-3">
+                                        Reading & Diagnosis
+                                    </Typography.Editorial>
+                                    <Typography.Technical element="p" size="md" className="text-gray-700">
+                                        Precise identification of perception-value gaps and quantification of current financial impact.
+                                    </Typography.Technical>
+                                </div>
+
+                                <div className="absolute md:relative top-0 left-0 md:left-auto">
+                                    <div className="absolute md:relative -left-6 md:left-0 top-0 md:top-auto md:-ml-4 h-12 w-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center">
+                                        <span className="text-gray-800 font-serif text-lg">1</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 items-center">
+                                <div className="md:col-start-2">
+                                    <Typography.Editorial element="h3" size="lg" className="text-gray-900 mb-3">
+                                        Perception Alignment
+                                    </Typography.Editorial>
+                                    <Typography.Technical element="p" size="md" className="text-gray-700">
+                                        Precise correction of elements that create conversion friction and value suppression.
+                                    </Typography.Technical>
+                                </div>
+
+                                <div className="absolute md:relative top-0 left-0 md:left-auto md:col-start-1 md:text-right">
+                                    <div className="absolute md:relative -left-6 md:left-auto md:right-0 top-0 md:top-auto md:-mr-4 h-12 w-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center">
+                                        <span className="text-gray-800 font-serif text-lg">2</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 items-center">
+                                <div className="md:text-right">
+                                    <Typography.Editorial element="h3" size="lg" className="text-gray-900 mb-3">
+                                        Implementation & Measurement
+                                    </Typography.Editorial>
+                                    <Typography.Technical element="p" size="md" className="text-gray-700">
+                                        Application of corrections through focused sprints and continuous economic impact measurement.
+                                    </Typography.Technical>
+                                </div>
+
+                                <div className="absolute md:relative top-0 left-0 md:left-auto">
+                                    <div className="absolute md:relative -left-6 md:left-0 top-0 md:top-auto md:-ml-4 h-12 w-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center">
+                                        <span className="text-gray-800 font-serif text-lg">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-16 md:mt-24 text-center">
+                        <Link
+                            href="/diagnose"
+                            className="inline-flex items-center gap-3 bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-lg transition duration-200 shadow-lg hover:shadow-xl"
+                        >
+                            <Typography.Technical element="span" className="font-medium">
+                                Request Perception Snapshot™
+                            </Typography.Technical>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </Link>
+
+                        <div className="mt-4">
+                            <Typography.Technical element="p" size="sm" className="text-gray-500">
+                                Perception Snapshot™ ($147) — Diagnostic analysis with identification of perception gaps
+                            </Typography.Technical>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default PartnerShowcase;

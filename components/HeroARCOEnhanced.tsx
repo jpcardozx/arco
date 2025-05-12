@@ -1,0 +1,112 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useTranslation } from '../lib/i18n-context'
+
+export default function HeroARCOEnhanced() {
+    const { t } = useTranslation()
+    const containerRef = useRef(null)
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    })
+
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95])
+    const y = useTransform(scrollYProgress, [0, 0.5], [0, 100])
+
+    const [clientStats, setClientStats] = useState([
+        { value: 0, target: 37, unit: '%', label: t('homepage.stats.checkoutRate') },
+        { value: 0, target: 2.8, unit: 's', label: t('homepage.stats.loadingTime') },
+        { value: 0, target: 28, unit: '%', label: t('homepage.stats.orderValue') }
+    ])
+
+    useEffect(() => {
+        const timers = clientStats.map((stat, index) => {
+            return setInterval(() => {
+                setClientStats(prev =>
+                    prev.map((s, i) => {
+                        if (i === index) {
+                            const newValue = stat.target === 2.8
+                                ? Math.min(s.value + 0.1, s.target).toFixed(1)
+                                : Math.min(Math.floor(s.value + 1), s.target).toString()
+                            return { ...s, value: parseFloat(newValue) }
+                        }
+                        return s
+                    })
+                )
+            }, 30 + (index * 10))
+        })
+
+        return () => timers.forEach(timer => clearInterval(timer))
+    }, [])
+
+    return (
+        <section
+            ref={containerRef}
+            className="relative min-h-[95vh] overflow-hidden bg-gradient-to-b from-neutral-950 to-neutral-900 text-white"
+        >
+            {/* Abstract visual elements - scattered metrics and data points */}
+            <div className="absolute inset-0 opacity-40">
+                <div className="absolute top-[15%] left-[10%] h-40 w-40 rounded-full bg-blue-600/30 blur-3xl" />
+                <div className="absolute top-[50%] right-[15%] h-60 w-60 rounded-full bg-indigo-600/20 blur-3xl" />
+                <div className="absolute bottom-[20%] left-[30%] h-32 w-32 rounded-full bg-purple-600/20 blur-3xl" />
+            </div>
+
+            <motion.div
+                style={{ opacity, scale, y }}
+                className="relative z-10 mx-auto flex min-h-[95vh] max-w-7xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8"
+            >
+                {/* Main hero content */}
+                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:max-w-4xl">
+                    {t('homepage.hero.title')}
+                </h1>
+                <p className="mt-6 max-w-2xl text-lg text-neutral-300">
+                    {t('homepage.hero.subtitle')}
+                </p>
+
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6">
+                    <Link href="#process">
+                        <button className="group relative inline-flex items-center overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2">
+                            <span className="relative font-medium">{t('homepage.hero.cta')}</span>
+                            <svg
+                                className="relative ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                />
+                            </svg>
+                        </button>
+                    </Link>
+                    <Link href="#case-studies">
+                        <button className="inline-flex items-center border-2 border-neutral-300 bg-transparent px-8 py-3 font-medium text-white hover:border-white">
+                            {t('common.buttons.seeMore')}
+                        </button>
+                    </Link>
+                </div>
+
+                {/* Client stats section */}
+                <div className="mt-16 grid w-full max-w-4xl grid-cols-1 gap-8 sm:grid-cols-3">
+                    {clientStats.map((stat, i) => (
+                        <div key={i} className="flex flex-col items-center">
+                            <div className="mb-2 flex items-baseline">
+                                <span className="text-4xl font-bold text-white">{stat.value}</span>
+                                <span className="ml-1 text-2xl text-white">{stat.unit}</span>
+                            </div>
+                            <p className="text-center text-sm text-neutral-300">{stat.label}</p>
+                        </div>
+                    ))}
+                </div>
+            </motion.div>
+        </section>
+    )
+}

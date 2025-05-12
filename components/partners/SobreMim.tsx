@@ -1,289 +1,812 @@
-/* ───────────────── ArcoPortfolioAdvanced.tsx ───────────────── */
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { motion, useSpring, useInView } from "framer-motion";
-import clsx from "clsx";
-import {
-    Rocket,
-    Stars,
-    GaugeCircle,
-    Github,
-    Linkedin,
-    Twitter,
-    BadgeCheck,
-} from "lucide-react";
+import Link from "next/link";
 
-/* -------------------------------------------------------------------------- */
-/* 1 · TOKENS DE DESIGN                                                       */
-/* -------------------------------------------------------------------------- */
-const TOKENS = {
-    color: {
-        emerald: { grad: "from-emerald-600 to-teal-500", text: "text-emerald-400", shadow: "shadow-emerald-600/20" },
-        blue: { grad: "from-blue-600 to-indigo-500", text: "text-blue-400", shadow: "shadow-blue-600/20" },
-        purple: { grad: "from-purple-600 to-pink-500", text: "text-purple-400", shadow: "shadow-purple-600/20" },
-        amber: { grad: "from-amber-600 to-orange-500", text: "text-amber-400", shadow: "shadow-amber-600/20" },
-    },
-    radius: "rounded-2xl",
-    spacing: { Y: "py-20 md:py-32", X: "px-4 md:px-10" },
+// -----------------------------------------------------------------------------
+// CORE STRATEGIC DATA
+// -----------------------------------------------------------------------------
+
+const ARCO_STRATEGIC_DATA = {
+    // The three core services with strategic positioning
+    SERVICES: [
+        {
+            id: "perception_snapshot",
+            name: "Perception Snapshot™",
+            price: "$147",
+            description: "Diagnostic with identification of key perception gaps and one applied correction example.",
+            strategic_purpose: "Identify the exact points where market perception fails to recognize your delivered value",
+            economic_impact: "Direct visibility into perception-value gaps that create financial leakage",
+            time_investment: "3-5 days",
+            ideal_for: "Companies experiencing pricing pressure despite technical excellence",
+            progression_level: "Entry",
+            priority: true
+        },
+        {
+            id: "authority_realignment",
+            name: "Authority Realignment Plan™",
+            price: "$1,197",
+            description: "Expanded diagnosis + complete symbolic map + correction of 2 key assets + 30-min strategy session.",
+            strategic_purpose: "Create a complete blueprint for perception correction with prioritized implementation path",
+            economic_impact: "85% reduction in conversion friction and 65% improvement in value perception",
+            time_investment: "10-14 days",
+            ideal_for: "Technical leaders whose expertise is undervalued in market positioning",
+            progression_level: "Strategic"
+        },
+        {
+            id: "modular_authority",
+            name: "Modular Authority Suite",
+            price: "$6,000",
+            description: "Premium landing page + institutional deck + microsite + complete symbolic kit.",
+            strategic_purpose: "Full implementation of your authority positioning with comprehensive symbolic alignment",
+            economic_impact: "2.3× average pricing power increase and 47% reduction in sales cycle length",
+            time_investment: "30-45 days",
+            ideal_for: "Organizations ready for comprehensive perception-value alignment",
+            progression_level: "Comprehensive"
+        }
+    ],
+
+    // Economic problems that the services solve
+    PERCEPTION_PROBLEMS: [
+        {
+            id: "underpricing",
+            title: "Systematic Underpricing",
+            description: "Technical excellence filtered through inadequate symbolic representation commands significantly lower prices than its actual value delivery warrants.",
+            metrics: [
+                { label: "Premium Service Underpricing", value: "43%" },
+                { label: "Discount Request Frequency", value: "4.2×" }
+            ],
+            service_connection: "perception_snapshot"
+        },
+        {
+            id: "decision_friction",
+            title: "Decision Friction",
+            description: "Misaligned symbolism creates conversion barriers that extend sales cycles and introduce unnecessary decision hesitation.",
+            metrics: [
+                { label: "Extended Decision Cycles", value: "3.7×" },
+                { label: "Conversion Rate Suppression", value: "62%" }
+            ],
+            service_connection: "authority_realignment"
+        },
+        {
+            id: "market_misalignment",
+            title: "Market Misalignment",
+            description: "Technical superiority is incorrectly positioned in lower market tiers due to inadequate symbolic transmission of value signals.",
+            metrics: [
+                { label: "Incorrect Market Categorization", value: "78%" },
+                { label: "Brand Power Underutilization", value: "3.1×" }
+            ],
+            service_connection: "modular_authority"
+        }
+    ],
+
+    // Evidence of market transformation
+    TRANSFORMATION_EVIDENCE: [
+        {
+            client: "Nova Ipê",
+            industry: "Premium E-commerce",
+            challenge: "Technical excellence filtered through mid-tier visual signaling",
+            transformation: "Information hierarchy realignment and value signaling reconstruction",
+            results: {
+                "Conversion Rate": { before: "1.9%", after: "8.2%" },
+                "Average Order Value": { before: "$67", after: "$110" },
+                "Discount Requests": { before: "72%", after: "18%" }
+            },
+            service_used: "authority_realignment"
+        },
+        {
+            client: "Project Xora",
+            industry: "Enterprise SaaS",
+            challenge: "Complex technical excellence obscuring strategic value",
+            transformation: "Narrative realignment and decision-path reconstruction",
+            results: {
+                "Executive Engagement": { before: "12%", after: "87%" },
+                "Pricing Power": { before: "Standard", after: "2.3× Premium" },
+                "Technical Objections": { before: "63%", after: "7%" }
+            },
+            service_used: "modular_authority"
+        }
+    ],
+
+    // Intellectual foundation that positions partner as authority
+    METHODOLOGY_FOUNDATION: {
+        premise: "Technical excellence remains financially undervalued when filtered through inadequate symbolic representation.",
+        approach: [
+            {
+                title: "Perception Reading",
+                description: "Precise diagnosis of gaps between delivered value and perceived value through systematic symbolic analysis."
+            },
+            {
+                title: "Strategic Realignment",
+                description: "Correction of symbolic elements that create perception-value gaps."
+            },
+            {
+                title: "Economic Measurement",
+                description: "Continuous quantification of financial impact through conversion metrics."
+            }
+        ]
+    }
 };
 
-/* -------------------------------------------------------------------------- */
-/* 2 · COPY & DADOS                                                           */
-/* -------------------------------------------------------------------------- */
-const COPY = {
-    hero: {
-        name: "Pedro Cardozo",
-        headline: "Arquitetura de Conversão & Performance",
-        sub: "Escalo seu pipeline em até 90 dias — sem inflar CAC. Trabalhamos com desenvolvimento estratégico de presença digital para empresas de elite.",
-        desc: "Comprovamos o valor do nosso trabalho através de métricas e KPIs. Escalo funis, elevo ticket e entrego performance mensurável.",
+// -----------------------------------------------------------------------------
+// TYPOGRAPHY SYSTEM
+// -----------------------------------------------------------------------------
+
+interface TypographyProps {
+    children: React.ReactNode;
+    element?: keyof React.JSX.IntrinsicElements;
+    size?: string;
+    className?: string;
+    [key: string]: any;
+}
+
+const Typography = {
+    Editorial: ({
+        children,
+        element = "p",
+        size = "md",
+        className = "",
+        ...props
+    }: TypographyProps) => {
+        const Element = element as any;
+        const sizes: { [key: string]: string } = {
+            xs: "text-sm leading-relaxed",
+            sm: "text-base leading-relaxed",
+            md: "text-lg leading-relaxed",
+            lg: "text-xl leading-relaxed",
+            xl: "text-2xl leading-relaxed",
+            "2xl": "text-3xl leading-snug",
+            "3xl": "text-4xl leading-snug"
+        };
+
+        return (
+            <Element className={`font-serif ${sizes[size]} ${className}`} {...props}>
+                {children}
+            </Element>
+        );
     },
-    metrics: [
-        { id: "clients", label: "Clientes satisfeitos", value: 15, prefix: "+" },
-        { id: "awards", label: "Certificações Internacionais", value: 12 },
-        { id: "roi", label: "ROI Inicial esperado", value: 65, suffix: "%", tint: "amber" as const },
-        { id: "ret", label: "Renovações anuais - Reversão de Churn", value: 95, suffix: "%", tint: "emerald" as const },
-    ],
-    expertise: [
-        {
-            id: "conv",
-            title: "Arquitetura de Conversão",
-            desc: "Funis auditados e LTV 3× — visitantes viram contratos de R$ 100 k.",
-            color: "emerald",
-            Icon: Rocket,
-            mini: "Conversão mobile 1,9 % → 8,2 % (45 d).",
-        },
-        {
-            id: "ux",
-            title: "UX Persuasivo",
-            desc: "Interfaces que quebram objeções em 6 cliques e elevam ticket médio +37 %.",
-            color: "purple",
-            Icon: Stars,
-            mini: "+37 % ticket médio em 60 d (SaaS).",
-        },
-        {
-            id: "perf",
-            title: "Performance 100/100",
-            desc: "Core Web Vitals verdes: +27 % vendas após LCP < 1 s.",
-            color: "blue",
-            Icon: GaugeCircle,
-            mini: "LCP 3,8 s → 0,9 s (e-commerce).",
-        },
-    ],
-    clients: [
-        { id: "ipe", name: "Ipê Digital", seg: "E-commerce", logo: "/darkIpeLogo.png", color: "emerald", case: "+180 % receita 6 m" },
-        { id: "xora", name: "Xora", seg: "SaaS", logo: "/logoXora.svg", color: "blue", case: "Lighthouse 97/100" },
-        { id: "fin", name: "Finmark", seg: "Fintech", logo: "/logo-finmark.svg", color: "purple", case: "+R$ 14 M pipeline" },
-    ],
-    timeline: [
-        { y: "2023", t: "Case Finmark", d: "+R$ 14 M em 60 d (ROI 11 : 1).", h: "Premiado ABComm", color: "purple" },
-        { y: "2022", t: "Framework Conversion Architecture™", d: "Aplicado em 14 projetos premium — 100 % sucesso.", h: "Lançamento v2.0", color: "emerald" },
-        { y: "2020", t: "Virada Premium", d: "Foco exclusivo em contratos high-ticket.", h: "Retenção 95 %", color: "amber" },
-    ],
+
+    Technical: ({
+        children,
+        element = "p",
+        size = "md",
+        className = "",
+        ...props
+    }: TypographyProps) => {
+        const Element = element as any;
+        const sizes: { [key: string]: string } = {
+            xs: "text-sm leading-normal",
+            sm: "text-base leading-normal",
+            md: "text-lg leading-normal",
+            lg: "text-xl leading-normal",
+            xl: "text-2xl leading-normal"
+        };
+
+        return (
+            <Element className={`font-sans ${sizes[size]} ${className}`} {...props}>
+                {children}
+            </Element>
+        );
+    },
+
+    Data: ({
+        children,
+        element = "span",
+        size = "md",
+        className = "",
+        ...props
+    }: TypographyProps) => {
+        const Element = element as any;
+        const sizes: { [key: string]: string } = {
+            xs: "text-xs",
+            sm: "text-sm",
+            md: "text-base",
+            lg: "text-lg",
+            xl: "text-xl"
+        };
+
+        return (
+            <Element className={`font-mono tabular-nums tracking-tight ${sizes[size]} ${className}`} {...props}>
+                {children}
+            </Element>
+        );
+    }
 };
 
-/* -------------------------------------------------------------------------- */
-/* 3 · ATÔMICOS                                                               */
-/* -------------------------------------------------------------------------- */
-const Badge = ({ color, children }: { color: keyof typeof TOKENS.color; children: string }) => (
-    <span className={clsx("px-3 py-1 text-xs font-semibold text-white rounded-full",
-        `bg-gradient-to-r ${TOKENS.color[color].grad}`)}>
+// Editorial section title that sets the intellectual framework
+const SectionTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <Typography.Editorial
+        element="h2"
+        size="2xl"
+        className={`text-gray-100 mb-10 max-w-3xl leading-snug ${className}`}
+    >
         {children}
-    </span>
+    </Typography.Editorial>
 );
 
-/* Social icons */
-const Social = ({ href, label, Icon }: { href: string; label: string; Icon: typeof Github }) => (
-    <a href={href} aria-label={label} target="_blank" rel="noopener noreferrer"
-        className="p-2 rounded-full bg-slate-800/90 hover:bg-emerald-500 transition-colors">
-        <Icon className="w-5 h-5 text-white" />
-    </a>
+// Label for adding context to sections
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+    <Typography.Technical
+        element="div"
+        size="xs"
+        className="text-gray-500 uppercase tracking-wider mb-3"
+    >
+        {children}
+    </Typography.Technical>
 );
 
-/* Metric counter (spring) */
-function Metric({ value, suffix, label, tint }: {
-    value: number; suffix?: string; label: string; tint?: keyof typeof TOKENS.color;
-}) {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-60px" });
-    const spring = useSpring(isInView ? value : 0, { stiffness: 160, damping: 22 });
-    const [v, setV] = useState(0);
-    useEffect(() => spring.on("change", n => setV(Math.round(n))), [spring]);
-
-    return (
-        <motion.div ref={ref} initial={{ opacity: 0, y: 14 }} animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 14 }}
-            transition={{ duration: .45 }} className="text-center">
-            <span className={clsx("text-3xl md:text-4xl font-extrabold",
-                tint ? TOKENS.color[tint].text : "text-white")}>
-                {v}{suffix}
-            </span>
-            <div className="text-xs uppercase tracking-wide text-slate-400 mt-1">{label}</div>
-        </motion.div>
-    );
-}
-
-/* -------------------------------------------------------------------------- */
-/* 4 · SEÇÕES                                                                 */
-/* -------------------------------------------------------------------------- */
-const Background = () => (
-    <>
-        <div className="hidden md:block absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px]
-                    rounded-full blur-3xl opacity-50 bg-gradient-to-br from-emerald-600/20 to-teal-500/5" />
-        <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[600px] h-[600px]
-                    rounded-full blur-3xl opacity-40 bg-gradient-to-br from-blue-600/20 to-indigo-500/5" />
-    </>
-);
-
-/* ---- Hero / Profile ---- */
-function Hero() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            {/* Avatar responsivo */}
-            <div className={clsx("relative overflow-hidden border-4 border-slate-800 shadow-2xl",
-                TOKENS.radius, "w-[clamp(8rem,20vw,13rem)] aspect-[3/4]")}>
-                <Image
-                    src="/profile.png"
-                    alt={COPY.hero.name}
-                    fill
-                    sizes="(max-width:768px) 40vw, (max-width:1024px) 25vw, 13rem"
-                    className="object-cover"
-                />
-                <div className="absolute bottom-0 w-full p-3 bg-gradient-to-t from-slate-900/90 to-transparent flex gap-2">
-                    <Social href="https://github.com/jpcardozx" label="GitHub" Icon={Github} />
-                    <Social href="https://linkedin.com/in/joaopedrocardozo" label="LinkedIn" Icon={Linkedin} />
-                    <Social href="https://twitter.com/jpcardozx" label="Twitter" Icon={Twitter} />
-                </div>
-            </div>
-
-            {/* Texto */}
-            <div className="md:col-span-2 flex flex-col justify-center">
-                <h1 className="text-4xl font-extrabold text-white mb-2">{COPY.hero.headline}</h1>
-                <h2 className="text-emerald-400 text-xl font-semibold mb-3">{COPY.hero.sub}</h2>
-                <p className="text-slate-300 max-w-xl mb-4">
-                    Consultoria que comprova valor com números. Escalo funis, elevo ticket e entrego performance mensurável.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                    <Badge color="emerald">Conversão estratégica</Badge>
-                    <Badge color="purple">UX persuasivo</Badge>
-                    <Badge color="blue">Performance 100/100</Badge>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-/* ---- Metrics ---- */
-const Metrics = () => (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-20">
-        {COPY.metrics.map(m => <Metric key={m.id} {...m} />)}
+// Subtle progress indicator
+const ProgressIndicator = ({ steps, currentStep }: { steps: number, currentStep: number }) => (
+    <div className="flex gap-1 my-4">
+        {Array.from({ length: steps }).map((_, i) => (
+            <div
+                key={i}
+                className={`h-0.5 w-6 transition-colors duration-300 ${i < currentStep ? 'bg-gray-400' : 'bg-gray-800'
+                    }`}
+            ></div>
+        ))}
     </div>
 );
 
-/* ---- Expertise Selector ---- */
-function Expertise() {
-    const [active, setActive] = useState(COPY.expertise[0].id);
-    return (
-        <section className="mb-20">
-            <h3 className="text-2xl font-bold text-white mb-8">Expertise central</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" role="tablist">
-                {COPY.expertise.map(({ id, title, desc, color, Icon, mini }) => {
-                    const act = id === active; const tok = TOKENS.color[color as keyof typeof TOKENS.color];
-                    return (
-                        <button key={id} role="tab" aria-selected={act}
-                            onClick={() => setActive(id)} onKeyDown={e => ["Enter", " "].includes(e.key) && setActive(id)}
-                            className={clsx("p-6 flex flex-col gap-3 border-2 transition-all focus:outline-none focus:ring-2 ring-offset-2 ring-offset-slate-900",
-                                TOKENS.radius,
-                                act ? `bg-gradient-to-br ${tok.grad} border-transparent ${tok.shadow}`
-                                    : "bg-slate-800/60 border-slate-700 hover:bg-slate-700")}>
-                            <span className={clsx("p-3", TOKENS.radius,
-                                act ? "bg-white/20" : `bg-gradient-to-br ${tok.grad} bg-opacity-10`)}>
-                                <Icon className="w-6 h-6 text-white" />
-                            </span>
-                            <span className={clsx("text-lg font-bold", act ? "text-white" : "text-slate-100")}>{title}</span>
-                            <span className={clsx(act ? "text-slate-200" : "text-slate-400")}>{desc}</span>
-                            {act && <span className="text-xs mt-2 text-slate-200 flex items-center gap-1"><BadgeCheck className="w-3 h-3" />{mini}</span>}
-                        </button>
-                    );
-                })}
-            </div>
-        </section>
-    );
+// -----------------------------------------------------------------------------
+// STRATEGIC COMPONENTS
+// -----------------------------------------------------------------------------
+
+// Problem component that connects to service
+interface ProblemCardProps {
+    title: string;
+    description: string;
+    metrics: {
+        label: string;
+        value: string;
+    }[];
+    currentService: string;
+    serviceConnection: string;
+    index: number;
 }
 
-/* ---- Clients ---- */
-function Clients() {
+const ProblemCard = ({
+    title,
+    description,
+    metrics,
+    currentService,
+    serviceConnection,
+    index
+}: ProblemCardProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+    const isActive = currentService === serviceConnection;
+
     return (
-        <section className="mb-20">
-            <h3 className="text-2xl font-bold text-white mb-8">Clientes de elite</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {COPY.clients.map(({ id, name, seg, logo, color, case: caseTxt }) => {
-                    const tok = TOKENS.color[color as keyof typeof TOKENS.color];
-                    return (
-                        <div key={id} className="group relative p-4 bg-slate-800/70 border border-slate-700 rounded-xl flex items-center justify-between">
-                            <div className="flex items-center">
-                                <Image src={logo} alt={name} width={40} height={40} className="object-contain" />
-                                <div className="ml-4">
-                                    <span className="font-bold text-white">{name}</span>
-                                    <span className={clsx("block text-xs", tok.text)}>{seg}</span>
-                                </div>
-                            </div>
-                            <div className={clsx("w-8 h-8 rounded-full flex items-center justify-center bg-slate-900 text-slate-400 group-hover:bg-gradient-to-r", tok.grad)}>
-                                <Rocket className="w-4 h-4" />
-                            </div>
-                            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-all">
-                                {caseTxt}
-                            </span>
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className={`border rounded-lg transition-all duration-300 ${isActive
+                ? 'bg-gray-800/90 border-gray-700 shadow-lg'
+                : 'bg-gray-900/60 border-gray-800'
+                }`}
+        >
+            <div className="p-6">
+                <Typography.Editorial
+                    element="h3"
+                    size="lg"
+                    className={`mb-3 ${isActive ? 'text-white' : 'text-gray-300'}`}
+                >
+                    {title}
+                </Typography.Editorial>
+
+                <Typography.Technical
+                    element="p"
+                    size="md"
+                    className={`mb-6 ${isActive ? 'text-gray-300' : 'text-gray-400'}`}
+                >
+                    {description}
+                </Typography.Technical>
+
+                <div className="flex flex-wrap gap-6 mb-2">
+                    {metrics.map((metric, i) => (
+                        <div key={i} className="flex flex-col">
+                            <Typography.Data
+                                element="div"
+                                size="lg"
+                                className={isActive ? 'text-white' : 'text-gray-400'}
+                            >
+                                {metric.value}
+                            </Typography.Data>
+                            <Typography.Technical
+                                element="div"
+                                size="xs"
+                                className="text-gray-500"
+                            >
+                                {metric.label}
+                            </Typography.Technical>
                         </div>
-                    );
-                })}
+                    ))}
+                </div>
             </div>
-        </section>
+
+            {isActive && (
+                <div className="px-6 py-3 border-t border-gray-700 bg-gray-800/50 rounded-b-lg">
+                    <Typography.Technical
+                        element="div"
+                        size="sm"
+                        className="text-gray-400 flex items-center"
+                    >
+                        <span className="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                        Addressed by {
+                            ARCO_STRATEGIC_DATA.SERVICES.find(s => s.id === serviceConnection)?.name
+                        }
+                    </Typography.Technical>
+                </div>
+            )}
+        </motion.div>
     );
+};
+
+// Service card with strategic positioning
+interface ServiceCardProps {
+    service: typeof ARCO_STRATEGIC_DATA.SERVICES[0];
+    isActive: boolean;
+    onClick: () => void;
+    index: number;
 }
 
-/* ---- Timeline ---- */
-function Timeline() {
+const ServiceCard = ({ service, isActive, onClick, index }: ServiceCardProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+
     return (
-        <section>
-            <h3 className="text-2xl font-bold text-white mb-8">Highlights da trajetória</h3>
-            <div className="flex flex-col gap-10">
-                {COPY.timeline.map(({ y, t, d, h, color }, idx) => {
-                    const tok = TOKENS.color[color as keyof typeof TOKENS.color];
-                    return (
-                        <motion.div key={y} initial={{ opacity: 0, x: idx % 2 ? 40 : -40 }} whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }} transition={{ duration: .55, delay: idx * 0.06 }}
-                            className={clsx("bg-slate-800/70 border border-slate-700 p-6 shadow-lg", TOKENS.radius)}>
-                            <span className="text-xs bg-slate-900 px-2 py-0.5 rounded-full text-slate-300 mb-2 inline-block">{y}</span>
-                            <h4 className="text-lg font-bold text-white">{t}</h4>
-                            <p className="text-slate-300 mb-3">{d}</p>
-                            <div className={clsx("inline-flex items-center gap-2 text-sm p-2",
-                                `bg-gradient-to-r ${tok.grad} bg-opacity-20`, TOKENS.radius)}>
-                                <BadgeCheck className={clsx("w-4 h-4", tok.text)} />
-                                <span className={tok.text}>{h}</span>
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className={`${isActive
+                ? 'border-gray-700 bg-gray-800/90 shadow-lg ring-1 ring-gray-700/50'
+                : 'border-gray-800 bg-gray-900/60 hover:bg-gray-900/90'
+                } border rounded-lg transition-all duration-300 cursor-pointer`}
+            onClick={onClick}
+        >
+            <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                    <Typography.Technical
+                        element="div"
+                        size="xs"
+                        className="text-gray-500 uppercase tracking-wider"
+                    >
+                        {service.progression_level}
+                    </Typography.Technical>
+
+                    <Typography.Data
+                        element="div"
+                        size="lg"
+                        className={isActive ? 'text-white' : 'text-gray-400'}
+                    >
+                        {service.price}
+                    </Typography.Data>
+                </div>
+
+                <Typography.Editorial
+                    element="h3"
+                    size="lg"
+                    className={`mb-3 ${isActive ? 'text-white' : 'text-gray-300'}`}
+                >
+                    {service.name}
+                </Typography.Editorial>
+
+                <Typography.Technical
+                    element="p"
+                    size="md"
+                    className={`mb-6 ${isActive ? 'text-gray-300' : 'text-gray-400'}`}
+                >
+                    {service.description}
+                </Typography.Technical>
+
+                {isActive && (
+                    <div className="space-y-4 mt-6 pt-6 border-t border-gray-700/50">
+                        <div>
+                            <Typography.Technical
+                                element="div"
+                                size="xs"
+                                className="text-gray-500 uppercase tracking-wider mb-1"
+                            >
+                                Strategic Purpose
+                            </Typography.Technical>
+                            <Typography.Technical
+                                element="div"
+                                size="sm"
+                                className="text-gray-300"
+                            >
+                                {service.strategic_purpose}
+                            </Typography.Technical>
+                        </div>
+
+                        <div>
+                            <Typography.Technical
+                                element="div"
+                                size="xs"
+                                className="text-gray-500 uppercase tracking-wider mb-1"
+                            >
+                                Economic Impact
+                            </Typography.Technical>
+                            <Typography.Technical
+                                element="div"
+                                size="sm"
+                                className="text-gray-300"
+                            >
+                                {service.economic_impact}
+                            </Typography.Technical>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                            <Typography.Technical
+                                element="div"
+                                size="xs"
+                                className="text-gray-500"
+                            >
+                                {service.time_investment}
+                            </Typography.Technical>
+
+                            <Link
+                                href="/diagnose"
+                                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors"
+                            >
+                                Request assessment
+                            </Link>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+};
+
+// Evidence card that shows transformation
+interface EvidenceCardProps {
+    evidence: typeof ARCO_STRATEGIC_DATA.TRANSFORMATION_EVIDENCE[0];
+    isActive: boolean;
+}
+
+const EvidenceCard = ({ evidence, isActive }: EvidenceCardProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true });
+
+    // Get the service name for display
+    const serviceName = ARCO_STRATEGIC_DATA.SERVICES.find(
+        s => s.id === evidence.service_used
+    )?.name || '';
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+                opacity: isInView ? 1 : 0,
+                y: isInView ? 0 : 20,
+                scale: isActive ? 1 : 0.98
+            }}
+            transition={{ duration: 0.5 }}
+            className={`${isActive
+                ? 'border-gray-700 bg-gray-800/90 shadow-lg'
+                : 'border-gray-800 bg-gray-900/60'
+                } border rounded-lg transition-all duration-300`}
+        >
+            <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                    <Typography.Technical
+                        element="div"
+                        size="xs"
+                        className="text-gray-500"
+                    >
+                        {evidence.industry}
+                    </Typography.Technical>
+
+                    <div className={`px-3 py-1 rounded-full ${isActive ? 'bg-gray-700 text-gray-300' : 'bg-gray-800 text-gray-500'
+                        }`}>
+                        <Typography.Technical element="span" size="xs">
+                            {serviceName}
+                        </Typography.Technical>
+                    </div>
+                </div>
+
+                <Typography.Editorial
+                    element="h3"
+                    size="lg"
+                    className={`mb-4 ${isActive ? 'text-white' : 'text-gray-300'}`}
+                >
+                    {evidence.client}
+                </Typography.Editorial>
+
+                <div className="mb-6">
+                    <Typography.Technical
+                        element="div"
+                        size="xs"
+                        className="text-gray-500 uppercase tracking-wider mb-1"
+                    >
+                        Challenge
+                    </Typography.Technical>
+                    <Typography.Technical
+                        element="p"
+                        size="sm"
+                        className={isActive ? 'text-gray-300' : 'text-gray-400'}
+                    >
+                        {evidence.challenge}
+                    </Typography.Technical>
+                </div>
+
+                <div className="mb-6">
+                    <Typography.Technical
+                        element="div"
+                        size="xs"
+                        className="text-gray-500 uppercase tracking-wider mb-1"
+                    >
+                        Transformation
+                    </Typography.Technical>
+                    <Typography.Technical
+                        element="p"
+                        size="sm"
+                        className={isActive ? 'text-gray-300' : 'text-gray-400'}
+                    >
+                        {evidence.transformation}
+                    </Typography.Technical>
+                </div>
+
+                {isActive && (
+                    <div className="mt-6 pt-6 border-t border-gray-700/50">
+                        <Typography.Technical
+                            element="div"
+                            size="xs"
+                            className="text-gray-500 uppercase tracking-wider mb-3"
+                        >
+                            Results
+                        </Typography.Technical>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            {Object.entries(evidence.results).map(([metric, values]) => (
+                                <div key={metric} className="bg-gray-900/80 rounded-md p-3">
+                                    <Typography.Technical
+                                        element="div"
+                                        size="xs"
+                                        className="text-gray-400 mb-2"
+                                    >
+                                        {metric}
+                                    </Typography.Technical>
+
+                                    <div className="flex items-center gap-2">
+                                        <Typography.Data
+                                            element="span"
+                                            size="sm"
+                                            className="text-gray-500"
+                                        >
+                                            {values.before}
+                                        </Typography.Data>
+
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-gray-700">
+                                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+
+                                        <Typography.Data
+                                            element="span"
+                                            size="sm"
+                                            className="text-white"
+                                        >
+                                            {values.after}
+                                        </Typography.Data>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+};
+
+// -----------------------------------------------------------------------------
+// MAIN COMPONENT
+// -----------------------------------------------------------------------------
+
+export default function SobreMim() {
+    // Track active states for strategic storytelling
+    const [activeService, setActiveService] = useState(ARCO_STRATEGIC_DATA.SERVICES[0].id);
+    const [activeEvidence, setActiveEvidence] = useState(0);
+
+    // Get the current service information
+    const currentService = ARCO_STRATEGIC_DATA.SERVICES.find(s => s.id === activeService);
+
+    // Cycle through evidence to demonstrate breadth
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setActiveEvidence(prev =>
+                prev === ARCO_STRATEGIC_DATA.TRANSFORMATION_EVIDENCE.length - 1 ? 0 : prev + 1
+            );
+        }, 8000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    return (
+        <div className="bg-gray-950 text-gray-300 min-h-screen">
+            <div className="relative py-24 px-6 md:px-12">
+                {/* Editorial background pattern */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b10_1px,transparent_1px),linear-gradient(to_bottom,#1e293b10_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]" />
+
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full opacity-20 blur-3xl bg-gradient-to-br from-gray-800/20 to-gray-900/20 -z-10" />
+
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full opacity-15 blur-3xl bg-gradient-to-tr from-gray-800/15 to-gray-900/15 -z-10" />
+
+                <div className="max-w-6xl mx-auto relative">
+                    {/* Introduction Section */}
+                    <section className="mb-24">
+                        <Typography.Editorial
+                            element="h1"
+                            size="3xl"
+                            className="text-gray-100 mb-6 max-w-3xl leading-snug"
+                        >
+                            Technical excellence remains financially undervalued when filtered through inadequate symbolic representation.
+                        </Typography.Editorial>
+
+                        <Typography.Technical
+                            element="p"
+                            size="lg"
+                            className="text-gray-400 mb-12 max-w-2xl"
+                        >
+                            This creates quantifiable gaps between actual value delivery and market perception, resulting in systematic underpricing and reduced conversion rates.
+                        </Typography.Technical>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {ARCO_STRATEGIC_DATA.PERCEPTION_PROBLEMS.map((problem, index) => (
+                                <ProblemCard
+                                    key={problem.id}
+                                    title={problem.title}
+                                    description={problem.description}
+                                    metrics={problem.metrics}
+                                    currentService={activeService}
+                                    serviceConnection={problem.service_connection}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Services Section */}
+                    <section className="mb-24">
+                        <SectionLabel>
+                            Structured Approach
+                        </SectionLabel>
+
+                        <SectionTitle>
+                            Strategic Services for Perception Alignment
+                        </SectionTitle>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                            {ARCO_STRATEGIC_DATA.SERVICES.map((service, index) => (
+                                <ServiceCard
+                                    key={service.id}
+                                    service={service}
+                                    isActive={activeService === service.id}
+                                    onClick={() => setActiveService(service.id)}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+
+                        <div className="bg-gray-900/60 border border-gray-800 rounded-lg p-6">
+                            <Typography.Editorial
+                                element="h3"
+                                size="lg"
+                                className="text-gray-100 mb-4"
+                            >
+                                The Perception Correction Framework
+                            </Typography.Editorial>
+
+                            <Typography.Technical
+                                element="p"
+                                size="md"
+                                className="text-gray-400 mb-6"
+                            >
+                                {ARCO_STRATEGIC_DATA.METHODOLOGY_FOUNDATION.premise}
+                            </Typography.Technical>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {ARCO_STRATEGIC_DATA.METHODOLOGY_FOUNDATION.approach.map((step, index) => (
+                                    <div key={index} className="flex gap-4">
+                                        <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                                            <Typography.Data className="text-gray-400">
+                                                {index + 1}
+                                            </Typography.Data>
+                                        </div>
+                                        <div>
+                                            <Typography.Editorial
+                                                element="h4"
+                                                size="md"
+                                                className="text-gray-200 mb-2"
+                                            >
+                                                {step.title}
+                                            </Typography.Editorial>
+                                            <Typography.Technical
+                                                element="p"
+                                                size="sm"
+                                                className="text-gray-500"
+                                            >
+                                                {step.description}
+                                            </Typography.Technical>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        </motion.div>
-                    );
-                })}
-            </div>
-        </section>
-    );
-}
+                        </div>
+                    </section>
 
-/* -------------------------------------------------------------------------- */
-/* 5 · EXPORT                                                                 */
-/* -------------------------------------------------------------------------- */
-export default function ArcoPortfolioAdvanced() {
-    return (
-        <section className={clsx("relative", TOKENS.spacing.Y, TOKENS.spacing.X, "bg-slate-900 overflow-hidden")}>
-            <Background />
-            <div className="max-w-7xl mx-auto relative z-10">
-                <Hero />
-                <Metrics />
-                <Expertise />
-                <Clients />
-                <Timeline />
+                    {/* Evidence Section */}
+                    <section className="mb-24">
+                        <SectionLabel>
+                            Transformation Evidence
+                        </SectionLabel>
+
+                        <SectionTitle>
+                            Documented Value-Perception Alignment
+                        </SectionTitle>
+
+                        <ProgressIndicator
+                            steps={ARCO_STRATEGIC_DATA.TRANSFORMATION_EVIDENCE.length}
+                            currentStep={activeEvidence + 1}
+                        />
+
+                        <div className="grid grid-cols-1 gap-8">
+                            {ARCO_STRATEGIC_DATA.TRANSFORMATION_EVIDENCE.map((evidence, index) => (
+                                <EvidenceCard
+                                    key={evidence.client}
+                                    evidence={evidence}
+                                    isActive={index === activeEvidence}
+                                />
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Call To Action Section */}
+                    <section>
+                        <div className="bg-gray-800/70 border border-gray-700 rounded-lg p-8 text-center">
+                            <Typography.Editorial
+                                element="h2"
+                                size="xl"
+                                className="text-white mb-4"
+                            >
+                                Begin with a Precise Diagnosis
+                            </Typography.Editorial>
+
+                            <Typography.Technical
+                                element="p"
+                                size="md"
+                                className="text-gray-300 mb-8 max-w-2xl mx-auto"
+                            >
+                                Each day of perception-value misalignment represents quantifiable financial loss. The Perception Snapshot™ provides immediate visibility into specific gaps between your delivered value and market perception.
+                            </Typography.Technical>
+
+                            <div className="inline-flex flex-col items-center">
+                                <Link
+                                    href="/diagnose"
+                                    className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors mb-3"
+                                >
+                                    Request Perception Snapshot™ ($147)
+                                </Link>
+                                <Typography.Technical
+                                    element="span"
+                                    size="xs"
+                                    className="text-gray-500"
+                                >
+                                    3-5 day diagnostic with economic impact assessment
+                                </Typography.Technical>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
-        </section>
+        </div>
     );
 }
