@@ -21,7 +21,7 @@ export default function SolutionsPage() {
             designSystem: 'arco-design-v3'
         });
 
-        trackFunnelStep('solutions', 'view', {
+        trackFunnelStep('solutions', 'view', 1, {
             entryPoint: document.referrer || 'direct'
         });
     }, []);

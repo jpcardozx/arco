@@ -16,7 +16,7 @@ export default function CaseStudiesPage() {
             designSystem: 'arco-design-v3'
         });
 
-        trackFunnelStep('case-studies', 'view', {
+        trackFunnelStep('case-studies', 'view', 1, {
             entryPoint: document.referrer || 'direct'
         });
     }, []);

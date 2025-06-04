@@ -15,7 +15,7 @@ export default function ContactPage() {
             designSystem: 'arco-design-v3'
         });
 
-        trackFunnelStep('contact', 'view', {
+        trackFunnelStep('contact', 'view', 1, {
             entryPoint: document.referrer || 'direct'
         });
     }, []);
@@ -64,7 +64,7 @@ export default function ContactPage() {
             });
 
             // Track conversion
-            trackFunnelStep('contact', 'submit', {
+            trackFunnelStep('contact', 'submit', 2, {
                 formId: 'contact-form'
             });
         }, 1200);

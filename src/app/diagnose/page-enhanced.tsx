@@ -21,7 +21,7 @@ const DiagnosePage = () => {
             designSystem: 'arco-design-v3'
         });
 
-        trackFunnelStep('diagnose', 'view', {
+        trackFunnelStep('diagnose', 'view', 1, {
             entryPoint: document.referrer || 'direct'
         });
     }, []);
