@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind CSS Test</title>
+    <link rel="stylesheet" href="/src/app/globals.css">
+    <style>
+        .test-container {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+        }
+        .test-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div class="test-container">
+        <h1 class="text-3xl font-bold mb-6">Teste Tailwind CSS</h1>
+        
+        <div class="test-section">
+            <h2 class="test-title">Layout - Flex</h2>
+            <div class="flex gap-4">
+                <div class="p-4 bg-blue-600 text-white">Item 1</div>
+                <div class="p-4 bg-blue-600 text-white">Item 2</div>
+                <div class="p-4 bg-blue-600 text-white">Item 3</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Layout - Grid</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="p-4 bg-green-600 text-white">Grid 1</div>
+                <div class="p-4 bg-green-600 text-white">Grid 2</div>
+                <div class="p-4 bg-green-600 text-white">Grid 3</div>
+                <div class="p-4 bg-green-600 text-white">Grid 4</div>
+                <div class="p-4 bg-green-600 text-white">Grid 5</div>
+                <div class="p-4 bg-green-600 text-white">Grid 6</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Posicionamento</h2>
+            <div class="relative h-40 bg-gray-100">
+                <div class="absolute top-0 left-0 p-2 bg-red-600 text-white">Top-Left</div>
+                <div class="absolute top-0 right-0 p-2 bg-red-600 text-white">Top-Right</div>
+                <div class="absolute bottom-0 left-0 p-2 bg-red-600 text-white">Bottom-Left</div>
+                <div class="absolute bottom-0 right-0 p-2 bg-red-600 text-white">Bottom-Right</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Tipografia</h2>
+            <p class="text-xs">text-xs</p>
+            <p class="text-sm">text-sm</p>
+            <p class="text-base">text-base</p>
+            <p class="text-lg">text-lg</p>
+            <p class="text-xl">text-xl</p>
+            <p class="text-2xl">text-2xl</p>
+            <p class="font-bold">font-bold</p>
+            <p class="font-semibold">font-semibold</p>
+            <p class="italic">italic</p>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Bordas e Arredondamento</h2>
+            <div class="flex gap-4">
+                <div class="p-4 border">border</div>
+                <div class="p-4 border rounded">rounded</div>
+                <div class="p-4 border rounded-lg">rounded-lg</div>
+                <div class="p-4 border rounded-full">rounded-full</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Sombras</h2>
+            <div class="flex gap-4">
+                <div class="p-4 bg-white shadow">shadow</div>
+                <div class="p-4 bg-white shadow-md">shadow-md</div>
+                <div class="p-4 bg-white shadow-lg">shadow-lg</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Teste Tailwind CSS carregado');
+        });
+    </script>
+</body>
+</html>

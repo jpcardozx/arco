@@ -1,25 +1,21 @@
 'use client'
 
-import NavBar from "../../components/NavBar";
-import HeroARCO from "../../components/HeroARCO";
-import SymbolicAnchor from "../../components/SymbolicAnchor";
-import TheMisalignment from "../../components/TheMisalignment";
-import EditorialCTA from "../../components/EditorialCTA";
-import HomepageFinalCoda from "../../components/HomepageFinalCoda";
-import SymbolicVerdicts from "../../components/SymbolicVeredicts";
-import FooterARCO from "../../components/FooterARCO";
+import { ARCONavigation } from "../components/layout/ARCONavigation";
+import { ARCOHero } from "../components/sections/ARCOHero";
+import { ValueProposition } from "../components/sections/ValueProposition";
+import { IMPACTFramework } from "../components/sections/IMPACTFramework";
+import { CaseStudies } from "../components/sections/CaseStudies";
+import { ARCOFooter } from "../components/layout/ARCOFooter";
 
 export default function Home() {
   return (
     <>
-      <NavBar />
-      <HeroARCO />
-      <SymbolicAnchor />
-      <TheMisalignment />
-      <EditorialCTA />
-      <HomepageFinalCoda />
-      <SymbolicVerdicts />
-      <FooterARCO />
+      <ARCONavigation />
+      <ARCOHero />
+      <ValueProposition />
+      <IMPACTFramework />
+      <CaseStudies />
+      <ARCOFooter />
     </>
   );
 }

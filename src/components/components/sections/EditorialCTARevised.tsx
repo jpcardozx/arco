@@ -1,0 +1,174 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from "react";
+
+import {
+  Section,
+  Heading2,
+  Heading3,
+  BodyRegular,
+  Caption,
+  Card,
+  Button
+} from '@/components/ui';
+
+export default function EditorialCTARevised() {
+  return (
+    <Section className="border-t border-neutral-100 bg-white">
+      {/* Editorial conclusion */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="mb-16"
+      >
+        <div className="max-w-2xl">
+          <Heading2 className="mb-6 text-neutral-900">
+            The correction of perception is not an aesthetic exercise—it's a financial imperative.
+          </Heading2>
+
+          <div className="mb-6 h-px w-16 bg-neutral-200" />
+
+          <BodyRegular className="leading-relaxed text-neutral-700">
+            Precise correction of how your digital presence is perceived creates immediate financial
+            impact. Not through redesign, but through the realignment of the symbolic elements that
+            determine how your value is read.
+          </BodyRegular>
+        </div>
+      </motion.div>
+
+      {/* Case example */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="mb-16"
+      >
+        <Card className="overflow-hidden">
+          <div className="grid gap-10 p-8 md:grid-cols-5">
+            <div className="space-y-6 md:col-span-3">
+              <div className="space-y-1">
+                <Caption className="text-neutral-500">Case Brief</Caption>
+                <Heading3 className="text-neutral-900">Strategic Consulting Firm</Heading3>
+              </div>
+
+              <div className="space-y-5">
+                <div>
+                  <Caption className="mb-1 text-neutral-500">The Symbolic Misalignment</Caption>
+                  <BodyRegular className="text-neutral-800">
+                    Top-tier methodology and documented client success positioned them among
+                    industry leaders. However, their digital presence created perception of a
+                    mid-tier generalist through inconsistent symbolic markers and misaligned value
+                    hierarchy.
+                  </BodyRegular>
+                </div>
+
+                <div>
+                  <Caption className="mb-1 text-neutral-500">The Strategic Correction</Caption>
+                  <BodyRegular className="text-neutral-800">
+                    We implemented our Value Alignment System™ to restructure key symbolic elements
+                    across their customer journey. This included resequencing case study
+                    presentation, recalibrating visual hierarchy of expertise markers, and
+                    realigning pricing presentation with value perception.
+                  </BodyRegular>
+                </div>
+
+                <Card
+                  variant="filled"
+                  className="rounded-r-lg border-l-4 border-blue-500 bg-blue-50"
+                >
+                  <div className="p-5">
+                    <BodyRegular className="font-medium text-neutral-900">
+                      43% increase in proposal acceptance rate with average contract value
+                      increasing by $32,000 without changing their actual pricing structure.
+                    </BodyRegular>
+                    <Caption className="mt-1 text-neutral-500">
+                      Implementation: 14 days • ROI: 2,175% • Methodology: Immediate Revenue
+                      Framework™
+                    </Caption>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="pt-4">
+                <Button
+                  variant="link"
+                  rightIcon={<ExternalLink className="h-4 w-4" />}
+                >
+                  View the full case analysis
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex items-center md:col-span-2">
+              <div className="w-full space-y-5">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-md">
+                  <Image
+                    src="/perception-case-example.jpg"
+                    alt="Perception correction visualization"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <Card variant="filled">
+                  <div className="p-4 text-sm italic text-neutral-600">
+                    Subtle perception adjustments create substantial financial outcomes—not through
+                    imposing new design, but through revealing actual value.
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+
+      {/* Entry point with editorial stance */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="mb-16"
+      >
+        <div className="max-w-2xl">
+          <Heading2 className="mb-6 text-neutral-900">
+            Revenue is not lost through poor design—it vanishes through symbolic misalignment
+            between your true value and its perception.
+          </Heading2>
+
+          <div className="mb-6 h-px w-16 bg-neutral-200" />
+
+          <BodyRegular className="leading-relaxed text-neutral-700">
+            When we analyze conversion failure points across industries, the pattern is clear:
+            cognitive dissonance at key decision moments causes customers to pause, hesitate, and
+            ultimately abandon. This isn't a design problem—it's a symbolic alignment problem with
+            direct financial consequences.
+          </BodyRegular>
+        </div>
+      </motion.div>
+
+      {/* Final editorial statement with subtle scarcity */}
+      <Card className="border border-neutral-100 p-8">
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+          <BodyRegular className="text-neutral-700">
+            Each day of symbolic misalignment costs your business thousands in lost revenue. The
+            correction process is systematic, measurable, and delivers ROI within weeks, not months.
+          </BodyRegular>
+
+          <div className="flex items-center gap-2">
+            <Button variant="default" rightIcon={<ArrowRight className="h-4 w-4" />}>
+              Get your ArcSight Snapshot™ ($147)
+            </Button>
+
+            <Caption className="ml-3 text-neutral-500">Limited to 3 new clients per week</Caption>
+          </div>
+        </div>
+      </Card>
+    </Section>
+  );
+}

@@ -9,8 +9,8 @@ const ebGaramond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Arco Institute | Digital Presence",
-  description: "Where your legacy finds its voice.",
+  title: "ARCO | Digital Performance Engineering - Self-Funding Transformation",
+  description: "Convert operational waste into competitive advantage. Auto-financeable digital transformation projects with guaranteed ROI. 4-8 week delivery, 60%+ margins.",
 };
 
 export default function RootLayout({

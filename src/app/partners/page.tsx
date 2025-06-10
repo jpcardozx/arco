@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react'
-import Navbar from '../../../components/NavBar'
-import FooterARCO from '../../../components/FooterARCO'
+import Navbar from '../../components/layout/NavBar'
+import FooterARCO from '../../components/layout/FooterARCO'
 
 const page = () => {
     return (
