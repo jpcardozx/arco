@@ -19,10 +19,8 @@ export function trackPortfolioEvent({
   if (typeof window === 'undefined') return;
   try {
     // Send to your analytics platform if configured
-    // @ts-expect-error - gtag is not defined in the Window interface
-    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-      // @ts-expect-error - gtag is added by the Google Analytics script
-      window.gtag('event', eventName, {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', eventName, {
         event_category: 'portfolio',
         event_label: section,
         value: value,

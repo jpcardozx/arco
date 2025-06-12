@@ -256,7 +256,7 @@ export type Breakpoint = keyof typeof tokens.breakpoints;
 export const getToken = {
   color: (path: string) => {
     const keys = path.split('.');
-    let value: unknown = tokens.colors;
+    let value: any = tokens.colors;
     for (const key of keys) {
       value = value[key];
     }

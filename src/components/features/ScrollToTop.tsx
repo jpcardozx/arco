@@ -41,11 +41,7 @@ export default function ScrollToTop({
     // Track the event if analytics are available
     if (typeof window !== 'undefined') {
       try {
-        trackPortfolioEvent({
-          eventName: 'scroll_to_top',
-          section: 'navigation',
-          action: 'click',
-        });
+        trackPortfolioEvent('scroll_to_top', 'navigation');
       } catch (e) {
         console.error('Could not track scroll event:', e);
       }

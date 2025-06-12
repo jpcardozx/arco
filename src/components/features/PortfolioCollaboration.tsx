@@ -16,30 +16,30 @@ interface CollaborationStep {
 const COLLABORATION_STEPS: CollaborationStep[] = [
   {
     id: 'initial-consultation',
-    title: 'Initial Consultation',
+    title: 'Consulta Inicial',
     description:
-      'A focused 30-minute discussion to understand your current perception challenges and business goals.',
+      'Uma discussão focada de 30 minutos para entender seus desafios atuais de percepção e objetivos de negócio.',
     icon: <MessageCircle className="h-6 w-6" />,
   },
   {
     id: 'perception-diagnosis',
-    title: 'Perception Diagnosis',
+    title: 'Diagnóstico de Percepção',
     description:
-      'In-depth analysis of your current perception-value gaps and their economic impact.',
+      'Análise aprofundada de suas lacunas atuais de percepção-valor e seu impacto econômico.',
     icon: <Shield className="h-6 w-6" />,
   },
   {
     id: 'strategic-proposal',
-    title: 'Strategic Proposal',
+    title: 'Proposta Estratégica',
     description:
-      'Custom perception engineering plan with specific deliverables, timeline, and expected outcomes.',
+      'Plano personalizado de engenharia de percepção com entregáveis específicos, cronograma e resultados esperados.',
     icon: <Users className="h-6 w-6" />,
   },
   {
     id: 'implementation',
-    title: 'Collaborative Implementation',
+    title: 'Implementação Colaborativa',
     description:
-      'Systematic execution of the perception alignment strategy with regular progress reviews.',
+      'Execução sistemática da estratégia de alinhamento de percepção com revisões regulares de progresso.',
     icon: <Calendar className="h-6 w-6" />,
   },
 ];
@@ -52,24 +52,24 @@ interface FAQItem {
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    question: 'How is this different from standard marketing or design services?',
+    question: 'Como isso é diferente de serviços padrão de marketing ou design?',
     answer:
-      'Traditional marketing focuses on creating attractive assets or general messaging. Perception engineering specifically identifies and corrects the misalignment between your actual value delivery and how that value is perceived in the market. This systematic approach creates measurable economic outcomes by ensuring your expertise and quality are properly recognized before pricing considerations.',
+      'O marketing tradicional foca em criar assets atraentes ou mensagens gerais. A engenharia de percepção identifica especificamente e corrige o desalinhamento entre sua entrega real de valor e como esse valor é percebido no mercado. Esta abordagem sistemática cria resultados econômicos mensuráveis garantindo que sua expertise e qualidade sejam adequadamente reconhecidas antes das considerações de preço.',
   },
   {
-    question: 'What types of businesses benefit most from perception engineering?',
+    question: 'Que tipos de negócios se beneficiam mais da engenharia de percepção?',
     answer:
-      "Companies with high-value, premium offerings that are struggling with price resistance, excessive sales cycles, or lower-than-expected conversion rates benefit most. This is particularly effective for businesses whose technical excellence or quality isn't properly reflected in their market positioning.",
+      "Empresas com ofertas premium de alto valor que estão enfrentando resistência de preço, ciclos de vendas excessivos, ou taxas de conversão abaixo do esperado se beneficiam mais. Isso é particularmente eficaz para negócios cuja excelência técnica ou qualidade não está adequadamente refletida em seu posicionamento de mercado.",
   },
   {
-    question: 'How long does it take to see results?',
+    question: 'Quanto tempo leva para ver resultados?',
     answer:
-      'Initial perception improvements can be measured within 2-4 weeks of implementation. More comprehensive economic impacts typically become clearly measurable within 60-90 days as new perception systems fully engage with your market.',
+      'Melhorias iniciais de percepção podem ser medidas dentro de 2-4 semanas de implementação. Impactos econômicos mais abrangentes tipicamente se tornam claramente mensuráveis dentro de 60-90 dias à medida que os novos sistemas de percepção se engajam completamente com seu mercado.',
   },
   {
-    question: 'Do you guarantee results?',
+    question: 'Vocês garantem resultados?',
     answer:
-      "While specific metrics vary by industry and business model, I offer a concrete performance guarantee on all premium engagements: if we don't achieve at least a 30% improvement in our primary target metric within the agreed timeframe, you receive additional optimization at no extra cost until we reach that threshold.",
+      "Embora métricas específicas variem por setor e modelo de negócio, ofereço uma garantia concreta de performance em todos os engajamentos premium: se não alcançarmos pelo menos 30% de melhoria em nossa métrica alvo principal dentro do prazo acordado, você recebe otimização adicional sem custo extra até atingirmos esse patamar.",
   },
 ];
 
@@ -100,10 +100,10 @@ export default function PortfolioCollaboration() {
           <span className="text-sm font-medium uppercase tracking-wider text-blue-600">
             Work Together
           </span>
-          <h2 className="mb-4 mt-2 font-serif text-4xl text-neutral-900">Collaborative Approach</h2>
+          <h2 className="mb-4 mt-2 font-serif text-4xl text-neutral-900">Abordagem Colaborativa</h2>
           <p className="mx-auto max-w-2xl text-lg text-neutral-600">
-            My approach emphasizes transparency, strategic alignment, and measurable outcomes.
-            Here's how we'll work together to transform your market perception.
+            Minha abordagem enfatiza transparência, alinhamento estratégico e resultados mensuráveis.
+            Aqui está como trabalharemos juntos para transformar sua percepção de mercado.
           </p>
         </motion.div>
 
@@ -143,19 +143,19 @@ export default function PortfolioCollaboration() {
           <div className="grid md:grid-cols-2">
             <div className="bg-neutral-900 p-10 text-white md:p-12">
               <h3 className="mb-6 text-2xl font-medium text-white">
-                Begin with a Diagnostic Conversation
+                Comece com uma Conversa Diagnóstica
               </h3>
               <p className="mb-8 text-neutral-300">
-                Start with a focused consultation to determine if there's a meaningful
-                perception-value gap impacting your business outcomes.
+                Inicie com uma consulta focada para determinar se há uma lacuna significativa de
+                percepção-valor impactando seus resultados de negócio.
               </p>
 
               <div className="mb-10 space-y-4">
                 {[
-                  'No-obligation initial assessment',
-                  'Specific perception gap identification',
-                  'Preliminary economic impact estimate',
-                  'Transparent collaboration approach',
+                  'Avaliação inicial sem compromisso',
+                  'Identificação específica de lacuna de percepção',
+                  'Estimativa preliminar de impacto econômico',
+                  'Abordagem de colaboração transparente',
                 ].map((item, index) => (
                   <div key={index} className="flex items-start">
                     <div className="mr-3 mt-1 flex-shrink-0 rounded-full bg-green-500 p-1">
@@ -177,7 +177,7 @@ export default function PortfolioCollaboration() {
 
             <div className="p-10 md:p-12">
               <h3 className="mb-6 text-2xl font-medium text-neutral-900">
-                Frequently Asked Questions
+                Perguntas Frequentes
               </h3>
 
               <div className="space-y-4">
@@ -189,9 +189,8 @@ export default function PortfolioCollaboration() {
                     >
                       <span className="font-medium text-neutral-900">{item.question}</span>
                       <ArrowRight
-                        className={`h-5 w-5 text-neutral-500 transition-transform ${
-                          expandedFAQ === index ? 'rotate-90' : ''
-                        }`}
+                        className={`h-5 w-5 text-neutral-500 transition-transform ${expandedFAQ === index ? 'rotate-90' : ''
+                          }`}
                       />
                     </button>
 
@@ -215,18 +214,18 @@ export default function PortfolioCollaboration() {
           className="mt-16 text-center"
         >
           <h3 className="mb-4 text-2xl font-medium text-neutral-900">
-            Ready to Transform Your Market Perception?
+            Pronto para Transformar sua Percepção de Mercado?
           </h3>
           <p className="mx-auto mb-8 max-w-xl text-neutral-600">
-            Each day your value isn't properly perceived represents quantifiable financial loss.
-            Let's correct that misalignment.
+            Cada dia que seu valor não é adequadamente percebido representa uma perda financeira quantificável.
+            Vamos corrigir esse desalinhamento.
           </p>
 
           <Link
             href="/diagnose"
             className="inline-flex items-center rounded-lg bg-blue-600 px-8 py-4 font-medium text-white transition-colors hover:bg-blue-700"
           >
-            Start with a Perception Snapshot™
+            Comece com um Perception Snapshot™
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </motion.div>

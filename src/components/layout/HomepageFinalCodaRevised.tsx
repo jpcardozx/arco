@@ -16,7 +16,7 @@ import {
   Button,
   Grid,
   Stat,
-} from '../../features/features/DesignSystem';
+} from '@/components/features/DesignSystem';
 
 export default function HomepageFinalCodaRevised() {
   return (

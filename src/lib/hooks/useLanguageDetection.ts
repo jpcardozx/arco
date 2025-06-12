@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { SupportedLanguage } from '@/lib/context/i18n-context';
+import { SupportedLanguage } from '@/lib/i18n';
 
 /**
  * Hook to detect the user's preferred language from browser settings

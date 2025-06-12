@@ -4,8 +4,10 @@ import React from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { TrendingUp, Shield, Zap, DollarSign, Target, Rocket } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/context'
 
 export function ValueProposition() {
+  const { t } = useTranslation()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
@@ -32,71 +34,71 @@ export function ValueProposition() {
   const valueProps = [
     {
       icon: DollarSign,
-      title: "Self-Funding Projects",
-      description: "Your optimization pays for itself. We identify $2,400-5,200/month in tool savings that fund superior custom solutions.",
-      stat: "$78K",
-      statLabel: "Average Annual ROI",
+      title: t('valueProposition.props.selfFunding.title'),
+      description: t('valueProposition.props.selfFunding.description'),
+      stat: t('valueProposition.props.selfFunding.stat'),
+      statLabel: t('valueProposition.props.selfFunding.statLabel'),
       color: "from-green-500 to-emerald-500"
     },
     {
       icon: Zap,
-      title: "Rapid Delivery",
-      description: "4-8 week implementation timeline. No endless consulting cycles. Clear milestones, guaranteed delivery dates.",
-      stat: "2.8",
-      statLabel: "Months Payback",
+      title: t('valueProposition.props.rapidDelivery.title'),
+      description: t('valueProposition.props.rapidDelivery.description'),
+      stat: t('valueProposition.props.rapidDelivery.stat'),
+      statLabel: t('valueProposition.props.rapidDelivery.statLabel'),
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Shield,
-      title: "Guaranteed Outcomes",
-      description: "ROI-backed guarantees. If we don't deliver measurable improvements, you don't pay. Performance or profit sharing.",
-      stat: "20:1",
-      statLabel: "LTV/CAC Ratio",
+      title: t('valueProposition.props.guaranteedOutcomes.title'),
+      description: t('valueProposition.props.guaranteedOutcomes.description'),
+      stat: t('valueProposition.props.guaranteedOutcomes.stat'),
+      statLabel: t('valueProposition.props.guaranteedOutcomes.statLabel'),
       color: "from-purple-500 to-violet-500"
     }
   ]
 
   const businessModel = [
     {
-      tier: "Assessment",
-      price: "$997",
-      description: "72-hour comprehensive analysis",
+      tier: t('valueProposition.businessModel.assessment.title'),
+      price: t('valueProposition.businessModel.assessment.price'),
+      description: t('valueProposition.businessModel.assessment.description'),
       features: [
-        "Complete technology stack audit",
-        "Performance quantification",
-        "Financial impact analysis",
-        "Self-funding project model",
-        "Implementation roadmap"
+        t('valueProposition.businessModel.assessment.features.audit'),
+        t('valueProposition.businessModel.assessment.features.quantification'),
+        t('valueProposition.businessModel.assessment.features.impact'),
+        t('valueProposition.businessModel.assessment.features.model'),
+        t('valueProposition.businessModel.assessment.features.roadmap')
       ],
-      cta: "Get Assessment",
+      cta: t('valueProposition.businessModel.assessment.cta'),
       popular: false
     },
     {
-      tier: "Implementation",
-      price: "$8K-25K",
-      description: "4-8 week technical transformation",
+      tier: t('valueProposition.businessModel.implementation.title'),
+      price: t('valueProposition.businessModel.implementation.price'),
+      description: t('valueProposition.businessModel.implementation.description'),
       features: [
-        "Custom platform development",
-        "Tool consolidation & migration",
-        "Performance optimization",
-        "Team training & handover",
-        "6-month support included"
+        t('valueProposition.businessModel.implementation.features.development'),
+        t('valueProposition.businessModel.implementation.features.consolidation'),
+        t('valueProposition.businessModel.implementation.features.optimization'),
+        t('valueProposition.businessModel.implementation.features.training'),
+        t('valueProposition.businessModel.implementation.features.support')
       ],
-      cta: "Start Project",
+      cta: t('valueProposition.businessModel.implementation.cta'),
       popular: true
     },
     {
-      tier: "Partnership",
-      price: "$1K-2K/mo",
-      description: "Ongoing optimization & advisory",
+      tier: t('valueProposition.businessModel.partnership.title'),
+      price: t('valueProposition.businessModel.partnership.price'),
+      description: t('valueProposition.businessModel.partnership.description'),
       features: [
-        "Continuous performance monitoring",
-        "Monthly optimization sprints",
-        "Strategic technology advisory",
-        "Priority support & maintenance",
-        "Quarterly strategy reviews"
+        t('valueProposition.businessModel.partnership.features.monitoring'),
+        t('valueProposition.businessModel.partnership.features.sprints'),
+        t('valueProposition.businessModel.partnership.features.advisory'),
+        t('valueProposition.businessModel.partnership.features.maintenance'),
+        t('valueProposition.businessModel.partnership.features.reviews')
       ],
-      cta: "Join Partnership",
+      cta: t('valueProposition.businessModel.partnership.cta'),
       popular: false
     }
   ]
@@ -112,18 +114,17 @@ export function ValueProposition() {
         >
           <motion.div variants={itemVariants} className="mb-6">
             <span className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
-              The ARCO Advantage
+              {t('valueProposition.title')}
             </span>
           </motion.div>
-          
+
           <motion.h2 variants={itemVariants} className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Convert Waste Into
             <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"> Competitive Advantage</span>
           </motion.h2>
-          
+
           <motion.p variants={itemVariants} className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            We're the only consultancy that structures projects to be self-funding. Your operational inefficiencies 
-            become the budget for superior technical solutions.
+            {t('valueProposition.subtitle')}
           </motion.p>
         </motion.div>
 
@@ -144,10 +145,10 @@ export function ValueProposition() {
               <div className={`w-16 h-16 bg-gradient-to-r ${prop.color} rounded-2xl flex items-center justify-center mb-6`}>
                 {React.createElement(prop.icon, { className: "w-8 h-8 text-white" })}
               </div>
-              
+
               <h3 className="text-2xl font-bold text-gray-900 mb-4">{prop.title}</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">{prop.description}</p>
-              
+
               <div className="pt-6 border-t border-gray-100">
                 <div className="text-3xl font-bold text-gray-900 mb-1">{prop.stat}</div>
                 <div className="text-sm text-gray-500">{prop.statLabel}</div>
@@ -181,11 +182,10 @@ export function ValueProposition() {
             <motion.div
               key={index}
               variants={itemVariants}
-              className={`relative bg-white rounded-2xl p-8 shadow-lg border-2 transition-all duration-300 ${
-                tier.popular 
-                  ? 'border-blue-500 scale-105' 
-                  : 'border-gray-200 hover:border-blue-300'
-              }`}
+              className={`relative bg-white rounded-2xl p-8 shadow-lg border-2 transition-all duration-300 ${tier.popular
+                ? 'border-blue-500 scale-105'
+                : 'border-gray-200 hover:border-blue-300'
+                }`}
             >
               {tier.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -194,13 +194,13 @@ export function ValueProposition() {
                   </span>
                 </div>
               )}
-              
+
               <div className="text-center mb-8">
                 <h4 className="text-2xl font-bold text-gray-900 mb-2">{tier.tier}</h4>
                 <div className="text-4xl font-bold text-blue-600 mb-2">{tier.price}</div>
                 <p className="text-gray-600">{tier.description}</p>
               </div>
-              
+
               <ul className="space-y-4 mb-8">
                 {tier.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start space-x-3">
@@ -211,15 +211,14 @@ export function ValueProposition() {
                   </li>
                 ))}
               </ul>
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
-                  tier.popular
-                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-blue-500/25'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${tier.popular
+                  ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-blue-500/25'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 {tier.cta}
               </motion.button>
@@ -237,7 +236,7 @@ export function ValueProposition() {
           <div className="max-w-3xl mx-auto">
             <h3 className="text-3xl lg:text-4xl font-bold mb-6">ROI Guarantee</h3>
             <p className="text-xl lg:text-2xl opacity-90 mb-8 leading-relaxed">
-              If our implementation doesn't deliver measurable ROI within 6 months, 
+              If our implementation doesn't deliver measurable ROI within 6 months,
               we'll refund the entire project cost. That's how confident we are in our methodology.
             </p>
             <motion.button

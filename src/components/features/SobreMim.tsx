@@ -162,7 +162,7 @@ const Typography = {
     className = '',
     ...props
   }: TypographyProps) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     const sizes: { [key: string]: string } = {
       xs: 'text-sm leading-relaxed',
       sm: 'text-base leading-relaxed',
@@ -187,7 +187,7 @@ const Typography = {
     className = '',
     ...props
   }: TypographyProps) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     const sizes: { [key: string]: string } = {
       xs: 'text-sm leading-normal',
       sm: 'text-base leading-normal',
@@ -210,7 +210,7 @@ const Typography = {
     className = '',
     ...props
   }: TypographyProps) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     const sizes: { [key: string]: string } = {
       xs: 'text-xs',
       sm: 'text-sm',
@@ -264,10 +264,9 @@ const ProgressIndicator = ({ steps, currentStep }: { steps: number; currentStep:
     {Array.from({ length: steps }).map((_, i) => (
       <div
         key={i}
-        className={`h-0.5 w-6 transition-colors duration-300 ${
-          i < currentStep ? 'bg-gray-400' : 'bg-gray-800'
-        }`}
-       />
+        className={`h-0.5 w-6 transition-colors duration-300 ${i < currentStep ? 'bg-gray-400' : 'bg-gray-800'
+          }`}
+      />
     ))}
   </div>
 );
@@ -307,9 +306,8 @@ const ProblemCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`rounded-lg border transition-all duration-300 ${
-        isActive ? 'border-gray-700 bg-gray-800/90 shadow-lg' : 'border-gray-800 bg-gray-900/60'
-      }`}
+      className={`rounded-lg border transition-all duration-300 ${isActive ? 'border-gray-700 bg-gray-800/90 shadow-lg' : 'border-gray-800 bg-gray-900/60'
+        }`}
     >
       <div className="p-6">
         <Typography.Editorial
@@ -376,11 +374,10 @@ const ServiceCard = ({ service, isActive, onClick, index }: ServiceCardProps) =>
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`${
-        isActive
-          ? 'border-gray-700 bg-gray-800/90 shadow-lg ring-1 ring-gray-700/50'
-          : 'border-gray-800 bg-gray-900/60 hover:bg-gray-900/90'
-      } cursor-pointer rounded-lg border transition-all duration-300`}
+      className={`${isActive
+        ? 'border-gray-700 bg-gray-800/90 shadow-lg ring-1 ring-gray-700/50'
+        : 'border-gray-800 bg-gray-900/60 hover:bg-gray-900/90'
+        } cursor-pointer rounded-lg border transition-all duration-300`}
       onClick={onClick}
     >
       <div className="p-6">
@@ -426,7 +423,7 @@ const ServiceCard = ({ service, isActive, onClick, index }: ServiceCardProps) =>
                 size="xs"
                 className="mb-1 uppercase tracking-wider text-gray-500"
               >
-                Strategic Purpose
+                Propósito Estratégico
               </Typography.Technical>
               <Typography.Technical element="div" size="sm" className="text-gray-300">
                 {service.strategic_purpose}
@@ -439,7 +436,7 @@ const ServiceCard = ({ service, isActive, onClick, index }: ServiceCardProps) =>
                 size="xs"
                 className="mb-1 uppercase tracking-wider text-gray-500"
               >
-                Economic Impact
+                Impacto Econômico
               </Typography.Technical>
               <Typography.Technical element="div" size="sm" className="text-gray-300">
                 {service.economic_impact}
@@ -455,7 +452,7 @@ const ServiceCard = ({ service, isActive, onClick, index }: ServiceCardProps) =>
                 href="/diagnose"
                 className="rounded-md bg-gray-700 px-4 py-2 text-white transition-colors hover:bg-gray-600"
               >
-                Request assessment
+                Solicitar avaliação
               </Link>
             </div>
           </div>
@@ -489,9 +486,8 @@ const EvidenceCard = ({ evidence, isActive }: EvidenceCardProps) => {
         scale: isActive ? 1 : 0.98,
       }}
       transition={{ duration: 0.5 }}
-      className={`${
-        isActive ? 'border-gray-700 bg-gray-800/90 shadow-lg' : 'border-gray-800 bg-gray-900/60'
-      } rounded-lg border transition-all duration-300`}
+      className={`${isActive ? 'border-gray-700 bg-gray-800/90 shadow-lg' : 'border-gray-800 bg-gray-900/60'
+        } rounded-lg border transition-all duration-300`}
     >
       <div className="p-6">
         <div className="mb-4 flex items-start justify-between">
@@ -500,9 +496,8 @@ const EvidenceCard = ({ evidence, isActive }: EvidenceCardProps) => {
           </Typography.Technical>
 
           <div
-            className={`rounded-full px-3 py-1 ${
-              isActive ? 'bg-gray-700 text-gray-300' : 'bg-gray-800 text-gray-500'
-            }`}
+            className={`rounded-full px-3 py-1 ${isActive ? 'bg-gray-700 text-gray-300' : 'bg-gray-800 text-gray-500'
+              }`}
           >
             <Typography.Technical element="span" size="xs">
               {serviceName}
@@ -524,7 +519,7 @@ const EvidenceCard = ({ evidence, isActive }: EvidenceCardProps) => {
             size="xs"
             className="mb-1 uppercase tracking-wider text-gray-500"
           >
-            Challenge
+            Desafio
           </Typography.Technical>
           <Typography.Technical
             element="p"
@@ -541,7 +536,7 @@ const EvidenceCard = ({ evidence, isActive }: EvidenceCardProps) => {
             size="xs"
             className="mb-1 uppercase tracking-wider text-gray-500"
           >
-            Transformation
+            Transformação
           </Typography.Technical>
           <Typography.Technical
             element="p"
@@ -559,7 +554,7 @@ const EvidenceCard = ({ evidence, isActive }: EvidenceCardProps) => {
               size="xs"
               className="mb-3 uppercase tracking-wider text-gray-500"
             >
-              Results
+              Resultados
             </Typography.Technical>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -645,13 +640,13 @@ export default function SobreMim() {
               size="3xl"
               className="mb-6 max-w-3xl leading-snug text-gray-100"
             >
-              Technical excellence remains financially undervalued when filtered through inadequate
-              symbolic representation.
+              A excelência técnica permanece financeiramente subvalorizada quando filtrada através de
+              representação simbólica inadequada.
             </Typography.Editorial>
 
             <Typography.Technical element="p" size="lg" className="mb-12 max-w-2xl text-gray-400">
-              This creates quantifiable gaps between actual value delivery and market perception,
-              resulting in systematic underpricing and reduced conversion rates.
+              Isso cria lacunas quantificáveis entre a entrega real de valor e a percepção do mercado,
+              resultando em preços sistematicamente baixos e taxas de conversão reduzidas.
             </Typography.Technical>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -671,9 +666,9 @@ export default function SobreMim() {
 
           {/* Services Section */}
           <section className="mb-24">
-            <SectionLabel>Structured Approach</SectionLabel>
+            <SectionLabel>Abordagem Estruturada</SectionLabel>
 
-            <SectionTitle>Strategic Services for Perception Alignment</SectionTitle>
+            <SectionTitle>Serviços Estratégicos para Alinhamento de Percepção</SectionTitle>
 
             <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
               {ARCO_STRATEGIC_DATA.SERVICES.map((service, index) => (
@@ -689,7 +684,7 @@ export default function SobreMim() {
 
             <div className="rounded-lg border border-gray-800 bg-gray-900/60 p-6">
               <Typography.Editorial element="h3" size="lg" className="mb-4 text-gray-100">
-                The Perception Correction Framework
+                O Framework de Correção de Percepção
               </Typography.Editorial>
 
               <Typography.Technical element="p" size="md" className="mb-6 text-gray-400">
@@ -718,9 +713,9 @@ export default function SobreMim() {
 
           {/* Evidence Section */}
           <section className="mb-24">
-            <SectionLabel>Transformation Evidence</SectionLabel>
+            <SectionLabel>Evidência de Transformação</SectionLabel>
 
-            <SectionTitle>Documented Value-Perception Alignment</SectionTitle>
+            <SectionTitle>Alinhamento Documentado de Valor-Percepção</SectionTitle>
 
             <ProgressIndicator
               steps={ARCO_STRATEGIC_DATA.TRANSFORMATION_EVIDENCE.length}
@@ -742,7 +737,7 @@ export default function SobreMim() {
           <section>
             <div className="rounded-lg border border-gray-700 bg-gray-800/70 p-8 text-center">
               <Typography.Editorial element="h2" size="xl" className="mb-4 text-white">
-                Begin with a Precise Diagnosis
+                Comece com um Diagnóstico Preciso
               </Typography.Editorial>
 
               <Typography.Technical
@@ -750,9 +745,9 @@ export default function SobreMim() {
                 size="md"
                 className="mx-auto mb-8 max-w-2xl text-gray-300"
               >
-                Each day of perception-value misalignment represents quantifiable financial loss.
-                The Perception Snapshot™ provides immediate visibility into specific gaps between
-                your delivered value and market perception.
+                Cada dia de desalinhamento percepção-valor representa uma perda financeira quantificável.
+                O Perception Snapshot™ oferece visibilidade imediata das lacunas específicas entre
+                seu valor entregue e a percepção do mercado.
               </Typography.Technical>
 
               <div className="inline-flex flex-col items-center">
@@ -760,10 +755,10 @@ export default function SobreMim() {
                   href="/diagnose"
                   className="mb-3 rounded-md bg-gray-700 px-6 py-3 text-white transition-colors hover:bg-gray-600"
                 >
-                  Request Perception Snapshot™ ($147)
+                  Solicitar Perception Snapshot™ (R$147)
                 </Link>
                 <Typography.Technical element="span" size="xs" className="text-gray-500">
-                  3-5 day diagnostic with economic impact assessment
+                  Diagnóstico de 3-5 dias com avaliação de impacto econômico
                 </Typography.Technical>
               </div>
             </div>

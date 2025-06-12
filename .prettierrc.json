@@ -10,7 +10,5 @@
   "endOfLine": "lf",
   "bracketSameLine": false,
   "quoteProps": "as-needed",
-  "jsxBracketSameLine": false,
-  "embeddedLanguageFormatting": "auto",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "embeddedLanguageFormatting": "auto"
 }

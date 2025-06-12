@@ -4,7 +4,7 @@ import { motion, useInView, useAnimation } from 'framer-motion';
 import React, { useRef, useEffect } from 'react';
 
 import { Section, SectionProps } from './section';
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 
 interface AnimatedSectionProps extends SectionProps {

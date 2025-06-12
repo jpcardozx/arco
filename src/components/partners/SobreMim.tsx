@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useSpring, useInView } from "framer-motion";
 import clsx from "clsx";
+import { Rocket, Stars, GaugeCircle, BadgeCheck, Github, Linkedin, Twitter } from "lucide-react";
 /* -------------------------------------------------------------------------- */
 /* 1 · TOKENS DE DESIGN                                                       */
 /* -------------------------------------------------------------------------- */
@@ -25,7 +26,7 @@ const TOKENS = {
 const COPY = {
     hero: {
         name: "Pedro Cardozo",
-        headline: "Conversion Architecture & Performance",
+        headline: "Arquitetura de Conversão & Performance",
         sub: "I scale your pipeline in 90 days — without inflating CAC. We deliver strategic digital presence development for elite businesses.",
         desc: "We prove the value of our work through metrics and KPIs. I scale funnels, increase ticket value, and deliver measurable performance.",
     },
@@ -38,7 +39,7 @@ const COPY = {
     expertise: [
         {
             id: "conv",
-            title: "Conversion Architecture",
+            title: "Arquitetura de Conversão",
             desc: "Audited funnels and 3× LTV — visitors become $100k contracts.",
             color: "emerald",
             Icon: Rocket,
@@ -68,7 +69,7 @@ const COPY = {
     ],
     timeline: [
         { y: "2023", t: "Finmark Case Study", d: "+$2.8M in 60d (ROI 11:1).", h: "ABComm Award Winner", color: "purple" },
-        { y: "2022", t: "Conversion Architecture™ Framework", d: "Applied to 14 premium projects — 100% success rate.", h: "v2.0 Release", color: "emerald" },
+        { y: "2022", t: "Framework Arquitetura de Conversão™", d: "Aplicado a 14 projetos premium — 100% de taxa de sucesso.", h: "Lançamento v2.0", color: "emerald" },
         { y: "2020", t: "Premium Pivot", d: "Focus exclusively on high-ticket contracts.", h: "95% Retention", color: "amber" },
     ],
 };

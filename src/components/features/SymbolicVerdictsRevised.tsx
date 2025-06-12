@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import React from "react";
-import { Card } from './features/DesignSystem';
+import { Card } from '../features/DesignSystem';
 
 const verdicts = [
   'Core Web Vitals: Critical threshold exceeded.',

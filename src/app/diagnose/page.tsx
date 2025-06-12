@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react'
-import Navbar from '../../components/layout/NavBar'
-import FooterARCO from '../../components/layout/FooterARCO'
+import { PremiumNavigation } from '../../components/layout/PremiumNavigation'
+import { PremiumFooter } from '../../components/layout/PremiumFooter'
 import HeroIndex from '../../components/diagnose/HeroIndex'
 import IndexDefinition from '../../components/diagnose/IndexDefinition'
 import MisreadingSymptoms from '../../components/diagnose/MisreadingSymptoms'
@@ -14,7 +14,7 @@ import Submission from '../../components/diagnose/Submission'
 const page = () => {
     return (
         <>
-            <Navbar />
+            <PremiumNavigation />
             <HeroIndex />
             <IndexDefinition />
             <MisreadingSymptoms />
@@ -22,7 +22,7 @@ const page = () => {
             <EligibilityFilter />
             <InactionRisk />
             <Submission />
-            <FooterARCO />
+            <PremiumFooter />
         </>
     )
 }

@@ -3,11 +3,11 @@
 import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 interface SplitTextProps {
   text: string;
-  component?: keyof JSX.IntrinsicElements;
+  component?: keyof React.JSX.IntrinsicElements;
   className?: string;
   charClassName?: string;
   charDelay?: number;
@@ -74,7 +74,7 @@ export function SplitText({
   };
 
   // Create the component props
-  const Component = component as unknown;
+  const Component = component as React.ElementType;
 
   return (
     <Component className={className}>

@@ -9,7 +9,7 @@ import React from "react";
 
 // TODO: Implementar LanguageSwitcher e i18n-context
 // import { LanguageSwitcher } from './features/language-switcher';
-// import { useTranslation } from '../../../lib/context/i18n-context';
+// import { useTranslation } from '@/lib/context/i18n-context';
 
 // Temporary mock para não quebrar o build
 const useTranslation = () => ({

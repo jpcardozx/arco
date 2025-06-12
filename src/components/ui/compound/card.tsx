@@ -8,7 +8,7 @@ interface CardContextValue {
 
 const CardContext = React.createContext<CardContextValue | null>(null)
 
-const cardVariants = cva(
+export const cardVariants = cva(
   [
     'rounded-xl bg-white text-neutral-950',
     'transition-all duration-200',
@@ -43,7 +43,7 @@ const cardVariants = cva(
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+  VariantProps<typeof cardVariants> { }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', children, ...props }, ref) => {
@@ -129,3 +129,9 @@ export {
   CardDescription,
   CardContent,
 }
+
+// Export prop types
+export type CardHeaderProps = React.ComponentProps<typeof CardHeader>
+export type CardTitleProps = React.ComponentProps<typeof CardTitle>
+export type CardContentProps = React.ComponentProps<typeof CardContent>
+export type CardFooterProps = React.ComponentProps<typeof CardFooter>

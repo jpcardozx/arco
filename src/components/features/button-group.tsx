@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 const buttonGroupVariants = cva('inline-flex items-center justify-start', {
   variants: {
@@ -66,16 +66,16 @@ export function ButtonGroup({
       // Add consistent size and border style to all children
       // Create strongly typed props
       const buttonClassName = cn(
-        child.props.className || '',
+        (child.props as any).className || '',
         attached && 'focus:z-10 hover:z-10',
         orientation === 'vertical' && attached && 'border-b-0 last:border-b',
         orientation === 'horizontal' && attached && 'border-r-0 last:border-r'
       );
 
       // Type assertion for cloneElement
-      return React.cloneElement(child as React.ReactElement<any>, {
+      return React.cloneElement(child as React.ReactElement<{ className?: string }>, {
         className: buttonClassName,
-      } as unknown);
+      });
     }
     return child;
   });

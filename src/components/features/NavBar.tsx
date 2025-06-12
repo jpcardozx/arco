@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
-import CTAButton from '../../../components/sections/CTAButton';
+import CTAButton from '@/components/components/sections/CTAButton';
 
 interface NavItem {
   label: string;

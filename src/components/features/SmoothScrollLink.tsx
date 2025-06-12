@@ -33,11 +33,7 @@ export default function SmoothScrollLink({
     // Track the click event
     if (typeof window !== 'undefined') {
       try {
-        trackPortfolioEvent({
-          eventName: 'navigation_click',
-          section: targetId,
-          action: 'scroll',
-        });
+        trackPortfolioEvent('navigation_click', targetId);
       } catch (e) {
         console.error('Could not track navigation event:', e);
       }

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { X, Info, AlertCircle, CheckCircle, AlertTriangle, Bell } from 'lucide-react';
 import React, { useState, useEffect, createContext, useContext } from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 // Toast types and interfaces
 export type ToastType = 'info' | 'success' | 'warning' | 'error' | 'custom';

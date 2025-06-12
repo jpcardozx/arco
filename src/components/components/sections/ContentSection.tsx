@@ -23,7 +23,7 @@ const ARCO_PRODUCTS = [
     impact: '3 actionable insights within 24 hours',
     timeframe: '24 hours',
     for: ['SaaS with Trial→Paid < 10%', 'DTC with checkout abandonment > 75%'],
-    description: 'Diagnostic that identifies perception gaps with one applied correction example.',
+    description: 'Diagnóstico que identifica lacunas de percepção com um exemplo de correção aplicada.',
     isEntry: true,
     color: 'neutral',
     iconPath: '/icon-snapshot.svg',
@@ -135,7 +135,7 @@ const Typography = {
     className?: string;
     [key: string]: unknown;
   }) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     return (
       <Element className={`font-serif ${className}`} {...props}>
         {children}
@@ -154,7 +154,7 @@ const Typography = {
     className?: string;
     [key: string]: unknown;
   }) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     return (
       <Element className={`font-sans ${className}`} {...props}>
         {children}
@@ -173,7 +173,7 @@ const Typography = {
     className?: string;
     [key: string]: unknown;
   }) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     return (
       <Element className={`font-mono tabular-nums tracking-tight ${className}`} {...props}>
         {children}
@@ -450,7 +450,7 @@ const ProductCard = ({
                     : 'border border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700'
                 )}
               >
-                {product.isEntry ? 'Request Assessment' : 'Learn More'}
+                {product.isEntry ? 'Solicitar Avaliação' : 'Saiba Mais'}
               </Link>
             </div>
           </div>
@@ -540,7 +540,7 @@ const TransformationCaseCard = ({
                 element="div"
                 className="mb-1.5 text-xs uppercase tracking-wider text-gray-500"
               >
-                Perception Gap
+                Lacuna de Percepção
               </Typography.Technical>
               <Typography.Technical element="p" className="text-sm text-gray-700">
                 {result.problemStatement}
@@ -657,16 +657,16 @@ export function ContentSection() {
           </SectionTitle>
 
           <Typography.Technical element="p" className="mb-7 max-w-2xl text-lg text-gray-700">
-            This misalignment creates quantifiable gaps between actual value delivery and market
-            perception, resulting in systematic underpricing, inappropriate market categorization,
-            and reduced conversion rates.
+            Este desalinhamento cria lacunas quantificáveis entre a entrega real de valor e a percepção
+            do mercado, resultando em preços sistematicamente baixos, categorização inadequada de mercado,
+            e taxas de conversão reduzidas.
           </Typography.Technical>
 
           <Typography.Technical element="p" className="mb-8 text-base text-gray-600">
-            ARCO has identified specific perception-value gap patterns in two primary verticals:{' '}
-            <strong>SaaS with low trial conversion</strong> and{' '}
-            <strong>e-commerce with high checkout abandonment</strong> — both problems that can be
-            corrected with precise symbolic alignment.
+            A ARCO identificou padrões específicos de lacuna percepção-valor em dois verticais primários:{' '}
+            <strong>SaaS com baixa conversão de trial</strong> e{' '}
+            <strong>e-commerce com alto abandono de checkout</strong> — ambos problemas que podem ser
+            corrigidos com alinhamento simbólico preciso.
           </Typography.Technical>
         </motion.div>
 
@@ -773,13 +773,13 @@ export function ContentSection() {
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
             <div>
               <Typography.Editorial element="h3" className="mb-3 text-2xl text-gray-900">
-                Begin with a Precise Diagnosis
+                Comece com um Diagnóstico Preciso
               </Typography.Editorial>
 
               <Typography.Technical element="p" className="max-w-xl text-gray-700">
-                Each day of misalignment represents quantifiable financial loss. The ArcSight
-                Snapshot™ provides immediate visibility into specific perception-value gaps and
-                actionable first steps.
+                Cada dia de desalinhamento representa uma perda financeira quantificável. O ArcSight
+                Snapshot™ oferece visibilidade imediata de lacunas específicas de percepção-valor e
+                primeiros passos acionáveis.
               </Typography.Technical>
             </div>
 

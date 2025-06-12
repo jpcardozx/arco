@@ -7,7 +7,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
-import CTAButton from '../CTAButton';
+import CTAButton from '../components/sections/CTAButton';
+import { useTranslation } from '@/lib/i18n/context';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 interface NavItem {
   label: string;

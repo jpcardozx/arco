@@ -5,7 +5,7 @@ import { ArrowRight, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 
 import React from "react";
-import { useTranslation } from '../../../lib/context/i18n-context';
+import { useTranslation } from '@/lib/i18n/context';
 
 export default function EnhancedCTA() {
   const { t } = useTranslation();
@@ -139,7 +139,7 @@ export default function EnhancedCTA() {
                       <div
                         className="h-full bg-gradient-to-r from-green-400 to-emerald-500"
                         style={{ width: '80%' }}
-                       />
+                      />
                     </div>
                   </div>
                 </div>

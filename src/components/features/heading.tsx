@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { motion } from 'framer-motion';
 import * as React from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 
 const headingVariants = cva('font-bold text-neutral-900 tracking-tight', {

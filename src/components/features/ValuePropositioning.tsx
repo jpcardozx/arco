@@ -15,37 +15,37 @@ export default function ValuePropositioning() {
   // Value pillar data
   const valuePillars = [
     {
-      title: 'Perception Engineering',
+      title: 'Engenharia de Percepção',
       description:
-        'A systematic approach to identifying and correcting the symbolic misalignments that cause your market to undervalue your offering.',
+        'Uma abordagem sistemática para identificar e corrigir os desalinhamentos simbólicos que fazem seu mercado subvalorizar sua oferta.',
       benefits: [
-        'Eliminate perception gaps that cost revenue',
-        'Position at the top tier of your market',
-        'Command premium pricing with confidence',
+        'Elimine lacunas de percepção que custam receita',
+        'Posicione-se no topo do seu mercado',
+        'Comande preços premium com confiança',
       ],
       icon: '/assets/perception-icon.svg',
       color: 'blue',
     },
     {
-      title: 'Financial Decision Architecture',
+      title: 'Arquitetura de Decisão Financeira',
       description:
-        'Strategic redesign of how value is communicated throughout the customer journey to accelerate decisions and increase conversions.',
+        'Redesign estratégico de como o valor é comunicado ao longo da jornada do cliente para acelerar decisões e aumentar conversões.',
       benefits: [
-        'Reduce decision cycles by 40-70%',
-        'Increase conversion rates by 50-200%',
-        'Minimize price objections and negotiations',
+        'Reduza ciclos de decisão em 40-70%',
+        'Aumente taxas de conversão em 50-200%',
+        'Minimize objeções de preço e negociações',
       ],
       icon: '/assets/financial-icon.svg',
       color: 'indigo',
     },
     {
-      title: 'Market Position Reinforcement',
+      title: 'Reforço de Posição de Mercado',
       description:
-        'Comprehensive alignment of all touchpoints to maintain a consistent perception of premium value that competitors cannot easily challenge.',
+        'Alinhamento abrangente de todos os pontos de contato para manter uma percepção consistente de valor premium que concorrentes não podem facilmente desafiar.',
       benefits: [
-        'Create sustainable competitive advantage',
-        'Reduce sensitivity to market fluctuations',
-        'Build brand equity that transcends features',
+        'Crie vantagem competitiva sustentável',
+        'Reduza sensibilidade a flutuações de mercado',
+        'Construa equity de marca que transcende recursos',
       ],
       icon: '/assets/market-icon.svg',
       color: 'violet',
@@ -63,14 +63,14 @@ export default function ValuePropositioning() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-600">
-              THE STRATEGIC ADVANTAGE
+              A VANTAGEM ESTRATÉGICA
             </h2>
             <h3 className="portfolio-text-balance mb-6 font-serif text-3xl font-medium tracking-tight md:text-4xl">
-              Precisely engineered market perception that delivers predictable revenue outcomes
+              Percepção de mercado precisamente engenheirada que entrega resultados de receita previsíveis
             </h3>
             <p className="portfolio-prose text-lg text-neutral-600">
-              We've transformed how companies are perceived in their markets, creating significant
-              competitive advantages that translate directly to improved financial performance.
+              Transformamos como empresas são percebidas em seus mercados, criando vantagens
+              competitivas significativas que se traduzem diretamente em performance financeira melhorada.
             </p>
           </motion.div>
         </div>
@@ -109,7 +109,7 @@ export default function ValuePropositioning() {
                   href={`/methodology#${pillar.title.toLowerCase().replace(/\s+/g, '-')}`}
                   className="inline-flex items-center text-sm font-medium text-blue-600 transition-colors group-hover:text-blue-800"
                 >
-                  Learn more
+                  Saiba mais
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
@@ -130,16 +130,16 @@ export default function ValuePropositioning() {
                 <AlertCircle className="h-6 w-6 text-blue-500" />
               </div>
               <div>
-                <h4 className="mb-2 text-lg font-medium">The cost of perception misalignment</h4>
+                <h4 className="mb-2 text-lg font-medium">O custo do desalinhamento de percepção</h4>
                 <p className="text-neutral-700">
-                  Companies lose an average of 32% of potential revenue due to how their value is
-                  perceived.
+                  Empresas perdem em média 32% da receita potencial devido a como seu valor é
+                  percebido.
                 </p>
               </div>
             </div>
             <div>
               <Link href="/diagnose" className="portfolio-button portfolio-button-primary">
-                Calculate Your Revenue Gap
+                Calcule sua Lacuna de Receita
               </Link>
             </div>
           </div>

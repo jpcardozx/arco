@@ -1,4 +1,4 @@
 'use client';
 
-// Re-export MarketHero from components/enhanced
-export { default } from '../enhanced/MarketHero';
+// Re-export MarketHero from components/sections
+export { default } from '@/components/components/sections/MarketHero';

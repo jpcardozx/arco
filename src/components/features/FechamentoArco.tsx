@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
 import React from "react";
+import { ExternalLink, CheckCircle, LockKeyhole, ArrowRight, Quote, ShieldCheck } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
 /*                           TYPOGRAPHY SYSTEM                                */
@@ -49,11 +50,11 @@ const STRATEGIC_DIFFERENTIATORS = [
   },
   {
     icon: <LockKeyhole className="h-5 w-5 text-gray-300" />,
-    text: 'Complete confidentiality: operational NDA and rigorous professional ethics.',
+    text: 'Confidencialidade completa: NDA operacional e ética profissional rigorosa.',
   },
   {
     icon: <ArrowRight className="h-5 w-5 text-gray-300" />,
-    text: 'Actionable recommendations — practical insights prioritized by economic impact, without sales pressure.',
+    text: 'Recomendações acionáveis — insights práticos priorizados por impacto econômico, sem pressão de vendas.',
   },
 ];
 
@@ -163,14 +164,14 @@ export default function StrategicClosing() {
         className="mx-auto mb-12 max-w-3xl text-center"
       >
         <Typography.Editorial className="mb-5 block text-2xl leading-tight text-gray-100 md:text-3xl">
-          Technical excellence requires precise symbolic representation to achieve true market
-          value.
+          A excelência técnica requer representação simbólica precisa para alcançar verdadeiro valor
+          de mercado.
         </Typography.Editorial>
 
         <Typography.Technical className="block text-base text-gray-400 md:text-lg">
-          Identify the specific gaps between your delivered value and market perception. Our
-          diagnostic provides a structured assessment with actionable corrections, prioritized by
-          economic impact and implementation feasibility.
+          Identifique as lacunas específicas entre seu valor entregue e a percepção do mercado. Nosso
+          diagnóstico fornece uma avaliação estruturada com correções acionáveis, priorizadas por
+          impacto econômico e viabilidade de implementação.
         </Typography.Technical>
       </motion.div>
 

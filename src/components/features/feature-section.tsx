@@ -7,8 +7,8 @@ import React from 'react';
 
 import { Badge } from './badge';
 import { Section } from './section';
-import { Heading } from '../ui/heading';
-import { cn } from '../../../lib/utils/ui-utils';
+import { Heading } from './heading';
+import { cn } from '@/lib/utils/ui-utils';
 import { withTranslation } from '@/lib/utils/with-translation';
 
 
@@ -217,7 +217,7 @@ function FeatureSectionComponent({
                     {feature.badge}
                   </Badge>
                 )}
-                <Heading level={3} className="text-xl md:text-2xl">
+                <Heading as="h3" size="h3" className="text-xl md:text-2xl">
                   {feature.title}
                 </Heading>
                 <p
@@ -248,7 +248,7 @@ function FeatureSectionComponent({
           <div className="flex items-center gap-4">
             {renderIcon()}
 
-            <Heading level={3} className="text-lg md:text-xl">
+            <Heading as="h3" size="h3" className="text-lg md:text-xl">
               {feature.title}
             </Heading>
           </div>
@@ -288,7 +288,7 @@ function FeatureSectionComponent({
             )}
 
             {displayTitle && (
-              <Heading level={2} className="mb-4 text-3xl md:text-4xl">
+              <Heading as="h2" size="h2" className="mb-4 text-3xl md:text-4xl">
                 {displayTitle}
               </Heading>
             )}

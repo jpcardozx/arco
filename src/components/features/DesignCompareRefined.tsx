@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import React from "react";
-import { trackEvent } from '../../../lib/utils/analytics';
+import { trackEvent } from '@/lib/utils/analytics';
 
 export default function DesignCompareRefined() {
   const [mode, setMode] = useState('refined');

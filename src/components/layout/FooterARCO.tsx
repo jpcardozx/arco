@@ -114,7 +114,7 @@ export default function FooterARCO() {
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-neutral-300">
-              Get Started
+              Começar
             </h4>
             <a
               href="/diagnose"

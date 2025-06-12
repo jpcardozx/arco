@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useTranslation } from '@/lib/context/i18n-context';
+import { useTranslation } from '@/lib/i18n/context';
 
 /**
  * Type for props that need translation

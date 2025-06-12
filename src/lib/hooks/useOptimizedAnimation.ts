@@ -15,7 +15,6 @@ export const useOptimizedAnimation = ({
   intensityLevel,
 }: AnimationConfig = {}) => {
   const ref = useRef(null);
-  // @ts-expect-error - Framer Motion types don't expose threshold but it's a valid property
   const isInView = useInView(ref, {
     threshold,
     margin: '-50px',
@@ -46,7 +45,7 @@ export const useOptimizedAnimation = ({
       );
       const isLowPower =
         (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) ||
-        ((navigator as unknown).deviceMemory && (navigator as unknown).deviceMemory < 2);
+        ((navigator as any).deviceMemory && (navigator as any).deviceMemory < 2);
 
       if (isLowPower) {
         setAnimationIntensity('low');

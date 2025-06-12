@@ -47,53 +47,53 @@ export default function PerceptionGapAnalyzer() {
   // Case studies data
   const caseStudies = [
     {
-      industry: 'SaaS Platform',
+      industry: 'Plataforma SaaS',
       company: 'TechStream Solutions',
-      problem: 'Premium pricing strategy being undercut by competitors with inferior solutions',
+      problem: 'Estratégia de precificação premium sendo prejudicada por concorrentes com soluções inferiores',
       perceptionIssue:
-        'Technical language overshadowed value narrative; visual presence lacked premium signals',
-      impact: '43% increase in enterprise deal size after perception correction',
-      timeframe: '21 days',
+        'Linguagem técnica ofuscava a narrativa de valor; presença visual carecia de sinais premium',
+      impact: '43% de aumento no valor médio de negócios enterprise após correção de percepção',
+      timeframe: '21 dias',
     },
     {
-      industry: 'Consulting Firm',
+      industry: 'Consultoria',
       company: 'Meridian Partners',
-      problem: 'High proposal rejection rate despite strong methodology and team expertise',
+      problem: 'Alta taxa de rejeição de propostas apesar de metodologia sólida e equipe especializada',
       perceptionIssue:
-        "Digital presence communicated 'boutique' when they needed to convey 'established authority'",
-      impact: '68% improvement in proposal acceptance rate after perception alignment',
-      timeframe: '14 days',
+        "Presença digital comunicava 'boutique' quando precisavam transmitir 'autoridade estabelecida'",
+      impact: '68% de melhoria na taxa de aceitação de propostas após alinhamento de percepção',
+      timeframe: '14 dias',
     },
     {
-      industry: 'Digital Agency',
+      industry: 'Agência Digital',
       company: 'Prism Creative',
-      problem: 'Constant price pressure despite delivering superior results to clients',
+      problem: 'Pressão constante de preços apesar de entregar resultados superiores aos clientes',
       perceptionIssue:
-        'Case studies emphasized execution over strategic value; missing premium positioning signals',
-      impact: '52% reduction in price objections and 31% increase in average project value',
-      timeframe: '30 days',
+        'Casos de estudo enfatizavam execução ao invés de valor estratégico; faltavam sinais de posicionamento premium',
+      impact: '52% de redução em objeções de preço e 31% de aumento no valor médio de projetos',
+      timeframe: '30 dias',
     },
-  ]; // Common perception gaps by industry
+  ];  // Common perception gaps by industry
   const perceptionGaps: Record<string, string[]> = {
     saas: [
-      'Technical expertise appears generic despite deep specialization',
-      'Product value is diluted by feature-focused language',
-      'Premium pricing seems unjustified due to visual perception issues',
+      'Expertise técnica parece genérica apesar da especialização profunda',
+      'Valor do produto é diluído por linguagem focada em funcionalidades',
+      'Precificação premium parece injustificada devido a questões de percepção visual',
     ],
     consulting: [
-      'Expertise is perceived as narrower than actual capabilities',
-      "Thought leadership doesn't translate to perceived implementation ability",
-      'Fee structure appears excessive without proper value framing',
+      'Expertise é percebida como mais restrita do que as capacidades reais',
+      'Liderança de pensamento não se traduz em capacidade de implementação percebida',
+      'Estrutura de honorários parece excessiva sem o enquadramento adequado de valor',
     ],
     agency: [
-      'Creative quality is undercommunicated through poor portfolio presentation',
-      'Strategic capability is hidden behind tactical execution emphasis',
-      'Expertise appears commoditized despite unique methodologies',
+      'Qualidade criativa é subcomunicada através de apresentação de portfólio deficiente',
+      'Capacidade estratégica é escondida por ênfase em execução tática',
+      'Expertise parece comoditizada apesar de metodologias únicas',
     ],
     ecommerce: [
-      "Product quality perception doesn't match actual product excellence",
-      'Premium positioning is undermined by visual trust factors',
-      'Brand story fails to create emotional value alignment',
+      'Percepção de qualidade do produto não corresponde à excelência real do produto',
+      'Posicionamento premium é prejudicado por fatores visuais de confiança',
+      'História da marca falha em criar alinhamento emocional de valor',
     ],
   };
 
@@ -110,14 +110,14 @@ export default function PerceptionGapAnalyzer() {
         {/* Section Header */}
         <div className="mb-16 text-center">
           <h2 className="mx-auto mb-6 max-w-3xl font-serif text-3xl leading-tight text-neutral-900 md:text-4xl lg:text-5xl">
-            Symbolic misalignment creates a quantifiable revenue gap between your{' '}
-            <span className="text-blue-600">actual value</span> and{' '}
-            <span className="text-blue-600">conversion rates</span>
+            O desalinhamento simbólico cria uma lacuna quantificável de receita entre seu{' '}
+            <span className="text-blue-600">valor real</span> e suas{' '}
+            <span className="text-blue-600">taxas de conversão</span>
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-neutral-700">
-            Our analysis of 200+ businesses reveals that 20-40% of potential revenue is lost due to
-            specific symbolic friction points that create cognitive dissonance during key decision
-            moments.
+            Nossa análise de mais de 200 empresas revela que 20-40% da receita potencial é perdida
+            devido a pontos específicos de atrito simbólico que criam dissonância cognitiva durante
+            momentos-chave de decisão.
           </p>
         </div>
 
@@ -127,26 +127,26 @@ export default function PerceptionGapAnalyzer() {
             <div className="grid gap-10 md:grid-cols-2">
               <div>
                 <h3 className="mb-6 text-2xl font-medium text-neutral-900">
-                  Symbolic Revenue Gap Calculator™
+                  Calculadora de Lacuna de Receita Simbólica™
                 </h3>
 
                 <div className="space-y-6">
                   <div>
-                    <label className="mb-2 block text-neutral-700">Your industry</label>
+                    <label className="mb-2 block text-neutral-700">Sua indústria</label>
                     <select
                       value={industry}
                       onChange={e => setIndustry(e.target.value)}
                       className="w-full rounded-lg border border-neutral-300 p-3 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                     >
-                      <option value="saas">SaaS / Technology</option>
-                      <option value="consulting">Consulting / Professional Services</option>
-                      <option value="agency">Creative / Agency</option>
-                      <option value="ecommerce">E-commerce / Retail</option>
+                      <option value="saas">SaaS / Tecnologia</option>
+                      <option value="consulting">Consultoria / Serviços Profissionais</option>
+                      <option value="agency">Criativo / Agência</option>
+                      <option value="ecommerce">E-commerce / Varejo</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-neutral-700">Monthly revenue ($)</label>
+                    <label className="mb-2 block text-neutral-700">Receita mensal ($)</label>
                     <input
                       type="range"
                       min="50000"
@@ -166,14 +166,14 @@ export default function PerceptionGapAnalyzer() {
                   <div className="pt-4">
                     <div className="space-y-4 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
                       <div>
-                        <p className="mb-1 text-neutral-500">Your perception gap</p>
+                        <p className="mb-1 text-neutral-500">Sua lacuna de percepção</p>
                         <div className="relative mb-1 h-5 overflow-hidden rounded-full bg-neutral-100">
                           <div
                             className={`absolute left-0 top-0 h-full ${perceptionGap > 30
-                                ? 'bg-red-500'
-                                : perceptionGap > 20
-                                  ? 'bg-amber-500'
-                                  : 'bg-green-500'
+                              ? 'bg-red-500'
+                              : perceptionGap > 20
+                                ? 'bg-amber-500'
+                                : 'bg-green-500'
                               }`}
                             style={{ width: `${perceptionGap}%` }}
                           />
@@ -182,10 +182,10 @@ export default function PerceptionGapAnalyzer() {
                           <span>0%</span>
                           <span
                             className={`font-medium ${perceptionGap > 30
-                                ? 'text-red-600'
-                                : perceptionGap > 20
-                                  ? 'text-amber-600'
-                                  : 'text-green-600'
+                              ? 'text-red-600'
+                              : perceptionGap > 20
+                                ? 'text-amber-600'
+                                : 'text-green-600'
                               }`}
                           >
                             {perceptionGap}%
@@ -195,12 +195,12 @@ export default function PerceptionGapAnalyzer() {
                       </div>
 
                       <div className="pt-2">
-                        <p className="mb-1 text-neutral-500">Estimated monthly revenue loss</p>
+                        <p className="mb-1 text-neutral-500">Perda estimada de receita mensal</p>
                         <p className="text-3xl font-bold text-red-600">
                           ${estimatedLoss.toLocaleString()}
                         </p>
                         <p className="mt-1 text-sm text-neutral-400">
-                          Due to perception misalignment
+                          Devido ao desalinhamento de percepção
                         </p>
                       </div>
                     </div>
@@ -211,7 +211,7 @@ export default function PerceptionGapAnalyzer() {
               <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
                 <h4 className="mb-4 flex items-center text-lg font-medium text-neutral-900">
                   <FiAlertCircle className="mr-2 text-blue-600" />
-                  Common perception gaps in your industry
+                  Lacunas de percepção comuns em sua indústria
                 </h4>
 
                 <ul className="mb-6 space-y-3">
@@ -226,15 +226,15 @@ export default function PerceptionGapAnalyzer() {
 
                 <div className="border-t border-neutral-100 pt-4">
                   <p className="mb-4 text-neutral-700">
-                    These perception gaps create invisible barriers between your real value and your
-                    target audience's willingness to pay premium rates.
+                    Essas lacunas de percepção criam barreiras invisíveis entre seu valor real e a
+                    disposição do seu público-alvo em pagar taxas premium.
                   </p>
 
                   <button
                     onClick={() => setShowFullAnalysis(true)}
                     className="flex items-center font-medium text-blue-600 transition-colors hover:text-blue-700"
                   >
-                    Get your complete perception analysis
+                    Obtenha sua análise completa de percepção
                     <FiArrowDown className="ml-1" />
                   </button>
                 </div>
@@ -246,7 +246,7 @@ export default function PerceptionGapAnalyzer() {
         {/* Case Study Carousel */}
         <div className="mb-20">
           <h3 className="mb-6 font-serif text-2xl text-neutral-900">
-            How perception correction delivers financial impact
+            Como a correção de percepção gera impacto financeiro
           </h3>
 
           <div className="mb-6 grid grid-cols-3 gap-4">
@@ -255,8 +255,8 @@ export default function PerceptionGapAnalyzer() {
                 key={index}
                 onClick={() => setActiveCase(index)}
                 className={`rounded-lg px-4 py-3 text-center text-sm font-medium transition-all ${activeCase === index
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   }`}
               >
                 {cs.industry}
@@ -287,13 +287,13 @@ export default function PerceptionGapAnalyzer() {
 
                       <div className="space-y-4">
                         <div className="rounded-lg border-l-2 border-neutral-300 bg-neutral-50 p-4">
-                          <h5 className="mb-1 font-medium text-neutral-700">The Problem:</h5>
+                          <h5 className="mb-1 font-medium text-neutral-700">O Problema:</h5>
                           <p className="text-neutral-700">{caseStudies[activeCase].problem}</p>
                         </div>
 
                         <div className="rounded-lg border-l-2 border-blue-300 bg-blue-50 p-4">
                           <h5 className="mb-1 font-medium text-blue-800">
-                            Perception Issue Identified:
+                            Questão de Percepção Identificada:
                           </h5>
                           <p className="text-blue-800">{caseStudies[activeCase].perceptionIssue}</p>
                         </div>
@@ -307,7 +307,7 @@ export default function PerceptionGapAnalyzer() {
                             <FiDollarSign className="h-6 w-6" />
                           </div>
                           <div>
-                            <p className="text-sm text-blue-100">Financial Impact</p>
+                            <p className="text-sm text-blue-100">Impacto Financeiro</p>
                             <h4 className="text-xl font-bold">{caseStudies[activeCase].impact}</h4>
                           </div>
                         </div>
@@ -315,14 +315,14 @@ export default function PerceptionGapAnalyzer() {
                         <div className="inline-block rounded-lg bg-white/10 p-3">
                           <div className="flex items-center gap-2">
                             <FiCheckCircle />
-                            <span>Implemented in {caseStudies[activeCase].timeframe}</span>
+                            <span>Implementado em {caseStudies[activeCase].timeframe}</span>
                           </div>
                         </div>
                       </div>
 
                       <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-5">
                         <h5 className="mb-3 font-medium text-neutral-800">
-                          How Perception Correction Works:
+                          Como Funciona a Correção de Percepção:
                         </h5>
                         <ul className="space-y-3">
                           <li className="flex items-start gap-2">
@@ -330,7 +330,7 @@ export default function PerceptionGapAnalyzer() {
                               <span className="text-xs font-medium text-blue-700">1</span>
                             </div>
                             <span className="text-neutral-700">
-                              Precision diagnosis of perception breakpoints
+                              Diagnóstico preciso dos pontos de ruptura de percepção
                             </span>
                           </li>
                           <li className="flex items-start gap-2">
@@ -338,7 +338,7 @@ export default function PerceptionGapAnalyzer() {
                               <span className="text-xs font-medium text-blue-700">2</span>
                             </div>
                             <span className="text-neutral-700">
-                              Targeted symbolic realignment at key decision points
+                              Realinhamento simbólico direcionado em pontos-chave de decisão
                             </span>
                           </li>
                           <li className="flex items-start gap-2">
@@ -346,7 +346,7 @@ export default function PerceptionGapAnalyzer() {
                               <span className="text-xs font-medium text-blue-700">3</span>
                             </div>
                             <span className="text-neutral-700">
-                              Implementation without disrupting core operations
+                              Implementação sem interromper as operações principais
                             </span>
                           </li>
                           <li className="flex items-start gap-2">
@@ -354,7 +354,7 @@ export default function PerceptionGapAnalyzer() {
                               <span className="text-xs font-medium text-blue-700">4</span>
                             </div>
                             <span className="text-neutral-700">
-                              Validation through financial impact measurement
+                              Validação através de medição de impacto financeiro
                             </span>
                           </li>
                         </ul>
@@ -384,22 +384,22 @@ export default function PerceptionGapAnalyzer() {
                     <div>
                       <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
                         <FiEye className="text-blue-300" />
-                        <span className="text-blue-100">Perception Analysis</span>
+                        <span className="text-blue-100">Análise de Percepção</span>
                       </div>
 
                       <h3 className="mb-6 text-2xl font-medium">
-                        Your {industry.charAt(0).toUpperCase() + industry.slice(1)} business is
-                        losing an estimated
+                        Sua empresa {industry.charAt(0).toUpperCase() + industry.slice(1)} está
+                        perdendo aproximadamente
                         <span className="text-blue-300">
                           {' '}
                           ${estimatedLoss.toLocaleString()}
                         </span>{' '}
-                        monthly due to perception gaps
+                        mensais devido a lacunas de percepção
                       </h3>
 
                       <p className="mb-6 text-neutral-300">
-                        Based on our analysis of 200+ similar businesses in your industry, here's
-                        what's likely causing your invisible revenue leaks:
+                        Com base em nossa análise de mais de 200 empresas similares em sua indústria,
+                        aqui está o que provavelmente está causando seus vazamentos invisíveis de receita:
                       </p>
 
                       <div className="space-y-5">
@@ -408,12 +408,11 @@ export default function PerceptionGapAnalyzer() {
                             <span className="mr-2 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-red-500/20 text-sm text-red-300">
                               1
                             </span>
-                            Value-Perception Misalignment
+                            Desalinhamento Valor-Percepção
                           </h4>
                           <p className="text-neutral-300">
-                            Your actual expertise and quality is likely significantly higher than
-                            what your digital presence communicates, creating immediate friction in
-                            sales cycles.
+                            Sua expertise e qualidade reais são provavelmente significativamente maiores
+                            do que sua presença digital comunica, criando atrito imediato nos ciclos de vendas.
                           </p>
                         </div>
 
@@ -422,11 +421,11 @@ export default function PerceptionGapAnalyzer() {
                             <span className="mr-2 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-sm text-amber-300">
                               2
                             </span>
-                            Silent Credibility Gaps
+                            Lacunas Silenciosas de Credibilidade
                           </h4>
                           <p className="text-neutral-300">
-                            Critical trust signals are likely either missing or improperly framed,
-                            causing hesitation at key decision points in your customer journey.
+                            Sinais críticos de confiança provavelmente estão ausentes ou inadequadamente
+                            enquadrados, causando hesitação em pontos-chave de decisão na jornada do cliente.
                           </p>
                         </div>
 
@@ -435,12 +434,11 @@ export default function PerceptionGapAnalyzer() {
                             <span className="mr-2 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-sm text-blue-300">
                               3
                             </span>
-                            Price-Perception Friction
+                            Atrito Preço-Percepção
                           </h4>
                           <p className="text-neutral-300">
-                            Your pricing is being evaluated against the wrong symbolic benchmarks,
-                            creating unnecessary friction when your rates should be perceived as
-                            justified.
+                            Sua precificação está sendo avaliada contra benchmarks simbólicos errados,
+                            criando atrito desnecessário quando suas taxas deveriam ser percebidas como justificadas.
                           </p>
                         </div>
                       </div>
@@ -449,16 +447,16 @@ export default function PerceptionGapAnalyzer() {
                     <div className="space-y-8">
                       <div className="rounded-lg border border-white/10 bg-white/5 p-6">
                         <h4 className="mb-4 text-lg font-medium">
-                          Your perception correction potential
+                          Seu potencial de correção de percepção
                         </h4>
 
                         <div className="space-y-5">
                           <div>
                             <div className="mb-1 flex justify-between text-sm">
-                              <span className="text-neutral-300">Revenue Recovery</span>
+                              <span className="text-neutral-300">Recuperação de Receita</span>
                               <span className="text-blue-300">
                                 ${Math.round(estimatedLoss * 0.7).toLocaleString()} - $
-                                {estimatedLoss.toLocaleString()}/mo
+                                {estimatedLoss.toLocaleString()}/mês
                               </span>
                             </div>
                             <div className="h-2 overflow-hidden rounded-full bg-white/10">
@@ -471,8 +469,8 @@ export default function PerceptionGapAnalyzer() {
 
                           <div>
                             <div className="mb-1 flex justify-between text-sm">
-                              <span className="text-neutral-300">Implementation Timeframe</span>
-                              <span className="text-blue-300">14-21 days</span>
+                              <span className="text-neutral-300">Prazo de Implementação</span>
+                              <span className="text-blue-300">14-21 dias</span>
                             </div>
                             <div className="h-2 overflow-hidden rounded-full bg-white/10">
                               <div
@@ -484,8 +482,8 @@ export default function PerceptionGapAnalyzer() {
 
                           <div>
                             <div className="mb-1 flex justify-between text-sm">
-                              <span className="text-neutral-300">Investment Required</span>
-                              <span className="text-blue-300">Minimal compared to impact</span>
+                              <span className="text-neutral-300">Investimento Necessário</span>
+                              <span className="text-blue-300">Mínimo comparado ao impacto</span>
                             </div>
                             <div className="h-2 overflow-hidden rounded-full bg-white/10">
                               <div
@@ -499,23 +497,23 @@ export default function PerceptionGapAnalyzer() {
 
                       <div className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 p-6 shadow-lg">
                         <h4 className="mb-4 text-xl font-medium">
-                          Ready to close your perception gap?
+                          Pronto para fechar sua lacuna de percepção?
                         </h4>
                         <p className="mb-6 text-blue-100">
-                          Get a precision analysis of your specific perception gaps and a roadmap to
-                          recover your lost revenue within 21 days.
+                          Obtenha uma análise precisa de suas lacunas específicas de percepção e um
+                          roteiro para recuperar sua receita perdida em 21 dias.
                         </p>
 
                         <Link
                           href="/diagnose"
                           className="group inline-flex items-center rounded-lg bg-white px-6 py-3 font-medium text-blue-600 shadow transition-all hover:shadow-lg"
                         >
-                          Get Your Precision Diagnosis
+                          Obtenha Seu Diagnóstico de Precisão
                           <FiArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
                         </Link>
 
                         <p className="mt-3 text-sm text-blue-200">
-                          Limited to 3 companies per month
+                          Limitado a 3 empresas por mês
                         </p>
                       </div>
                     </div>
@@ -529,18 +527,18 @@ export default function PerceptionGapAnalyzer() {
         {/* Value Proposition Closing */}
         <div className="mx-auto max-w-3xl text-center">
           <h3 className="mb-6 font-serif text-2xl text-neutral-900 md:text-3xl">
-            Your expertise deserves to be perceived correctly
+            Sua expertise merece ser percebida corretamente
           </h3>
           <p className="mb-8 text-lg text-neutral-700">
-            What would your business look like if every prospect accurately perceived your true
-            value from the first interaction? Stop losing deals you should be winning.
+            Como seria seu negócio se cada prospect percebesse com precisão seu verdadeiro valor
+            desde a primeira interação? Pare de perder negócios que deveria estar ganhando.
           </p>
 
           <Link
             href="/diagnose"
             className="group inline-flex items-center rounded-lg bg-blue-600 px-8 py-4 font-medium text-white shadow-lg transition-colors hover:bg-blue-700"
           >
-            Diagnose Your Perception Gaps
+            Diagnostique Suas Lacunas de Percepção
             <FiArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

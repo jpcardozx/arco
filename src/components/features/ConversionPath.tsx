@@ -1,5 +1,12 @@
 'use client';
 
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    gtag?: (command: string, ...args: any[]) => void;
+  }
+}
+
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Calendar, BookOpen, BarChart2, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
@@ -30,8 +37,8 @@ export default function ConversionPath() {
       setEmail('');
 
       // Track conversion in analytics
-      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-        window.gtag('event', 'resource_download', {
+      if (typeof window !== 'undefined' && 'gtag' in window && typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'resource_download', {
           resource_type: resourceType,
         });
       }
@@ -113,11 +120,10 @@ export default function ConversionPath() {
 
               <button
                 onClick={() => setResourceType(option.value)}
-                className={`w-full rounded-lg px-4 py-3 text-center text-sm font-medium transition-colors ${
-                  resourceType === option.value
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                }`}
+                className={`w-full rounded-lg px-4 py-3 text-center text-sm font-medium transition-colors ${resourceType === option.value
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                  }`}
               >
                 {option.cta}
               </button>
@@ -199,18 +205,18 @@ export default function ConversionPath() {
                                 r="10"
                                 stroke="currentColor"
                                 strokeWidth="4"
-                               />
+                              />
                               <path
                                 className="opacity-75"
                                 fill="currentColor"
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                               />
+                              />
                             </svg>
                             Processing...
                           </span>
                         ) : (
                           <span className="flex items-center justify-center">
-                            Get Started
+                            Começar
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </span>
                         )}

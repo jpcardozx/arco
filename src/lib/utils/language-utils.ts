@@ -1,6 +1,6 @@
 'use client';
 
-import { SupportedLanguage } from '@/lib/context/i18n-context';
+import { SupportedLanguage } from '@/lib/i18n';
 
 /**
  * Maps a path to its localized version based on language

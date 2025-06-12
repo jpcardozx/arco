@@ -8,7 +8,8 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  ArrowRight } from 'lucide-react';
+  ArrowRight
+} from 'lucide-react';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { useState } from 'react';
@@ -85,14 +86,14 @@ export default function MarketLeadershipProof() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-600">
-              MARKET LEADERSHIP
+              LIDERANÇA DE MERCADO
             </h2>
             <h3 className="mb-6 font-serif text-3xl font-medium tracking-tight md:text-4xl">
-              Trusted by Industry Leaders to Transform Value Perception
+              Confiado por Líderes da Indústria para Transformar a Percepção de Valor
             </h3>
             <p className="portfolio-text-balance text-lg text-neutral-600">
-              See how we've helped companies across industries correct perception gaps and unlock
-              significant revenue growth.
+              Veja como ajudamos empresas de várias indústrias a corrigir lacunas de percepção e
+              desbloquear crescimento significativo de receita.
             </p>
           </motion.div>
         </div>
@@ -107,31 +108,31 @@ export default function MarketLeadershipProof() {
           <div className="portfolio-metric-card">
             <div className="mb-4 flex items-center">
               <BarChart2 className="mr-2 h-5 w-5 text-blue-500" />
-              <h4 className="font-medium">Average Revenue Impact</h4>
+              <h4 className="font-medium">Impacto Médio na Receita</h4>
             </div>
             <p className="text-4xl font-bold text-blue-600">+43.2%</p>
-            <p className="mt-1 text-sm text-neutral-500">Across 50+ engagements</p>
+            <p className="mt-1 text-sm text-neutral-500">Em mais de 50 projetos</p>
           </div>
 
           <div className="portfolio-metric-card">
             <div className="mb-4 flex items-center">
               <Clock className="mr-2 h-5 w-5 text-blue-500" />
-              <h4 className="font-medium">Implementation Time</h4>
+              <h4 className="font-medium">Tempo de Implementação</h4>
             </div>
             <p className="text-4xl font-bold text-blue-600">
               30-60
-              <span className="ml-1 text-lg">days</span>
+              <span className="ml-1 text-lg">dias</span>
             </p>
-            <p className="mt-1 text-sm text-neutral-500">From diagnosis to results</p>
+            <p className="mt-1 text-sm text-neutral-500">Do diagnóstico aos resultados</p>
           </div>
 
           <div className="portfolio-metric-card">
             <div className="mb-4 flex items-center">
               <Users className="mr-2 h-5 w-5 text-blue-500" />
-              <h4 className="font-medium">Client Success Rate</h4>
+              <h4 className="font-medium">Taxa de Sucesso do Cliente</h4>
             </div>
             <p className="text-4xl font-bold text-blue-600">97%</p>
-            <p className="mt-1 text-sm text-neutral-500">Meet or exceed targets</p>
+            <p className="mt-1 text-sm text-neutral-500">Atingem ou excedem metas</p>
           </div>
         </motion.div>
 
@@ -148,9 +149,8 @@ export default function MarketLeadershipProof() {
                 <button
                   key={index}
                   onClick={() => setActiveTestimonial(index)}
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    index === activeTestimonial ? 'bg-blue-500' : 'bg-neutral-300'
-                  }`}
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${index === activeTestimonial ? 'bg-blue-500' : 'bg-neutral-300'
+                    }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}

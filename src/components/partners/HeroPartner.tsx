@@ -466,7 +466,7 @@ const CaseMosaic = ({ prefersReducedMotion }: CaseMosaicProps) => {
                         href="https://github.com/jpcardozx"
                         className="mt-6 group inline-flex items-center text-xs font-medium text-emerald-600 hover:text-emerald-700"
                     >
-                        View all projects
+                        Ver todos os projetos
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"

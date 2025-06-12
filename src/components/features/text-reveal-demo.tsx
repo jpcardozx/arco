@@ -8,7 +8,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Badge } from './badge';
 import { Section } from './section';
 import { SplitText } from './split-text';
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 
 interface TextRevealDemoProps {

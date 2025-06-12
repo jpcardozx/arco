@@ -41,27 +41,27 @@ const EXPERTISE_AREAS: ExpertiseArea[] = [
   },
   {
     id: 'conversion-architecture',
-    title: 'Conversion Architecture',
+    title: 'Arquitetura de Conversão',
     icon: <LineChart className="h-6 w-6" />,
     description:
-      'Designing decision pathways that remove friction and accelerate value recognition.',
+      'Projetando caminhos de decisão que removem atritos e aceleram o reconhecimento de valor.',
     capabilities: [
-      'Decision sequence mapping',
-      'Objection preemption',
-      'Value-first information flow',
-      'Cognitive friction elimination',
+      'Mapeamento de sequência de decisão',
+      'Prevenção de objeções',
+      'Fluxo de informação value-first',
+      'Eliminação de atrito cognitivo',
     ],
   },
   {
     id: 'results-measurement',
-    title: 'Results Measurement',
+    title: 'Mensuração de Resultados',
     icon: <Zap className="h-6 w-6" />,
-    description: 'Quantifiable measurement of perception-value improvements and economic impact.',
+    description: 'Mensuração quantificável de melhorias de percepção-valor e impacto econômico.',
     capabilities: [
-      'Conversion rate optimization',
-      'Sales cycle acceleration',
-      'Average order value increase',
-      'Premium tier adoption',
+      'Otimização de taxa de conversão',
+      'Aceleração de ciclo de vendas',
+      'Aumento do valor médio do pedido',
+      'Adoção de camada premium',
     ],
   },
 ];
@@ -81,20 +81,20 @@ export default function PortfolioExpertise() {
           className="mb-16 md:max-w-3xl"
         >
           <span className="text-sm font-medium uppercase tracking-wider text-blue-600">
-            Specialized Expertise
+            Expertise Especializada
           </span>
           <h2 className="mb-4 mt-2 font-serif text-4xl text-neutral-900">
-            Strategic Value Translation
+            Tradução de Valor Estratégico
           </h2>
           <p className="mb-6 text-lg text-neutral-700">
-            I specialize in correcting the misalignment between technical excellence and market
-            perception. This expertise has been developed through years of analyzing how perception
-            impacts economic outcomes across industries.
+            Eu me especializo em corrigir o desalinhamento entre excelência técnica e percepção de
+            mercado. Esta expertise foi desenvolvida através de anos analisando como a percepção
+            impacta resultados econômicos em diferentes setores.
           </p>
           <p className="text-neutral-600">
-            Unlike general marketing or design approaches that focus on aesthetics or broad
-            messaging, my methodology targets the specific symbolic elements that directly impact
-            how your value is perceived and evaluated by decision makers.
+            Diferente de abordagens gerais de marketing ou design que focam em estética ou mensagens
+            amplas, minha metodologia atinge os elementos simbólicos específicos que impactam
+            diretamente como seu valor é percebido e avaliado pelos tomadores de decisão.
           </p>
         </motion.div>
 
@@ -139,11 +139,11 @@ export default function PortfolioExpertise() {
           <div className="items-center md:flex">
             <div className="md:w-2/3 md:pr-8">
               <h3 className="mb-4 text-2xl font-medium text-neutral-900">
-                Why Perception-Value Alignment Matters
+                Por Que o Alinhamento Percepção-Valor Importa
               </h3>
               <p className="mb-4 text-neutral-700">
-                When your market perception doesn't match your actual value, you face specific
-                business challenges:
+                Quando a percepção do seu mercado não combina com seu valor real, você enfrenta
+                desafios específicos de negócio:
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start">
@@ -151,7 +151,7 @@ export default function PortfolioExpertise() {
                     <span className="block h-3 w-3 rounded-full bg-red-500" />
                   </div>
                   <span className="text-neutral-800">
-                    Constant price resistance despite superior quality
+                    Resistência constante a preços apesar da qualidade superior
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -159,7 +159,7 @@ export default function PortfolioExpertise() {
                     <span className="block h-3 w-3 rounded-full bg-red-500" />
                   </div>
                   <span className="text-neutral-800">
-                    Longer sales cycles as value takes too long to demonstrate
+                    Ciclos de venda mais longos pois o valor demora para ser demonstrado
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -167,7 +167,7 @@ export default function PortfolioExpertise() {
                     <span className="block h-3 w-3 rounded-full bg-red-500" />
                   </div>
                   <span className="text-neutral-800">
-                    Improper comparison with less capable competitors
+                    Comparação inadequada com concorrentes menos capazes
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -175,17 +175,17 @@ export default function PortfolioExpertise() {
                     <span className="block h-3 w-3 rounded-full bg-red-500" />
                   </div>
                   <span className="text-neutral-800">
-                    Expertise that remains invisible to key decision makers
+                    Expertise que permanece invisível para os tomadores de decisão chave
                   </span>
                 </li>
               </ul>
             </div>
             <div className="mt-8 md:mt-0 md:w-1/3">
               <div className="rounded-lg border border-blue-100 bg-white p-6 shadow-sm">
-                <h4 className="mb-4 text-xl font-medium text-neutral-900">Expert Diagnosis</h4>
+                <h4 className="mb-4 text-xl font-medium text-neutral-900">Diagnóstico Especializado</h4>
                 <p className="mb-6 text-neutral-700">
-                  Find out exactly where your perception-value gaps are creating friction in your
-                  customer journey.
+                  Descubra exatamente onde suas lacunas percepção-valor estão criando atrito na
+                  jornada do seu cliente.
                 </p>
                 <a
                   href="#contact"

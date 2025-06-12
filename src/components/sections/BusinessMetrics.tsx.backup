@@ -1,0 +1,246 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { Calculator, DollarSign, Target, TrendingUp, ArrowUp, ArrowDown } from 'lucide-react'
+import { useState } from 'react'
+import {
+    Heading2,
+    BodyLarge,
+    Heading3,
+    BodyRegular,
+    Card,
+    MotionContainer,
+    Section,
+    Grid
+} from '../../design-system/components'
+import { useTranslation } from '@/lib/i18n/context'
+
+export function BusinessMetrics() {
+    const { t } = useTranslation()
+    const [selectedMetric, setSelectedMetric] = useState(0)
+
+    const kpiTargets = [
+        {
+            icon: DollarSign,
+            metric: t('businessMetrics.kpiTargets.cacReduction.metric'),
+            current: t('businessMetrics.kpiTargets.cacReduction.current'),
+            target: t('businessMetrics.kpiTargets.cacReduction.target'),
+            improvement: t('businessMetrics.kpiTargets.cacReduction.improvement'),
+            driver: t('businessMetrics.kpiTargets.cacReduction.driver'),
+            description: t('businessMetrics.kpiTargets.cacReduction.description')
+        },
+        {
+            icon: Target,
+            metric: t('businessMetrics.kpiTargets.ticketPov.metric'),
+            current: t('businessMetrics.kpiTargets.ticketPov.current'),
+            target: t('businessMetrics.kpiTargets.ticketPov.target'),
+            improvement: t('businessMetrics.kpiTargets.ticketPov.improvement'),
+            driver: t('businessMetrics.kpiTargets.ticketPov.driver'),
+            description: t('businessMetrics.kpiTargets.ticketPov.description')
+        },
+        {
+            icon: TrendingUp,
+            metric: t('businessMetrics.kpiTargets.conversionRate.metric'),
+            current: t('businessMetrics.kpiTargets.conversionRate.current'),
+            target: t('businessMetrics.kpiTargets.conversionRate.target'),
+            improvement: t('businessMetrics.kpiTargets.conversionRate.improvement'),
+            driver: t('businessMetrics.kpiTargets.conversionRate.driver'),
+            description: t('businessMetrics.kpiTargets.conversionRate.description')
+        },
+        {
+            icon: Calculator,
+            metric: t('businessMetrics.kpiTargets.ltvCacRatio.metric'),
+            current: t('businessMetrics.kpiTargets.ltvCacRatio.current'),
+            target: t('businessMetrics.kpiTargets.ltvCacRatio.target'),
+            improvement: t('businessMetrics.kpiTargets.ltvCacRatio.improvement'),
+            driver: t('businessMetrics.kpiTargets.ltvCacRatio.driver'),
+            description: t('businessMetrics.kpiTargets.ltvCacRatio.description')
+        }
+    ]
+
+    const performanceMetrics = [
+        { label: 'Revenue Growth Rate', value: '+127%', color: 'emerald', trend: 'up' },
+        { label: 'Client Retention', value: '94%', color: 'blue', trend: 'up' },
+        { label: 'Average Project ROI', value: '340%', color: 'purple', trend: 'up' },
+        { label: 'Time to Value', value: '<30 days', color: 'amber', trend: 'up' }
+    ]
+
+    const projectionScenarios = {
+        'Conservative': {
+            clients: '8 retentores',
+            revenue: 'US$ 672k',
+            margin: '62%',
+            ebitda: '28%'
+        },
+        'Realistic': {
+            clients: '12 retentores',
+            revenue: 'US$ 1.08M',
+            margin: '68%',
+            ebitda: '35%'
+        },
+        'Optimistic': {
+            clients: '18 retentores',
+            revenue: 'US$ 1.62M',
+            margin: '72%',
+            ebitda: '42%'
+        }
+    }
+
+    return (
+        <Section background="slate" id="business-metrics" className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
+            {/* Section Header */}            <MotionContainer className="text-center mb-16">
+                <Heading2 className="text-white mb-6">
+                    {t('businessMetrics.title')} <span className="text-blue-400">Performance</span>
+                </Heading2>
+                <BodyLarge className="text-slate-300 max-w-3xl mx-auto">
+                    {t('businessMetrics.subtitle')}
+                </BodyLarge>
+            </MotionContainer>
+
+            {/* KPI Targets */}
+            <MotionContainer delay={0.2} duration={0.8} className="mb-20">
+                <Heading3 className="text-center mb-12 text-white">
+                    Metas Estratégicas <span className="text-blue-400">2025</span>
+                </Heading3>
+
+                <Grid cols={4} gap="md" className="mb-8">
+                    {kpiTargets.map((kpi, index) => (
+                        <MotionContainer
+                            key={index}
+                            delay={0.3 + index * 0.1}
+                            duration={0.6}
+                        >
+                            <Card
+                                className={`bg-white/10 backdrop-blur-sm border cursor-pointer transition-all duration-300 p-6 ${selectedMetric === index
+                                    ? 'border-blue-400 bg-white/15 shadow-xl'
+                                    : 'border-white/20 hover:border-white/40'
+                                    }`}
+                                onClick={() => setSelectedMetric(index)}
+                            >
+                                <div className="flex items-center justify-between mb-4">
+                                    {(() => {
+                                        const IconComponent = kpi.icon;
+                                        return <IconComponent className="w-8 h-8 text-blue-400" />;
+                                    })()}
+                                    <div className={`px-2 py-1 rounded-full text-xs font-semibold ${kpi.improvement.startsWith('+')
+                                        ? 'bg-emerald-500/20 text-emerald-300'
+                                        : 'bg-blue-500/20 text-blue-300'
+                                        }`}>
+                                        {kpi.improvement}
+                                    </div>
+                                </div>
+
+                                <h4 className="font-bold text-lg mb-2 text-white">{kpi.metric}</h4>
+
+                                <div className="flex items-center justify-between text-sm mb-3">
+                                    <span className="text-slate-400">Atual: {kpi.current}</span>
+                                    <span className="text-blue-300 font-semibold">Meta: {kpi.target}</span>
+                                </div>
+
+                                <div className="text-xs text-slate-400 leading-relaxed">
+                                    {kpi.driver}
+                                </div>
+                            </Card>
+                        </MotionContainer>
+                    ))}
+                </Grid>
+
+                {/* Selected Metric Details */}
+                <MotionContainer delay={0.6} duration={0.4}>
+                    <Card className="bg-blue-600/20 backdrop-blur-sm border border-blue-400/30 p-6">
+                        <div className="flex items-start gap-4">
+                            {(() => {
+                                const IconComponent = kpiTargets[selectedMetric].icon;
+                                return <IconComponent className="w-6 h-6 text-blue-400 mt-1" />;
+                            })()}
+                            <div>
+                                <h4 className="text-xl font-bold mb-2 text-white">
+                                    {kpiTargets[selectedMetric].metric}
+                                </h4>
+                                <p className="text-slate-300 leading-relaxed">
+                                    {kpiTargets[selectedMetric].description}
+                                </p>
+                                <div className="mt-3 text-sm text-blue-300">
+                                    <strong>Alavanca:</strong> {kpiTargets[selectedMetric].driver}
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
+                </MotionContainer>
+            </MotionContainer>
+
+            {/* Performance Metrics */}
+            <MotionContainer delay={0.4} duration={0.8} className="mb-20">
+                <Card className="bg-white/5 backdrop-blur-sm border border-white/10 p-8">
+                    <Heading3 className="text-center mb-8 text-white">
+                        Indicadores de <span className="text-emerald-400">Crescimento</span>
+                    </Heading3>
+
+                    <Grid cols={4} gap="md">
+                        {performanceMetrics.map((metric, index) => (
+                            <motion.div
+                                key={index}
+                                className="text-center"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                            >
+                                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl mb-4 bg-${metric.color}-500/20`}>
+                                    {metric.trend === 'up' ? (
+                                        <ArrowUp className={`w-8 h-8 text-${metric.color}-400`} />
+                                    ) : (
+                                        <ArrowDown className={`w-8 h-8 text-${metric.color}-400`} />
+                                    )}
+                                </div>
+                                <div className="text-2xl font-bold mb-1 text-white">{metric.value}</div>
+                                <div className="text-slate-400 text-sm">{metric.label}</div>
+                            </motion.div>
+                        ))}
+                    </Grid>
+                </Card>
+            </MotionContainer>
+
+            {/* Financial Projections */}
+            <MotionContainer delay={0.6} duration={0.8}>
+                <Card className="bg-gradient-to-r from-emerald-600/20 to-blue-600/20 backdrop-blur-sm border border-emerald-400/30 p-8">
+                    <Heading3 className="text-center mb-8 text-white">
+                        Projeções Financeiras <span className="text-emerald-400">2025-2026</span>
+                    </Heading3>
+
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="border-b border-white/20">
+                                    <th className="text-left py-4 px-4 font-semibold text-white">Cenário</th>
+                                    <th className="text-center py-4 px-4 font-semibold text-white">Clientes</th>
+                                    <th className="text-center py-4 px-4 font-semibold text-white">Revenue</th>
+                                    <th className="text-center py-4 px-4 font-semibold text-white">Margem</th>
+                                    <th className="text-center py-4 px-4 font-semibold text-white">EBITDA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.entries(projectionScenarios).map(([scenario, data], index) => (
+                                    <motion.tr
+                                        key={scenario}
+                                        className="border-b border-white/10"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                                    >
+                                        <td className="py-4 px-4 font-semibold text-white">{scenario}</td>
+                                        <td className="py-4 px-4 text-center text-slate-300">{data.clients}</td>
+                                        <td className="py-4 px-4 text-center text-emerald-400 font-semibold">{data.revenue}</td>
+                                        <td className="py-4 px-4 text-center text-blue-400">{data.margin}</td>
+                                        <td className="py-4 px-4 text-center text-purple-400 font-semibold">{data.ebitda}</td>
+                                    </motion.tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </Card>
+            </MotionContainer>
+        </Section>
+    )
+}

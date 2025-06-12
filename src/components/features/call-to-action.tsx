@@ -6,10 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import { Button } from './features/button';
+import { Button } from './button';
 import { Section } from './section';
 import { Heading } from '../components/ui/heading';
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 import { withTranslation } from '@/lib/utils/with-translation';
 
 interface CallToActionProps {

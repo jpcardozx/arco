@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 /**
  * Button variants using class-variance-authority
@@ -52,10 +52,13 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   icon?: React.ReactNode;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   isLoading?: boolean;
+  loading?: boolean;
   withArrow?: boolean;
 }
 
@@ -71,7 +74,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       animation,
       asChild = false,
       icon,
+      leftIcon,
+      rightIcon,
       isLoading,
+      loading,
       withArrow,
       children,
       ...props
@@ -79,17 +85,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const Comp = asChild ? Slot : 'button';
+    const isLoadingState = isLoading || loading;
 
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, animation, className }))}
         ref={ref}
-        disabled={isLoading || props.disabled}
+        disabled={isLoadingState || props.disabled}
         {...props}
       >
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {icon && !isLoading && <span className="mr-2">{icon}</span>}
+        {isLoadingState && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {leftIcon && !isLoadingState && <span className="mr-2">{leftIcon}</span>}
+        {icon && !isLoadingState && <span className="mr-2">{icon}</span>}
         {children}
+        {rightIcon && !isLoadingState && <span className="ml-2">{rightIcon}</span>}
         {withArrow && (
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         )}

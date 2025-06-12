@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import React from "react";
-import { Section, Heading2, Heading3, Card, Grid } from './features/DesignSystem';
+import { Section, Heading2, Heading3, Card, Grid } from '../features/DesignSystem';
 
 export default function TheMisalignmentRevised() {
   return (

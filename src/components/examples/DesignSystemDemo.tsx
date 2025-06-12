@@ -6,8 +6,8 @@
  */
 
 import React from 'react'
+import { Button } from '@/components/features/button'
 import {
-    Button,
     Card,
     CardHeader,
     CardTitle,
@@ -103,9 +103,8 @@ export default function DesignSystemDemo() {
                             <p className="text-sm text-neutral-600">
                                 Implementação de componentes primitivos usando Radix UI
                                 e design tokens para garantir consistência visual.
-                            </p>
-                        </CardContent>
-                        <CardFooter align="between">
+                            </p>                        </CardContent>
+                        <CardFooter className="justify-between">
                             <span className="text-sm text-neutral-500">v1.0.0</span>
                             <Button size="sm" variant="outline">
                                 Ver Mais
@@ -114,9 +113,9 @@ export default function DesignSystemDemo() {
                     </Card>
 
                     {/* Card Elevated */}
-                    <Card variant="elevated" interactive>
+                    <Card variant="elevated" className="cursor-pointer hover:scale-105 transition-transform">
                         <CardHeader>
-                            <CardTitle as="h3">Performance</CardTitle>
+                            <CardTitle className="text-lg">Performance</CardTitle>
                             <CardDescription>
                                 Otimização de bundle e lazy loading
                             </CardDescription>
@@ -129,8 +128,7 @@ export default function DesignSystemDemo() {
                             <div className="flex items-center space-x-2 mt-2">
                                 <Users className="h-4 w-4 text-primary-500" />
                                 <span className="text-sm">Tree Shaking</span>
-                            </div>
-                        </CardContent>
+                            </div>                        </CardContent>
                         <CardFooter>
                             <Button className="w-full" rightIcon={<ArrowRight className="h-4 w-4" />}>
                                 Analisar Performance
@@ -140,13 +138,13 @@ export default function DesignSystemDemo() {
 
                     {/* Card Outlined */}
                     <Card variant="outlined">
-                        <CardHeader prominent>
+                        <CardHeader className="border-b bg-neutral-50">
                             <CardTitle>Acessibilidade</CardTitle>
                             <CardDescription>
                                 WCAG 2.1 AA Compliance
                             </CardDescription>
                         </CardHeader>
-                        <CardContent noPadding>
+                        <CardContent className="p-0">
                             <div className="p-6 pt-0">
                                 <ul className="space-y-2 text-sm">
                                     <li className="flex items-center">

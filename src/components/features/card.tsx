@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { motion } from 'framer-motion';
 import * as React from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 
 const cardVariants = cva('rounded-lg overflow-hidden transition-all duration-300', {
@@ -121,7 +121,7 @@ CardHeader.displayName = 'CardHeader';
 
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement> & { as?: keyof JSX.IntrinsicElements }
+  React.HTMLAttributes<HTMLHeadingElement> & { as?: keyof React.JSX.IntrinsicElements }
 >(({ className, as: AsComponent = 'h3', ...props }, ref) => {
   // Explicitly type the component to avoid SVGProps type errors
   const Component = AsComponent as React.ElementType;

@@ -3,10 +3,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import React, { useRef } from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 export interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   containerClassName?: string;
   maxWidth?: 'default' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
   withParallax?: boolean;

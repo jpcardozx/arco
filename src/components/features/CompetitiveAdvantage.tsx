@@ -85,15 +85,14 @@ export default function CompetitiveAdvantage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-400">
-              MARKET DIFFERENTIATION
+              DIFERENCIAÇÃO DE MERCADO
             </h2>
             <h3 className="portfolio-text-balance mb-6 font-serif text-3xl font-medium tracking-tight md:text-4xl">
-              A fundamentally different approach to market perception and revenue growth
+              Uma abordagem fundamentalmente diferente para percepção de mercado e crescimento de receita
             </h3>
             <p className="portfolio-prose text-lg text-neutral-400">
-              While others focus on superficial aspects of market presence, we've pioneered a
-              systematic methodology that directly connects perception engineering to financial
-              outcomes.
+              Enquanto outros focam em aspectos superficiais da presença de mercado, fomos pioneiros em uma
+              metodologia sistemática que conecta diretamente engenharia de percepção a resultados financeiros.
             </p>
           </motion.div>
         </div>
@@ -199,10 +198,10 @@ export default function CompetitiveAdvantage() {
           className="flex flex-col items-center justify-between gap-8 border-t border-neutral-800 pt-10 md:flex-row"
         >
           <div className="max-w-xl">
-            <h4 className="mb-2 text-xl font-medium">Ready to transform your market perception?</h4>
+            <h4 className="mb-2 text-xl font-medium">Pronto para transformar sua percepção de mercado?</h4>
             <p className="text-neutral-400">
-              Schedule a no-obligation consultation to discover how our perception engineering
-              framework can unlock your revenue potential.
+              Agende uma consulta sem compromisso para descobrir como nosso framework de engenharia de percepção
+              pode desbloquear seu potencial de receita.
             </p>
           </div>
 
@@ -210,7 +209,7 @@ export default function CompetitiveAdvantage() {
             href="/contact"
             className="portfolio-button portfolio-button-primary group min-w-[200px] text-center"
           >
-            <span>Schedule Consultation</span>
+            <span>Agendar Consulta</span>
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>

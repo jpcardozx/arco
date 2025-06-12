@@ -28,7 +28,7 @@ const Typography = {
     size = 'md',
     ...props
   }: TypographyProps) => {
-    const Element = element as unknown; // Required for dynamic element
+    const Element = element as React.ElementType; // Required for dynamic element
     const sizeClasses: Record<string, string> = {
       xs: 'text-sm font-normal leading-snug',
       sm: 'text-base font-normal leading-snug',
@@ -52,7 +52,7 @@ const Typography = {
     size = 'md',
     ...props
   }: TypographyProps) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     const sizeClasses: Record<string, string> = {
       xs: 'text-sm font-normal leading-normal',
       sm: 'text-base font-normal leading-normal',
@@ -74,7 +74,7 @@ const Typography = {
     size = 'md',
     ...props
   }: TypographyProps) => {
-    const Element = element as unknown;
+    const Element = element as React.ElementType;
     const sizeClasses: Record<string, string> = {
       xs: 'text-xs font-normal',
       sm: 'text-sm font-normal',
@@ -535,11 +535,10 @@ const PartnerShowcase: React.FC = () => {
             {caseStudies.map(c => (
               <button
                 key={c.id}
-                className={`rounded-lg p-4 text-left transition duration-200 ${
-                  activeCase === c.id
+                className={`rounded-lg p-4 text-left transition duration-200 ${activeCase === c.id
                     ? 'bg-gray-800 text-white ring-2 ring-gray-800'
                     : 'border border-gray-200 bg-white text-gray-800 hover:bg-gray-50'
-                }`}
+                  }`}
                 onClick={() => setActiveCase(c.id)}
               >
                 <div className="mb-2 flex items-start justify-between">
@@ -550,9 +549,8 @@ const PartnerShowcase: React.FC = () => {
                     {c.client}
                   </Typography.Editorial>
                   <span
-                    className={`rounded px-2 py-0.5 text-xs ${
-                      activeCase === c.id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-700'
-                    }`}
+                    className={`rounded px-2 py-0.5 text-xs ${activeCase === c.id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-700'
+                      }`}
                   >
                     {c.industry}
                   </span>

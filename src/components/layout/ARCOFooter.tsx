@@ -91,11 +91,11 @@ export function ARCOFooter() {
                 </span>
               </div>
             </Link>
-            
+
             <p className="text-slate-300 leading-relaxed mb-6">
-              Converting operational waste into competitive advantage through 
-              self-funding digital transformation projects. Guaranteed ROI, 
-              rapid delivery, technical excellence.
+              Convertendo desperdício operacional em vantagem competitiva através de
+              projetos de transformação digital auto-financiados. ROI garantido,
+              entrega rápida, excelência técnica.
             </p>
 
             {/* Contact Info */}
@@ -109,7 +109,7 @@ export function ARCOFooter() {
                 >
                   <contact.icon className="w-5 h-5 text-cyan-400" />
                   {contact.href !== '#' ? (
-                    <a 
+                    <a
                       href={contact.href}
                       className="text-slate-300 hover:text-white transition-colors duration-200"
                     >
@@ -152,11 +152,11 @@ export function ARCOFooter() {
                 Stay Updated on Performance Optimization
               </h3>
               <p className="text-slate-400">
-                Get weekly insights on digital performance, self-funding project strategies, 
+                Get weekly insights on digital performance, self-funding project strategies,
                 and industry best practices.
               </p>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"

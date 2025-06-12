@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { cn } from '../../../lib/utils/ui-utils';
+import { cn } from '@/lib/utils/ui-utils';
 
 interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   cols?: number | { sm?: number; md?: number; lg?: number; xl?: number; '2xl'?: number };

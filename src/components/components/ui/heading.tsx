@@ -10,7 +10,7 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
     ({ className, children, level = 2, as, ...props }, ref) => {
         // Explicitly type the component to avoid SVGProps type errors
-        const Component = (as || `h${level}` as keyof JSX.IntrinsicElements) as React.ElementType;
+        const Component = (as || `h${level}` as keyof React.JSX.IntrinsicElements) as React.ElementType;
 
         return (
             <Component

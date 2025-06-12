@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from "react";
+import { FiExternalLink, FiArrowRight } from 'react-icons/fi';
 
 export default function EditorialClosing() {
   return (

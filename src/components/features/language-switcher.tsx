@@ -5,7 +5,7 @@ import { Check, Globe } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { Button } from './button';
-import { useTranslation } from '../../../lib/context/i18n-context';
+import { useTranslation } from '@/lib/i18n/context';
 import { useUserPreferences } from '@/lib/hooks/useUserPreferences';
 import { cn } from '@/lib/utils/ui-utils';
 

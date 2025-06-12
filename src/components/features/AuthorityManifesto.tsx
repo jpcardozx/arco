@@ -26,11 +26,40 @@ export default function AuthorityManifesto() {
   const section2InView = useInView(section2Ref, { once: true, amount: 0.3 });
   const section3InView = useInView(section3Ref, { once: true, amount: 0.3 });
 
-  // Métricas de impacto para animação
+  // Métricas de impacto para animação 
   const metrics = [
-    { before: '2.3%', after: '8.7%', label: 'Taxa de conversão premium' },
-    { before: 'R$347K', after: 'R$978K', label: 'Receita mensal' },
-    { before: '42 dias', after: '17 dias', label: 'Ciclo de decisão' },
+    {
+      label: 'Taxa de Conversão',
+      before: '2.1%',
+      after: '4.8%'
+    },
+    {
+      label: 'Tempo de Carregamento',
+      before: '4.2s',
+      after: '1.1s'
+    },
+    {
+      label: 'Valor Médio do Pedido',
+      before: 'R$ 287',
+      after: 'R$ 412'
+    }
+  ];
+
+  // Problemas que resolvemos
+  const problemsList = [
+    'Conversões baixas sem causa identificada',
+    'Performance lenta impactando vendas',
+    'Implementações técnicas que não geram ROI',
+    'Equipes internas sem tempo/expertise para otimização',
+    'Agências que entregam relatórios, não resultados'
+  ];
+
+  // Etapas do diagnóstico
+  const diagnosisSteps = [
+    'Mapeamento completo do funil de conversão',
+    'Identificação de 12 pontos críticos de atrito',
+    'Quantificação do impacto financeiro de cada problema',
+    'Priorização por ROI vs esforço de implementação'
   ];
 
   return (
@@ -76,22 +105,19 @@ export default function AuthorityManifesto() {
             className="mx-auto mb-12 max-w-4xl text-center"
           >
             <div className="mb-6 inline-flex h-8 items-center justify-center rounded-full bg-blue-900/40 px-4 font-mono text-xs text-blue-400">
-              MANIFESTO DE AUTORIDADE
+              DIGITAL PERFORMANCE ENGINEERING
             </div>
 
             <h1 className="mb-8 font-serif text-4xl leading-tight md:text-5xl lg:text-6xl">
-              Eu não <span className="line-through opacity-70">otimizo sites</span>.
+              Pare de queimar dinheiro em tecnologia que não funciona.
               <br />
               <span className="text-blue-400">
-                Corrijo arquiteturas de decisão financeira comprometidas.
+                Nós consertamos.
               </span>
             </h1>
 
             <p className="mx-auto max-w-2xl text-xl text-neutral-300">
-              Em 7 anos mapeando padrões de abandono e conversão em empresas de tecnologia,
-              identifiquei um padrão consistente: o problema raramente é técnico. É um{' '}
-              <span className="text-blue-300">desalinhamento simbólico</span> entre o valor real
-              oferecido e sua percepção.
+              Para líderes de empresas que perderam a paciência com promessas vazias de agências e desenvolvedores. Aqui você encontra resultados reais, não desculpas.
             </p>
           </motion.div>
 
@@ -112,26 +138,18 @@ export default function AuthorityManifesto() {
                   </div>
 
                   <div>
-                    <h2 className="mb-4 text-2xl font-medium text-white">Insight proprietário:</h2>
+                    <h2 className="mb-4 text-2xl font-medium text-white">A Realidade Brutal do Mercado</h2>
 
                     <div className="mb-6 flex items-baseline gap-4">
-                      <span className="text-4xl font-bold text-blue-400 md:text-5xl">83%</span>
+                      <span className="text-4xl font-bold text-blue-400 md:text-5xl">94%</span>
                       <p className="text-lg text-neutral-200">
-                        dos problemas de conversão{' '}
-                        <span className="font-medium">não são resolvidos</span> por redesigns,
-                        melhorias técnicas ou campanhas de marketing - mas por
-                        <span className="text-blue-300">
-                          {' '}
-                          realinhamentos simbólicos precisos
-                        </span>{' '}
-                        nos pontos críticos de decisão financeira.
+                        dos projetos digitais corporativos falham em entregar o ROI prometido
                       </p>
                     </div>
 
                     <div className="border-t border-blue-900/50 pt-4">
                       <p className="text-sm text-neutral-400">
-                        Fonte: Análise de 147 empresas de tecnologia entre 2022-2025 | Immediate
-                        Revenue Framework™ Research
+                        - Fonte: Standish Group 2023
                       </p>
                     </div>
                   </div>
@@ -156,7 +174,7 @@ export default function AuthorityManifesto() {
             >
               <div className="h-full rounded-xl border border-neutral-800 p-8">
                 <h3 className="mb-6 text-2xl text-neutral-400">
-                  Não me contrate por estas habilidades:
+                  NÃO nos contrate se você quer:
                 </h3>
 
                 <ul className="space-y-6">
@@ -179,7 +197,7 @@ export default function AuthorityManifesto() {
                         />
                       </div>
                       <p className="mt-2 text-xs text-neutral-500">
-                        Estas são apenas ferramentas, não diferenciais estratégicos.
+                        (Frankamente, há centenas de agências que fazem isso melhor e mais barato que nós)
                       </p>
                     </li>
                   ))}
@@ -194,40 +212,32 @@ export default function AuthorityManifesto() {
             >
               <div className="h-full rounded-xl border border-blue-900/50 bg-gradient-to-br from-blue-900/30 to-blue-950/10 p-8">
                 <h3 className="mb-6 text-2xl text-blue-300">
-                  Contrate-me por esta capacidade única:
+                  CONTRATE-nos para:
                 </h3>
 
                 <div className="mb-8">
                   <h4 className="mb-4 text-xl font-bold text-white">
-                    Arquitetura de Decisão Financeira
+                    Arquitetura de Performance Financeira
                   </h4>
 
                   <p className="mb-6 text-neutral-300">
-                    A habilidade de identificar <span className="text-blue-300">exatamente</span>{' '}
-                    onde e como a percepção de valor está desalinhada com o valor real, causando
-                    perdas financeiras diretas e mensuráveis - e corrigi-las com precisão cirúrgica.
+                    Transformamos métricas técnicas em resultados financeiros mensuráveis
                   </p>
 
                   <div className="rounded-r-lg border-l-2 border-blue-400 bg-blue-900/20 p-4">
                     <p className="font-medium text-blue-200">
-                      Resultado: Aumento médio de 37% em receita em 21 dias para clientes que
-                      implementam as correções recomendadas.
+                      Resultado: R$ 2,4 milhões desperdiçados anualmente por empresa média
                     </p>
                   </div>
                 </div>
 
                 <div className="border-t border-blue-800/50 pt-6">
                   <h4 className="mb-4 text-lg font-medium text-white">
-                    Aplicado a problemas como:
+                    Resolvemos especificamente:
                   </h4>
 
                   <ul className="space-y-3">
-                    {[
-                      'Conversão em tiers premium abaixo do esperado',
-                      'Ciclos de venda excessivamente longos',
-                      'Alta taxa de abandono em checkouts',
-                      'Pressão de preço apesar de qualidade superior',
-                    ].map((item, i) => (
+                    {problemsList.map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-500" />
                         <span className="text-neutral-200">{item}</span>
@@ -249,12 +259,11 @@ export default function AuthorityManifesto() {
           >
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-3xl font-medium text-white">
-                Estudo de Caso: Transformação Real
+                Caso Real: Varejo Online
               </h2>
 
               <p className="mx-auto max-w-3xl text-xl text-neutral-400">
-                Como realizei um aumento de 182% em receita através de correções estratégicas sem
-                alterar a estrutura de preços ou o produto
+                Como recuperamos R$ 847.000 em receita perdida em 21 dias
               </p>
             </div>
 
@@ -269,16 +278,15 @@ export default function AuthorityManifesto() {
                 <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-blue-600 to-blue-400" />
 
                 <div className="mb-6">
-                  <p className="mb-1 text-sm text-neutral-500">Cliente</p>
-                  <h3 className="text-xl font-medium text-white">TechNexus</h3>
-                  <p className="mt-1 text-sm text-neutral-400">Série B - R$47M captados</p>
+                  <p className="mb-1 text-sm text-neutral-500">CLIENTE</p>
+                  <h3 className="text-xl font-medium text-white">E-commerce de Moda Brasileira</h3>
+                  <p className="mt-1 text-sm text-neutral-400">R$ 12M em faturamento anual, 85.000 visitantes/mês</p>
                 </div>
 
                 <div>
-                  <p className="mb-1 text-sm text-neutral-500">Problema</p>
+                  <p className="mb-1 text-sm text-neutral-500">PROBLEMA</p>
                   <p className="text-neutral-300">
-                    Taxa de conversão premium estagnada em 2.3% apesar de múltiplas otimizações
-                    técnicas e campanhas de marketing.
+                    Site novo lançado 6 meses antes estava com conversão 40% abaixo do esperado. Equipe interna não conseguia identificar as causas.
                   </p>
                 </div>
               </motion.div>
@@ -293,37 +301,23 @@ export default function AuthorityManifesto() {
                 <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-blue-400 to-purple-400" />
 
                 <div className="mb-6">
-                  <p className="mb-1 text-sm text-neutral-500">Diagnóstico</p>
+                  <p className="mb-1 text-sm text-neutral-500">DIAGNÓSTICO</p>
                   <h3 className="text-xl font-medium text-white">
-                    Arquitetura de Decisão Comprometida
+                    Análise Técnica de Performance
                   </h3>
                 </div>
 
                 <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-900/50 text-xs font-medium text-blue-300">
-                      1
-                    </div>
-                    <p className="text-neutral-300">
-                      Identificação de 7 pontos críticos de desalinhamento simbólico
-                    </p>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-900/50 text-xs font-medium text-blue-300">
-                      2
-                    </div>
-                    <p className="text-neutral-300">
-                      Quantificação de perda mensal de R$212.430 devido a estes desalinhamentos
-                    </p>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-900/50 text-xs font-medium text-blue-300">
-                      3
-                    </div>
-                    <p className="text-neutral-300">
-                      Implementação de 12 correções estratégicas nos pontos de maior impacto
-                    </p>
-                  </li>
+                  {diagnosisSteps.map((step, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-900/50 text-xs font-medium text-blue-300">
+                        {i + 1}
+                      </div>
+                      <p className="text-neutral-300">
+                        {step}
+                      </p>
+                    </li>
+                  ))}
                 </ul>
               </motion.div>
 
@@ -337,8 +331,8 @@ export default function AuthorityManifesto() {
                 <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-purple-400 to-green-400" />
 
                 <div className="mb-6">
-                  <p className="mb-1 text-sm text-neutral-500">Resultados</p>
-                  <h3 className="text-xl font-medium text-white">Em 21 dias de implementação</h3>
+                  <p className="mb-1 text-sm text-neutral-500">RESULTADOS</p>
+                  <h3 className="text-xl font-medium text-white">Impacto Financeiro em 3 Semanas</h3>
                 </div>
 
                 <div className="mb-6 space-y-4">
@@ -361,11 +355,9 @@ export default function AuthorityManifesto() {
 
                 <div className="rounded-r-lg border-l-2 border-green-500 bg-green-900/20 p-4">
                   <p className="text-sm text-green-300">
-                    "João não apenas aumentou nossa receita em 182% - ele nos mostrou exatamente
-                    onde estávamos desperdiçando dinheiro em desalinhamentos que nunca teríamos
-                    encontrado sozinhos."
+                    "Em 3 semanas eles encontraram e corrigiram problemas que nossa equipe interna e duas agências anteriores não conseguiram resolver em 6 meses. O ROI foi imediato."
                   </p>
-                  <p className="mt-1 text-xs text-neutral-500">— Marcelo Santos, CEO, TechNexus</p>
+                  <p className="mt-1 text-xs text-neutral-500">- Pedro Silva, CEO</p>
                 </div>
               </motion.div>
             </div>
@@ -383,12 +375,12 @@ export default function AuthorityManifesto() {
             href="/diagnose"
             className="group inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-lg shadow-blue-900/30 transition-all hover:bg-blue-700"
           >
-            <span>Descubra quanto você está perdendo em desalinhamentos simbólicos</span>
+            <span>Diagnóstico Gratuito</span>
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
 
           <p className="mt-4 text-sm text-neutral-500">
-            Vagas limitadas: apenas 3 diagnósticos disponíveis por semana
+            Oferecemos análise gratuita de 30 minutos para identificar suas maiores oportunidades de receita
           </p>
         </motion.div>
       </motion.div>

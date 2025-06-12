@@ -16,7 +16,7 @@ import {
   BodyLarge,
   Section,
   Grid
-} from '../../features/features/DesignSystem';
+} from '@/components/features/DesignSystem';
 
 export default function HeroARCORevised() {
   const [activeTab, setActiveTab] = useState(0);

@@ -6,10 +6,8 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 import React from "react";
-import { useTranslation } from '../../../lib/context/i18n-context';
 
 export default function HeroARCOEnhanced() {
-  const { t } = useTranslation();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -21,9 +19,9 @@ export default function HeroARCOEnhanced() {
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
 
   const [clientStats, setClientStats] = useState([
-    { value: 0, target: 37, unit: '%', label: t('homepage.stats.checkoutRate') },
-    { value: 0, target: 2.8, unit: 's', label: t('homepage.stats.loadingTime') },
-    { value: 0, target: 28, unit: '%', label: t('homepage.stats.orderValue') },
+    { value: 0, target: 37, unit: '%', label: 'Aumento médio na taxa de checkout' },
+    { value: 0, target: 2.8, unit: 's', label: 'Redução no tempo de carregamento' },
+    { value: 0, target: 28, unit: '%', label: 'Crescimento no valor médio de pedido' },
   ]);
 
   useEffect(() => {
@@ -68,14 +66,16 @@ export default function HeroARCOEnhanced() {
       >
         {/* Main hero content */}
         <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:max-w-4xl">
-          {t('homepage.hero.title')}
+          Transforme métricas em resultados financeiros
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-neutral-300">{t('homepage.hero.subtitle')}</p>
+        <p className="mt-6 max-w-2xl text-lg text-neutral-300">
+          Para empresas que perdem receita devido a problemas técnicos invisíveis, oferecemos análises precisas e correções estratégicas que geram resultados imediatos.
+        </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6">
           <Link href="#process">
             <button className="group relative inline-flex items-center overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2">
-              <span className="relative font-medium">{t('homepage.hero.cta')}</span>
+              <span className="relative font-medium">Inicie sua Jornada</span>
               <svg
                 className="relative ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
                 fill="none"
@@ -93,7 +93,7 @@ export default function HeroARCOEnhanced() {
           </Link>
           <Link href="#case-studies">
             <button className="inline-flex items-center border-2 border-neutral-300 bg-transparent px-8 py-3 font-medium text-white hover:border-white">
-              {t('common.buttons.seeMore')}
+              Ver Mais
             </button>
           </Link>
         </div>

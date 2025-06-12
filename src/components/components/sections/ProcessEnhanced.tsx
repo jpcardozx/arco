@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useState, useRef } from 'react';
 
 import React from "react";
-import { useTranslation } from '../../../lib/context/i18n-context';
+import { useTranslation } from '@/lib/i18n/context';
 
 export default function ProcessEnhanced() {
   const { t } = useTranslation();
@@ -103,11 +103,10 @@ export default function ProcessEnhanced() {
             <button
               key={step.id}
               onClick={() => setActiveTab(index)}
-              className={`relative mx-2 mb-4 flex items-center rounded-full px-6 py-3 text-sm font-medium transition-all ${
-                activeTab === index
+              className={`relative mx-2 mb-4 flex items-center rounded-full px-6 py-3 text-sm font-medium transition-all ${activeTab === index
                   ? `bg-gradient-to-r ${step.color} text-white shadow-lg`
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
-              }`}
+                }`}
             >
               <step.icon size={18} className="mr-2" />
               <span>{step.title}</span>
