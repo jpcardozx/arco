@@ -10,14 +10,16 @@ export function ProfessionalHero() {
         { metric: 'Mobile LCP', target: '< 1.4s', current: 'Lab tested' },
         { metric: 'PSI Score', target: '+40 pts', current: 'Guaranteed' },
         { metric: 'Annual Savings', target: '$400+', current: 'Builder costs' }
-    ]    const socialProof = [
+    ]
+
+    const socialProof = [
         { type: 'Dental Clinics', location: 'Canada', result: '2.8s → 1.1s LCP' },
         { type: 'Boutique Hotels', location: 'Portugal', result: '15% direct booking ↑' }
     ]
 
     return (
         <SectionWrapper
-            className="pt-32 pb-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30"
+            className="mt-18 pt-38 pb-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30"
             spacing="tight"
         >
             <div className="max-w-7xl mx-auto">
