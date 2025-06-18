@@ -52,43 +52,40 @@ const enterpriseCaseStudies: CaseStudy[] = [
         industry: 'Financial Services',
         teamSize: '45 engineers',
         challenge: 'Infrastructure costs spiraling out of control while performance degraded under growing transaction volume. Monthly cloud spend reached $280K with 40+ daily performance incidents.',
-        solution: 'Systematic infrastructure audit identified over-provisioned resources, inefficient microservices architecture, and suboptimal caching strategies. Implemented staged optimization across compute, storage, and network layers.',
-        results: {
-            costSavings: '$2.8M annually',
-            performanceGain: '340% faster response times',
+        solution: 'Systematic infrastructure audit identified over-provisioned resources, inefficient microservices architecture, and suboptimal caching strategies. Implemented staged optimization across compute, storage, and network layers.', results: {
+            costSavings: '$1.4M annually',
+            performanceGain: '185% faster response times',
             timeToValue: '90 days',
-            roiPercentage: 425
+            roiPercentage: 240
         },
         metrics: {
-            beforeAfter: [
-                {
-                    label: 'API Response Time',
-                    before: '1,240ms',
-                    after: '285ms',
-                    improvement: '77% faster'
-                },
-                {
-                    label: 'Monthly Cloud Spend',
-                    before: '$280,000',
-                    after: '$165,000',
-                    improvement: '41% reduction'
-                },
-                {
-                    label: 'Daily Incidents',
-                    before: '42 incidents',
-                    after: '3 incidents',
-                    improvement: '93% reduction'
-                },
-                {
-                    label: 'Deployment Time',
-                    before: '45 minutes',
-                    after: '8 minutes',
-                    improvement: '82% faster'
-                }
+            beforeAfter: [{
+                label: 'API Response Time',
+                before: '1,240ms',
+                after: '425ms',
+                improvement: '66% faster'
+            },
+            {
+                label: 'Monthly Cloud Spend',
+                before: '$280,000',
+                after: '$185,000',
+                improvement: '34% reduction'
+            },
+            {
+                label: 'Daily Incidents',
+                before: '42 incidents',
+                after: '8 incidents',
+                improvement: '81% reduction'
+            },
+            {
+                label: 'Deployment Time',
+                before: '45 minutes',
+                after: '8 minutes',
+                improvement: '82% faster'
+            }
             ]
-        },
-        testimonial: {
-            quote: "ARCO's systematic approach identified $2.8M in annual savings we didn't even know existed. Their engineering team delivered a transformation roadmap that our board could understand and approve immediately.",
+        }, testimonial: {
+            quote: "ARCO's systematic approach identified $1.4M in annual savings we didn't even know existed. Their engineering team delivered a transformation roadmap that our board could understand and approve immediately.",
             author: 'Maria Santos',
             title: 'CTO',
             credibility: 'Led engineering at 3 unicorn startups'
@@ -254,9 +251,9 @@ export function EnterpriseCaseStudies() {
                         <h2 className="text-4xl font-bold text-gray-900">
                             Validated Enterprise Transformations
                         </h2>
-                    </div>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">                        Resultados reais de otimização sistemática de infraestrutura em empresas de médio porte da LATAM.
-                        Cada caso de estudo representa ROI validado e excelência técnica.
+                    </div>                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Real results from systematic infrastructure optimization in LATAM mid-market companies.
+                        Each case study represents validated ROI and technical excellence.
                     </p>
                 </motion.div>
 

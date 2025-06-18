@@ -1,6 +1,7 @@
 'use client';
 
-import { SupportedLanguage } from '@/lib/i18n';
+// import { SupportedLanguage } from '@/lib/i18n';
+type SupportedLanguage = 'en' | 'pt' | 'es' | 'fr';
 
 /**
  * Maps a path to its localized version based on language

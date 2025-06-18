@@ -9,8 +9,8 @@ const ebGaramond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Stop Burning Money on Digital Disasters | ARCO - Self-Funding Digital Transformation",
-  description: "Stop wasting $2.4M annually on failed digital projects. ARCO delivers self-funding transformations with guaranteed ROI. 94% of projects pay for themselves within 47 days. Emergency intervention available.",
+  title: "ARCO | Self-Funding Digital Transformation",
+  description: "Stop wasting on failed digital projects. ARCO delivers self-funding transformations with guaranteed ROI. 94% of projects pay for themselves within 47 days. Emergency intervention available.",
   keywords: "digital transformation, self-funding projects, ROI guarantee, digital waste elimination, performance optimization, enterprise software",
   authors: [{ name: "ARCO Digital Performance Engineering" }],
   creator: "ARCO",
@@ -21,17 +21,13 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Stop Burning Money on Digital Disasters | ARCO",
-    description: "Self-funding digital transformations with guaranteed ROI. 94% success rate, 47-day payback.",
-    url: "https://arco.digital",
-    siteName: "ARCO Digital Performance Engineering",
-    type: "website",
-    locale: "en_US",
+    title: 'ARCO | Self-Funding Digital Transformation',
+    description: 'Stop wasting on failed digital projects. ARCO delivers self-funding transformations with guaranteed ROI. 94% of projects pay for themselves within 47 days. Emergency intervention available.',
   },
   twitter: {
     card: "summary_large_image",
-    title: "Stop Burning Money on Digital Disasters | ARCO",
-    description: "Self-funding digital transformations with guaranteed ROI. 94% success rate.",
+    title: "ARCO | Self-Funding Digital Transformation",
+    description: "Stop wasting on failed digital projects. ARCO delivers self-funding transformations with guaranteed ROI. 94% of projects pay for themselves within 47 days. Emergency intervention available.",
     creator: "@ARCODigital",
   },
   robots: {

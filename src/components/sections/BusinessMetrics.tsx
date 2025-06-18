@@ -13,75 +13,74 @@ import {
     Section,
     Grid
 } from '../../design-system/components'
-import { useTranslation } from '@/lib/i18n/context'
+import { useContent } from '../../lib/content'
 
 export function BusinessMetrics() {
+    const content = useContent('en')
     const [selectedMetric, setSelectedMetric] = useState(0)
 
     const kpiTargets = [
         {
             icon: DollarSign,
-            metric: 'metric',
-            current: 'current',
-            target: 'target',
-            improvement: 'improvement',
-            driver: 'driver',
-            description: 'description'
+            metric: "Customer Acquisition Cost",
+            current: "$420",
+            target: "$285",
+            improvement: "+47% efficiency",
+            driver: "Performance optimization",
+            description: "Reduced CAC through faster load times and improved user experience"
         },
         {
             icon: Target,
-            metric: 'metric',
-            current: 'current',
-            target: 'target',
-            improvement: 'improvement',
-            driver: 'driver',
-            description: 'description'
+            metric: "Average Order Value",
+            current: "$89",
+            target: "$125",
+            improvement: "+40% increase",
+            driver: "Conversion optimization",
+            description: "Higher AOV through streamlined checkout and performance improvements"
         },
         {
             icon: TrendingUp,
-            metric: 'metric',
-            current: 'current',
-            target: 'target',
-            improvement: 'improvement',
-            driver: 'driver',
-            description: 'description'
-        },
-        {
+            metric: "Conversion Rate",
+            current: "2.1%",
+            target: "3.2%",
+            improvement: "+52% lift",
+            driver: "Technical optimization",
+            description: "Conversion improvements through page speed and user experience optimization"
+        }, {
             icon: Calculator,
-            metric: 'metric',
-            current: 'current',
-            target: 'target',
-            improvement: 'improvement',
-            driver: 'driver',
-            description: 'description'
+            metric: "LTV:CAC Ratio",
+            current: "3.2:1",
+            target: "4.8:1",
+            improvement: "+50% efficiency",
+            driver: "Technical performance",
+            description: "Better LTV:CAC through reduced acquisition costs and improved retention"
         }
     ]
 
     const performanceMetrics = [
-        { label: 'Revenue Growth Rate', value: '+127%', color: 'emerald', trend: 'up' },
-        { label: 'Client Retention', value: '94%', color: 'blue', trend: 'up' },
-        { label: 'Average Project ROI', value: '340%', color: 'purple', trend: 'up' },
-        { label: 'Time to Value', value: '<30 days', color: 'amber', trend: 'up' }
+        { label: 'Client Revenue Impact', value: '+$3.2M', color: 'emerald', trend: 'up' },
+        { label: 'Project Success Rate', value: '94%', color: 'blue', trend: 'up' },
+        { label: 'Average Client ROI', value: '185%', color: 'purple', trend: 'up' },
+        { label: 'Time to First Results', value: '<60 days', color: 'amber', trend: 'up' }
     ]
 
     const projectionScenarios = {
         'Conservative': {
-            clients: '8 retentores',
-            revenue: 'US$ 672k',
-            margin: '62%',
-            ebitda: '28%'
+            clients: '3-5 projects',
+            revenue: '$650K impact',
+            margin: 'Low-risk approach',
+            ebitda: '150% ROI'
         },
         'Realistic': {
-            clients: '12 retentores',
-            revenue: 'US$ 1.08M',
-            margin: '68%',
-            ebitda: '35%'
-        },
-        'Optimistic': {
-            clients: '18 retentores',
-            revenue: 'US$ 1.62M',
-            margin: '72%',
-            ebitda: '42%'
+            clients: '6-8 projects',
+            revenue: '$1.2M impact',
+            margin: 'Balanced growth',
+            ebitda: '185% ROI'
+        }, 'Optimistic': {
+            clients: '10+ projects',
+            revenue: '$2.1M impact',
+            margin: 'Aggressive scale',
+            ebitda: '240% ROI'
         }
     }
 
@@ -89,17 +88,15 @@ export function BusinessMetrics() {
         <Section background="slate" id="business-metrics" className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
             {/* Section Header */}            <MotionContainer className="text-center mb-16">
                 <Heading2 className="text-white mb-6">
-                    {'Métricas de Negócio'} <span className="text-blue-400">Performance</span>
+                    Business <span className="text-blue-400">Performance</span>
                 </Heading2>
                 <BodyLarge className="text-slate-300 max-w-3xl mx-auto">
-                    {'Resultados comprovados em performance digital'}
+                    Proven results in digital performance and revenue growth
                 </BodyLarge>
-            </MotionContainer>
-
-            {/* KPI Targets */}
+            </MotionContainer>            {/* KPI Targets */}
             <MotionContainer delay={0.2} duration={0.8} className="mb-20">
                 <Heading3 className="text-center mb-12 text-white">
-                    Metas Estratégicas <span className="text-blue-400">2025</span>
+                    Strategic <span className="text-blue-400">KPIs</span>
                 </Heading3>
 
                 <Grid cols={4} gap="md" className="mb-8">
@@ -110,35 +107,48 @@ export function BusinessMetrics() {
                             duration={0.6}
                         >
                             <Card
-                                className={`bg-white/10 backdrop-blur-sm border cursor-pointer transition-all duration-300 p-6 ${selectedMetric === index
-                                    ? 'border-blue-400 bg-white/15 shadow-xl'
+                                className={`bg-white/10 backdrop-blur-sm border cursor-pointer transition-all duration-300 p-6 hover:scale-105 hover:shadow-2xl ${selectedMetric === index
+                                    ? 'border-blue-400 bg-white/15 shadow-xl ring-2 ring-blue-400/50'
                                     : 'border-white/20 hover:border-white/40'
                                     }`}
                                 onClick={() => setSelectedMetric(index)}
                             >
-                                <div className="flex items-center justify-between mb-4">
-                                    {(() => {
-                                        const IconComponent = kpi.icon;
-                                        return <IconComponent className="w-8 h-8 text-blue-400" />;
-                                    })()}
-                                    <div className={`px-2 py-1 rounded-full text-xs font-semibold ${kpi.improvement.startsWith('+')
-                                        ? 'bg-emerald-500/20 text-emerald-300'
-                                        : 'bg-blue-500/20 text-blue-300'
-                                        }`}>
-                                        {kpi.improvement}
+                                <motion.div
+                                    whileHover={{ y: -2 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <div className="flex items-center justify-between mb-4">
+                                        {(() => {
+                                            const IconComponent = kpi.icon;
+                                            return <motion.div
+                                                whileHover={{ scale: 1.1, rotate: 5 }}
+                                                transition={{ duration: 0.2 }}
+                                            >
+                                                <IconComponent className="w-8 h-8 text-blue-400" />
+                                            </motion.div>;
+                                        })()}
+                                        <motion.div
+                                            className={`px-2 py-1 rounded-full text-xs font-semibold ${kpi.improvement.startsWith('+')
+                                                ? 'bg-emerald-500/20 text-emerald-300'
+                                                : 'bg-blue-500/20 text-blue-300'
+                                                }`}
+                                            whileHover={{ scale: 1.05 }}
+                                        >
+                                            {kpi.improvement}
+                                        </motion.div>
                                     </div>
-                                </div>
 
-                                <h4 className="font-bold text-lg mb-2 text-white">{kpi.metric}</h4>
+                                    <h4 className="font-bold text-lg mb-2 text-white">{kpi.metric}</h4>
 
-                                <div className="flex items-center justify-between text-sm mb-3">
-                                    <span className="text-slate-400">Atual: {kpi.current}</span>
-                                    <span className="text-blue-300 font-semibold">Meta: {kpi.target}</span>
-                                </div>
+                                    <div className="flex items-center justify-between text-sm mb-3">
+                                        <span className="text-slate-400">Current: {kpi.current}</span>
+                                        <span className="text-blue-300 font-semibold">Target: {kpi.target}</span>
+                                    </div>
 
-                                <div className="text-xs text-slate-400 leading-relaxed">
-                                    {kpi.driver}
-                                </div>
+                                    <div className="text-xs text-slate-400 leading-relaxed">
+                                        {kpi.driver}
+                                    </div>
+                                </motion.div>
                             </Card>
                         </MotionContainer>
                     ))}
@@ -158,9 +168,8 @@ export function BusinessMetrics() {
                                 </h4>
                                 <p className="text-slate-300 leading-relaxed">
                                     {kpiTargets[selectedMetric].description}
-                                </p>
-                                <div className="mt-3 text-sm text-blue-300">
-                                    <strong>Alavanca:</strong> {kpiTargets[selectedMetric].driver}
+                                </p>                                <div className="mt-3 text-sm text-blue-300">
+                                    <strong>Driver:</strong> {kpiTargets[selectedMetric].driver}
                                 </div>
                             </div>
                         </div>
@@ -170,10 +179,9 @@ export function BusinessMetrics() {
 
             {/* Performance Metrics */}
             <MotionContainer delay={0.4} duration={0.8} className="mb-20">
-                <Card className="bg-white/5 backdrop-blur-sm border border-white/10 p-8">
-                    <Heading3 className="text-center mb-8 text-white">
-                        Indicadores de <span className="text-emerald-400">Crescimento</span>
-                    </Heading3>
+                <Card className="bg-white/5 backdrop-blur-sm border border-white/10 p-8">                    <Heading3 className="text-center mb-8 text-white">
+                    Growth <span className="text-emerald-400">Metrics</span>
+                </Heading3>
 
                     <Grid cols={4} gap="md">
                         {performanceMetrics.map((metric, index) => (

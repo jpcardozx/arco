@@ -46,50 +46,46 @@ export function ModernNavigation() {
 
     const navigationItems: NavigationItem[] = [
         {
-            label: 'Soluções',
-            href: '/solutions',
+            label: 'Solutions',
+            href: '#value-proposition',
             dropdown: [
                 {
-                    label: 'Insight',
-                    href: '/insight',
-                    description: 'Análise profunda de mercado e oportunidades'
+                    label: 'Revenue Audit',
+                    href: '#revenue-audit',
+                    description: 'Free $15K technical audit in 48 hours'
                 },
                 {
-                    label: 'POV',
-                    href: '/pov',
-                    description: 'Perspectivas estratégicas exclusivas'
+                    label: 'Proof of Value',
+                    href: '#strategic-services',
+                    description: 'Single high-impact implementation with guaranteed ROI'
                 },
                 {
-                    label: 'Retainers',
-                    href: '/retainers',
-                    description: 'Consultoria contínua especializada'
+                    label: 'Scale Partnership',
+                    href: '#strategic-services',
+                    description: 'Ongoing optimization with performance bonuses'
                 }
             ]
         },
         {
-            label: 'Casos',
-            href: '/cases',
-            description: 'Estudos de caso e resultados comprovados'
+            label: 'Results',
+            href: '#proven-results'
         },
         {
-            label: 'Metodologia',
-            href: '/methodology',
-            description: 'Nosso processo exclusivo de transformação digital'
+            label: 'Process',
+            href: '#business-metrics'
         },
         {
-            label: 'Sobre',
-            href: '/about',
-            description: 'Conheça nossa história e expertise'
+            label: 'Get Audit',
+            href: '#revenue-audit'
         }
     ]
 
     return (
         <motion.nav
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-                isScrolled
-                    ? 'bg-white/95 backdrop-blur-xl border-b border-slate-200/50 shadow-xl'
-                    : 'bg-transparent'
-            }`}
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+                ? 'bg-white/95 backdrop-blur-xl border-b border-slate-200/50 shadow-xl'
+                : 'bg-transparent'
+                }`}
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
@@ -101,16 +97,14 @@ export function ModernNavigation() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        <Link href="/" className="flex items-center space-x-3">
+                    >                        <Link href="/" className="flex items-center space-x-3">
                             <Image
                                 src="/logo-v2.svg"
                                 alt="ARCO"
                                 width={120}
                                 height={32}
-                                className={`transition-all duration-300 ${
-                                    isScrolled ? 'brightness-0' : 'brightness-0 invert'
-                                }`}
+                                className={`transition-all duration-300 ${isScrolled ? 'brightness-0' : 'brightness-0 invert'
+                                    }`}
                                 priority
                             />
                         </Link>
@@ -126,16 +120,14 @@ export function ModernNavigation() {
                                             onClick={() => setActiveDropdown(
                                                 activeDropdown === item.label ? null : item.label
                                             )}
-                                            className={`group flex items-center space-x-1 px-3 py-2 rounded-lg font-medium transition-all duration-300 ${
-                                                isScrolled
-                                                    ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
-                                                    : 'text-white/90 hover:text-white hover:bg-white/10'
-                                            }`}
+                                            className={`group flex items-center space-x-1 px-3 py-2 rounded-lg font-medium transition-all duration-300 ${isScrolled
+                                                ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                                }`}
                                         >
                                             <span>{item.label}</span>
-                                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
-                                                activeDropdown === item.label ? 'rotate-180' : ''
-                                            }`} />
+                                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180' : ''
+                                                }`} />
                                         </button>
 
                                         <AnimatePresence>
@@ -174,11 +166,10 @@ export function ModernNavigation() {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 ${
-                                            isScrolled
-                                                ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
-                                                : 'text-white/90 hover:text-white hover:bg-white/10'
-                                        }`}
+                                        className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 ${isScrolled
+                                            ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
+                                            : 'text-white/90 hover:text-white hover:bg-white/10'
+                                            }`}
                                     >
                                         {item.label}
                                     </Link>
@@ -192,12 +183,11 @@ export function ModernNavigation() {
                         <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
+                        >                            <Link
+                            href="/insight"
+                            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300"
                         >
-                            <Link
-                                href="/insight"
-                                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300"
-                            >
-                                <span>Análise Gratuita</span>
+                                <span>Free Audit</span>
                                 <ArrowRight className="w-4 h-4" />
                             </Link>
                         </motion.div>
@@ -266,13 +256,12 @@ export function ModernNavigation() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.4 }}
+                            >                                <Link
+                                href="/insight"
+                                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl font-semibold text-center block"
+                                onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                <Link
-                                    href="/insight"
-                                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl font-semibold text-center block"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    Análise Gratuita
+                                    Free Audit
                                 </Link>
                             </motion.div>
                         </div>

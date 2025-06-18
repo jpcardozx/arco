@@ -11,8 +11,7 @@ export function ModernFooter() {
     const currentYear = new Date().getFullYear()
 
     const containerVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: {
+        hidden: { opacity: 0, y: 50 }, visible: {
             opacity: 1,
             y: 0,
             transition: {
@@ -35,21 +34,21 @@ export function ModernFooter() {
         { label: 'Insights', href: '/insight' },
         { label: 'POV', href: '/pov' },
         { label: 'Retainers', href: '/retainers' },
-        { label: 'Metodologia', href: '/methodology' }
+        { label: 'Methodology', href: '/methodology' }
     ]
 
     const solutions = [
-        { label: 'Auditoria', href: '/audit' },
+        { label: 'Audit', href: '/audit' },
         { label: 'Replatforming', href: '/replatforming' },
-        { label: 'Transformação', href: '/transformation' },
-        { label: 'Calculadora', href: '/calculator' }
+        { label: 'Transformation', href: '/transformation' },
+        { label: 'Calculator', href: '/calculator' }
     ]
 
     const company = [
-        { label: 'Sobre', href: '/about' },
-        { label: 'Casos', href: '/cases' },
+        { label: 'About', href: '/about' },
+        { label: 'Cases', href: '/cases' },
         { label: 'Blog', href: '/blog' },
-        { label: 'Carreiras', href: '/careers' }
+        { label: 'Careers', href: '/careers' }
     ]
 
     const socialLinks = [
@@ -81,15 +80,13 @@ export function ModernFooter() {
                                 />
                             </div>
                             <span className="text-2xl font-bold">ARCO</span>
-                        </div>
-
-                        <p className="text-slate-300 leading-relaxed">
-                            Transformamos problemas digitais em soluções que geram receita. Performance otimizada e resultados garantidos.
+                        </div>                        <p className="text-slate-300 leading-relaxed">
+                            Transform digital challenges into revenue-generating solutions. Optimized performance with guaranteed results.
                         </p>
 
                         <div className="flex items-center gap-2 text-emerald-400">
                             <Zap className="w-5 h-5 text-emerald-400 mr-2" />
-                            <span className="text-sm font-semibold">ROI médio de 340% em 90 dias</span>
+                            <span className="text-sm font-semibold">Average 340% ROI in 90 days</span>
                         </div>
 
                         <div className="flex gap-4">
@@ -106,11 +103,9 @@ export function ModernFooter() {
                                 </a>
                             ))}
                         </div>
-                    </motion.div>
-
-                    {/* Quick Links */}
+                    </motion.div>                    {/* Quick Links */}
                     <motion.div variants={itemVariants} className="space-y-6">
-                        <h4 className="text-lg font-bold">Links Rápidos</h4>
+                        <h4 className="text-lg font-bold">Quick Links</h4>
                         <ul className="space-y-3">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
@@ -124,11 +119,9 @@ export function ModernFooter() {
                                 </li>
                             ))}
                         </ul>
-                    </motion.div>
-
-                    {/* Solutions */}
+                    </motion.div>                    {/* Solutions */}
                     <motion.div variants={itemVariants} className="space-y-6">
-                        <h4 className="text-lg font-bold">Soluções</h4>
+                        <h4 className="text-lg font-bold">Solutions</h4>
                         <ul className="space-y-3">
                             {solutions.map((solution, index) => (
                                 <li key={index}>
@@ -142,11 +135,9 @@ export function ModernFooter() {
                                 </li>
                             ))}
                         </ul>
-                    </motion.div>
-
-                    {/* Company */}
+                    </motion.div>                    {/* Company */}
                     <motion.div variants={itemVariants} className="space-y-6">
-                        <h4 className="text-lg font-bold">Empresa</h4>
+                        <h4 className="text-lg font-bold">Company</h4>
                         <ul className="space-y-3">
                             {company.map((item, index) => (
                                 <li key={index}>
@@ -160,47 +151,45 @@ export function ModernFooter() {
                                 </li>
                             ))}
                         </ul>
-                    </motion.div>
-
-                    {/* Contact & Newsletter */}
+                    </motion.div>                    {/* Contact & Newsletter */}
                     <motion.div
                         variants={itemVariants}
                         className="space-y-6"
                     >
-                        <h4 className="text-lg font-bold">Contato</h4>
+                        <h4 className="text-lg font-bold">Contact</h4>
 
                         <div className="space-y-4">
                             <a
-                                href="mailto:contato@arco.com.br"
+                                href="mailto:hello@arco.com"
                                 className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors duration-300"
                             >
                                 <Mail className="w-5 h-5" />
-                                <span>contato@arco.com.br</span>
+                                <span>hello@arco.com</span>
                             </a>
 
                             <a
-                                href="tel:+5511999999999"
+                                href="tel:+15551234567"
                                 className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors duration-300"
                             >
                                 <Phone className="w-5 h-5" />
-                                <span>+55 11 9999-9999</span>
+                                <span>+1 (555) 123-4567</span>
                             </a>
 
                             <div className="flex items-center gap-3 text-slate-300">
                                 <MapPin className="w-5 h-5" />
-                                <span>São Paulo, Brasil</span>
+                                <span>New York, USA</span>
                             </div>
                         </div>
 
                         <div className="space-y-3">
                             <h5 className="font-semibold">Newsletter</h5>
                             <p className="text-sm text-slate-400">
-                                Receba insights semanais sobre performance digital e casos de sucesso
+                                Get weekly insights on digital performance and success stories
                             </p>
                             <div className="flex gap-2">
                                 <input
                                     type="email"
-                                    placeholder="Seu email"
+                                    placeholder="Your email"
                                     className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                                 <Button size="sm" variant="primary">
@@ -215,17 +204,16 @@ export function ModernFooter() {
                 <motion.div
                     variants={itemVariants}
                     className="border-t border-white/10 pt-8 mt-12 flex flex-col md:flex-row justify-between items-center gap-4"
-                >
-                    <div className="text-slate-400 text-sm">
-                        © {currentYear} ARCO Digital Solutions. Todos os direitos reservados.
+                >                    <div className="text-slate-400 text-sm">
+                        © {currentYear} ARCO Digital Solutions. All rights reserved.
                     </div>
 
                     <div className="flex gap-6 text-sm">
                         <Link href="/privacy" className="text-slate-400 hover:text-white transition-colors duration-300">
-                            Privacidade
+                            Privacy
                         </Link>
                         <Link href="/terms" className="text-slate-400 hover:text-white transition-colors duration-300">
-                            Termos
+                            Terms
                         </Link>
                         <Link href="/cookies" className="text-slate-400 hover:text-white transition-colors duration-300">
                             Cookies

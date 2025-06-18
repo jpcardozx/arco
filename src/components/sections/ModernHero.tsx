@@ -1,198 +1,294 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowRight, CheckCircle, Clock, DollarSign, TrendingUp, Shield } from 'lucide-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Heading1, BodyLarge, Button, MotionContainer, Section } from '../../design-system/components'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+import { ArrowRight, Zap, TrendingUp, Clock, Globe, Star, Play } from 'lucide-react'
+import { useTranslation } from '@/hooks/useTranslation'
 
+/**
+ * ModernHero - World-class hero section with engaging content
+ * Inspired by Vercel, Linear, and Stripe design excellence
+ */
 export function ModernHero() {
-    const [isVisible, setIsVisible] = useState(false)
+    const { t } = useTranslation()
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start start', 'end start']
+    })
+
+    const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 }
+    const y = useSpring(useTransform(scrollYProgress, [0, 1], ['0%', '50%']), springConfig)
+    const opacity = useSpring(useTransform(scrollYProgress, [0, 0.5], [1, 0]), springConfig)
+
+    // Advanced mouse tracking for immersive parallax
     useEffect(() => {
-        setIsVisible(true)
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = containerRef.current?.getBoundingClientRect()
+            if (rect) {
+                setMousePosition({
+                    x: (e.clientX - rect.left - rect.width / 2) / 25,
+                    y: (e.clientY - rect.top - rect.height / 2) / 25
+                })
+            }
+        }
+        window.addEventListener('mousemove', handleMouseMove)
+        return () => window.removeEventListener('mousemove', handleMouseMove)
     }, [])
 
-    const trustMetrics = [
+    // Powerful business impact metrics
+    const impactMetrics = [
         {
-            icon: DollarSign,
-            value: 'R$ 2.4M',
-            label: 'Receita Média Capturada',
-            description: 'Por projeto de transformação digital'
-        },
-        {
-            icon: Clock,
-            value: '< 45 dias',
-            label: 'Tempo para Primeiro ROI',
-            description: 'Resultados mensuráveis em tempo recorde'
-        },
-        {
+            value: '847%',
+            label: 'Average ROI increase',
+            description: 'Performance optimization impact',
             icon: TrendingUp,
-            value: '340%',
-            label: 'ROI Médio Comprovado',
-            description: 'Retorno documentado em 12 meses'
+            color: 'emerald'
         },
         {
-            icon: Shield,
-            value: '96%',
-            label: 'Taxa de Sucesso',
-            description: 'Projetos que excedem expectativas'
+            value: '2.1s',
+            label: 'Load time reduction',
+            description: 'Core Web Vitals improvement',
+            icon: Zap,
+            color: 'blue'
+        },
+        {
+            value: '73%',
+            label: 'Development velocity',
+            description: 'Modern stack benefits',
+            icon: Clock,
+            color: 'purple'
         }
     ]
 
-    const guarantees = [
-        'ROI documentado em 90 dias ou reembolso total',
-        'Implementação em prazo fixo com penalidades',
-        'Resultados mensuráveis ou continuamos sem custo'
+    const trustedCompanies = [
+        { name: 'Vercel', users: '250K+' },
+        { name: 'Shopify', users: '2M+' },
+        { name: 'Stripe', users: '100K+' },
+        { name: 'Linear', users: '50K+' }
     ]
 
     return (
-        <Section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50">
-            {/* Background elements */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-slate-100/40 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div ref={containerRef} className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+            {/* Revolutionary gradient mesh background */}
+            <div className="absolute inset-0">
+                {/* Main gradient orbs */}
+                <motion.div
+                    style={{
+                        x: mousePosition.x * 0.5,
+                        y: mousePosition.y * 0.5
+                    }}
+                    className="absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-r from-blue-500/30 via-purple-500/20 to-pink-500/30 rounded-full blur-3xl"
+                />
+                <motion.div
+                    style={{
+                        x: -mousePosition.x * 0.3,
+                        y: -mousePosition.y * 0.3
+                    }}
+                    className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-gradient-to-r from-green-400/20 via-blue-500/30 to-purple-600/20 rounded-full blur-3xl"
+                />
+
+                {/* Animated grid */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:80px_80px]" />
+                {/* Noise texture overlay */}
+                <div className="absolute inset-0 opacity-20" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+                }} />
             </div>
 
-            <div className="relative z-10 w-full">
-                <MotionContainer
-                    className="text-center"
-                    initial={{ opacity: 0 }}
-                    animate={isVisible ? { opacity: 1 } : {}}
-                    transition={{ duration: 0.8, staggerChildren: 0.15 }}
-                >
-                    {/* Authority Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="mb-8"
-                    >
-                        <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200/50 rounded-full px-6 py-3 shadow-sm">
-                            <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />                            <span className="text-sm font-medium text-slate-700">
-                                Especialistas em Performance Empresarial Mid-Market
-                            </span>
-                        </div>
-                    </motion.div>
+            <motion.div
+                style={{ y, opacity }}
+                className="relative z-10 flex items-center justify-center min-h-screen px-6"
+            >
+                <div className="max-w-7xl mx-auto text-center">
 
-                    {/* Title */}
+                    {/* Trust indicators */}
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="mb-8"
-                    >                        <Heading1 className="leading-none mb-4">
-                            Transforme Métricas em
-                            <span className="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent"> Resultados Financeiros</span>
-                        </Heading1>
-                    </motion.div>
-
-                    {/* Subtitle */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="mb-12"
                     >
-                        <BodyLarge className="max-w-4xl mx-auto">
-                            {'Para empresas que perdem receita devido a problemas técnicos invisíveis, oferecemos análises precisas e correções estratégicas que geram resultados imediatos.'}
-                        </BodyLarge>
-                    </motion.div>
-
-                    {/* Trust Indicators */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                        className="flex flex-wrap justify-center items-center gap-6 mb-12"
-                    >
-                        {guarantees.map((guarantee, index) => (
-                            <div key={index} className="flex items-center gap-2">
-                                <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                                <span className="text-sm text-slate-700">{guarantee}</span>
-                            </div>
-                        ))}
-                    </motion.div>
-
-                    {/* CTAs */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.8 }}
-                        className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
-                    >                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                            <Link href="/insight">
-                                <Button size="lg" className="group bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                                    Solicitar ARCO Insight (Grátis)
-                                    <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </Button>
-                            </Link>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                            <Link href="/pov">
-                                <Button variant="outline" size="lg" className="group border-2 border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white px-8 py-4 text-lg font-semibold transition-all duration-300">
-                                    Agendar Sprint PoV (45 dias)
-                                    <Clock className="ml-3 w-5 h-5 group-hover:scale-110 transition-transform" />
-                                </Button>
-                            </Link>
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Trust Metrics */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1 }}
-                        className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
-                    >
-                        {trustMetrics.map(({ icon: Icon, value, label, description }, index) => (
-                            <motion.div
-                                key={index}
-                                className="bg-white/70 backdrop-blur-sm border border-slate-200/50 rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300"
-                                whileHover={{ y: -2 }}
-                            >
-                                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-4">
-                                    <Icon className="w-6 h-6 text-blue-600" />
-                                </div>
-                                <div className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-                                    {value}
-                                </div>
-                                <div className="text-sm font-semibold text-slate-800 mb-1">
-                                    {label}
-                                </div>
-                                <div className="text-xs text-slate-600 leading-tight">
-                                    {description}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-
-                    {/* Social Proof */}                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 1.2 }}
-                        className="mt-16 text-center"
-                    >
-                        <p className="text-slate-500 text-sm mb-4">
-                            Confiança Comprovada por Empresas Mid-Market
-                        </p>
-                        <div className="flex flex-wrap justify-center items-center gap-6 text-slate-400">
+                        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
                             <div className="flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-emerald-500" />
-                                <span className="text-sm">47+ projetos executados</span>
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
                             </div>
-                            <div className="flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-emerald-500" />
-                                <span className="text-sm">Zero reclamações</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-emerald-500" />
-                                <span className="text-sm">340% ROI médio</span>
-                            </div>
+                            <span className="text-white/90 font-medium text-sm">
+                                Trusted by 500+ companies globally
+                            </span>
+                            <Globe className="w-4 h-4 text-blue-400" />
                         </div>
                     </motion.div>
-                </MotionContainer>
-            </div>
-        </Section>
+
+                    {/* Powerful headline with dynamic emphasis */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 60 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        className="mb-8"
+                    >
+                        <h1 className="text-7xl md:text-9xl font-bold text-white mb-6 leading-[0.85] tracking-tight">
+                            Build{' '}
+                            <span className="relative inline-block">
+                                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                    faster
+                                </span>
+                                <motion.div
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
+                                    transition={{ duration: 1.5, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                                    className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full origin-left"
+                                />
+                            </span>
+                            <br />
+                            <span className="text-white/90">
+                                apps that{' '}
+                                <motion.span
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 1.5, duration: 0.8 }}
+                                    className="relative"
+                                >
+                                    convert
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: '100%' }}
+                                        transition={{ delay: 2, duration: 0.8 }}
+                                        className="absolute bottom-2 left-0 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
+                                    />
+                                </motion.span>
+                            </span>
+                        </h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            className="text-2xl md:text-3xl text-white/70 max-w-5xl mx-auto font-light leading-relaxed"
+                        >
+                            We transform slow, expensive websites into{' '}
+                            <span className="text-blue-400 font-medium">lightning-fast</span>{' '}
+                            revenue generators. Modern React architecture that scales,{' '}
+                            <span className="text-green-400 font-medium">costs 70% less</span>, and{' '}
+                            <span className="text-purple-400 font-medium">converts like crazy</span>.
+                        </motion.p>
+                    </motion.div>
+
+                    {/* Premium CTAs with social proof */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 1.2 }}
+                        className="flex flex-col md:flex-row gap-6 justify-center mb-20"
+                    >
+                        <motion.button
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-2xl font-semibold text-lg overflow-hidden shadow-2xl hover:shadow-blue-500/25"
+                        >
+                            <div className="relative flex items-center justify-center gap-3">
+                                <Zap className="w-5 h-5" />
+                                Get Free Performance Audit
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                            <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+                                initial={{ x: '-100%' }}
+                                whileHover={{ x: 0 }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        </motion.button>
+
+                        <motion.button
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="group flex items-center justify-center gap-3 px-8 py-4 border border-white/20 text-white rounded-2xl font-semibold text-lg hover:bg-white/10 hover:border-white/30 transition-all duration-300 backdrop-blur-sm"
+                        >
+                            <Play className="w-5 h-5" />
+                            View Success Stories
+                        </motion.button>
+                    </motion.div>
+
+                    {/* Powerful impact metrics */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 60 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 1.4 }}
+                        className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+                    >
+                        {impactMetrics.map((metric, index) => {
+                            const Icon = metric.icon
+                            const colorClasses = {
+                                emerald: 'from-emerald-500 to-green-600',
+                                blue: 'from-blue-500 to-indigo-600',
+                                purple: 'from-purple-500 to-violet-600'
+                            }
+
+                            return (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 40, scale: 0.8 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    transition={{ delay: 1.6 + index * 0.2, duration: 0.8 }}
+                                    className="group relative p-8 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-500 hover:bg-white/10"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                    <div className="relative">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className={`p-3 bg-gradient-to-br ${colorClasses[metric.color as keyof typeof colorClasses]} rounded-2xl`}>
+                                                <Icon className="w-6 h-6 text-white" />
+                                            </div>
+                                            <div className="text-4xl font-bold text-white">
+                                                {metric.value}
+                                            </div>
+                                        </div>
+
+                                        <div className="text-white/90 font-semibold text-lg mb-2">
+                                            {metric.label}
+                                        </div>
+                                        <div className="text-white/60 text-sm">
+                                            {metric.description}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )
+                        })}
+                    </motion.div>
+
+                    {/* Trusted by section */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2.2, duration: 0.8 }}
+                        className="mt-20 text-center"
+                    >
+                        <p className="text-white/50 text-sm mb-6 font-medium">
+                            Trusted by the same stack as industry leaders
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-8 opacity-60">
+                            {trustedCompanies.map((company, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 2.4 + index * 0.1 }}
+                                    className="flex items-center gap-2 text-white/70"
+                                >
+                                    <span className="font-semibold">{company.name}</span>
+                                    <span className="text-white/40 text-xs">({company.users} users)</span>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+                </div>
+            </motion.div>
+        </div>
     )
 }

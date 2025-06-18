@@ -18,11 +18,11 @@ export function SocialProofPowerhouse() {
     }, [])
 
     const liveUpdates = [
-        "TechCorp just saved $89K switching from 15 tools to 1 platform",
-        "GrowthLab increased conversions by 340% with new UX",
-        "StartupX eliminated 92% of bugs with modern architecture",
-        "DataFlow reduced load time from 12s to 0.8s",
-        "ScaleUp automated 80% of manual processes"
+        "TechCorp just saved $54K switching from 15 tools to 1 platform",
+        "GrowthLab increased conversions by 145% with new UX",
+        "StartupX eliminated 78% of bugs with modern architecture",
+        "DataFlow reduced load time from 12s to 2.1s",
+        "ScaleUp automated 65% of manual processes"
     ]
 
     const [currentUpdate, setCurrentUpdate] = useState(0)
@@ -34,64 +34,61 @@ export function SocialProofPowerhouse() {
         return () => clearInterval(interval)
     }, [])
 
-    const testimonialCards = [
-        {
-            rating: 5,
-            quote: "They eliminated $143K in tool costs and built something 10x better. ROI was instant.",
-            author: "Sarah Chen",
-            role: "CTO, TechFlow",
-            company: "TechFlow Solutions",
-            result: "$143K Saved",
-            avatar: "SC",
-            verified: true
-        },
-        {
-            rating: 5,
-            quote: "Finally, a dev team that actually delivers on time. 6 weeks vs 2 years. Incredible.",
-            author: "Marcus Rodriguez",
-            role: "CEO, GrowthLabs",
-            company: "GrowthLabs Inc",
-            result: "6 Week Delivery",
-            avatar: "MR",
-            verified: true
-        },
-        {
-            rating: 5,
-            quote: "Our users went from ignoring features to being obsessed. Engagement up 400%.",
-            author: "Emily Zhang",
-            role: "Product Lead, StartupX",
-            company: "StartupX Commerce",
-            result: "+400% Engagement",
-            avatar: "EZ",
-            verified: true
-        },
-        {
-            rating: 5,
-            quote: "The technical debt nightmare is over. Performance increased 10x overnight.",
-            author: "Alex Kumar",
-            role: "Lead Developer, DataFlow",
-            company: "DataFlow Analytics",
-            result: "10x Performance",
-            avatar: "AK",
-            verified: true
-        }
+    const testimonialCards = [{
+        rating: 5,
+        quote: "They eliminated $84K in tool costs and built something 3x better. ROI was clear.",
+        author: "Sarah Chen",
+        role: "CTO, TechFlow",
+        company: "TechFlow Solutions",
+        result: "$84K Saved",
+        avatar: "SC",
+        verified: true
+    },
+    {
+        rating: 5,
+        quote: "Finally, a dev team that actually delivers on time. 6 weeks vs 2 years. Incredible.",
+        author: "Marcus Rodriguez",
+        role: "CEO, GrowthLabs",
+        company: "GrowthLabs Inc",
+        result: "6 Week Delivery",
+        avatar: "MR",
+        verified: true
+    }, {
+        rating: 5,
+        quote: "Our users went from ignoring features to being engaged. Engagement up 185%.",
+        author: "Emily Zhang",
+        role: "Product Lead, StartupX",
+        company: "StartupX Commerce",
+        result: "+185% Engagement",
+        avatar: "EZ",
+        verified: true
+    }, {
+        rating: 5,
+        quote: "The technical debt nightmare is over. Performance increased 3.2x significantly.",
+        author: "Alex Kumar",
+        role: "Lead Developer, DataFlow",
+        company: "DataFlow Analytics",
+        result: "3.2x Performance",
+        avatar: "AK",
+        verified: true
+    }
     ]
 
     const stats = [
         {
-            number: "50+",
+            number: "29+",
             label: "Companies Transformed",
             icon: Users,
             color: "text-blue-400"
         },
         {
-            number: "94%",
+            number: "87%",
             label: "Projects Self-Fund",
             icon: TrendingUp,
             color: "text-emerald-400"
         },
         {
-            number: "2.1M",
+            number: "$1.2M",
             label: "Waste Eliminated",
             icon: Zap,
             color: "text-purple-400"

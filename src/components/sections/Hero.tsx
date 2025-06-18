@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, Clock, DollarSign, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useTranslation } from '@/lib/i18n/context'
+import { useContent } from '../../lib/content'
 
 /**
  * Hero Section - Direta e focada em resultados reais
@@ -31,18 +31,18 @@ export function Hero() {
     const trustIndicators: TrustIndicator[] = [
         {
             icon: Clock,
-            label: 'Entrega Rápida',
-            description: 'Implementação em 15 dias'
+            label: 'Fast Delivery',
+            description: '15-day implementation'
         },
         {
             icon: TrendingUp,
-            label: 'ROI Garantido',
-            description: 'Resultados mensuráveis'
+            label: 'Guaranteed ROI',
+            description: 'Measurable results'
         },
         {
             icon: DollarSign,
-            label: 'Economia Comprovada',
-            description: 'Redução de custos imediata'
+            label: 'Proven Savings',
+            description: 'Immediate cost reduction'
         }
     ]
 

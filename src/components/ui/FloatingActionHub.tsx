@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, Phone, Calendar, Zap, X, ArrowRight, Clock } from 'lucide-react'
-import { useTranslation } from '@/lib/i18n/context'
+// // import { useTranslation } from '@/lib/i18n/context'
 
 export function FloatingActionHub() {
     const [isOpen, setIsOpen] = useState(false)
@@ -23,22 +23,22 @@ export function FloatingActionHub() {
 
     const actions = [{
         icon: Calendar,
-        label: 'Agendar Auditoria',
-        description: 'Reserve sua análise gratuita',
+        label: 'Schedule Audit',
+        description: 'Book your free analysis',
         color: 'from-emerald-500 to-green-500',
         action: () => console.log('Book audit'),
         urgent: true
     }, {
         icon: Phone,
-        label: 'Ligação de Emergência',
-        description: 'Fale com especialista agora',
+        label: 'Emergency Call',
+        description: 'Talk to specialist now',
         color: 'from-red-500 to-orange-500',
         action: () => console.log('Emergency call'),
         urgent: false
     }, {
         icon: MessageCircle,
-        label: 'Chat Rápido',
-        description: 'Tire suas dúvidas online',
+        label: 'Quick Chat',
+        description: 'Get your questions answered online',
         color: 'from-blue-500 to-purple-500',
         action: () => console.log('Quick chat'),
         urgent: false

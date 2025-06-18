@@ -1,24 +1,31 @@
 'use client'
 
-import { ModernNavigation } from "../components/layout/ModernNavigation";
-import { ModernHero } from "../components/sections/ModernHero";
-import { ValueProposition } from "../components/sections/ValuePropositionNew";
-import { ProvenResults } from "../components/sections/ProvenResults";
-import { BusinessMetrics } from "../components/sections/BusinessMetrics";
-import { StrategicServices } from "../components/sections/StrategicServices";
-import { ModernFooter } from "../components/layout/ModernFooter";
-import { StructuredData } from "../components/seo/StructuredData";
+import { ProfessionalNavigation } from "../components/layout/ProfessionalNavigation";
+import { ProfessionalHero } from "../components/sections/ProfessionalHero";
+import { ICPTargetingSection } from "../components/sections/ICPTargetingSection";
+import { ROICalculatorSection } from "../components/sections/ROICalculatorSection";
+import { OfferSection } from "../components/sections/OfferSection";
+import { TechnologyPipelineSection } from "../components/sections/TechnologyPipelineSection";
+import { ResultsSection } from "../components/sections/ResultsSection";
+import { SocialProofUrgencySection } from "../components/sections/SocialProofUrgencySection";
+import { FlashAuditSection } from "../components/sections/FlashAuditSection";
+import { ProfessionalContact } from "../components/sections/ProfessionalContact";
+import { ProfessionalFooter } from "../components/layout/ProfessionalFooter";
 
 export default function Home() {
   return (
     <>
-      <StructuredData />
-      <ModernNavigation />      <ModernHero />
-      <ValueProposition />
-      <ProvenResults />
-      <BusinessMetrics />
-      <StrategicServices />
-      <ModernFooter />
+      <ProfessionalNavigation />
+      <ProfessionalHero />
+      <ICPTargetingSection />
+      <ROICalculatorSection />
+      <OfferSection />
+      <TechnologyPipelineSection />
+      <ResultsSection />
+      <SocialProofUrgencySection />
+      <FlashAuditSection />
+      <ProfessionalContact />
+      <ProfessionalFooter />
     </>
   );
 }

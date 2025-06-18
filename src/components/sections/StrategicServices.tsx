@@ -10,86 +10,82 @@ export function StrategicServices() {
     const sectionRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
 
-    const services = [
-        {
-            tier: 'DIAGNÓSTICO',
-            name: 'Análise de Performance Digital',
-            price: 'R$ 7.500',
-            priceNote: 'Crédito total aplicável aos serviços subsequentes',
-            timeframe: '5-10 dias úteis',
-            description: 'Identificação precisa dos pontos de perda de receita na sua experiência digital, com mapeamento completo dos gargalos técnicos e de usabilidade.',
-            deliverables: [
-                'Avaliação completa da performance digital',
-                'Relatório detalhado com oportunidades quantificadas',
-                'Vídeo explicativo personalizado da análise',
-                'Export de dados para integração com sistemas internos',
-                'Roadmap priorizado por impacto vs esforço'
-            ],
-            creditableToward: 'Valor integralmente creditável para projetos subsequentes',
-            icon: BarChart3,
-            popular: false, cta: 'Solicitar Diagnóstico',
-            href: '/contato'
-        },
-        {
-            tier: 'PILOTO',
-            name: 'Projeto Piloto - Correção Estratégica',
-            price: 'R$ 35.000',
-            priceNote: 'Desconto de R$ 7.500 com diagnóstico prévio',
-            timeframe: '15-30 dias úteis',
-            description: 'Implementação focada nos 3 principais pontos de atrito identificados, com garantia de resultados mensuráveis em conversões e performance.',
-            deliverables: [
-                'Substituição de elementos críticos de baixa performance',
-                'Otimização avançada de conversão nos pontos-chave',
-                'Implementação de cache e otimizações de velocidade',
-                'Deploy seguro com rollback automático',
-                'Testes A/B para validação de melhorias'
-            ],
-            guarantee: 'Garantia de 15% de melhoria ou reembolso integral',
-            icon: Zap,
-            popular: true,
-            cta: 'Iniciar Projeto Piloto',
-            href: '/contato'
-        },
-        {
-            tier: 'ESCALA',
-            name: 'Transformação Digital Completa',
-            price: 'R$ 120.000',
-            priceNote: 'Desconto de R$ 7.500 com diagnóstico prévio',
-            timeframe: '60-90 dias úteis',
-            description: 'Reconstrução completa da experiência digital com foco em máxima performance, conversão e escalabilidade para crescimento sustentável.',
-            deliverables: [
-                'Rebuild completo da arquitetura digital',
-                'SEO técnico e otimização para motores de busca',
-                'Performance otimizada para Core Web Vitals',
-                'Treinamento completo da equipe interna',
-                'Plano de manutenção e atualizações'
-            ],
-            guarantee: 'Garantia de ROI positivo em 90 dias ou reembolso',
-            icon: DollarSign,
-            popular: false,
-            cta: 'Planejar Transformação',
-            href: '/contato'
-        },
-        {
-            tier: 'RETAINER',
-            name: 'Gestão Contínua de Performance',
-            price: 'R$ 25.000/mês',
-            priceNote: 'Contrato mínimo de 12 meses',
-            timeframe: 'Serviço contínuo',
-            description: 'Monitoramento, otimização e melhorias contínuas para manter sua performance digital sempre no pico, com relatórios mensais de ROI.',
-            deliverables: [
-                'Otimizações mensais baseadas em dados',
-                'Testes CRO (Conversion Rate Optimization)',
-                'Monitoramento 24/7 de performance',
-                'Relatórios executivos mensais',
-                'Suporte técnico prioritário'
-            ],
-            guarantee: 'Garantia de melhoria contínua mensal ou cancelamento',
-            icon: Clock,
-            popular: false,
-            cta: 'Contratar Retainer',
-            href: '/contato'
-        }
+    const services = [{
+        tier: 'AUDIT',
+        name: 'Digital Performance Analysis',
+        price: '$8,500',
+        priceNote: 'Full credit applicable to subsequent services',
+        timeframe: '5-10 business days',
+        description: 'Precise identification of revenue loss points in your digital experience, with complete mapping of technical and usability bottlenecks.',
+        deliverables: [
+            'Complete digital performance assessment',
+            'Detailed report with quantified opportunities',
+            'Personalized video explanation of analysis',
+            'Data export for internal system integration',
+            'Impact vs effort prioritized roadmap'
+        ],
+        creditableToward: 'Full value credited toward subsequent projects',
+        icon: BarChart3,
+        popular: false, cta: 'Request Audit',
+        href: '/contact'
+    }, {
+        tier: 'PILOT',
+        name: 'Pilot Project - Strategic Correction',
+        price: '$45,000',
+        priceNote: '$8,500 discount with prior audit',
+        timeframe: '15-30 business days',
+        description: 'Focused implementation on the 3 main friction points identified, with guarantee of measurable results in conversions and performance.',
+        deliverables: [
+            'Replacement of critical low-performance elements',
+            'Advanced conversion optimization at key points',
+            'Cache implementation and speed optimizations',
+            'Secure deployment with automatic rollback',
+            'A/B testing for improvement validation'
+        ],
+        guarantee: 'Guaranteed 15% improvement or full refund',
+        icon: Zap,
+        popular: true,
+        cta: 'Start Pilot Project',
+        href: '/contact'
+    }, {
+        tier: 'SCALE',
+        name: 'Complete Digital Transformation',
+        price: '$125,000',
+        priceNote: '$8,500 discount with prior audit',
+        timeframe: '60-90 business days',
+        description: 'Complete digital experience rebuild focused on maximum performance, conversion and scalability for sustainable growth.',
+        deliverables: [
+            'Complete digital architecture rebuild',
+            'Technical SEO and search engine optimization',
+            'Performance optimized for Core Web Vitals',
+            'Complete internal team training',
+            'Maintenance and update plan'
+        ],
+        guarantee: 'Guaranteed positive ROI in 90 days or refund',
+        icon: DollarSign,
+        popular: false,
+        cta: 'Plan Transformation',
+        href: '/contact'
+    }, {
+        tier: 'RETAINER',
+        name: 'Continuous Performance Management',
+        price: '$18,000/month',
+        priceNote: '6-month minimum contract',
+        timeframe: 'Ongoing service',
+        description: 'Monitoring, optimization and continuous improvements to keep your digital performance always at peak, with monthly ROI reports.',
+        deliverables: [
+            'Monthly data-driven optimizations',
+            'CRO (Conversion Rate Optimization) testing',
+            '24/7 performance monitoring',
+            'Monthly executive reports',
+            'Priority technical support'
+        ],
+        guarantee: 'Guaranteed monthly continuous improvement or cancellation',
+        icon: Clock,
+        popular: false,
+        cta: 'Hire Retainer',
+        href: '/contact'
+    }
     ]
 
     return (
@@ -107,7 +103,7 @@ export function StrategicServices() {
                 >
                     <div className="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full mb-6">
                         <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>                        <span className="text-sm font-semibold text-blue-700">
-                            Serviços Estratégicos
+                            Strategic Services
                         </span>
                     </div>
 
@@ -117,7 +113,7 @@ export function StrategicServices() {
                             Service Tiers
                         </span>
                     </h2>                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Soluções personalizadas baseadas em ROI comprovado para transformar sua performance digital em resultados financeiros mensuráveis.
+                        Custom ROI-driven solutions to transform your digital performance into measurable financial results.
                     </p>
                 </motion.div>
 
@@ -219,16 +215,16 @@ export function StrategicServices() {
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >                    <h3 className="text-2xl font-bold mb-4">
-                        Precisa de um Design System Personalizado?
+                        Need a Custom Design System?
                     </h3>
                     <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-                        Criamos design systems escaláveis que aceleram o desenvolvimento e garantem consistência visual em todos os pontos de contato.
+                        We create scalable design systems that accelerate development and ensure visual consistency across all touchpoints.
                     </p>
                     <Link
                         href="/design-system"
                         className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-semibold hover:bg-purple-50 transition-colors duration-300"
                     >
-                        Explorar Design Systems
+                        Explore Design Systems
                         <ArrowRight className="w-5 h-5" />
                     </Link>
                 </motion.div>
