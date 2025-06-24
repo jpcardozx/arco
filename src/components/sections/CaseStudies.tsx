@@ -80,7 +80,7 @@ export function CaseStudies() {
   ]
 
   return (
-    <section ref={ref} className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
+    <section ref={ref} className="py-24 bg-gradient-to-br from-slate-50 to-blue-50" data-section="case-studies">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={containerVariants}
@@ -93,12 +93,12 @@ export function CaseStudies() {
               Success Stories
             </span>
           </motion.div>
-          
+
           <motion.h2 variants={itemVariants} className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Real Results from
             <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"> Real Companies</span>
           </motion.h2>
-          
+
           <motion.p variants={itemVariants} className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             See how we've helped companies convert operational waste into competitive advantage
           </motion.p>
@@ -154,7 +154,7 @@ export function CaseStudies() {
                 {/* Results */}
                 <div>
                   <h4 className="text-2xl font-bold text-gray-900 mb-8">Results Achieved</h4>
-                  
+
                   <div className="grid grid-cols-2 gap-6 mb-8">
                     {study.results.map((result, resultIndex) => (
                       <div

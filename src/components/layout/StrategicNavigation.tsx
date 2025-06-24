@@ -4,6 +4,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, ArrowRight, Zap, Target, TrendingUp, Shield, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
+import { createHref } from '@/utils/navigation';
+
+// Create a motion-wrapped Link for animation properties
+const MotionLink = motion(Link);
 
 interface NavigationItem {
     label: string
@@ -139,7 +143,7 @@ export function StrategicNavigation() {
                             whileHover={{ scale: 1.02 }}
                             transition={{ duration: 0.2 }}
                         >
-                            <Link href="/" className="flex items-center space-x-3 group">                                <motion.div
+                            <Link href={createHref("/")} className="flex items-center space-x-3 group">                                <motion.div
                                 className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${isScrolled
                                     ? 'bg-red-600 text-white'
                                     : 'bg-red-500/30 backdrop-blur-sm border border-red-500/50 text-white'
@@ -196,7 +200,7 @@ export function StrategicNavigation() {
                                                             {item.dropdown.map((subItem) => (
                                                                 <Link
                                                                     key={subItem.href}
-                                                                    href={subItem.href}
+                                                                    href={createHref(subItem.href)}
                                                                     className="flex items-start space-x-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
                                                                     onClick={() => setActiveDropdown(null)}
                                                                 >
@@ -228,7 +232,7 @@ export function StrategicNavigation() {
                                         </div>
                                     ) : (
                                         <Link
-                                            href={item.href}
+                                            href={createHref(item.href)}
                                             className={`group flex items-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all duration-300 ${isScrolled
                                                 ? 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
                                                 : 'text-white/90 hover:text-white hover:bg-white/10'
@@ -239,12 +243,10 @@ export function StrategicNavigation() {
                                         </Link>
                                     )}
                                 </div>
-                            ))}
-
-                            {/* Strategic CTA */}
+                            ))}                            {/* Strategic CTA */}
                             <motion.div className="ml-6">
-                                <Link
-                                    href="/diagnose"
+                                <MotionLink
+                                    href={createHref("/diagnose")}
                                     className={`group inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${isScrolled
                                         ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg hover:shadow-xl'
                                         : 'bg-white text-slate-900 hover:bg-white/95 shadow-lg hover:shadow-xl'
@@ -255,7 +257,7 @@ export function StrategicNavigation() {
                                     <Zap className="w-4 h-4" />
                                     <span>Get Efficiency Snapshot</span>
                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </Link>
+                                </MotionLink>
                             </motion.div>
                         </div>
 
@@ -344,7 +346,7 @@ export function StrategicNavigation() {
                                                             {item.dropdown.map((subItem) => (
                                                                 <Link
                                                                     key={subItem.href}
-                                                                    href={subItem.href}
+                                                                    href={createHref(subItem.href)}
                                                                     className="flex items-start space-x-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
                                                                     onClick={() => {
                                                                         setIsMobileMenuOpen(false)
@@ -377,7 +379,7 @@ export function StrategicNavigation() {
                                             </div>
                                         ) : (
                                             <Link
-                                                href={item.href}
+                                                href={createHref(item.href)}
                                                 className="flex items-center space-x-3 py-3 text-slate-900 font-semibold hover:text-blue-700 transition-colors"
                                                 onClick={() => setIsMobileMenuOpen(false)}
                                             >
@@ -390,7 +392,7 @@ export function StrategicNavigation() {
 
                                 <div className="pt-6 border-t border-slate-200">
                                     <Link
-                                        href="/diagnose"
+                                        href={createHref("/diagnose")}
                                         className="flex items-center justify-center space-x-2 w-full px-6 py-4 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors"
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
@@ -407,3 +409,5 @@ export function StrategicNavigation() {
         </>
     )
 }
+
+

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from 'next/link';import { createHref } from '@/utils/navigation';
 import Image from 'next/image';
 
 export default function Footer() {
@@ -9,7 +9,7 @@ export default function Footer() {
                     {/* Logo e descrição */}
                     <div className="w-full md:w-1/3 mb-8 md:mb-0">
                         <div className="mb-4">
-                            <Link href="/" className="text-2xl font-bold">ARCO</Link>
+                            <Link href={createHref("/")} className="text-2xl font-bold">ARCO</Link>
                         </div>
                         <p className="text-gray-400 mb-4">
                             Uma abordagem estratégica para transformar problemas técnicos em ganhos financeiros
@@ -20,11 +20,11 @@ export default function Footer() {
                     <div className="w-full md:w-1/4 mb-8 md:mb-0">
                         <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
                         <ul className="space-y-2">
-                            <li><Link href="/" className="text-gray-400 hover:text-white">Home</Link></li>
-                            <li><Link href="/diagnose" className="text-gray-400 hover:text-white">Diagnose</Link></li>
-                            <li><Link href="/solutions" className="text-gray-400 hover:text-white">Solutions</Link></li>
-                            <li><Link href="/case-studies" className="text-gray-400 hover:text-white">Case Studies</Link></li>
-                            <li><Link href="/contact" className="text-gray-400 hover:text-white">Contact</Link></li>
+                            <li><Link href={createHref("/")} className="text-gray-400 hover:text-white">Home</Link></li>
+                            <li><Link href={createHref("/diagnose")} className="text-gray-400 hover:text-white">Diagnose</Link></li>
+                            <li><Link href={createHref("/solutions")} className="text-gray-400 hover:text-white">Solutions</Link></li>
+                            <li><Link href={createHref("/case-studies")} className="text-gray-400 hover:text-white">Case Studies</Link></li>
+                            <li><Link href={createHref("/contact")} className="text-gray-400 hover:text-white">Contact</Link></li>
                         </ul>
                     </div>
 
@@ -49,3 +49,5 @@ export default function Footer() {
         </footer>
     );
 }
+
+

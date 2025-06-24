@@ -3,7 +3,7 @@
 import React, { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, BarChart3, TrendingUp, Users } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 
 // Strategic Efficiency Catalyst Hero Section
 export function PremiumHero() {
@@ -94,7 +94,7 @@ export function PremiumHero() {
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
                     >
                         <Link
-                            href="/stack-calculator"
+                            href={createHref("/stack-calculator")}
                             className="group inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
                         >
                             Get Free Stack Efficiency Report
@@ -102,7 +102,7 @@ export function PremiumHero() {
                         </Link>
 
                         <Link
-                            href="/case-studies"
+                            href={createHref("/case-studies")}
                             className="inline-flex items-center justify-center px-8 py-4 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-all duration-300"
                         >
                             See real transformations
@@ -153,3 +153,5 @@ export function PremiumHero() {
         </section>
     )
 }
+
+

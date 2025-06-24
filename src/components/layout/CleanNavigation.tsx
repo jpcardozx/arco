@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 import { SimpleLanguageSelector } from '../ui/SimpleLanguageSelector'
 
 export function CleanNavigation() {
@@ -34,14 +34,14 @@ export function CleanNavigation() {
                 <div className="flex items-center justify-between h-16">
 
                     {/* Logo */}
-                    <Link href="/" className="text-xl font-bold text-gray-900">
+                    <Link href={createHref("/")} className="text-xl font-bold text-gray-900">
                         ARCO
                     </Link>                    {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
                         {navigationItems.map((item) => (
                             <Link
                                 key={item.href}
-                                href={item.href}
+                                href={createHref(item.href)}
                                 className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
                             >
                                 {item.label}
@@ -49,7 +49,7 @@ export function CleanNavigation() {
                         ))}
                         <SimpleLanguageSelector />
                         <Link
-                            href="/contact"
+                            href={createHref("/contact")}
                             className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                         >
                             Get Started
@@ -77,7 +77,7 @@ export function CleanNavigation() {
                             {navigationItems.map((item) => (
                                 <Link
                                     key={item.href}
-                                    href={item.href}
+                                    href={createHref(item.href)}
                                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium py-2"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
@@ -87,7 +87,7 @@ export function CleanNavigation() {
                                 <SimpleLanguageSelector />
                             </div>
                             <Link
-                                href="/contact"
+                                href={createHref("/contact")}
                                 className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors text-center"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
@@ -100,3 +100,5 @@ export function CleanNavigation() {
         </nav>
     )
 }
+
+

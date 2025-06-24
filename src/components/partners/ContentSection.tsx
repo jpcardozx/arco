@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import { useInView } from "react-intersection-observer";
+import { createHref } from "@/utils/navigation";
 
 // Helper para caminhos de assets
 const getAssetPath = (src: string): string => src.startsWith("/") ? src : `/${src}`;
@@ -249,7 +250,7 @@ const CaseCard = ({ caseItem }: { caseItem: CaseItem }) => {
                     </div>
 
                     <Link
-                        href={`/cases/${caseItem.id}`}
+                        href={createHref(`/cases/${caseItem.id}`)}
                         className={clsx(
                             "inline-flex items-center text-sm font-medium",
                             caseItem.color === "emerald" ? "text-emerald-600" : "text-blue-600"
@@ -334,7 +335,7 @@ export function ContentSection() {
                         </div>
 
                         <Link
-                            href="/contact"
+                            href={createHref("/contact")}
                             className="inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 transition-colors px-6 py-3 rounded-lg text-white font-medium"
                         >
                             Schedule Consultation
@@ -364,3 +365,4 @@ export default function IntegratedPage() {
         </main>
     );
 }
+

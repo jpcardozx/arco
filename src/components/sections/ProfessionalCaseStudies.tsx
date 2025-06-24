@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ArrowRight, ExternalLink, TrendingUp, DollarSign, Clock } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 
 // Professional case studies with real metrics
 export function ProfessionalCaseStudies() {
@@ -171,7 +171,7 @@ export function ProfessionalCaseStudies() {
 
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <Link
-                                    href={`/case-studies/${currentCase.id}`}
+                                    href={createHref(`/case-studies/${currentCase.id}`)}
                                     className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors"
                                 >
                                     View full analysis
@@ -223,14 +223,14 @@ export function ProfessionalCaseStudies() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
-                            href="/case-studies"
+                            href={createHref("/case-studies")}
                             className="inline-flex items-center justify-center px-8 py-4 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors"
                         >
                             Ver todos os casos de estudo
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </Link>
                         <Link
-                            href="/diagnose"
+                            href={createHref("/diagnose")}
                             className="inline-flex items-center justify-center px-8 py-4 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
                         >
                             Request your assessment
@@ -241,3 +241,5 @@ export function ProfessionalCaseStudies() {
         </section>
     )
 }
+
+

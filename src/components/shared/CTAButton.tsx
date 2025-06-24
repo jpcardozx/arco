@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import { createHref } from '@/utils/navigation';
 import { Button } from '../../design-system/components';
 
 interface CTAButtonProps {
@@ -54,7 +55,7 @@ export function CTAButton({
                 </a>
             );
         }
-        return <Link href={href}>{children}</Link>;
+        return <Link href={createHref(href)}>{children}</Link>;
     };
 
     if (!animated) {

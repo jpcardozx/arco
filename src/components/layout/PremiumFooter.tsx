@@ -3,7 +3,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 
 // Premium professional footer
 export function PremiumFooter() {
@@ -84,7 +84,7 @@ export function PremiumFooter() {
                                 {mainLinks.map((link, index) => (
                                     <li key={index}>
                                         <Link
-                                            href={link.href}
+                                            href={createHref(link.href)}
                                             className="text-slate-400 hover:text-white transition-colors duration-200"
                                         >
                                             {link.label}
@@ -108,7 +108,7 @@ export function PremiumFooter() {
                                 {serviceLinks.map((link, index) => (
                                     <li key={index}>
                                         <Link
-                                            href={link.href}
+                                            href={createHref(link.href)}
                                             className="text-slate-400 hover:text-white transition-colors duration-200"
                                         >
                                             {link.label}
@@ -132,7 +132,7 @@ export function PremiumFooter() {
                                 {resourceLinks.map((link, index) => (
                                     <li key={index}>
                                         <Link
-                                            href={link.href}
+                                            href={createHref(link.href)}
                                             className="text-slate-400 hover:text-white transition-colors duration-200"
                                         >
                                             {link.label}
@@ -150,7 +150,7 @@ export function PremiumFooter() {
                                     Monthly analysis of efficiency patterns and optimization opportunities.
                                 </p>
                                 <Link
-                                    href="/insights"
+                                    href={createHref("/insights")}
                                     className="inline-flex items-center text-blue-400 text-sm font-medium hover:text-blue-300 transition-colors"
                                 >
                                     Subscribe to insights
@@ -171,13 +171,13 @@ export function PremiumFooter() {
                         </div>
 
                         <div className="flex space-x-6 text-sm text-slate-400">
-                            <Link href="/privacy" className="hover:text-white transition-colors">
+                            <Link href={createHref("/privacy")} className="hover:text-white transition-colors">
                                 Privacy Policy
                             </Link>
-                            <Link href="/terms" className="hover:text-white transition-colors">
+                            <Link href={createHref("/terms")} className="hover:text-white transition-colors">
                                 Terms of Service
                             </Link>
-                            <Link href="/security" className="hover:text-white transition-colors">
+                            <Link href={createHref("/security")} className="hover:text-white transition-colors">
                                 Security
                             </Link>
                         </div>
@@ -187,3 +187,5 @@ export function PremiumFooter() {
         </footer>
     )
 }
+
+

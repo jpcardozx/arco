@@ -2,10 +2,11 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { PremiumNavigation } from '../../components/layout/PremiumNavigation'
-import { PremiumFooter } from '../../components/layout/PremiumFooter'
+import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import { ArrowRight, CheckCircle, Clock, TrendingUp, Shield } from 'lucide-react'
 import Link from 'next/link'
+import { createHref } from '@/utils/navigation'
 
 export default function ServicesPage() {
     const services = [
@@ -95,7 +96,7 @@ export default function ServicesPage() {
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <PremiumNavigation />
+            <ProfessionalNavigation />
 
             {/* Hero Section */}
             <section className="pt-20 pb-16 bg-gradient-to-b from-slate-900 to-slate-800">
@@ -205,10 +206,8 @@ export default function ServicesPage() {
                                             <span className="text-slate-700">{feature}</span>
                                         </li>
                                     ))}
-                                </ul>
-
-                                <Link
-                                    href={service.href}
+                                </ul>                                <Link
+                                    href={createHref(service.href)}
                                     className={`w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${service.highlight
                                         ? 'bg-slate-900 text-white hover:bg-slate-800'
                                         : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
@@ -250,7 +249,7 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-            <PremiumFooter />
+            <ProfessionalFooter />
         </div>
     )
 }

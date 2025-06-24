@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Zap, Code, Rocket } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 import { SectionWrapper } from '@/components/layout/SectionWrapper'
 import { SectionHeader } from '@/components/layout/SectionHeader'
 
@@ -110,7 +110,7 @@ export function ProfessionalServices() {
 
                                 {/* CTA */}
                                 <Link
-                                    href={service.link}
+                                    href={createHref(service.link)}
                                     className="inline-flex items-center text-sm font-medium text-gray-900 hover:text-gray-700 transition-colors group/link mt-auto"
                                 >
                                     Learn more
@@ -137,7 +137,7 @@ export function ProfessionalServices() {
                     Let's discuss your specific challenges and create a custom optimization strategy.
                 </p>
                 <Link
-                    href="/contact"
+                    href={createHref("/contact")}
                     className="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
                 >
                     Start a conversation
@@ -147,3 +147,5 @@ export function ProfessionalServices() {
         </SectionWrapper>
     )
 }
+
+

@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
+import { createHref, createHtmlHref } from '@/utils/navigation';
+import { Menu, X, ArrowRight, ChevronDown, User, LogOut } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
 export function ARCONavigation() {
+  const { user, isAuthenticated, signOut } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,8 +64,8 @@ export function ARCONavigation() {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? 'bg-slate-950/95 backdrop-blur-xl border-b border-blue-500/20 shadow-2xl shadow-blue-500/10'
-          : 'bg-transparent'
+        ? 'bg-slate-950/95 backdrop-blur-xl border-b border-blue-500/20 shadow-2xl shadow-blue-500/10'
+        : 'bg-transparent'
         }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -84,7 +88,7 @@ export function ARCONavigation() {
             className="flex items-center space-x-3"
             whileHover={{ scale: 1.05 }}
           >
-            <Link href="/" className="flex items-center space-x-3">
+            <Link href={createHref("/")} className="flex items-center space-x-3">
               <motion.div
                 className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center"
                 whileHover={{ rotate: 360 }}
@@ -135,7 +139,7 @@ export function ARCONavigation() {
                                 transition={{ delay: dropdownIndex * 0.05 }}
                               >
                                 <Link
-                                  href={dropdownItem.href}
+                                  href={createHref(dropdownItem.href)}
                                   className="block p-3 rounded-xl bg-white/5 hover:bg-blue-500/20 transition-all duration-300 group"
                                 >
                                   <div className="flex items-center justify-between">
@@ -162,7 +166,7 @@ export function ARCONavigation() {
                 ) : (
                   <motion.div whileHover={{ y: -2 }}>
                     <Link
-                      href={item.href}
+                      href={createHref(item.href)}
                       className="text-slate-300 hover:text-blue-400 font-medium transition-all duration-300 relative group"
                     >
                       {item.label}
@@ -178,21 +182,64 @@ export function ARCONavigation() {
 
           {/* Revolutionary CTA */}
           <div className="hidden lg:flex items-center space-x-4">
-            <motion.button
-              className="text-slate-300 hover:text-blue-400 font-medium transition-colors"
-              whileHover={{ scale: 1.05 }}
-            >
-              Login
-            </motion.button>
+            {isAuthenticated ? (
+              <div className="relative">
+                <motion.button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-2 text-white"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">{user?.name?.[0] || user?.email?.[0] || 'A'}</span>
+                  </div>
+                  <span className="text-slate-300">{user?.name || user?.email || 'Account'}</span>
+                  <ChevronDown className="w-4 h-4 text-slate-300" />
+                </motion.button>
 
-            <motion.button
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>Start Revolution</span>
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
+                <AnimatePresence>
+                  {isUserMenuOpen && (
+                    <motion.div
+                      className="absolute right-0 mt-2 w-48 bg-slate-900/95 backdrop-blur-xl rounded-xl border border-blue-500/20 shadow-2xl shadow-blue-500/10 overflow-hidden"
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Link href={createHref("/dashboard")} className="flex items-center space-x-2 px-4 py-3 text-white hover:bg-blue-500/20 transition-colors">
+                        <User className="w-4 h-4" />
+                        <span>Dashboard</span>
+                      </Link>
+                      <button
+                        onClick={() => signOut({ callbackUrl: '/' })}
+                        className="flex items-center space-x-2 w-full text-left px-4 py-3 text-white hover:bg-blue-500/20 transition-colors border-t border-blue-500/20"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign out</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <>
+                <motion.a
+                  href={createHtmlHref("/auth/login")}
+                  className="text-slate-300 hover:text-blue-400 font-medium transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Login
+                </motion.a>
+
+                <motion.button
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span>Start Revolution</span>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -227,7 +274,7 @@ export function ARCONavigation() {
                   className="space-y-2"
                 >
                   <Link
-                    href={item.href}
+                    href={createHref(item.href)}
                     className="block text-white hover:text-blue-400 font-medium py-2 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -239,7 +286,7 @@ export function ARCONavigation() {
                       {item.dropdown.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
-                          href={dropdownItem.href}
+                          href={createHref(dropdownItem.href)}
                           className="block text-slate-400 hover:text-blue-400 py-1 transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -257,12 +304,41 @@ export function ARCONavigation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <button className="w-full text-left text-slate-300 hover:text-blue-400 font-medium py-2 transition-colors">
-                  Login
-                </button>
-                <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-lg">
-                  Start Revolution
-                </button>
+                {isAuthenticated ? (
+                  <div className="space-y-3 border-t border-blue-500/20 pt-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                        <span className="text-white font-bold">{user?.name?.[0] || user?.email?.[0] || 'A'}</span>
+                      </div>
+                      <div>
+                        <div className="text-white font-medium">{user?.name || 'User'}</div>
+                        <div className="text-slate-400 text-sm">{user?.email || ''}</div>
+                      </div>
+                    </div>
+
+                    <Link href={createHref("/dashboard")} className="flex w-full text-left text-slate-300 hover:text-blue-400 font-medium py-3 transition-colors items-center space-x-2">
+                      <User className="w-4 h-4" />
+                      <span>Dashboard</span>
+                    </Link>
+
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="flex items-center space-x-2 w-full text-left text-slate-300 hover:text-blue-400 font-medium py-3 transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign out</span>
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <a href={createHtmlHref("/auth/login")} className="block w-full text-left text-slate-300 hover:text-blue-400 font-medium py-2 transition-colors">
+                      Login
+                    </a>
+                    <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-lg">
+                      Start Revolution
+                    </button>
+                  </>
+                )}
               </motion.div>
             </div>
           </motion.div>
@@ -271,3 +347,4 @@ export function ARCONavigation() {
     </motion.nav>
   )
 }
+

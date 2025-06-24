@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { PremiumNavigation } from '../../components/layout/PremiumNavigation'
-import { PremiumFooter } from '../../components/layout/PremiumFooter'
+import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import { ArrowRight, Target, Users, TrendingUp, Award } from 'lucide-react'
 import Link from 'next/link'
 
@@ -71,7 +71,7 @@ export default function AboutPage() {
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <PremiumNavigation />
+            <ProfessionalNavigation />
 
             {/* Hero Section */}
             <section className="pt-20 pb-16 bg-gradient-to-b from-slate-900 to-slate-800">
@@ -316,7 +316,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            <PremiumFooter />
+            <ProfessionalFooter />
         </div>
     )
 }

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { createHref } from '../../utils/navigation'
 
 interface NavigationItem {
     label: string
@@ -97,12 +98,13 @@ export function ModernNavigation() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                    >                        <Link href="/" className="flex items-center space-x-3">
+                    >                        <Link href={createHref("/")} className="flex items-center space-x-3">
                             <Image
                                 src="/logo-v2.svg"
                                 alt="ARCO"
                                 width={120}
                                 height={32}
+                                style={{ height: 'auto' }}
                                 className={`transition-all duration-300 ${isScrolled ? 'brightness-0' : 'brightness-0 invert'
                                     }`}
                                 priority
@@ -140,39 +142,37 @@ export function ModernNavigation() {
                                                     className="absolute left-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200/50 overflow-hidden"
                                                 >
                                                     <div className="p-2">
-                                                        {item.dropdown.map((dropdownItem) => (
-                                                            <Link
-                                                                key={dropdownItem.href}
-                                                                href={dropdownItem.href}
-                                                                className="flex items-start space-x-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
-                                                                onClick={() => setActiveDropdown(null)}
-                                                            >
-                                                                <div className="flex-1">
-                                                                    <div className="font-semibold text-slate-900 group-hover:text-blue-600">
-                                                                        {dropdownItem.label}
-                                                                    </div>
-                                                                    <div className="text-sm text-slate-600 mt-1">
-                                                                        {dropdownItem.description}
-                                                                    </div>
+                                                        {item.dropdown.map((dropdownItem) => (<Link
+                                                            key={dropdownItem.href}
+                                                            href={createHref(dropdownItem.href)}
+                                                            className="flex items-start space-x-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
+                                                            onClick={() => setActiveDropdown(null)}
+                                                        >
+                                                            <div className="flex-1">
+                                                                <div className="font-semibold text-slate-900 group-hover:text-blue-600">
+                                                                    {dropdownItem.label}
                                                                 </div>
-                                                                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
-                                                            </Link>
+                                                                <div className="text-sm text-slate-600 mt-1">
+                                                                    {dropdownItem.description}
+                                                                </div>
+                                                            </div>
+                                                            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                                                        </Link>
                                                         ))}
                                                     </div>
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
                                     </div>
-                                ) : (
-                                    <Link
-                                        href={item.href}
-                                        className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 ${isScrolled
-                                            ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
-                                            : 'text-white/90 hover:text-white hover:bg-white/10'
-                                            }`}
-                                    >
-                                        {item.label}
-                                    </Link>
+                                ) : (<Link
+                                    href={createHref(item.href)}
+                                    className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 ${isScrolled
+                                        ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
+                                        : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                >
+                                    {item.label}
+                                </Link>
                                 )}
                             </div>
                         ))}
@@ -184,7 +184,7 @@ export function ModernNavigation() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >                            <Link
-                            href="/insight"
+                            href={createHref("/insight")}
                             className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300"
                         >
                                 <span>Free Audit</span>
@@ -226,25 +226,23 @@ export function ModernNavigation() {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: index * 0.1 }}
+                                >                                        <Link
+                                    href={createHref(item.href)}
+                                    className="block text-slate-700 hover:text-blue-600 font-medium py-2 transition-colors"
+                                    onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    <Link
-                                        href={item.href}
-                                        className="block text-slate-700 hover:text-blue-600 font-medium py-2 transition-colors"
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                    >
                                         {item.label}
                                     </Link>
                                     {item.dropdown && (
                                         <div className="pl-4 mt-2 space-y-2">
-                                            {item.dropdown.map((dropdownItem) => (
-                                                <Link
-                                                    key={dropdownItem.label}
-                                                    href={dropdownItem.href}
-                                                    className="block text-slate-600 hover:text-blue-600 py-1 text-sm transition-colors"
-                                                    onClick={() => setIsMobileMenuOpen(false)}
-                                                >
-                                                    {dropdownItem.label}
-                                                </Link>
+                                            {item.dropdown.map((dropdownItem) => (<Link
+                                                key={dropdownItem.label}
+                                                href={createHref(dropdownItem.href)}
+                                                className="block text-slate-600 hover:text-blue-600 py-1 text-sm transition-colors"
+                                                onClick={() => setIsMobileMenuOpen(false)}
+                                            >
+                                                {dropdownItem.label}
+                                            </Link>
                                             ))}
                                         </div>
                                     )}
@@ -257,7 +255,7 @@ export function ModernNavigation() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.4 }}
                             >                                <Link
-                                href="/insight"
+                                href={createHref("/insight")}
                                 className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl font-semibold text-center block"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >

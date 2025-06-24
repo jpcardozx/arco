@@ -1,0 +1,20 @@
+import NextAuth from "next-auth";
+import { authOptions } from "../auth-options";
+
+/**
+ * NextAuth handler using App Router API
+ * This is the proper configuration for Next.js App Router
+ */
+
+// Create handler
+const handler = NextAuth(authOptions);
+
+// Export handler as named exports for all HTTP methods
+// This ensures compatibility with all HTTP methods for auth routes
+export { handler as GET, handler as POST };
+
+// Force dynamic rendering to prevent caching issues with auth state
+export const dynamic = "force-dynamic";
+
+// Use nodejs runtime for proper auth handling
+export const runtime = "nodejs";

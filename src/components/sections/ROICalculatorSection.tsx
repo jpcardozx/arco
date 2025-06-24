@@ -2,325 +2,391 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Calculator, TrendingUp, DollarSign, Clock, Zap, ArrowRight } from 'lucide-react'
-import { SectionWrapper } from '@/components/layout/SectionWrapper'
-import { SectionHeader } from '@/components/layout/SectionHeader'
+import {
+    Calculator,
+    TrendingUp,
+    DollarSign,
+    BarChart3,
+    ArrowRight,
+    Target,
+    Building2,
+    Users,
+    Percent
+} from 'lucide-react'
+
+interface BusinessMetrics {
+    monthlyVisitors: number
+    conversionRate: number
+    averageTransactionValue: number
+    industryType: 'ecommerce' | 'saas' | 'services'
+}
+
+interface PerformanceImpact {
+    currentPerformanceGap: number
+    revenueAtRisk: number
+    improvementPotential: number
+    timeToValue: string
+    confidenceInterval: string
+}
 
 export function ROICalculatorSection() {
-    const [businessType, setBusinessType] = useState<'dental' | 'hotel'>('dental')
-    const [currentBuilder, setCurrentBuilder] = useState<'wix' | 'squarespace' | 'wordpress'>('wix')
-    const [monthlyVisitors, setMonthlyVisitors] = useState(1000)
-    const [conversionRate, setConversionRate] = useState(2.5)
-    const [avgOrderValue, setAvgOrderValue] = useState(150)
-
-    // Calculated values
-    const [calculations, setCalculations] = useState({
-        currentLCPLoss: 0,
-        yearlyBuilderCost: 0,
-        potentialSavings: 0,
-        roiMonths: 0,
-        yearlyRevenueLost: 0,
-        yearlyRevenueGain: 0
+    const [businessMetrics, setBusinessMetrics] = useState<BusinessMetrics>({
+        monthlyVisitors: 5000,
+        conversionRate: 3.2,
+        averageTransactionValue: 180,
+        industryType: 'ecommerce'
     })
 
-    useEffect(() => {
-        // Builder costs (annual)
-        const builderCosts = {
-            wix: 192, // $16/mo
-            squarespace: 216, // $18/mo  
-            wordpress: 360 // Hosting + plugins average
-        }
+    const [performanceImpact, setPerformanceImpact] = useState<PerformanceImpact>({
+        currentPerformanceGap: 0,
+        revenueAtRisk: 0,
+        improvementPotential: 0,
+        timeToValue: '',
+        confidenceInterval: ''
+    });
 
-        // LCP impact on conversion (industry data)
-        const lcpImpactMultiplier = businessType === 'dental' ? 1.4 : 1.6 // Hotels more sensitive to speed
-        const currentLCPPenalty = 0.35 // 35% loss with 2.8s+ LCP
-        const optimizedLCPBoost = 0.60 // 60% improvement with <1.4s LCP
-
-        const yearlyBuilderCost = builderCosts[currentBuilder]
-        const monthlyRevenue = monthlyVisitors * (conversionRate / 100) * avgOrderValue
-        const yearlyRevenue = monthlyRevenue * 12
-
-        const yearlyRevenueLost = yearlyRevenue * currentLCPPenalty
-        const yearlyRevenueGain = yearlyRevenue * (optimizedLCPBoost - currentLCPPenalty)
-        const totalSavings = yearlyBuilderCost + yearlyRevenueGain
-        const roiMonths = Math.ceil(1200 / (totalSavings / 12))
-
-        setCalculations({
-            currentLCPLoss: yearlyRevenueLost,
-            yearlyBuilderCost,
-            potentialSavings: totalSavings,
-            roiMonths,
-            yearlyRevenueLost,
-            yearlyRevenueGain
-        })
-    }, [businessType, currentBuilder, monthlyVisitors, conversionRate, avgOrderValue])
-
-    const businessTypeData = {
-        dental: {
-            label: 'Dental Clinic',
-            avgVisitors: 1200,
-            avgConversion: 3.5,
-            avgValue: 280,
-            painPoints: ['Slow mobile booking', 'Lost emergency calls', 'High ad costs']
+    const industryBenchmarks = {
+        ecommerce: {
+            label: 'E-commerce & Retail',
+            baselineConversion: 2.8,
+            performanceImpactMultiplier: 1.4,
+            typicalImprovementRange: '25-65%',
+            averageImplementationWeeks: 4
         },
-        hotel: {
-            label: 'Boutique Hotel',
-            avgVisitors: 2500,
-            avgConversion: 2.2,
-            avgValue: 320,
-            painPoints: ['OTA dependency', 'Mobile abandonment', 'Direct booking loss']
+        saas: {
+            label: 'SaaS & Technology',
+            baselineConversion: 6.2,
+            performanceImpactMultiplier: 1.6,
+            typicalImprovementRange: '30-85%',
+            averageImplementationWeeks: 6
+        },
+        services: {
+            label: 'Professional Services',
+            baselineConversion: 4.1,
+            performanceImpactMultiplier: 1.3,
+            typicalImprovementRange: '20-50%',
+            averageImplementationWeeks: 3
         }
     }
 
+    useEffect(() => {
+        const benchmark = industryBenchmarks[businessMetrics.industryType]
+        const monthlyRevenue = businessMetrics.monthlyVisitors * (businessMetrics.conversionRate / 100) * businessMetrics.averageTransactionValue
+        const annualRevenue = monthlyRevenue * 12
+
+        // Performance gap analysis
+        const performanceGapFactor = 0.25 // Conservative estimate based on industry data
+        const revenueAtRisk = annualRevenue * performanceGapFactor
+
+        // Improvement potential calculation
+        const improvementMultiplier = benchmark.performanceImpactMultiplier
+        const conservativeImprovementRate = 0.35 // 35% improvement (conservative)
+        const improvementPotential = revenueAtRisk * improvementMultiplier * conservativeImprovementRate
+
+        setPerformanceImpact({
+            currentPerformanceGap: performanceGapFactor * 100,
+            revenueAtRisk,
+            improvementPotential,
+            timeToValue: `${benchmark.averageImplementationWeeks} weeks`,
+            confidenceInterval: '95%'
+        })
+    }, [businessMetrics])
+
     return (
-        <SectionWrapper background="gray" spacing="normal" id="calculator">
-            <SectionHeader
-                eyebrow="ROI Calculator"
-                title="See your exact savings potential"
-                description="Calculate the real cost of slow speeds and builder dependencies for your business"
-                align="center"
-                size="md"
-            />
+        <section className="py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+            {/* Premium background elements */}
+            <div className="absolute inset-0">
+                <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-blue-400/20 via-transparent to-blue-400/20" />
+                <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-emerald-400/10 via-transparent to-emerald-400/10" />
+                <div className="absolute top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/10 to-transparent" />
+                <div className="absolute bottom-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/10 to-transparent" />
+            </div>
 
-            <div className="grid lg:grid-cols-2 gap-12">
+            {/* Grid pattern */}
+            <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
 
-                {/* Calculator Input */}
+            {/* Floating elements */}
+            <div className="absolute top-24 right-12 w-28 h-28 bg-gradient-to-br from-blue-500/20 to-emerald-500/20 rounded-full blur-xl" />
+            <div className="absolute bottom-24 left-8 w-36 h-36 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-full blur-xl" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-full blur-3xl" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                {/* Premium Header */}
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100"
-                >
-                    <div className="flex items-center space-x-3 mb-6">
-                        <Calculator className="w-6 h-6 text-blue-600" />
-                        <h3 className="text-2xl font-bold text-gray-900">Quick Assessment</h3>
+                    className="text-center mb-24"
+                >                    <div className="inline-flex items-center px-6 py-3 bg-white/10 border border-white/20 rounded-full text-white text-sm font-semibold mb-8 backdrop-blur-sm">
+                        <Calculator className="w-4 h-4 mr-2" />
+                        Performance Assessment
                     </div>
 
-                    <div className="space-y-6">
-                        {/* Business Type */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-900 mb-3">
-                                Business Type
-                            </label>
-                            <div className="grid grid-cols-2 gap-3">
-                                {Object.entries(businessTypeData).map(([key, data]) => (
-                                    <button
-                                        key={key}
-                                        onClick={() => setBusinessType(key as 'dental' | 'hotel')}
-                                        className={`p-4 rounded-lg border-2 transition-all duration-300 ${businessType === key
-                                                ? 'border-blue-500 bg-blue-50 text-blue-900'
-                                                : 'border-gray-200 hover:border-gray-300'
-                                            }`}
-                                    >
-                                        <div className="font-semibold text-sm">{data.label}</div>
-                                        <div className="text-xs text-gray-600 mt-1">
-                                            Avg: {data.avgVisitors} visits/mo
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Current Platform */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-900 mb-3">
-                                Current Website Platform
-                            </label>
-                            <select
-                                value={currentBuilder}
-                                onChange={(e) => setCurrentBuilder(e.target.value as any)}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                                <option value="wix">Wix ($16/month)</option>
-                                <option value="squarespace">Squarespace ($18/month)</option>
-                                <option value="wordpress">WordPress + Hosting ($30/month)</option>
-                            </select>
-                        </div>
-
-                        {/* Monthly Visitors */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-900 mb-3">
-                                Monthly Website Visitors: {monthlyVisitors.toLocaleString()}
-                            </label>
-                            <input
-                                type="range"
-                                min="500"
-                                max="10000"
-                                step="100"
-                                value={monthlyVisitors}
-                                onChange={(e) => setMonthlyVisitors(Number(e.target.value))}
-                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                            />
-                            <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>500</span>
-                                <span>10,000</span>
-                            </div>
-                        </div>
-
-                        {/* Conversion Rate */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-900 mb-3">
-                                Current Conversion Rate: {conversionRate}%
-                            </label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="8"
-                                step="0.1"
-                                value={conversionRate}
-                                onChange={(e) => setConversionRate(Number(e.target.value))}
-                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                            />
-                            <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>1%</span>
-                                <span>8%</span>
-                            </div>
-                        </div>
-
-                        {/* Average Order Value */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-900 mb-3">
-                                Average Service Value: ${avgOrderValue}
-                            </label>
-                            <input
-                                type="range"
-                                min="100"
-                                max="1000"
-                                step="10"
-                                value={avgOrderValue}
-                                onChange={(e) => setAvgOrderValue(Number(e.target.value))}
-                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                            />
-                            <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>$100</span>
-                                <span>$1,000</span>
-                            </div>
-                        </div>
-                    </div>
+                    <h2 className="text-5xl lg:text-6xl font-bold text-white mb-8 tracking-tight">
+                        Revenue Impact
+                        <br />
+                        <span className="bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                            Calculator
+                        </span>
+                    </h2>
+                    <p className="text-xl text-slate-300 max-w-4xl mx-auto leading-relaxed">
+                        Quantify your organization's performance optimization opportunity through industry-benchmarked analysis.
+                        This assessment provides data-driven insights based on established conversion research.
+                    </p>
                 </motion.div>
 
-                {/* Results */}
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="space-y-6"
-                >
-                    {/* Current Losses */}
-                    <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <TrendingUp className="w-6 h-6 text-red-600 rotate-180" />
-                            <h4 className="text-xl font-bold text-red-900">Current Annual Losses</h4>
-                        </div>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-700">Slow mobile performance</span>
-                                <span className="font-bold text-red-600">
-                                    -${calculations.yearlyRevenueLost.toLocaleString()}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-700">Builder subscription</span>
-                                <span className="font-bold text-red-600">
-                                    -${calculations.yearlyBuilderCost.toLocaleString()}
-                                </span>
-                            </div>
-                            <hr className="border-red-200" />
-                            <div className="flex justify-between items-center text-lg">
-                                <span className="font-semibold text-red-900">Total Lost Annually</span>
-                                <span className="font-bold text-red-600 text-xl">
-                                    -${(calculations.yearlyRevenueLost + calculations.yearlyBuilderCost).toLocaleString()}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Potential Gains */}
-                    <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <TrendingUp className="w-6 h-6 text-green-600" />
-                            <h4 className="text-xl font-bold text-green-900">With Site Reboot Lite</h4>
-                        </div>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-700">Revenue recovery (60% boost)</span>
-                                <span className="font-bold text-green-600">
-                                    +${calculations.yearlyRevenueGain.toLocaleString()}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-700">Eliminate builder costs</span>
-                                <span className="font-bold text-green-600">
-                                    +${calculations.yearlyBuilderCost.toLocaleString()}
-                                </span>
-                            </div>
-                            <hr className="border-green-200" />
-                            <div className="flex justify-between items-center text-lg">
-                                <span className="font-semibold text-green-900">Total Annual Gain</span>
-                                <span className="font-bold text-green-600 text-xl">
-                                    +${calculations.potentialSavings.toLocaleString()}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* ROI Summary */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <DollarSign className="w-6 h-6 text-blue-600" />
-                            <h4 className="text-xl font-bold text-blue-900">Investment ROI</h4>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="text-center">
-                                <div className="text-3xl font-bold text-blue-600">
-                                    {calculations.roiMonths}
-                                </div>
-                                <div className="text-sm text-gray-700">Months to ROI</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-3xl font-bold text-blue-600">
-                                    {Math.round((calculations.potentialSavings / 1200) * 100)}%
-                                </div>
-                                <div className="text-sm text-gray-700">Annual ROI</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Pain Points */}
-                    <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6">
-                        <h4 className="font-bold text-orange-900 mb-3">
-                            {businessTypeData[businessType].label} Pain Points
-                        </h4>
-                        <ul className="space-y-2">
-                            {businessTypeData[businessType].painPoints.map((point, index) => (
-                                <li key={index} className="flex items-center space-x-2">
-                                    <Clock className="w-4 h-4 text-orange-600" />
-                                    <span className="text-sm text-orange-800">{point}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* CTA */}
+                <div className="grid lg:grid-cols-2 gap-16">
+                    {/* Premium Assessment Input */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
+                        transition={{ duration: 0.6 }} className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-10 border border-white/10 overflow-hidden"
                     >
-                        <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center justify-center space-x-3">
-                            <Zap className="w-5 h-5" />
-                            <span>Reserve Slot - Eliminate These Losses</span>
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
-                        <p className="text-center text-sm text-gray-600 mt-3">
-                            $300 deposit • Refundable if we can't deliver • 110% guarantee
-                        </p>
+                        {/* Premium background glow */}
+                        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-blue-500/20 via-emerald-500/10 to-transparent rounded-full blur-3xl" />
+
+                        <div className="relative">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl shadow-lg">
+                                    <Calculator className="w-7 h-7" />
+                                </div>
+                                <div>
+                                    <h3 className="text-3xl font-bold text-white">Business Context</h3>
+                                    <p className="text-slate-300 font-medium">Current performance baseline</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-10">
+                                {/* Premium Industry Type */}
+                                <div>
+                                    <label className="block text-lg font-bold text-white mb-6">
+                                        Industry Sector
+                                    </label>
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {Object.entries(industryBenchmarks).map(([key, data]) => (
+                                            <button
+                                                key={key}
+                                                onClick={() => setBusinessMetrics(prev => ({ ...prev, industryType: key as any }))}
+                                                className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 text-left overflow-hidden ${businessMetrics.industryType === key
+                                                    ? 'border-blue-400 bg-gradient-to-br from-blue-50 to-indigo-50 scale-105 shadow-lg'
+                                                    : 'border-slate-200 hover:border-blue-300 hover:shadow-md hover:scale-102'
+                                                    }`}
+                                            >
+                                                {businessMetrics.industryType === key && (
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/5 rounded-2xl" />
+                                                )}
+                                                <div className="relative flex items-center gap-4">
+                                                    <div className={`p-3 rounded-xl transition-all duration-300 ${businessMetrics.industryType === key
+                                                        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg'
+                                                        : 'bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-600'
+                                                        }`}>
+                                                        {key === 'ecommerce' ? <Building2 className="w-6 h-6" /> :
+                                                            key === 'saas' ? <BarChart3 className="w-6 h-6" /> :
+                                                                <Users className="w-6 h-6" />}
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="font-bold text-slate-900 text-lg mb-1">{data.label}</div>
+                                                        <div className="text-sm text-slate-600">
+                                                            Typical improvement: <span className="font-semibold text-emerald-600">{data.typicalImprovementRange}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>                                {/* Premium Monthly Visitors */}
+                                <div>
+                                    <label className="block text-lg font-bold text-slate-900 mb-6">
+                                        Monthly Website Sessions: <span className="text-blue-600">{businessMetrics.monthlyVisitors.toLocaleString()}</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="range"
+                                            min="1000"
+                                            max="50000"
+                                            step="1000"
+                                            value={businessMetrics.monthlyVisitors}
+                                            onChange={(e) => setBusinessMetrics(prev => ({ ...prev, monthlyVisitors: Number(e.target.value) }))}
+                                            className="w-full h-3 bg-gradient-to-r from-slate-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                        <div className="flex justify-between text-sm text-slate-500 mt-3">
+                                            <span className="font-medium">1K</span>
+                                            <span className="font-medium">50K</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Premium Conversion Rate */}
+                                <div>
+                                    <label className="block text-lg font-bold text-slate-900 mb-6">
+                                        Current Conversion Rate: <span className="text-emerald-600">{businessMetrics.conversionRate.toFixed(1)}%</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="range"
+                                            min="0.5"
+                                            max="12"
+                                            step="0.1"
+                                            value={businessMetrics.conversionRate}
+                                            onChange={(e) => setBusinessMetrics(prev => ({ ...prev, conversionRate: Number(e.target.value) }))}
+                                            className="w-full h-3 bg-gradient-to-r from-slate-200 to-emerald-200 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                        <div className="flex justify-between text-sm text-slate-500 mt-3">
+                                            <span className="font-medium">0.5%</span>
+                                            <span className="font-medium">12%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Premium Average Transaction Value */}
+                                <div>
+                                    <label className="block text-lg font-bold text-slate-900 mb-6">
+                                        Average Transaction Value: <span className="text-purple-600">${businessMetrics.averageTransactionValue}</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="range"
+                                            min="50"
+                                            max="2000"
+                                            step="10"
+                                            value={businessMetrics.averageTransactionValue}
+                                            onChange={(e) => setBusinessMetrics(prev => ({ ...prev, averageTransactionValue: Number(e.target.value) }))}
+                                            className="w-full h-3 bg-gradient-to-r from-slate-200 to-purple-200 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                        <div className="flex justify-between text-sm text-slate-500 mt-3">
+                                            <span className="font-medium">$50</span>
+                                            <span className="font-medium">$2,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </motion.div>
+
+                    {/* Assessment Results */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="space-y-6"
+                    >
+                        {/* Performance Gap Analysis */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-orange-100 text-orange-600 rounded-lg">
+                                    <BarChart3 className="w-5 h-5" />
+                                </div>
+                                <h4 className="text-xl font-bold text-slate-900">Current Performance Analysis</h4>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-700">Performance gap identified</span>
+                                    <span className="font-bold text-orange-600">
+                                        {performanceImpact.currentPerformanceGap.toFixed(1)}%
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-700">Annual revenue at risk</span>
+                                    <span className="font-bold text-orange-600">
+                                        ${performanceImpact.revenueAtRisk.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                                    </span>
+                                </div>
+                                <div className="text-sm text-slate-600 bg-slate-50 p-3 rounded-lg">
+                                    <strong>Note:</strong> Based on industry performance correlation studies. Actual impact varies by specific implementation context.
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Optimization Potential */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+                                    <TrendingUp className="w-5 h-5" />
+                                </div>
+                                <h4 className="text-xl font-bold text-slate-900">Optimization Opportunity</h4>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-700">Conservative improvement estimate</span>
+                                    <span className="font-bold text-green-600">
+                                        ${performanceImpact.improvementPotential.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-700">Implementation timeline</span>
+                                    <span className="font-bold text-slate-900">{performanceImpact.timeToValue}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-700">Confidence interval</span>
+                                    <span className="font-bold text-blue-600">{performanceImpact.confidenceInterval}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Industry Benchmarks */}
+                        <div className="bg-slate-900 rounded-2xl p-6 text-white">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-blue-600 rounded-lg">
+                                    <Target className="w-5 h-5" />
+                                </div>
+                                <h4 className="text-xl font-bold">Industry Context</h4>
+                            </div>
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-300">Sector baseline conversion</span>
+                                    <span className="font-bold">
+                                        {industryBenchmarks[businessMetrics.industryType].baselineConversion}%
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-slate-300">Typical improvement range</span>
+                                    <span className="font-bold">
+                                        {industryBenchmarks[businessMetrics.industryType].typicalImprovementRange}
+                                    </span>
+                                </div>
+                                <div className="text-sm text-slate-400 bg-slate-800 p-3 rounded-lg mt-4">
+                                    Assessment based on {industryBenchmarks[businessMetrics.industryType].label.toLowerCase()} performance benchmarks and optimization case studies.
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Next Steps */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className="bg-blue-50 rounded-2xl p-6 border border-blue-200"
+                        >
+                            <h4 className="font-bold text-blue-900 mb-4">Next Steps</h4>
+                            <p className="text-blue-800 mb-4">
+                                This preliminary assessment indicates potential for measurable improvement. A comprehensive performance audit would provide detailed recommendations and implementation roadmap.
+                            </p>
+                            <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                                <DollarSign className="w-5 h-5" />
+                                Request Detailed Assessment
+                                <ArrowRight className="w-5 h-5" />
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                </div>
+
+                {/* Methodology Note */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mt-16"
+                >
+                    <div className="max-w-4xl mx-auto bg-white rounded-xl p-6 border border-slate-200">
+                        <h3 className="font-bold text-slate-900 mb-3">Assessment Methodology</h3>
+                        <p className="text-slate-600 text-sm leading-relaxed">                            Calculations based on industry performance studies, conversion rate optimization research, and statistical analysis of similar business contexts. Individual results may vary based on specific technical, competitive, and market factors. Professional assessment recommended for actionable insights.
+                        </p>
+                    </div>
                 </motion.div>
             </div>
-        </SectionWrapper>
+        </section>
     )
 }

@@ -36,7 +36,8 @@ export type {
 } from './legacy/typography'
 
 // Design System Tokens
-export { tokens as designTokens, getToken } from '../../design-system/tokens'
+export { tokens as designTokens } from '../../design-system/tokens'
+export { getToken } from '../../design-system/tokens/types'
 export type { 
   DesignTokens,
   ColorScale,
@@ -46,7 +47,7 @@ export type {
   Shadow,
   Radius,
   Breakpoint,
-} from '../../design-system/tokens'
+} from '../../design-system/tokens/types'
 
 // Utilities
 export { cn } from '../../lib/utils'

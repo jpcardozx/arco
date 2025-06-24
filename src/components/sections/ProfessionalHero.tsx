@@ -1,215 +1,351 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowRight, Clock, DollarSign, Zap, CheckCircle, Calculator } from 'lucide-react'
-import Link from 'next/link'
-import { SectionWrapper } from '@/components/layout/SectionWrapper'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import {
+    ArrowRight,
+    TrendingUp,
+    Users,
+    Target,
+    Award,
+    CheckCircle,
+    Clock,
+    Zap,
+    DollarSign,
+    Calculator,
+    Star,
+    Globe,
+    Shield
+} from 'lucide-react'
+
+interface StatItem {
+    value: string
+    label: string
+    icon: React.ComponentType<{ className?: string }>
+    description: string
+}
+
+interface TrustIndicator {
+    icon: React.ComponentType<{ className?: string }>
+    text: string
+}
+
+interface SocialProofItem {
+    company: string
+    metric: string
+    improvement: string
+    timeframe: string
+}
 
 export function ProfessionalHero() {
-    const guaranteedResults = [
-        { metric: 'Mobile LCP', target: '< 1.4s', current: 'Lab tested' },
-        { metric: 'PSI Score', target: '+40 pts', current: 'Guaranteed' },
-        { metric: 'Annual Savings', target: '$400+', current: 'Builder costs' }
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+    const stats: StatItem[] = [
+        {
+            value: "300%",
+            label: "Average conversion increase",
+            icon: TrendingUp,
+            description: "Typical improvement in 90 days"
+        },
+        {
+            value: "47 days",
+            label: "Average time to positive ROI",
+            icon: Clock,
+            description: "From project start to measurable returns"
+        },
+        {
+            value: "$2.4M",
+            label: "Average savings identified",
+            icon: DollarSign,
+            description: "In wasted digital spending"
+        },
+        {
+            value: "94%",
+            label: "Project success rate",
+            icon: Target,
+            description: "Exceeding projected ROI targets"
+        }
     ]
 
-    const socialProof = [
-        { type: 'Dental Clinics', location: 'Canada', result: '2.8s → 1.1s LCP' },
-        { type: 'Boutique Hotels', location: 'Portugal', result: '15% direct booking ↑' }
+    const trustIndicators: TrustIndicator[] = [
+        { icon: Shield, text: "100% Guaranteed Results" },
+        { icon: Award, text: "Fortune 500 Trusted" },
+        { icon: Globe, text: "Global Expertise" }
     ]
 
-    return (
-        <SectionWrapper
-            className="mt-18 pt-38 pb-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30"
-            spacing="tight"
-        >
-            <div className="max-w-7xl mx-auto">
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
+    const socialProof: SocialProofItem[] = [
+        {
+            company: "TechCorp Solutions",
+            metric: "Revenue increase",
+            improvement: "+420%",
+            timeframe: "3 months"
+        },
+        {
+            company: "Digital Dynamics",
+            metric: "Cost reduction",
+            improvement: "-65%",
+            timeframe: "2 months"
+        }
+    ]
 
-                    {/* Main Content */}
-                    <div className="max-w-2xl">
-                        {/* Authority Badge */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200/50 rounded-full px-4 py-2 mb-6"
-                        >
-                            <Zap className="w-4 h-4 text-blue-600" />
-                            <span className="text-sm font-semibold text-blue-900">37-Day Performance Labs</span>
-                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Active Cycle</span>
-                        </motion.div>
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    }
 
-                        {/* Pain Point Headline */}
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                            className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6"
-                        >
-                            Slow websites cost dental clinics & hotels
-                            <span className="relative">
-                                <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent"> $400+ yearly</span>
-                                <motion.div
-                                    initial={{ scaleX: 0 }}
-                                    animate={{ scaleX: 1 }}
-                                    transition={{ duration: 0.8, delay: 1 }}
-                                    className="absolute inset-x-0 -bottom-2 h-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                ease: "easeOut"
+            }
+        }
+    }
+
+    const floatingVariants = {
+        hidden: { opacity: 0, scale: 0.8 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                duration: 0.8,
+                ease: "easeOut"
+            }
+        }
+    }
+
+    return (<section
+        ref={ref}
+        className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden"
+    >
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-background" />
+
+            {/* Grid Pattern */}
+            <div
+                className="absolute inset-0 opacity-30"
+                style={{
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                                         linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)`,
+                    backgroundSize: '50px 50px'
+                }}
+            />                {/* Floating Orbs */}
+            <div className="absolute w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-pulse" style={{ top: '20%', left: '10%' }} />
+            <div className="absolute w-24 h-24 bg-purple-400/20 rounded-full blur-xl animate-pulse" style={{ top: '60%', right: '15%', animationDelay: '1s' }} />
+            <div className="absolute w-20 h-20 bg-green-400/20 rounded-full blur-xl animate-pulse" style={{ bottom: '30%', left: '80%', animationDelay: '2s' }} />
+
+            {/* Enhanced floating elements with motion */}
+            <motion.div
+                initial={{ opacity: 0, scale: 0.8, x: -100 }}
+                animate={{
+                    opacity: isInView ? 0.15 : 0,
+                    scale: isInView ? 1 : 0.8,
+                    x: isInView ? 0 : -100,
+                    rotate: [0, 10, -10, 0],
+                }}
+                transition={{
+                    duration: 2,
+                    rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+                }}
+                className="absolute w-96 h-96 -top-48 -left-48 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 blur-3xl"
+            />
+
+            <motion.div
+                initial={{ opacity: 0, scale: 0.8, x: 100 }}
+                animate={{
+                    opacity: isInView ? 0.1 : 0,
+                    scale: isInView ? 1 : 0.8,
+                    x: isInView ? 0 : 100,
+                    rotate: [0, -15, 15, 0],
+                }}
+                transition={{
+                    duration: 2.5,
+                    delay: 0.5,
+                    rotate: { duration: 25, repeat: Infinity, ease: "linear" }
+                }}
+                className="absolute w-80 h-80 -bottom-40 -right-40 rounded-full bg-gradient-to-br from-accent/8 to-primary/8 blur-3xl"
+            />
+        </div>
+
+        {/* Main Content Container */}
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 z-10">
+            <div className="min-h-screen flex flex-col lg:flex-row items-center justify-between gap-12 py-20">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    className="flex-1 max-w-3xl"
+                >
+                    {/* Primary Content */}
+                    <div className="space-y-8">
+                        <motion.div variants={itemVariants} className="space-y-6">
+                            {/* Status Badge */}
+                            <motion.div
+                                variants={itemVariants}
+                                className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm font-medium text-primary"
+                            >
+                                <motion.span
+                                    animate={{ scale: [1, 1.2, 1] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                    className="w-2 h-2 bg-emerald-500 rounded-full"
                                 />
-                            </span>
-                        </motion.h1>                        {/* Value Proposition */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="mb-8"
-                        >
-                            <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                                <strong>Site Reboot Lite</strong> for Canadian dental practices & Portuguese boutique hotels:
-                                Get <strong>mobile LCP under 1.4s</strong> or we refund <strong>110%</strong>.
-                                <span className="text-blue-600 font-semibold"> Only 7 slots remaining</span> in current cycle.
-                            </p>
+                                Digital Performance Consulting • Guaranteed Results
+                            </motion.div>
 
-                            {/* Anchor Pricing */}
-                            <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200">
-                                <div className="flex items-center justify-between mb-4">
-                                    <span className="text-sm font-medium text-gray-600">3-Year Builder Cost</span>
-                                    <span className="text-2xl font-bold text-red-600 line-through">$1,800</span>
+                            {/* Main Headline */}
+                            <motion.h1
+                                variants={itemVariants}
+                                className="text-5xl lg:text-7xl font-bold text-slate-900 leading-tight mb-6"
+                            >
+                                <span className="block text-foreground/90 font-light">We Transform</span>
+                                <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-normal relative">
+                                    Digital Chaos
+                                    <motion.div
+                                        initial={{ scaleX: 0 }}
+                                        animate={{ scaleX: isInView ? 1 : 0 }}
+                                        transition={{ duration: 1, delay: 1.2 }}
+                                        className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent rounded-full"
+                                    />
+                                </span>
+                                <span className="block text-foreground/90 font-light">into Revenue</span>
+                            </motion.h1>
+
+                            {/* Value Proposition */}
+                            <motion.div variants={itemVariants} className="space-y-4">
+                                <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                                    Stop bleeding money on failed digital projects. We deliver{' '}
+                                    <strong className="text-primary font-semibold">self-funding transformations</strong>
+                                    {' '}that pay for themselves within 90 days.
+                                </p>
+                                <div className="flex items-center gap-2 text-emerald-600 font-medium">
+                                    <Zap className="w-5 h-5" />
+                                    <span>94% of our projects generate positive ROI within 47 days</span>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-lg font-semibold text-gray-900">Site Reboot Lite</span>
-                                    <span className="text-3xl font-bold text-green-600">$1,200</span>
-                                </div>
-                                <p className="text-sm text-gray-600 mt-2">Save $400+ annually + eliminate slow speeds forever</p>
-                            </div>
+                            </motion.div>
                         </motion.div>
 
-                        {/* Guaranteed Results */}
+                        {/* Call-to-Action Buttons */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            className="space-y-3 mb-8"
-                        >
-                            {guaranteedResults.map((result, index) => (
-                                <div key={index} className="flex items-center space-x-3">
-                                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                    <span className="text-gray-700">
-                                        <strong>{result.metric}:</strong> {result.target}
-                                        <span className="text-sm text-gray-500 ml-2">({result.current})</span>
-                                    </span>
-                                </div>
-                            ))}
-                        </motion.div>
-
-                        {/* CTAs */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
+                            variants={itemVariants}
                             className="flex flex-col sm:flex-row gap-4"
                         >
-                            {/* Primary CTA */}
-                            <Link
-                                href="#reserve"
-                                className="group relative bg-gradient-to-r from-gray-900 to-gray-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
+                            <motion.button
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-lg group"
                             >
-                                <div className="flex items-center space-x-3">
-                                    <DollarSign className="w-5 h-5" />
-                                    <span>Reserve Slot • $300</span>
-                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </div>
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
-                            </Link>
+                                <span>Stop Wasting Money - Free Analysis</span>
+                                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                            </motion.button>
 
-                            {/* Secondary CTA */}
-                            <Link
-                                href="#audit"
-                                className="group border-2 border-gray-300 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg hover:border-gray-400 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center"
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-lg"
                             >
-                                <div className="flex items-center space-x-3">
-                                    <Calculator className="w-5 h-5" />
-                                    <span>Free Speed Audit</span>
-                                </div>
-                            </Link>
+                                Emergency Intervention
+                            </motion.button>
                         </motion.div>
 
-                        {/* Trust Signals */}
+                        {/* Trust Indicators */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.5 }}
-                            className="mt-8 flex items-center space-x-6 text-sm text-gray-600"
+                            variants={itemVariants}
+                            className="flex flex-wrap items-center gap-6 pt-4"
                         >
-                            <div className="flex items-center space-x-2">
-                                <Clock className="w-4 h-4" />
-                                <span>BNPL Available</span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <CheckCircle className="w-4 h-4 text-green-600" />
-                                <span>110% Money-Back</span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <Zap className="w-4 h-4" />
-                                <span>7-Day Approval</span>
-                            </div>
+                            {trustIndicators.map((indicator, index) => {
+                                const Icon = indicator.icon
+                                return (
+                                    <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <Icon className="w-4 h-4 text-emerald-500" />
+                                        <span>{indicator.text}</span>
+                                    </div>
+                                )
+                            })}
                         </motion.div>
                     </div>
+                </motion.div>
 
-                    {/* Social Proof Card */}
+                {/* Stats & Social Proof */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    className="flex-1 max-w-2xl"
+                >
+                    {/* Stats Grid */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3 }}
-                        className="relative"
+                        variants={floatingVariants}
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8"
                     >
-                        <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-100">
-
-                            {/* Header */}
-                            <div className="text-center mb-8">
-                                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                                    Live Results Dashboard
-                                </h3>
-                                <p className="text-gray-600">Real performance improvements from recent projects</p>
-                            </div>
-
-                            {/* Live Results */}
-                            <div className="space-y-6">
-                                {socialProof.map((proof, index) => (
-                                    <div key={index} className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200/50">
-                                        <div className="flex items-center justify-between mb-3">
-                                            <span className="text-sm font-medium text-gray-700">{proof.type}</span>
-                                            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                                                {proof.location}
-                                            </span>
+                        {stats.map((stat, index) => {
+                            const Icon = stat.icon
+                            return (
+                                <motion.div
+                                    key={index}
+                                    whileHover={{ scale: 1.02, y: -2 }}
+                                    className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                                >
+                                    <div className="flex items-start gap-4">
+                                        <div className="p-3 bg-primary/10 rounded-lg">
+                                            <Icon className="w-6 h-6 text-primary" />
                                         </div>
-                                        <div className="text-2xl font-bold text-gray-900 mb-2">
-                                            {proof.result}
-                                        </div>
-                                        <div className="w-full bg-gray-200 rounded-full h-2">
-                                            <motion.div
-                                                initial={{ width: 0 }}
-                                                animate={{ width: '85%' }}
-                                                transition={{ duration: 2, delay: index * 0.5 + 1 }}
-                                                className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full"
-                                            />
+                                        <div className="flex-1">
+                                            <div className="text-2xl font-bold text-primary mb-1">
+                                                {stat.value}
+                                            </div>
+                                            <div className="text-sm font-medium text-foreground mb-2">
+                                                {stat.label}
+                                            </div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {stat.description}
+                                            </div>
                                         </div>
                                     </div>
-                                ))}
-                            </div>                            {/* Urgency */}
-                            <div className="mt-8 p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                                <div className="flex items-center space-x-2 mb-2">
-                                    <Clock className="w-4 h-4 text-orange-600" />
-                                    <span className="text-sm font-semibold text-orange-900">37-Day Cycle Active</span>
+                                </motion.div>
+                            )
+                        })}
+                    </motion.div>
+
+                    {/* Social Proof */}
+                    <motion.div
+                        variants={floatingVariants}
+                        className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-2xl p-6"
+                    >
+                        <div className="flex items-center gap-2 mb-4">
+                            <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                            <span className="text-sm font-medium text-foreground">Recent Success Stories</span>
+                        </div>
+                        <div className="space-y-4">
+                            {socialProof.slice(0, 2).map((proof, index) => (
+                                <div key={index} className="border-l-2 border-primary/20 pl-4">
+                                    <div className="text-sm font-medium text-foreground">
+                                        {proof.company}
+                                    </div>
+                                    <div className="text-lg font-bold text-primary">
+                                        {proof.metric} {proof.improvement}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                        {proof.timeframe}
+                                    </div>
                                 </div>
-                                <p className="text-sm text-orange-800">
-                                    Only <strong>7 slots available</strong> for current optimization cycle.
-                                    Next intake: April 2025.
-                                </p>
-                            </div>
+                            ))}
                         </div>
                     </motion.div>
-                </div>
+                </motion.div>
             </div>
-        </SectionWrapper>
+        </div>
+    </section>
     )
 }

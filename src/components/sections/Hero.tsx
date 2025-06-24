@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, Clock, DollarSign, TrendingUp } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 import { useEffect, useState } from 'react'
 import { useContent } from '../../lib/content'
 
@@ -132,7 +132,7 @@ export function Hero() {
                         whileTap={{ scale: 0.98 }}
                     >
                         <Link
-                            href="/diagnose"
+                            href={createHref("/diagnose")}
                             className="group inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                         >
                             {'cta'}
@@ -145,7 +145,7 @@ export function Hero() {
                         whileTap={{ scale: 0.98 }}
                     >
                         <Link
-                            href="/cases"
+                            href={createHref("/cases")}
                             className="group inline-flex items-center border-2 border-slate-300 hover:border-slate-400 bg-white/80 backdrop-blur-sm text-slate-700 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
                         >
                             {'view Cases'}
@@ -199,3 +199,5 @@ export function Hero() {
         </section>
     )
 }
+
+

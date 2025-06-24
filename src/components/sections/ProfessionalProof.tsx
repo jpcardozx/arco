@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Quote, TrendingUp, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 import { SectionWrapper } from '@/components/layout/SectionWrapper'
 import { SectionHeader } from '@/components/layout/SectionHeader'
 
@@ -189,7 +189,7 @@ export function ProfessionalProof() {
                     Every business is different. Let's discuss your specific performance challenges and create a custom strategy.
                 </p>
                 <Link
-                    href="/contact"
+                    href={createHref("/contact")}
                     className="inline-flex items-center px-8 py-4 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors text-lg"
                 >
                     Get your performance audit
@@ -199,3 +199,5 @@ export function ProfessionalProof() {
         </SectionWrapper>
     )
 }
+
+

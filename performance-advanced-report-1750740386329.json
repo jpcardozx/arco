@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-06-24T04:46:26.329Z",
+  "summary": {
+    "environmentsAnalyzed": 1,
+    "successfulAnalyses": 0,
+    "failedAnalyses": 1
+  },
+  "results": {
+    "local": {
+      "url": "http://localhost:3000",
+      "timestamp": "2025-06-24T04:46:26.328Z",
+      "error": "Navigation timeout of 30000 ms exceeded",
+      "status": "failed"
+    }
+  },
+  "businessMetrics": {
+    "averageRevenue": 15000,
+    "conversionRate": 0.035,
+    "costPerLead": 120
+  },
+  "recommendations": []
+}

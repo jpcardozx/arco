@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Linkedin, Twitter, Github, ArrowRight, Zap } from 'lucide-react'
 import { Button } from '../../design-system/components'
+import { createHref } from '../../utils/navigation'
 
 export function ModernFooter() {
     const currentYear = new Date().getFullYear()
@@ -108,14 +109,13 @@ export function ModernFooter() {
                         <h4 className="text-lg font-bold">Quick Links</h4>
                         <ul className="space-y-3">
                             {quickLinks.map((link, index) => (
-                                <li key={index}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
-                                    >
-                                        <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                        <span>{link.label}</span>
-                                    </Link>
+                                <li key={index}>                                    <Link
+                                    href={createHref(link.href)}
+                                    className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
+                                >
+                                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <span>{link.label}</span>
+                                </Link>
                                 </li>
                             ))}
                         </ul>
@@ -124,14 +124,13 @@ export function ModernFooter() {
                         <h4 className="text-lg font-bold">Solutions</h4>
                         <ul className="space-y-3">
                             {solutions.map((solution, index) => (
-                                <li key={index}>
-                                    <Link
-                                        href={solution.href}
-                                        className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
-                                    >
-                                        <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                        <span>{solution.label}</span>
-                                    </Link>
+                                <li key={index}>                                    <Link
+                                    href={createHref(solution.href)}
+                                    className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
+                                >
+                                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <span>{solution.label}</span>
+                                </Link>
                                 </li>
                             ))}
                         </ul>
@@ -140,14 +139,13 @@ export function ModernFooter() {
                         <h4 className="text-lg font-bold">Company</h4>
                         <ul className="space-y-3">
                             {company.map((item, index) => (
-                                <li key={index}>
-                                    <Link
-                                        href={item.href}
-                                        className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
-                                    >
-                                        <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                        <span>{item.label}</span>
-                                    </Link>
+                                <li key={index}>                                    <Link
+                                    href={createHref(item.href)}
+                                    className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
+                                >
+                                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <span>{item.label}</span>
+                                </Link>
                                 </li>
                             ))}
                         </ul>
@@ -209,13 +207,13 @@ export function ModernFooter() {
                     </div>
 
                     <div className="flex gap-6 text-sm">
-                        <Link href="/privacy" className="text-slate-400 hover:text-white transition-colors duration-300">
+                        <Link href={createHref("/privacy")} className="text-slate-400 hover:text-white transition-colors duration-300">
                             Privacy
                         </Link>
-                        <Link href="/terms" className="text-slate-400 hover:text-white transition-colors duration-300">
+                        <Link href={createHref("/terms")} className="text-slate-400 hover:text-white transition-colors duration-300">
                             Terms
                         </Link>
-                        <Link href="/cookies" className="text-slate-400 hover:text-white transition-colors duration-300">
+                        <Link href={createHref("/cookies")} className="text-slate-400 hover:text-white transition-colors duration-300">
                             Cookies
                         </Link>
                     </div>

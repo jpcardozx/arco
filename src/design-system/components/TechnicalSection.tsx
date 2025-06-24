@@ -32,16 +32,16 @@ interface TechnicalHeaderProps {
 }
 
 const variants = {
-    dark: technicalTokens.colors.technical.surface.primary,
-    darker: technicalTokens.colors.technical.surface.secondary,
-    darkest: technicalTokens.colors.technical.surface.tertiary
+    dark: technicalTokens.colors.surface.canvas,
+    darker: technicalTokens.colors.surface.elevated,
+    darkest: technicalTokens.colors.surface.overlay
 }
 
 const paddingVariants = {
-    sm: technicalTokens.spacing.technical['section-sm'],
-    md: technicalTokens.spacing.technical['section-md'],
-    lg: technicalTokens.spacing.technical['section-lg'],
-    xl: technicalTokens.spacing.technical['section-xl']
+    sm: technicalTokens.spacing.layout.sm,
+    md: technicalTokens.spacing.layout.base,
+    lg: technicalTokens.spacing.layout.md,
+    xl: technicalTokens.spacing.layout.lg
 }
 
 const maxWidthVariants = {
@@ -78,8 +78,8 @@ export function TechnicalSection({
                         className="absolute inset-0 opacity-10"
                         style={{
                             backgroundImage: `
-                linear-gradient(${technicalTokens.colors.technical.border.subtle} 1px, transparent 1px),
-                linear-gradient(90deg, ${technicalTokens.colors.technical.border.subtle} 1px, transparent 1px)
+                linear-gradient(${technicalTokens.colors.surface.border} 1px, transparent 1px),
+                linear-gradient(90deg, ${technicalTokens.colors.surface.border} 1px, transparent 1px)
               `,
                             backgroundSize: '50px 50px'
                         }}
@@ -94,22 +94,21 @@ export function TechnicalSection({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, delay: 0.5 }}
-                        className="absolute top-1/4 right-1/4 w-2 h-2 rounded-full animate-pulse"
-                        style={{ backgroundColor: technicalTokens.colors.technical.accent.primary }}
+                        className="absolute top-1/4 right-1/4 w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: technicalTokens.colors.accent.blue.primary }}
                     />
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, delay: 1 }}
                         className="absolute top-1/2 left-1/3 w-1 h-1 rounded-full animate-pulse"
-                        style={{ backgroundColor: technicalTokens.colors.technical.accent.secondary }}
+                        style={{ backgroundColor: technicalTokens.colors.accent.emerald.primary }}
                     />
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, delay: 1.5 }}
                         className="absolute bottom-1/3 right-1/3 w-1.5 h-1.5 rounded-full animate-pulse"
-                        style={{ backgroundColor: technicalTokens.colors.technical.accent.tertiary }}
+                        style={{ backgroundColor: technicalTokens.colors.accent.purple.primary }}
                     />
                 </div>
             )}
@@ -135,19 +134,19 @@ export function TechnicalHeader({
 
     const badgeVariants = {
         primary: {
-            bg: technicalTokens.colors.technical.surface.accent,
-            border: technicalTokens.colors.technical.border.emphasis,
-            text: technicalTokens.colors.technical.accent.primary
+            bg: technicalTokens.colors.surface.accent,
+            border: technicalTokens.colors.surface.border,
+            text: technicalTokens.colors.accent.blue.primary
         },
         success: {
-            bg: technicalTokens.colors.technical.surface.accent,
-            border: technicalTokens.colors.technical.border.emphasis,
-            text: technicalTokens.colors.technical.accent.secondary
+            bg: technicalTokens.colors.surface.accent,
+            border: technicalTokens.colors.surface.border,
+            text: technicalTokens.colors.accent.emerald.primary
         },
         info: {
-            bg: technicalTokens.colors.technical.surface.accent,
-            border: technicalTokens.colors.technical.border.emphasis,
-            text: technicalTokens.colors.technical.accent.tertiary
+            bg: technicalTokens.colors.surface.accent,
+            border: technicalTokens.colors.surface.border,
+            text: technicalTokens.colors.accent.purple.primary
         }
     }
 
@@ -187,12 +186,11 @@ export function TechnicalHeader({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className={cn('font-bold leading-tight mb-6', maxWidthClasses)}
-                style={{
-                    fontSize: technicalTokens.typography.technical.sizes['hero-lg'].fontSize,
-                    lineHeight: technicalTokens.typography.technical.sizes['hero-lg'].lineHeight,
-                    letterSpacing: technicalTokens.typography.technical.sizes['hero-lg'].letterSpacing,
-                    color: technicalTokens.colors.technical.text.primary
+                className={cn('font-bold leading-tight mb-6', maxWidthClasses)} style={{
+                    fontSize: technicalTokens.typography.scale.display.lg?.fontSize || '3.75rem',
+                    lineHeight: technicalTokens.typography.scale.display.lg?.lineHeight || '1',
+                    letterSpacing: technicalTokens.typography.scale.display.lg?.letterSpacing || '-0.03em',
+                    color: technicalTokens.colors.status.neutral.foreground
                 }}
             >
                 {headline.includes('<span>') ? (
@@ -210,7 +208,7 @@ export function TechnicalHeader({
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                     className={cn('text-xl font-semibold mb-4', maxWidthClasses)}
-                    style={{ color: technicalTokens.colors.technical.text.secondary }}
+                    style={{ color: technicalTokens.colors.status.neutral.muted }}
                 >
                     {subheadline}
                 </motion.h3>
@@ -224,7 +222,7 @@ export function TechnicalHeader({
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className={cn('text-lg leading-relaxed', maxWidthClasses)}
-                    style={{ color: technicalTokens.colors.technical.text.tertiary }}
+                    style={{ color: technicalTokens.colors.status.neutral.primary }}
                 >
                     {description}
                 </motion.p>
@@ -238,7 +236,7 @@ export function TechnicalHeader({
                 transition={{ duration: 0.8, delay: 0.5 }}
                 className={cn('h-0.5 mt-8', align === 'center' ? 'mx-auto w-24' : 'w-16')}
                 style={{
-                    background: `linear-gradient(90deg, transparent, ${technicalTokens.colors.technical.accent.primary}, transparent)`
+                    background: `linear-gradient(90deg, transparent, ${technicalTokens.colors.accent.blue.primary}, transparent)`
                 }}
             />
         </motion.div>

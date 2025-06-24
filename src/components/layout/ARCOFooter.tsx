@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { createHref } from '@/utils/navigation'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Linkedin, Twitter, ArrowRight } from 'lucide-react'
 
@@ -131,7 +132,7 @@ export function ARCOFooter() {
                 {section.links.map((link, index) => (
                   <li key={index}>
                     <Link
-                      href={link.href}
+                      href={createHref(link.href)}
                       className="text-slate-400 hover:text-white transition-colors duration-200 flex items-center group"
                     >
                       <span>{link.label}</span>
@@ -185,13 +186,13 @@ export function ARCOFooter() {
                 © {currentYear} ARCO Digital Performance Engineering. All rights reserved.
               </p>
               <div className="flex space-x-6 text-sm">
-                <Link href="/privacy" className="text-slate-400 hover:text-white transition-colors duration-200">
+                <Link href={createHref("/privacy")} className="text-slate-400 hover:text-white transition-colors duration-200">
                   Privacy Policy
                 </Link>
-                <Link href="/terms" className="text-slate-400 hover:text-white transition-colors duration-200">
+                <Link href={createHref("/terms")} className="text-slate-400 hover:text-white transition-colors duration-200">
                   Terms of Service
                 </Link>
-                <Link href="/cookies" className="text-slate-400 hover:text-white transition-colors duration-200">
+                <Link href={createHref("/cookies")} className="text-slate-400 hover:text-white transition-colors duration-200">
                   Cookie Policy
                 </Link>
               </div>

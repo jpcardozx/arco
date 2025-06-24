@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 import Image from 'next/image'
 import { LanguageSelector } from '../ui/LanguageSelector'
 
@@ -60,12 +60,13 @@ export function SophisticatedNavigation() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                >                    <Link href="/" className="flex items-center">
+                >                    <Link href={createHref("/")} className="flex items-center">
                         <Image
                             src="/logo-v2.svg"
                             alt="ARCO"
                             width={120}
                             height={40}
+                            style={{ height: 'auto' }}
                             className={`transition-all duration-300 ${isScrolled ? 'opacity-100' : 'brightness-0 invert opacity-90'
                                 }`}
                         />
@@ -82,7 +83,7 @@ export function SophisticatedNavigation() {
                             transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
                         >
                             <Link
-                                href={item.href}
+                                href={createHref(item.href)}
                                 className={`group px-3 py-2 rounded-lg font-medium transition-all duration-300 ${isScrolled
                                     ? 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
                                     : 'text-white/90 hover:text-white hover:bg-white/10'
@@ -149,7 +150,7 @@ export function SophisticatedNavigation() {
                             {navigationItems.map((item) => (
                                 <Link
                                     key={item.label}
-                                    href={item.href}
+                                    href={createHref(item.href)}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="block px-3 py-2 text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                                 >
@@ -171,3 +172,5 @@ export function SophisticatedNavigation() {
     </motion.nav>
     )
 }
+
+

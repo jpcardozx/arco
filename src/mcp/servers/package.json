@@ -1,0 +1,23 @@
+{
+  "name": "arco-mcp-intelligence-server",
+  "version": "1.0.0",
+  "description": "ARCO Strategic Intelligence MCP Server for competitive platform advantage",
+  "type": "module",
+  "main": "arco-intelligence-server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node arco-intelligence-server.js",
+    "dev": "tsx arco-intelligence-server.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

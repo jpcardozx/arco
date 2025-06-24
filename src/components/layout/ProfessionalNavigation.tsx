@@ -1,164 +1,315 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Globe, Menu, X, Zap, ArrowRight } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { memo, useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X, ArrowUpRight, Zap, LogIn, Briefcase, FileText, Users, Mail, Calculator, Workflow } from 'lucide-react';
 
-export function ProfessionalNavigation() {
-    const [isScrolled, setIsScrolled] = useState(false)
-    const [language, setLanguage] = useState('EN')
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+const NAVIGATION_ITEMS = [
+    { label: 'Services', href: '/services', icon: Briefcase },
+    { label: 'Assessment', href: '/assessment', icon: Workflow },
+    { label: 'ROI Calculator', href: '/roi-calculator', icon: Calculator },
+    { label: 'Case Studies', href: '/case-studies', icon: FileText },
+    { label: 'About', href: '/about', icon: Users },
+    { label: 'Contact', href: '/contact', icon: Mail }
+] as const;
+
+const SCROLL_THRESHOLD = 80;
+
+interface NavigationLinkProps {
+    href: string;
+    label: string;
+    isActive: boolean;
+    onClick?: () => void;
+    isMobile?: boolean;
+    icon?: React.ComponentType<{ className?: string }>;
+}
+
+const NavigationLink = memo(({ href, label, isActive, onClick, isMobile = false, icon: Icon }: NavigationLinkProps) => (
+    <Link
+        href={href as any}
+        onClick={onClick}
+        className={`
+            group relative overflow-hidden transition-all duration-300 ease-out
+            ${isMobile
+                ? 'block px-6 py-4 text-lg font-medium rounded-2xl'
+                : 'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl'
+            }
+            ${isActive
+                ? 'text-white bg-gradient-to-r from-primary-600 to-primary-700 shadow-medium border border-primary-500'
+                : 'text-neutral-700 hover:text-primary-700 hover:bg-white/90 hover:shadow-soft hover:border-primary-200 border border-transparent'
+            }
+        `}
+        aria-current={isActive ? 'page' : undefined}
+    >
+        {Icon && !isMobile && (
+            <Icon className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'text-white' : 'text-primary-600 group-hover:scale-110'}`} />
+        )}
+        <span className="relative z-10">{label}</span>
+        {!isMobile && !isActive && (
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-50/0 via-primary-50/80 to-accent-50/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        )}
+    </Link>
+));
+
+NavigationLink.displayName = 'NavigationLink';
+
+export default function Navigation() {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const navRef = useRef<HTMLElement>(null);
+    const pathname = usePathname();
 
     useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20)
-        }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+        let timeoutId: NodeJS.Timeout;
 
-    const navItems = [
-        { label: 'Site Reboot', href: '#services', highlight: '$1,200', description: 'Speed optimization for hotels & clinics' },
-        { label: 'Case Studies', href: '#results', highlight: '< 1.4s LCP', description: 'Real performance improvements' },
-        { label: 'ROI Calculator', href: '#calculator', highlight: '$400+ saved', description: 'See your potential savings' },
-        { label: 'Free Audit', href: '#audit', highlight: 'Instant', description: 'Get immediate site analysis' }
-    ]
+        const handleScroll = () => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
+            }, 10);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timeoutId);
+        };
+    }, []);
+
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [pathname]);
+
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => { document.body.style.overflow = ''; };
+        }
+    }, [isMobileMenuOpen]);
+
+    const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev); const isActiveRoute = (href: string) => {
+        return pathname === href || (href !== '/' && pathname.startsWith(href));
+    };
 
     return (
         <>
-            <header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                        ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-lg shadow-black/5'
-                        : 'bg-white'
-                    }`}
-            >
-                <nav className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-20">
+            {/* Enhanced background blur overlay */}
+            <div className="fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-white/98 via-white/95 to-white/80 backdrop-blur-xl z-40 pointer-events-none border-b border-neutral-200/20" />
 
-                        {/* Premium Logo */}
+            <header
+                ref={navRef}
+                className={`
+                    fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out
+                    ${isScrolled ? 'translate-y-0' : 'translate-y-2'}
+                `}
+            >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className={`
+                        flex items-center justify-between transition-all duration-500 ease-out
+                        ${isScrolled ? 'h-16' : 'h-20'}
+                    `}>
+
+                        {/* Logo */}
                         <Link
-                            href="/"
-                            className="flex items-center space-x-3 group"
+                            href={"/" as any}
+                            className="group flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-xl transition-transform duration-200 hover:scale-105"
+                            aria-label="Arco Digital Performance - Home"
                         >
-                            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 p-2 group-hover:shadow-lg transition-all duration-300">
+                            <div className="relative">
+                                <div className="absolute -inset-3 bg-gradient-to-r from-primary-600/0 via-primary-600/5 to-accent-600/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 <Image
-                                    src="/logo-v2.svg"
-                                    alt="Arco"
-                                    fill
-                                    className="object-contain filter invert"
+                                    src="/logo-v2.png"
+                                    alt="Arco Digital Performance"
+                                    width={isScrolled ? 140 : 160}
+                                    height={isScrolled ? 42 : 48}
+                                    className={`
+                                        relative transition-all duration-500 ease-out
+                                        ${isScrolled ? 'h-8' : 'h-10'} w-auto
+                                    `}
+                                    priority
                                 />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-xl font-bold text-gray-900 tracking-tight leading-none">
-                                    Arco
-                                </span>
-                                <span className="text-xs text-gray-500 font-medium tracking-wide">
-                                    PERFORMANCE LABS
-                                </span>
                             </div>
                         </Link>
 
-                        {/* Desktop Navigation - Premium */}
-                        <div className="hidden lg:flex items-center space-x-1">
-                            {navItems.map((item, index) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className="relative group px-4 py-3 rounded-lg transition-all duration-300 hover:bg-gray-50"
-                                >
-                                    <div className="flex flex-col items-center space-y-1">
-                                        <div className="flex items-center space-x-2">
-                                            <span className="text-sm font-semibold text-gray-900 group-hover:text-gray-700">
-                                                {item.label}
-                                            </span>
-                                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
-                                                {item.highlight}
-                                            </span>
-                                        </div>
-                                        <span className="text-xs text-gray-500 text-center leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            {item.description}
-                                        </span>
-                                    </div>
-                                    <span className="absolute inset-x-2 -bottom-0.5 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center duration-300" />
-                                </Link>
-                            ))}
-                        </div>
-
-                        {/* Right side - Premium */}
-                        <div className="hidden lg:flex items-center space-x-4">
-                            {/* Language Selector */}
-                            <button
-                                className="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 rounded-lg hover:bg-gray-50"
-                                onClick={() => setLanguage(language === 'EN' ? 'PT' : 'EN')}
-                            >
-                                <Globe className="w-4 h-4" />
-                                <span>{language}</span>
-                            </button>
-
-                            {/* Premium CTA */}
-                            <Link
-                                href="#audit"
-                                className="relative group bg-gradient-to-r from-gray-900 to-gray-800 text-white px-6 py-3 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
-                            >
-                                <div className="flex items-center space-x-2">
-                                    <Zap className="w-4 h-4" />
-                                    <span>Free Speed Audit</span>
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                                </div>
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
-                            </Link>
-                        </div>
-
-                        {/* Mobile menu button */}
-                        <button
-                            className="lg:hidden p-2 rounded-lg hover:bg-gray-50 transition-colors"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        >
-                            <Menu className="w-6 h-6 text-gray-700" />
-                        </button>
-                    </div>
-                </nav>
-
-                {/* Mobile Menu */}
-                <AnimatePresence>
-                    {isMobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="lg:hidden bg-white border-t border-gray-100"
-                        >
-                            <div className="px-6 py-4 space-y-4">
-                                {navItems.map((item) => (
-                                    <Link
-                                        key={item.href}
-                                        href={item.href}
-                                        className="block p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-semibold text-gray-900">{item.label}</span>
-                                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                                                {item.highlight}
-                                            </span>
-                                        </div>
-                                        <p className="text-sm text-gray-600 mt-1">{item.description}</p>
-                                    </Link>
+                        {/* Desktop Navigation */}
+                        <nav className="hidden lg:block" role="navigation">
+                            <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-lg rounded-2xl p-2 border border-neutral-200/40 shadow-lg">
+                                {NAVIGATION_ITEMS.map(({ label, href, icon }) => (
+                                    <NavigationLink
+                                        key={href}
+                                        href={href}
+                                        label={label}
+                                        isActive={isActiveRoute(href)}
+                                        icon={icon}
+                                    />
                                 ))}
-                                <Link
-                                    href="#audit"
-                                    className="block w-full bg-gray-900 text-white text-center py-3 rounded-lg font-semibold"
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                            </div>
+                        </nav>
+
+                        {/* Actions */}
+                        <div className="flex items-center space-x-3">
+                            {/* Login Button - Desktop */}
+                            <Link
+                                href={"/login" as any}
+                                className="
+                                    hidden md:flex items-center gap-2
+                                    text-neutral-700 hover:text-primary-700 
+                                    px-4 py-2.5 text-sm font-medium rounded-xl
+                                    hover:bg-white/90 hover:shadow-soft 
+                                    transition-all duration-300 ease-out
+                                    focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                    border border-transparent hover:border-primary-200
+                                    group
+                                "
+                            >
+                                <LogIn className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
+                                <span>Login</span>
+                            </Link>
+
+                            {/* Enhanced CTA */}
+                            <Link
+                                href={"/audit" as any}
+                                className="
+                                    group relative inline-flex items-center gap-2 
+                                    bg-gradient-to-r from-primary-600 via-primary-700 to-primary-600
+                                    text-white px-6 py-3 text-sm font-semibold rounded-xl
+                                    hover:shadow-lg hover:shadow-primary-600/30 
+                                    hover:scale-105 active:scale-95
+                                    transition-all duration-300 ease-out
+                                    focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                    overflow-hidden
+                                "
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <Zap className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:rotate-12" />
+                                <span className="relative z-10">Free Audit</span>
+                                <ArrowUpRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            </Link>
+
+                            {/* Mobile Menu Button */}
+                            <button
+                                type="button"
+                                onClick={toggleMobileMenu}
+                                className="
+                                    lg:hidden p-3 text-neutral-600 hover:text-neutral-900 
+                                    bg-white/80 hover:bg-white/90 backdrop-blur-sm
+                                    rounded-xl transition-all duration-200
+                                    focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                    border border-neutral-200/50 shadow-sm hover:shadow-md
+                                "
+                                aria-expanded={isMobileMenuOpen}
+                                aria-controls="mobile-menu"
+                                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                            >
+                                <div className="relative w-5 h-5">
+                                    <div className={`absolute inset-0 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0 rotate-180' : 'opacity-100 rotate-0'}`}>
+                                        <Menu className="w-5 h-5" />
+                                    </div>
+                                    <div className={`absolute inset-0 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-180'}`}>
+                                        <X className="w-5 h-5" />
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>            {/* Mobile Menu */}
+            <div className={`
+                fixed top-20 left-4 right-4 z-40 lg:hidden transition-all duration-300 ease-out
+                ${isMobileMenuOpen
+                    ? 'opacity-100 translate-y-0 pointer-events-auto'
+                    : 'opacity-0 -translate-y-4 pointer-events-none'
+                }
+            `}>
+                <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border border-neutral-200/50 overflow-hidden">
+                    <nav className="p-6" role="navigation">
+                        <div className="space-y-3">
+                            {NAVIGATION_ITEMS.map(({ label, href }, index) => (
+                                <div
+                                    key={href}
+                                    className="transition-all duration-300 ease-out"
+                                    style={{
+                                        transitionDelay: isMobileMenuOpen ? `${index * 50}ms` : '0ms'
+                                    }}
                                 >
-                                    Free Speed Audit
+                                    <NavigationLink
+                                        href={href}
+                                        label={label}
+                                        isActive={isActiveRoute(href)}
+                                        onClick={toggleMobileMenu}
+                                        isMobile
+                                    />
+                                </div>
+                            ))}
+
+                            {/* Mobile Login Button */}
+                            <div
+                                className="pt-2 transition-all duration-300 ease-out"
+                                style={{
+                                    transitionDelay: isMobileMenuOpen ? `${NAVIGATION_ITEMS.length * 50}ms` : '0ms'
+                                }}
+                            >
+                                <Link
+                                    href={"/login" as any}
+                                    onClick={toggleMobileMenu}
+                                    className="
+                                        group flex items-center justify-center gap-2 w-full
+                                        text-neutral-700 hover:text-primary-700 
+                                        px-6 py-4 text-lg font-medium rounded-2xl
+                                        hover:bg-white/90 border border-neutral-200/50
+                                        transition-all duration-300 ease-out
+                                        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                    "
+                                >
+                                    <LogIn className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                                    <span>Login</span>
                                 </Link>
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </header>
+
+                            {/* Mobile CTA */}
+                            <div
+                                className="pt-2 transition-all duration-300 ease-out"
+                                style={{
+                                    transitionDelay: isMobileMenuOpen ? `${(NAVIGATION_ITEMS.length + 1) * 50}ms` : '0ms'
+                                }}
+                            >
+                                <Link
+                                    href={"/audit" as any}
+                                    onClick={toggleMobileMenu}
+                                    className="
+                                        group flex items-center justify-center space-x-2 w-full
+                                        bg-gradient-to-r from-primary-600 to-primary-700 text-white 
+                                        px-6 py-4 text-lg font-semibold rounded-2xl
+                                        hover:shadow-lg hover:shadow-primary-600/25
+                                        transition-all duration-300 ease-out
+                                        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                    "
+                                >
+                                    <Zap className="w-5 h-5" />
+                                    <span>Free Performance Audit</span>
+                                    <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                </Link>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            {/* Backdrop */}
+            <div
+                className={`
+                    fixed inset-0 bg-neutral-900/20 backdrop-blur-sm z-30 lg:hidden
+                    transition-opacity duration-300 ease-out
+                    ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+                `}
+                onClick={toggleMobileMenu}
+                aria-hidden="true"
+            />
+
+            {/* Header spacer */}
+            <div className={`transition-all duration-500 ease-out ${isScrolled ? 'h-16' : 'h-20'}`} />
         </>
-    )
+    );
 }

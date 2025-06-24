@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { createHref } from '../../utils/navigation';
 
 export function Footer() {
     return (
@@ -33,13 +34,12 @@ export function Footer() {
 
                     {/* Links rápidos */}
                     <div className="w-full md:w-1/4 mb-8 md:mb-0">
-                        <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
-                        <ul className="space-y-2">
-                            <li><Link href="/" className="text-gray-400 hover:text-white">Home</Link></li>
-                            <li><Link href="/diagnose" className="text-gray-400 hover:text-white">Diagnose</Link></li>
-                            <li><Link href="/solutions" className="text-gray-400 hover:text-white">Solutions</Link></li>
-                            <li><Link href="/case-studies" className="text-gray-400 hover:text-white">Case Studies</Link></li>
-                            <li><Link href="/contact" className="text-gray-400 hover:text-white">Contact</Link></li>
+                        <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>                        <ul className="space-y-2">
+                            <li><Link href={createHref("/")} className="text-gray-400 hover:text-white">Home</Link></li>
+                            <li><Link href={createHref("/diagnose")} className="text-gray-400 hover:text-white">Diagnose</Link></li>
+                            <li><Link href={createHref("/solutions")} className="text-gray-400 hover:text-white">Solutions</Link></li>
+                            <li><Link href={createHref("/case-studies")} className="text-gray-400 hover:text-white">Case Studies</Link></li>
+                            <li><Link href={createHref("/contact")} className="text-gray-400 hover:text-white">Contact</Link></li>
                         </ul>
                     </div>
 
@@ -66,11 +66,10 @@ export function Footer() {
 
                 <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-gray-500 text-sm">© 2025 ARCO. Todos os direitos reservados.</p>
-                    <div className="mt-4 md:mt-0">
-                        <ul className="flex space-x-4 text-sm text-gray-500">
-                            <li><Link href="/privacy-policy" className="hover:text-white">Política de Privacidade</Link></li>
-                            <li><Link href="/terms-of-service" className="hover:text-white">Termos de Serviço</Link></li>
-                        </ul>
+                    <div className="mt-4 md:mt-0">                        <ul className="flex space-x-4 text-sm text-gray-500">
+                        <li><Link href={createHref("/privacy-policy")} className="hover:text-white">Política de Privacidade</Link></li>
+                        <li><Link href={createHref("/terms-of-service")} className="hover:text-white">Termos de Serviço</Link></li>
+                    </ul>
                     </div>
                 </div>
             </div>

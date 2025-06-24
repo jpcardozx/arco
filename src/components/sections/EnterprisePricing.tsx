@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Check, Clock, DollarSign, Shield, TrendingUp } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 
 /**
  * Enterprise Pricing Component
@@ -286,7 +286,7 @@ export function EnterprisePricing() {
                                 whileTap={{ scale: 0.98 }}
                             >
                                 <Link
-                                    href={tier.ctaLink}
+                                    href={createHref(tier.ctaLink)}
                                     className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 group flex items-center justify-center gap-3 ${tier.popular
                                             ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
                                             : 'bg-slate-900 hover:bg-slate-800 text-white'
@@ -386,3 +386,4 @@ export function EnterprisePricing() {
         </section>
     )
 }
+

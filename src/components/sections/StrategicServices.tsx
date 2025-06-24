@@ -3,7 +3,7 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { CheckCircle, ArrowRight, Clock, DollarSign, BarChart3, Zap } from 'lucide-react'
-import Link from 'next/link'
+import Link from 'next/link'import { createHref } from '@/utils/navigation';
 
 // Strategic services aligned with business plan pricing
 export function StrategicServices() {
@@ -194,7 +194,7 @@ export function StrategicServices() {
 
                                 {/* CTA */}
                                 <Link
-                                    href={service.href}
+                                    href={createHref(service.href)}
                                     className={`inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${service.popular
                                         ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
                                         : 'bg-gray-900 hover:bg-gray-800 text-white'
@@ -221,7 +221,7 @@ export function StrategicServices() {
                         We create scalable design systems that accelerate development and ensure visual consistency across all touchpoints.
                     </p>
                     <Link
-                        href="/design-system"
+                        href={createHref("/design-system")}
                         className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-semibold hover:bg-purple-50 transition-colors duration-300"
                     >
                         Explore Design Systems
@@ -232,3 +232,5 @@ export function StrategicServices() {
         </section>
     )
 }
+
+

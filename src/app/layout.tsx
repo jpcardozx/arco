@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { EB_Garamond } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
+import "../styles/critical.css";
+import { WebVitalsTracker, DevPerformanceMonitor } from '@/components/analytics/WebVitalsTracker';
+import { WebVitalsMonitor } from '@/components/analytics/WebVitalsMonitor';
+import { fontConfig, criticalCSS, inter } from '@/lib/fonts';
 
-const ebGaramond = EB_Garamond({
-  variable: "--font-eb-garamond",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
+// Critical CSS inlined for zero render-blocking
+const criticalStyles = criticalCSS;
 
 export const metadata: Metadata = {
   title: "ARCO | Self-Funding Digital Transformation",
@@ -43,23 +43,37 @@ export const metadata: Metadata = {
   },
 };
 
+import { SimpleTranslationProvider } from '@/components/providers/SimpleTranslationProvider';
+import { ServiceWorkerRegistration } from '@/components/performance/ServiceWorkerRegistration';
+import { AuthProvider } from '@/contexts/AuthContext';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt">
+    <html lang="en" className={fontConfig.classes.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <style dangerouslySetInnerHTML={{ __html: criticalStyles }} />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#0f172a" />
         <link rel="icon" href="/logo-v2.png" type="image/png" />
-      </head>
-      <body className={`${ebGaramond.variable} antialiased`}>
-        {children}
+        <link rel="manifest" href="/manifest.json" />
+      </head>      <body className={`${inter.className} antialiased bg-slate-900 text-white`}>
+        <AuthProvider>
+          <SimpleTranslationProvider>
+            {children}
+          </SimpleTranslationProvider>
+        </AuthProvider>
+
+        {/* Performance Suite - PATCH 1 Implementation */}
+        <ServiceWorkerRegistration />
+        <WebVitalsTracker />
+        <WebVitalsMonitor />
+        {process.env.NODE_ENV === 'development' && <DevPerformanceMonitor />}
       </body>
     </html>
   );

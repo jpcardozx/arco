@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react'
-import { PremiumNavigation } from '../../components/layout/PremiumNavigation'
-import { PremiumFooter } from '../../components/layout/PremiumFooter'
+import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import HeroIndex from '../../components/diagnose/HeroIndex'
 import IndexDefinition from '../../components/diagnose/IndexDefinition'
 import MisreadingSymptoms from '../../components/diagnose/MisreadingSymptoms'
@@ -14,7 +14,7 @@ import Submission from '../../components/diagnose/Submission'
 const page = () => {
     return (
         <>
-            <PremiumNavigation />
+            <ProfessionalNavigation />
             <HeroIndex />
             <IndexDefinition />
             <MisreadingSymptoms />
@@ -22,7 +22,7 @@ const page = () => {
             <EligibilityFilter />
             <InactionRisk />
             <Submission />
-            <PremiumFooter />
+            <ProfessionalFooter />
         </>
     )
 }
