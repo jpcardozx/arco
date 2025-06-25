@@ -203,29 +203,22 @@ class ArcoMCPServer {
       const { name, arguments: args } = request.params
 
       switch (name) {
-        case 'get_integrated_context': {
-          const query = typeof args?.query === 'string' ? args.query : '';
-          const dimensions = Array.isArray(args?.dimensions) ? args.dimensions : undefined;
-          if (!query) throw new Error('Query parameter is required and must be a string');
-          return await this.getIntegratedContext(query, dimensions);
-        }
-        case 'analyze_platform_evolution': {
-          const change = typeof args?.change === 'string' ? args.change : '';
-          const impactAnalysis = typeof args?.impact_analysis === 'boolean' ? args.impact_analysis : false;
-          if (!change) throw new Error('Change parameter is required and must be a string');
-          return await this.analyzePlatformEvolution(change, impactAnalysis);
-        }
-        case 'optimize_conversion_funnel': {
-          const focusArea = typeof args?.focus_area === 'string' ? args.focus_area : '';
-          if (!focusArea) throw new Error('Focus area parameter is required and must be a string');
-          return await this.optimizeConversionFunnel(focusArea);
-        }
-        case 'competitive_positioning_advice': {
-          const scenario = typeof args?.scenario === 'string' ? args.scenario : '';
-          const timeframe = typeof args?.timeframe === 'string' ? args.timeframe : '';
-          if (!scenario) throw new Error('Scenario parameter is required and must be a string');
-          return await this.getCompetitiveAdvice(scenario, timeframe);
-        }
+        case 'get_integrated_context':
+          if (!args?.query) throw new Error('Query parameter is required');
+          return await this.getIntegratedContext(args.query, args.dimensions)
+
+        case 'analyze_platform_evolution':
+          if (!args?.change) throw new Error('Change parameter is required');
+          return await this.analyzePlatformEvolution(args.change, args.impact_analysis)
+
+        case 'optimize_conversion_funnel':
+          if (!args?.focus_area) throw new Error('Focus area parameter is required');
+          return await this.optimizeConversionFunnel(args.focus_area)
+
+        case 'competitive_positioning_advice':
+          if (!args?.scenario) throw new Error('Scenario parameter is required');
+          return await this.getCompetitiveAdvice(args.scenario, args.timeframe)
+
         default:
           throw new Error(`Unknown tool: ${name}`)
       }
@@ -318,15 +311,11 @@ class ArcoMCPServer {
   }
 
   private async analyzePlatformEvolution(change: string, impactAnalysis: boolean) {
-    let parsedChange: any = change;
-    try {
-      parsedChange = typeof change === 'string' ? JSON.parse(change) : change;
-    } catch {}
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
-          change: parsedChange,
+          change,
           analysis: {
             technical_impact: 'Assessment based on current platform architecture',
             business_impact: 'Projected conversion and lead quality effects',

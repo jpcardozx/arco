@@ -4,7 +4,7 @@
  * Replaces Math.random() simulation with real ML-based analysis
  */
 
-import { realDataCollector, RealPerformanceData } from '../integrators/real-data-collector.js';
+import { realDataCollector } from '../integrators/real-data-collector.js';
 import type { 
   PlatformChange, 
   BusinessContext, 
@@ -13,7 +13,34 @@ import type {
   PositioningAdjustment 
 } from '../types/strategic-intelligence.js';
 
-// ML Model Interfaces
+// Real Intelligence Data Interfaces
+interface RealPerformanceData {
+  coreWebVitals: {
+    lcp: number;
+    fid: number;
+    cls: number;
+    fcp: number;
+    ttfb: number;
+    trend: 'improving' | 'declining' | 'stable';
+    measurementTimestamp: string;
+  };
+  analyticsData: {
+    bounceRate: number;
+    sessionDuration: number;
+    pageViews: number;
+    uniqueVisitors: number;
+    conversionEvents: number;
+    leadQuality: number;
+    trafficSources: any[];
+  };
+  buildMetrics: {
+    buildTime: number;
+    bundleSize: number;
+    dependencyCount: number;
+    codeComplexity: number;
+    lastBuildTimestamp: string;
+  };
+}
 interface PerformanceCorrelation {
   changeType: string;
   changeScope: string;
@@ -636,7 +663,9 @@ class RealIntelligenceAnalyzer {
 
   private async analyzeUserBehaviorPatterns(): Promise<UserBehaviorPattern[]> {
     // Analyze real user behavior data
-    const sessions = realDataCollector.dataCache?.get('sessions') || [];
+    // Get session data through public method instead of private dataCache
+    const historicalData = realDataCollector.getHistoricalData();
+    const sessions = historicalData.filter(d => d.analyticsData?.sessionDuration) || [];
     
     return sessions.map((session: any) => ({
       pattern: this.classifyUserBehavior(session),
@@ -698,9 +727,8 @@ class RealIntelligenceAnalyzer {
     
     return bottlenecks;
   }
-
   private async generateImmediateOptimizations(bottlenecks: string[], currentData: RealPerformanceData) {
-    const optimizations = [];
+    const optimizations: string[] = [];
     
     bottlenecks.forEach(bottleneck => {
       switch (bottleneck) {
@@ -763,24 +791,17 @@ class RealIntelligenceAnalyzer {
     };
   }
 
-  private calculateExpectedImpact(optimizations: string[], timeframe: string): number {
-    const impactMap = {
-      immediate: 0.15,
-      shortTerm: 0.25,
-      longTerm: 0.40
-    };
-    
-    return Math.round((impactMap[timeframe as keyof typeof impactMap] || 0.1) * 10);
+  // Helper methods for optimization calculations
+  private calculateExpectedImpact(optimizations: string[], type: 'immediate' | 'long-term'): number {
+    const baseImpact = type === 'immediate' ? 15 : 35;
+    const complexityFactor = optimizations.length * 0.8;
+    return Math.round(baseImpact + complexityFactor);
   }
 
-  private estimateImplementationTime(optimizations: string[], timeframe: string): number {
-    const timeMap = {
-      immediate: 6,
-      shortTerm: 30,
-      longTerm: 80
-    };
-    
-    return timeMap[timeframe as keyof typeof timeMap] || 10;
+  private estimateImplementationTime(optimizations: string[], type: 'immediate' | 'long-term'): number {
+    const baseTime = type === 'immediate' ? 8 : 40;
+    const complexityFactor = optimizations.length * 2;
+    return Math.round(baseTime + complexityFactor);
   }
 }
 
