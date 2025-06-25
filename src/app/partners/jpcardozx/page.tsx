@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Head from 'next/head'
-import { StrategicNavigation } from '@/components/layout/StrategicNavigation'
+import ProfessionalNavigation from '@/components/layout/ProfessionalNavigation'
 import { PremiumFooter } from '@/components/layout/PremiumFooter'
 import { StrategicPartnerHero } from '@/components/partners/StrategicPartnerHero'
 import { StrategicContentSection } from '@/components/partners/StrategicContentSection'
@@ -54,7 +54,7 @@ const JPCardozxPartnerPage = () => {
                 }}
             />
 
-            <StrategicNavigation />
+            <ProfessionalNavigation />
             <StrategicPartnerHero />
             <StrategicAboutSectionNew />
             <StrategicContentSection />

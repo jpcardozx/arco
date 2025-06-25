@@ -1,13 +1,15 @@
 {
-  "name": "arco-mcp-intelligence-server",
-  "version": "1.0.0",
-  "description": "ARCO Strategic Intelligence MCP Server for competitive platform advantage",
+  "name": "arco-consolidated-intelligence-server",
+  "version": "3.0.0",
+  "description": "ARCO Consolidated Intelligence MCP Server - Unified platform with comprehensive capabilities",
   "type": "module",
-  "main": "arco-intelligence-server.js",
+  "main": "arco-consolidated-intelligence-server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node arco-intelligence-server.js",
-    "dev": "tsx arco-intelligence-server.ts"
+    "start": "tsx ../scripts/start-expert-mcp.ts",
+    "dev": "tsx arco-consolidated-intelligence-server.ts",
+    "test": "tsx ../scripts/simple-mcp-demo.ts",
+    "validate": "tsx ../scripts/week1a-validation.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.13.1"

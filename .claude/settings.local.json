@@ -3,7 +3,9 @@
     "allow": [
       "Bash(find:*)",
       "Bash(chmod:*)",
-      "Bash(./fix-html-entities.sh:*)"
+      "Bash(./fix-html-entities.sh:*)",
+      "Bash(npx tsc:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

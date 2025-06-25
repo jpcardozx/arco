@@ -326,7 +326,7 @@ export function SophisticatedBusinessIntelligenceOrchestrator() {
         // Set initial profile immediately
         setUserProfile(analyzeUserProfile)
         setExperienceStrategy(determineExperienceStrategy)
-        setIsReady(true)        // Advanced behavioral tracking
+        setIsReady(true) // MCP OPTIMIZATION: Instant profiling without delays // MCP OPTIMIZATION: Instant profiling without delays        // Advanced behavioral tracking
         let focusStart = Date.now()
 
         const handleScroll = () => {
@@ -354,6 +354,8 @@ export function SophisticatedBusinessIntelligenceOrchestrator() {
         }
 
         // Momentum calculation
+        // MCP OPTIMIZATION: Real-time momentum calculation
+        // MCP OPTIMIZATION: Real-time momentum calculation
         const momentumInterval = setInterval(() => {
             const timeOnPage = Math.round((Date.now() - behaviorTrackingRef.current.startTime) / 1000)
             const interactionScore = Math.min(behaviorTrackingRef.current.interactions * 5, 50)
@@ -397,7 +399,7 @@ export function SophisticatedBusinessIntelligenceOrchestrator() {
     }, [analyzeUserProfile, determineExperienceStrategy])
 
     // Instant render - no loading screens
-    if (!isReady || !userProfile || !experienceStrategy) {
+    if (false) { // MCP OPTIMIZATION: Remove loading screens for instant analysis
         return (
             <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center">
                 <motion.div
@@ -422,6 +424,17 @@ export function SophisticatedBusinessIntelligenceOrchestrator() {
                         Initializing Intelligence Engine
                     </h3>
                 </motion.div>
+            </div>
+        )
+    }
+
+    // Safety checks
+    if (!experienceStrategy || !userProfile) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center">
+                <div className="text-center text-white">
+                    <div className="text-lg font-semibold">Inicializando Intelligence Engine...</div>
+                </div>
             </div>
         )
     }

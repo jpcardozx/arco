@@ -2,10 +2,17 @@
 
 import { useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import SimplifiedNavigation from "../components/layout/SimplifiedNavigation"
+import ProfessionalNavigation from "../components/layout/ProfessionalNavigation"
 import { ProfessionalFooter } from "../components/layout/ProfessionalFooter"
-import { SophisticatedBusinessIntelligenceOrchestrator } from "../components/intelligence/SophisticatedBusinessIntelligenceOrchestrator"
 import { trackPageView, trackFunnelStep } from "../lib/analytics"
+
+// Import new strategic homepage components
+import { SimpleTechnicalHero } from "../components/homepage/SimpleTechnicalHero"
+import { TechnicalProof } from "../components/homepage/AuthorityProof"
+import { FrameworkBreakdown } from "../components/homepage/FrameworkBreakdown"
+import { InternalCaseStudies } from "../components/homepage/InternalCaseStudies"
+import { ResourceAccess } from "../components/homepage/ResourceAccess"
+import { TechnicalCredibility } from "../components/homepage/TechnicalCredibility"
 
 // Lazy load non-critical components
 import dynamic from 'next/dynamic'
@@ -21,67 +28,50 @@ const WebVitalsMonitor = dynamic(() =>
 })
 
 /**
- * ARCO REAL INTELLIGENCE HOMEPAGE
+ * ARCO HOMEPAGE - Strategic Inevitability Framework
  * 
- * Revolutionary implementation featuring:
- * 1. REAL-TIME COMPETITIVE INTELLIGENCE with Python ML integration
- * 2. BUSINESS INTELLIGENCE TRANSLATION from technical data to executive insights
- * 3. ADAPTIVE UX with behavioral analytics and momentum building
- * 4. CINEMATIC PROGRESSION with logical flow and real data visualization
- * 5. ML-POWERED PERSONALIZATION based on user behavior and context
+ * TROJAN HORSE STRATEGY:
+ * 1. Hero: "Internal framework we use" (authority + curiosity)
+ * 2. Authority: Specific proof points and metrics
+ * 3. Framework: Deep dive into R.E.V.E.N.U.E methodology
+ * 4. Case Studies: Internal applications (not client work)
+ * 5. Resources: Free access to tools/frameworks
+ * 6. Technical: Demonstrate actual capabilities
  * 
- * This replaces the superficial "preview" approach with genuine business intelligence.
- * 
- * Performance & Conversion targets:
- * - LCP < 1.5s (faster than before)
- * - Real engagement > 75% (tool interaction with real data)
- * - Conversion rate > 18% (from 2% with superficial version)
- * - Time on page > 12min (deep engagement with real insights)
- * - Return visitor rate > 45% (value-driven retention)
+ * PSYCHOLOGY: Position as thought leaders sharing internal tools
+ * rather than service providers trying to sell
  */
 
-export default function RealIntelligenceHomePage() {
+export default function HomePage() {
   const { user, isAuthenticated } = useAuth()
 
   useEffect(() => {
-    // Enhanced analytics with real intelligence context
-    trackPageView('homepage_real_intelligence')
+    trackPageView('homepage_strategic')
 
-    trackFunnelStep('homepage_real_intelligence_load', 'conversion_funnel', {
-      page: 'home_real_intelligence',
+    trackFunnelStep('trojan_horse_entry', 'inevitability_funnel', {
+      page: 'home',
+      strategy: 'trojan_horse',
       user_tier: user?.tier || 'anonymous',
-      timestamp: Date.now(),
-      intelligence_enabled: true,
-      ml_powered: true
+      timestamp: Date.now()
     })
-
-    // Track session start for advanced behavioral analysis
-    if (typeof window !== 'undefined') {
-      window.gtag?.('event', 'session_start', {
-        page_title: 'ARCO Real Intelligence Homepage',
-        user_tier: user?.tier || 'anonymous',
-        is_returning: !!localStorage.getItem('arco_last_visit'),
-        intelligence_version: 'real_time_ml',
-        competitive_analysis: 'enabled'
-      })
-
-      // Mark this as a real intelligence session
-      localStorage.setItem('arco_intelligence_session', 'true')
-      localStorage.setItem('arco_session_start', Date.now().toString())
-    }
   }, [user, isAuthenticated])
 
   return (
     <>
-      <SimplifiedNavigation />      {/* SOPHISTICATED BUSINESS INTELLIGENCE ORCHESTRATOR - Instant analysis without loading loops */}
-      <SophisticatedBusinessIntelligenceOrchestrator />
+      <ProfessionalNavigation />
+
+      {/* Technical Homepage Flow */}
+      <SimpleTechnicalHero />
+      <TechnicalProof />
+      <FrameworkBreakdown />
+      <InternalCaseStudies />
+      <ResourceAccess />
+      <TechnicalCredibility />
 
       <ProfessionalFooter />
 
-      {/* Smart Engagement - Enhanced for real intelligence context */}
+      {/* Non-critical components */}
       <SmartEngagementTrigger />
-
-      {/* Web Vitals Monitoring - Real performance tracking */}
       <WebVitalsMonitor />
     </>
   )

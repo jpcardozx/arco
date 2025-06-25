@@ -58,11 +58,16 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: criticalStyles }} />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preload" href="/api/analytics" as="fetch" crossOrigin="anonymous" />
+        <link rel="modulepreload" href="/_next/static/chunks/framer-motion.js" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#0f172a" />
-        <link rel="icon" href="/logo-v2.png" type="image/png" />
+        <link rel="icon" href="/logo-v2.png" type="image/png" sizes="192x192" />
         <link rel="manifest" href="/manifest.json" />
-      </head>      <body className={`${inter.className} antialiased bg-slate-900 text-white`}>
+      </head>
+      <body className={`${inter.className} antialiased bg-slate-900 text-white`}>
         <AuthProvider>
           <SimpleTranslationProvider>
             {children}

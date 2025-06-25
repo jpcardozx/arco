@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import SimplifiedNavigation from "../components/layout/SimplifiedNavigation";
+import ProfessionalNavigation from "../components/layout/ProfessionalNavigation";
 import { UnifiedHeroSection } from "../components/sections/UnifiedHeroSection";
 import { UnifiedValueProposition } from "../components/sections/UnifiedValueProposition";
 import { OptimizedClientStories } from "../components/sections/OptimizedClientStories";
@@ -101,7 +101,7 @@ export default function OptimizedHomePage() {
 
     return (
         <>
-            <SimplifiedNavigation />
+            <ProfessionalNavigation />
             <UnifiedHeroSection />
             <UnifiedValueProposition />
             <OptimizedClientStories />

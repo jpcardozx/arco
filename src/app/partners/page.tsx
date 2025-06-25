@@ -1,13 +1,13 @@
 'use client'
 
 import React from 'react'
-import { StrategicNavigation } from '../../components/layout/StrategicNavigation'
+import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
 import { PremiumFooter } from '../../components/layout/PremiumFooter'
 
 const page = () => {
     return (
         <>
-            <StrategicNavigation />
+            <ProfessionalNavigation />
             <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-20">
                 <div className="max-w-4xl mx-auto px-4 py-16 text-center">
                     <h1 className="text-4xl font-bold text-slate-900 mb-6">

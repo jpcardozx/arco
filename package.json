@@ -1,7 +1,8 @@
 {
   "name": "arco",
   "version": "0.1.0",
-  "private": true,  "scripts": {
+  "private": true,
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -13,13 +14,26 @@
     "daily:plan": "npx tsx scripts/daily-planning.ts",
     "decision:record": "npx tsx src/lib/decision-tracker.ts record",
     "decision:report": "npx tsx src/lib/decision-tracker.ts report",
-    "mcp:server": "npx tsx src/mcp/servers/arco-intelligence-server.ts",
+    "mcp:server": "npx tsx src/mcp/servers/arco-unified-intelligence-server.ts",
+    "mcp:demo": "npx tsx src/mcp/demo/arco-mcp-demo.ts",
+    "mcp:cli": "npx tsx src/mcp/demo/cli-demo.ts",
     "mcp:test": "npx tsx src/mcp/clients/arco-intelligence-tester.ts",
     "mcp:week1a": "npx tsx src/mcp/scripts/week1a-validation.ts",
     "week1a:sample": "npx tsx src/mcp/scripts/week1a-validation.ts sample",
     "week1a:analyze": "npx tsx src/mcp/scripts/week1a-validation.ts analyze",
     "week1a:decisions": "npx tsx src/mcp/scripts/week1a-validation.ts decisions",
-    "mcp:validate": "npx tsx src/mcp/clients/arco-intelligence-tester.ts week1a"
+    "mcp:validate": "npx tsx src/mcp/clients/arco-intelligence-tester.ts week1a",
+    "mcp:test:comprehensive": "npx tsx src/mcp/scripts/run-comprehensive-tests.ts",
+    "mcp:test:unit": "npx tsx src/mcp/scripts/run-comprehensive-tests.ts --unit-only",
+    "mcp:test:integration": "npx tsx src/mcp/scripts/run-comprehensive-tests.ts --integration-only",
+    "mcp:test:performance": "npx tsx src/mcp/scripts/run-comprehensive-tests.ts --performance-only",
+    "mcp:test:security": "npx tsx src/mcp/scripts/run-comprehensive-tests.ts --security-only",
+    "monetization:demo": "npx tsx src/mcp/scripts/monetization-demo.ts",
+    "monetization:capture": "npx tsx src/mcp/scripts/monetization-demo.ts capture",
+    "monetization:optimize": "npx tsx src/mcp/scripts/monetization-demo.ts optimize",
+    "monetization:retention": "npx tsx src/mcp/scripts/monetization-demo.ts retention",
+    "monetization:export": "npx tsx src/mcp/scripts/monetization-demo.ts export",
+    "monetization:integrate": "npx tsx src/mcp/scripts/monetization-demo.ts integrate"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.12",
@@ -67,7 +81,7 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
-    "@types/node": "^22.15.0",
+    "@types/node": "^22.15.33",
     "@types/react": "^19.1.2",
     "@types/react-countup": "^4.3.0",
     "@types/react-dom": "^19",
@@ -79,6 +93,7 @@
     "puppeteer": "^24.10.2",
     "sharp": "^0.34.2",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

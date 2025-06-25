@@ -4,21 +4,24 @@ import { memo, useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ArrowUpRight, Zap, Briefcase, Calculator, FileText, Mail } from 'lucide-react'
+import { Menu, X, ArrowUpRight, Zap, Brain, Calculator, TrendingUp, FileText, Users, LogIn, Shield } from 'lucide-react'
 
 /**
- * SIMPLIFIED NAVIGATION
+ * STRATEGIC ENTERPRISE NAVIGATION
  * 
- * Redução estratégica de 6 para 4 itens principais
- * Performance otimizada com scroll throttling
- * CTA integrado na navegação
+ * VALUE-FIRST PROGRESSION:
+ * 1. Free Resources → Framework → Assessment → Cases → Services
+ * 2. Designed for $10M+ ARR decision makers (CTOs/COOs)
+ * 3. Technical authority positioning
+ * 4. Sophisticated design language
  */
 
 const SIMPLIFIED_NAV_ITEMS = [
-    { label: 'Services', href: '/services', icon: Briefcase, isCTA: false },
-    { label: 'Case Studies', href: '/case-studies', icon: FileText, isCTA: false },
-    { label: 'Free Audit', href: '/audit', icon: Calculator, isCTA: true },
-    { label: 'Contact', href: '/contact', icon: Mail, isCTA: false }
+    { label: 'Framework', href: '/methodology', icon: Brain, category: 'value', isCTA: false },
+    { label: 'ROI Calculator', href: '/roi-calculator', icon: Calculator, category: 'tools', isCTA: false },
+    { label: 'Assessment', href: '/assessment', icon: TrendingUp, category: 'evaluation', isCTA: false },
+    { label: 'Case Studies', href: '/case-studies', icon: FileText, category: 'proof', isCTA: false },
+    { label: 'Services', href: '/services', icon: Shield, category: 'services', isCTA: false }
 ] as const
 
 const SCROLL_THRESHOLD = 80
@@ -27,7 +30,7 @@ interface NavigationLinkProps {
     href: string
     label: string
     isActive: boolean
-    isCTA?: boolean
+    category?: string
     onClick?: () => void
     isMobile?: boolean
     icon?: React.ComponentType<{ className?: string }>
@@ -37,53 +40,69 @@ const NavigationLink = memo(({
     href,
     label,
     isActive,
-    isCTA = false,
+    category = 'default',
     onClick,
     isMobile = false,
     icon: Icon
 }: NavigationLinkProps) => {
 
-    const baseClasses = `
-        group relative overflow-hidden transition-all duration-300 ease-out
-        ${isMobile
-            ? 'block px-6 py-4 text-lg font-medium rounded-2xl'
-            : 'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl'
-        }
-    `
+    // Enterprise-grade styling with category-based visual hierarchy
+    const getCategoryStyles = (cat: string, active: boolean) => {
+        const baseStyles = `
+            group relative overflow-hidden transition-all duration-300 ease-out
+            ${isMobile
+                ? 'block px-6 py-4 text-lg font-medium rounded-2xl'
+                : 'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl'
+            }
+        `
 
-    const ctaClasses = `
-        ${baseClasses}
-        bg-gradient-to-r from-emerald-600 to-blue-600 text-white shadow-lg
-        hover:shadow-xl hover:from-emerald-700 hover:to-blue-700
-        border border-emerald-500
-    `
-
-    const regularClasses = `
-        ${baseClasses}
-        ${isActive
-            ? 'text-white bg-gradient-to-r from-primary-600 to-primary-700 shadow-md border border-primary-500'
-            : 'text-neutral-700 hover:text-primary-700 hover:bg-white/90 hover:shadow-sm hover:border-primary-200 border border-transparent'
+        if (active) {
+            return `${baseStyles} text-white bg-gradient-to-r from-slate-800 to-slate-900 shadow-lg border border-slate-700`
         }
-    `
+
+        switch (cat) {
+            case 'value':
+                return `${baseStyles} text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 hover:border-emerald-200 border border-transparent`
+            case 'tools':
+                return `${baseStyles} text-blue-700 hover:text-blue-800 hover:bg-blue-50 hover:border-blue-200 border border-transparent`
+            case 'evaluation':
+                return `${baseStyles} text-purple-700 hover:text-purple-800 hover:bg-purple-50 hover:border-purple-200 border border-transparent`
+            case 'proof':
+                return `${baseStyles} text-orange-700 hover:text-orange-800 hover:bg-orange-50 hover:border-orange-200 border border-transparent`
+            case 'services':
+                return `${baseStyles} text-slate-700 hover:text-slate-800 hover:bg-slate-50 hover:border-slate-200 border border-transparent`
+            default:
+                return `${baseStyles} text-neutral-700 hover:text-slate-800 hover:bg-slate-50 hover:border-slate-200 border border-transparent`
+        }
+    }
+
+    const getIconStyles = (cat: string, active: boolean) => {
+        if (active) return 'text-white'
+
+        switch (cat) {
+            case 'value': return 'text-emerald-600 group-hover:scale-110'
+            case 'tools': return 'text-blue-600 group-hover:scale-110'
+            case 'evaluation': return 'text-purple-600 group-hover:scale-110'
+            case 'proof': return 'text-orange-600 group-hover:scale-110'
+            case 'services': return 'text-slate-600 group-hover:scale-110'
+            default: return 'text-slate-600 group-hover:scale-110'
+        }
+    }
 
     return (
         <Link
             href={href as any}
             onClick={onClick}
-            className={isCTA ? ctaClasses : regularClasses}
+            className={getCategoryStyles(category, isActive)}
             aria-current={isActive ? 'page' : undefined}
         >
             {Icon && !isMobile && (
-                <Icon className={`w-4 h-4 transition-transform duration-300 ${isCTA
-                        ? 'text-white'
-                        : isActive
-                            ? 'text-white'
-                            : 'text-primary-600 group-hover:scale-110'
-                    }`} />
+                <Icon className={`w-4 h-4 transition-transform duration-300 ${getIconStyles(category, isActive)}`} />
             )}
-            <span className="relative z-10">{label}</span>
-            {isCTA && !isMobile && (
-                <ArrowUpRight className="w-4 h-4 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <span className="relative z-10 font-semibold">{label}</span>
+            {/* Subtle hover indicator */}
+            {!isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             )}
         </Link>
     )
@@ -91,13 +110,13 @@ const NavigationLink = memo(({
 
 NavigationLink.displayName = 'NavigationLink'
 
-export default function SimplifiedNavigation() {
+export default function StrategicEnterpriseNavigation() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const navRef = useRef<HTMLElement>(null)
     const pathname = usePathname()
 
-    // Optimized scroll handler with throttling
+    // Performance-optimized scroll handler
     useEffect(() => {
         let ticking = false
 
@@ -115,12 +134,10 @@ export default function SimplifiedNavigation() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    // Close mobile menu on route change
     useEffect(() => {
         setIsMobileMenuOpen(false)
     }, [pathname])
 
-    // Prevent body scroll when mobile menu is open
     useEffect(() => {
         if (isMobileMenuOpen) {
             document.body.style.overflow = 'hidden'
@@ -179,7 +196,6 @@ export default function SimplifiedNavigation() {
                                     label={item.label}
                                     icon={item.icon}
                                     isActive={isActiveRoute(item.href)}
-                                    isCTA={item.isCTA}
                                 />
                             ))}
                         </div>
@@ -226,7 +242,6 @@ export default function SimplifiedNavigation() {
                                 label={item.label}
                                 icon={item.icon}
                                 isActive={isActiveRoute(item.href)}
-                                isCTA={item.isCTA}
                                 onClick={toggleMobileMenu}
                                 isMobile={true}
                             />
