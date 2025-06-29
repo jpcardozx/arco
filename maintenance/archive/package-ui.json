@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "build:ui": "next build --no-lint",
-    "dev:ui": "next dev",
-    "start:ui": "next start",
-    "analyze": "cross-env ANALYZE=true npm run build:ui"
-  }
-}
