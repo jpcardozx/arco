@@ -174,26 +174,14 @@ export function RealResultsSection() {
     ]
 
     const handleViewFullCase = (caseId: string) => {
-        trackEvent({
-            event: 'case_study_view',
-            category: 'engagement',
-            action: 'view_full_case',
-            label: caseId,
-            value: 1
-        })
+        trackEvent('case_study_view', 'engagement', 'view_full_case', caseId, 1)
 
         // In production, this would navigate to detailed case study
         window.location.href = `#case-study-${caseId}`
     }
 
     const handleGetSimilarResults = () => {
-        trackEvent({
-            event: 'similar_results_cta',
-            category: 'conversion',
-            action: 'cta_click',
-            label: 'get_similar_results',
-            value: 1
-        })
+        trackEvent('similar_results_cta', 'conversion', 'cta_click', 'get_similar_results', 1)
 
         window.location.href = '#contact'
     }

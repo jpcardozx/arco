@@ -88,7 +88,7 @@ export function Hero() {
                     <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-full px-6 py-3 mb-8 shadow-sm">
                         <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
                         <span className="text-sm font-medium text-slate-700">
-                            {'badge'}
+                            React Performance Engineering • Technical Debt Analysis • Enterprise Architecture
                         </span>
                     </div>
                 </motion.div>

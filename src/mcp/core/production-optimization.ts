@@ -84,7 +84,7 @@ export class ProductionOptimizer {
       
       // Attempt recovery strategies
       const recoveryResult = await this.attemptRecovery(error, fallback, component);
-      if (recoveryResult.success) {
+      if (recoveryResult.success && recoveryResult.data !== undefined) {
         this.errorMetrics.recoverySuccess++;
         return recoveryResult.data;
       }

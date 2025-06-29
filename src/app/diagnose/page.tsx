@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import PersonalNavigation from '../../components/layout/PersonalNavigation'
 import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import HeroIndex from '../../components/diagnose/HeroIndex'
 import IndexDefinition from '../../components/diagnose/IndexDefinition'
@@ -14,7 +14,7 @@ import Submission from '../../components/diagnose/Submission'
 const page = () => {
     return (
         <>
-            <ProfessionalNavigation />
+            <PersonalNavigation />
             <HeroIndex />
             <IndexDefinition />
             <MisreadingSymptoms />

@@ -5,27 +5,27 @@ export type Locale = 'en'
 
 export const content = {
   en: {
-    // Hero Section - Professional & Converting
+    // Hero Section - Technical Authority & Credibility
     hero: {
-      badge: "Enterprise Performance Specialists",
-      headline: "Turn Infrastructure Costs into Revenue Drivers",
-      subheadline: "We identify hidden revenue leaks in mid-market companies and deliver measurable ROI in under 45 days. No consulting fluff—just documented results.",
+      badge: "React Performance Engineering • Technical Debt Analysis • Enterprise Architecture",
+      headline: "Technical Debt Assessment & Modernization Strategy",
+      subheadline: "Strategic performance optimization for React applications with measurable business impact. Complete technical analysis with implementation roadmap and ROI projections.",
       cta: {
-        primary: "Get Free Revenue Audit",
-        secondary: "View $12.8M+ Results"
+        primary: "Get Technical Architecture Audit",
+        secondary: "Review Implementation Case Studies"
       },
       guarantees: [
-        "ROI verified by third-party audits",
-        "Results in 45 days or money back", 
-        "Zero long-term contracts required"
+        "Detailed technical analysis with code examples",
+        "Performance metrics and optimization roadmap", 
+        "Implementation guidance and best practices"
       ],
       metrics: {
-        revenue: { value: "$490K", label: "Average Revenue Impact", desc: "Per transformation project" },
-        roi: { value: "340%", label: "Average ROI", desc: "Documented in 12 months" },
-        time: { value: "<45 days", label: "Time to First Results", desc: "Measurable impact guaranteed" },
-        success: { value: "96%", label: "Success Rate", desc: "Projects exceeding targets" }
+        performance: { value: "1.8s", label: "LCP Improvement", desc: "Shopify Plus project: 4.2s → 1.8s median LCP" },
+        revenue: { value: "$340k", label: "Monthly Revenue Gain", desc: "E-commerce client: +127% conversion rate" },
+        infrastructure: { value: "78%", label: "Infrastructure Cost Cut", desc: "SaaS migration: AWS $12k → $2.6k monthly" },
+        deployment: { value: "47", label: "Zero-Downtime Deployments", desc: "While maintaining 99.99% uptime" }
       }
-    },    // Value Proposition - Clear frameworks
+    },
     value: {
       title: "Three Ways to Capture Hidden Revenue",
       subtitle: "Choose your engagement model based on risk tolerance and timeline requirements",

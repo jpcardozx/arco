@@ -56,13 +56,7 @@ export function ArcoStrategicHero() {
     }, [])
 
     const handleKickStartCTA = () => {
-        trackEvent({
-            event: 'hero_cta_click',
-            category: 'conversion',
-            action: 'kick_start_24h',
-            value: 149
-        })
-
+        trackEvent('hero_cta_click', 'conversion', 'kick_start_24h', 'arco_strategic_hero', 1)
         // Direct to T1 Kick-Start booking
         window.location.href = '/kick-start-24h'
     }

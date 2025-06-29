@@ -120,16 +120,12 @@ export function IntelligentHeroSection() {
     }, [isInView])
 
     const handleCTAClick = (ctaType: 'audit' | 'framework' | 'case_study') => {
-        trackEvent({
-            event: 'intelligent_cta_click',
-            category: 'engagement',
-            action: 'click',
-            label: `hero_${ctaType}`,
-            custom_parameters: {
-                type: ctaType,
-                location: 'intelligent_hero',
-                engagement_level: 'high_intent'
-            }
+        trackEvent('intelligent_cta_click', 'engagement', 'click', ctaType, 1)
+        
+        trackFunnelStep('intelligent_cta_click', 'engagement_funnel', {
+            cta_type: ctaType,
+            location: 'intelligent_hero',
+            engagement_level: 'high_intent'
         })
     }
 

@@ -148,7 +148,7 @@ export default function StrategicEnterpriseNavigation() {
     const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev)
 
     const isActiveRoute = (href: string) => {
-        return pathname === href || (href !== '/' && pathname.startsWith(href))
+        return pathname === href || (href !== '/' && pathname?.startsWith(href)) || false
     }
 
     return (

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import PersonalNavigation from '../../components/layout/PersonalNavigation'
 import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import { ArrowRight, Search, Target, Zap, TrendingUp, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
@@ -100,7 +100,7 @@ export default function MethodologyPage() {
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <ProfessionalNavigation />
+            <PersonalNavigation />
 
             {/* Hero Section */}
             <section className="pt-20 pb-16 bg-gradient-to-b from-slate-900 to-slate-800">

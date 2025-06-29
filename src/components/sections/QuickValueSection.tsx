@@ -73,15 +73,9 @@ export function QuickValueSection() {
 
     const handleDownload = (item: typeof quickWins[0]) => {
         // Track download event
-        trackEvent({
-            event: 'resource_download',
-            category: 'engagement',
-            action: 'download_resource',
-            label: item.id,
-            custom_parameters: {
-                resource_type: item.id,
-                difficulty: item.difficulty
-            }
+        trackEvent('resource_download', 'engagement', 'download_resource', item.id, undefined, {
+            resource_type: item.id,
+            difficulty: item.difficulty
         })
 
         // Track funnel step
@@ -236,12 +230,7 @@ export function QuickValueSection() {
                         <button
                             className="btn btn-primary"
                             onClick={() => {
-                                trackEvent({
-                                    event: 'quick_value_cta',
-                                    category: 'conversion',
-                                    action: 'implementation_cta',
-                                    label: 'quick_value_section'
-                                })
+                                trackEvent('quick_value_cta', 'conversion', 'implementation_cta', 'quick_value_section')
 
                                 // Scroll to contact
                                 const contactSection = document.querySelector('[data-section="contact"]')

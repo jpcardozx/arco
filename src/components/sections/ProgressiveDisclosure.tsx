@@ -390,13 +390,7 @@ export function ProgressiveDisclosure() {
             if (timeSpent >= layer.timeToReveal && !revealedLayers.has(layer.level)) {
                 setRevealedLayers(prev => new Set(prev).add(layer.level))
 
-                trackEvent({
-                    event: 'progressive_disclosure_reveal',
-                    category: 'engagement',
-                    action: 'layer_revealed',
-                    label: layer.id,
-                    value: layer.level
-                })
+                trackEvent('progressive_disclosure_reveal', 'engagement', 'layer_revealed', `level_${layer.level}`, layer.level)
 
                 trackFunnelStep(`layer_${layer.level}_revealed`, 'engagement_funnel', {
                     layer_id: layer.id,
@@ -410,13 +404,7 @@ export function ProgressiveDisclosure() {
     const handleLayerInteraction = (layerLevel: number) => {
         setUserEngagement(prev => prev + 1)
 
-        trackEvent({
-            event: 'progressive_disclosure_interaction',
-            category: 'engagement',
-            action: 'layer_interaction',
-            label: `layer_${layerLevel}`,
-            value: layerLevel
-        })
+        trackEvent('progressive_disclosure_interaction', 'engagement', 'layer_interaction', `layer_${layerLevel}`, layerLevel)
     }
 
     return (

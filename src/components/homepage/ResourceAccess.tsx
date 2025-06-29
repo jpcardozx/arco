@@ -34,20 +34,20 @@ export function ResourceAccess() {
       description: 'Complete frameworks we use internally',
       resources: [
         {
-          name: 'R.E.V.E.N.U.E Framework Complete',
-          description: 'Framework completo com 127 páginas de documentação, templates e checklists',
-          type: 'PDF + Templates',
-          size: '12.3 MB',
-          downloads: '2.1k',
-          rating: 4.9,
+          name: 'IPE Imóveis Complete Case Study',
+          description: 'Complete transformation story with real numbers and verifiable results',
+          type: 'PDF Case Study',
+          size: '3.2 MB',
+          downloads: 'New',
+          rating: null,
           features: [
-            '7 metodologias detalhadas',
-            '47 templates prontos',
-            '23 checklists de validação',
-            'Calculadoras de ROI'
+            'Complete before/after analysis',
+            'Step-by-step implementation process',
+            'Exact ROI calculations and timeline',
+            'Client testimonial and contact'
           ],
-          preview: 'Mesmo framework usado em projetos $50k+',
-          badge: 'Mais Popular'
+          preview: 'Real case: 4.2s → 1.8s load time, +62% leads',
+          badge: 'Real Case'
         },
         {
           name: 'Performance Optimization Playbook',
@@ -302,7 +302,7 @@ export function ResourceAccess() {
                       <Star 
                         key={star}
                         className={`w-4 h-4 ${
-                          star <= Math.floor(resource.rating) 
+                          resource.rating !== null && star <= Math.floor(resource.rating) 
                             ? 'text-yellow-400 fill-current' 
                             : 'text-slate-300'
                         }`}

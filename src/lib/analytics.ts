@@ -72,6 +72,11 @@ class AnalyticsManager {
    */
   trackEvent({ event, category, action, label, value, custom_parameters }: TrackingEvent) {
     try {
+      // Check if we're in a browser environment
+      if (typeof window === 'undefined') {
+        return
+      }
+
       const eventData = {
         event_category: category,
         event_label: label,
@@ -91,15 +96,23 @@ class AnalyticsManager {
         window.gtag('event', action, eventData)
       }
 
-      // Send to custom analytics endpoint
-      this.sendToCustomAnalytics(event, eventData)
+      // Send to custom analytics endpoint (with proper error handling)
+      this.sendToCustomAnalytics(event, eventData).catch(error => {
+        // Silently handle analytics errors to prevent app crashes
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Analytics endpoint failed:', error)
+        }
+      })
 
       // Development logging
       if (process.env.NODE_ENV === 'development') {
         console.log('📊 Event tracked:', { event, category, action, label, value })
       }
     } catch (error) {
-      console.error('Event tracking failed:', error)
+      // Silently handle tracking errors to prevent app crashes
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Event tracking failed:', error)
+      }
     }
   }
 
@@ -300,8 +313,19 @@ export function initializeAnalytics() {
   analytics.initialize()
 }
 
-export function trackEvent(event: TrackingEvent) {
-  analytics.trackEvent(event)
+export function trackEvent(event: string, category: string, action: string, label?: string, value?: number, custom_parameters?: Record<string, any>): void {
+  analytics.trackEvent({
+    event,
+    category,
+    action,
+    label,
+    value,
+    custom_parameters
+  })
+}
+
+export function trackEventParams(params: TrackingEvent): void {
+  analytics.trackEvent(params)
 }
 
 export function trackPageView(page?: string) {

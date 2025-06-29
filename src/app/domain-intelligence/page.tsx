@@ -4,13 +4,13 @@
  */
 
 import { DomainIntelligenceEngine } from '@/components/tools/DomainIntelligenceEngine'
-import ProfessionalNavigation from '@/components/layout/ProfessionalNavigation'
+import PersonalNavigation from '@/components/layout/PersonalNavigation'
 import { ProfessionalFooter } from '@/components/layout/ProfessionalFooter'
 
 export default function DomainIntelligencePage() {
     return (
         <div className="min-h-screen bg-slate-900">
-            <ProfessionalNavigation />
+            <PersonalNavigation />
             <main className="pt-20">
                 <DomainIntelligenceEngine />
             </main>

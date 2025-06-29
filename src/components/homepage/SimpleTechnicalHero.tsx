@@ -1,23 +1,31 @@
 'use client'
 
-import React, { Suspense } from 'react'
-import { ArrowRight, DollarSign, Zap, Target, Calculator } from 'lucide-react'
+import React, { Suspense, useState } from 'react'
+import { ArrowRight, Clock, CheckCircle, Calculator, Play, Globe } from 'lucide-react'
 import { LazyMotion, domAnimation, motion } from 'framer-motion'
 
 // Lazy load motion for better performance
-const LazyMotionWrapper = ({ children }) => (
+const LazyMotionWrapper = ({ children }: { children: React.ReactNode }) => (
   <LazyMotion features={domAnimation}>{children}</LazyMotion>
 )
 
 export function SimpleTechnicalHero() {
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+
+  const handleSpeedAnalysis = () => {
+    setIsAnalyzing(true)
+    // Simulate analysis process
+    setTimeout(() => setIsAnalyzing(false), 3000)
+  }
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 text-white overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: `
-            linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px)
+            linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px)
           `,
           backgroundSize: '50px 50px'
         }} />
@@ -26,7 +34,7 @@ export function SimpleTechnicalHero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          {/* Left Column: Real Value Proposition */}
+          {/* Left Column: Honest Value Proposition */}
           <div className="space-y-8">
             <LazyMotionWrapper>
               <Suspense fallback={<div className="space-y-6 animate-pulse">Loading...</div>}>
@@ -37,41 +45,80 @@ export function SimpleTechnicalHero() {
                   className="space-y-6"
                 >
                   <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                    <span className="block bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent mb-2">
-                      Unlock Growth. Eliminate Waste. Accelerate Revenue.
+                    <span className="block bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent mb-4">
+                      Your Website Loads in 4+ Seconds.
                     </span>
-                    <span className="text-white">For ambitious e-commerce & SaaS teams ready to scale.</span>
+                    <span className="text-white block text-3xl md:text-4xl mb-4">
+                      You're Losing $12,000+ Monthly.
+                    </span>
+                    <span className="text-slate-300 text-xl md:text-2xl font-normal">
+                      We make sites load in &lt;1.5s and recover lost revenue.
+                    </span>
                   </h1>
 
-                  <p className="text-xl text-slate-300 leading-relaxed">
-                    <strong className="text-emerald-400">Expert audit & optimization</strong>—identify hidden SaaS waste, boost site speed, and recover lost revenue in <span className="text-blue-300 font-semibold">18 days or less</span>. No risk, no long-term contract.
-                  </p>
-
-                  {/* Target Segment Proof */}
-                  <div className="flex flex-wrap gap-6 text-sm text-slate-400">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-green-400" />
-                      <span>🛒 E-commerce: +76% mobile conversion</span>
+                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <CheckCircle className="w-6 h-6 text-emerald-400" />
+                      <span className="text-lg font-semibold text-white">Real Case: IPE Imóveis</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-yellow-400" />
-                      <span>📊 SaaS B2B: $86k annual savings</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Target className="w-4 h-4 text-blue-400" />
-                      <span>💄 DTC Health: 37% tool reduction</span>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <div className="text-slate-400">Before</div>
+                        <div className="text-red-400 font-semibold">4.2s load time</div>
+                        <div className="text-red-400">2.1% conversion</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-400">After (4 weeks)</div>
+                        <div className="text-emerald-400 font-semibold">1.8s load time</div>
+                        <div className="text-emerald-400">3.4% conversion</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-400">Business Impact</div>
+                        <div className="text-yellow-400 font-semibold">+62% leads</div>
+                        <div className="text-yellow-400">$18,500 investment</div>
+                      </div>
                     </div>
                   </div>
 
-                  <button className="group inline-flex items-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
-                    <Calculator className="w-5 h-5 mr-3" />
-                    Request Your Free Audit
-                    <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button 
+                      onClick={handleSpeedAnalysis}
+                      disabled={isAnalyzing}
+                      className="group inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-600 text-white text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <div className="w-5 h-5 mr-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <Calculator className="w-5 h-5 mr-3" />
+                          Get Your Speed & Revenue Analysis
+                          <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
+                    <div className="text-center sm:text-left">
+                      <div className="text-emerald-400 font-semibold text-lg">$997</div>
+                      <div className="text-sm text-slate-400">5-day delivery</div>
+                    </div>
+                  </div>
 
-                  <p className="text-sm text-slate-400">
-                    5-day delivery • ROI estimate included • No long-term commitment
-                  </p>
+                  <div className="flex items-center gap-6 text-sm text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>5-day delivery</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calculator className="w-4 h-4" />
+                      <span>ROI projection included</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      <span>Money-back guarantee</span>
+                    </div>
+                  </div>
                 </motion.div>
               </Suspense>
             </LazyMotionWrapper>

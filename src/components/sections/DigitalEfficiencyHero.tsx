@@ -1,0 +1,510 @@
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import {
+    ArrowRight,
+    Terminal,
+    Zap,
+    TrendingUp,
+    DollarSign,
+    Clock,
+    Target,
+    CheckCircle2,
+    Search,
+    AlertCircle,
+    BarChart,
+    Database
+} from 'lucide-react'
+import { trackEvent, trackFunnelStep } from '../../lib/analytics'
+
+// Interfaces for business logic
+interface InefficiencyAnalysis {
+    domain: string
+    loading: boolean
+    results?: {
+        digitalWasteScore: number
+        inefficiencyPercentage: number
+        recoveryEstimate: number
+        stackRedundancy: string[]
+        annualSavings: number
+        priorityIssues: string[]
+        confidenceLevel: number
+        recoveryTimeHours: number
+    }
+    error?: string
+}
+
+/**
+ * DigitalEfficiencyHero Section
+ * 
+ * Implements ARCO's "Digital Inefficiency Compression System" positioning
+ * with strong business outcome focus and 48-hour recovery framework
+ */
+export function DigitalEfficiencyHero() {
+    const [currentCase, setCurrentCase] = useState(0)
+    const [analyzerStep, setAnalyzerStep] = useState(0)
+    const [domainAnalysis, setDomainAnalysis] = useState<InefficiencyAnalysis>({
+        domain: '',
+        loading: false
+    })
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    })
+
+    const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"])
+
+    // REAL CASE STUDIES with business outcomes
+    const realCases = [
+        {
+            client: 'IPE Ventures',
+            before: '28% digital waste',
+            after: '4% digital waste',
+            result: '+$240k annual margin',
+            timeframe: '48 hours',
+            technique: 'Digital Inefficiency Compression'
+        },
+        {
+            client: 'Xora Platform',
+            before: '34% stack overlap',
+            after: '7% stack overlap',
+            result: '+67% operational efficiency',
+            timeframe: '48 hours',
+            technique: 'SaaS Stack Rationalization'
+        },
+        {
+            client: 'TechCorp Solutions',
+            before: '$12,500 monthly waste',
+            after: '$1,250 monthly waste',
+            result: '+$135k bottom-line impact',
+            timeframe: '48 hours',
+            technique: 'Process Inefficiency Elimination'
+        }]
+
+    // Python-based analysis automation demonstration
+    const analyzerSteps = [
+        '$ python digital_inefficiency_scan.py --domain=client.com',
+        '$ analyzing tech stack and dependencies...',
+        '$ scanning SaaS integration redundancies...',
+        '$ calculating digital waste factor...',
+        '✓ Digital waste identified: 28.4% of operations',
+        '✓ Recoverable annual cost: $127,500',
+        '✓ 48-hour recovery plan generated'
+    ]
+
+    useEffect(() => {
+        // Cycle through cases
+        const caseInterval = setInterval(() => {
+            setCurrentCase(prev => (prev + 1) % realCases.length)
+        }, 4000)
+
+        // Animate analyzer steps
+        const analyzerInterval = setInterval(() => {
+            setAnalyzerStep(prev => (prev + 1) % analyzerSteps.length)
+        }, 2000)
+
+        return () => {
+            clearInterval(caseInterval)
+            clearInterval(analyzerInterval)
+        }
+    }, [realCases.length, analyzerSteps.length])
+
+    // Domain inefficiency analysis with Python backend
+    const analyzeDomain = async (domain: string) => {
+        if (!domain || domainAnalysis.loading) return
+
+        setDomainAnalysis(prev => ({ ...prev, loading: true, error: undefined }))
+
+        try {
+            // Track analysis attempt
+            trackEvent('inefficiency_analysis_attempt', 'analysis', 'domain_input', domain)
+
+            // Real API call to Python-based analyzer endpoint
+            const response = await fetch('/api/analyze/inefficiency', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ domain: domain.replace(/^https?:\/\//, '') })
+            })
+
+            const result = await response.json()
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || 'Analysis failed')
+            }
+
+            setDomainAnalysis({
+                domain,
+                loading: false,
+                results: result.data
+            })
+
+            // Track successful analysis
+            trackFunnelStep('inefficiency_analysis_complete', 'conversion_funnel', {
+                domain,
+                inefficiency_score: result.data.digitalWasteScore,
+                savings_potential: result.data.annualSavings
+            })
+
+        } catch (error) {
+            console.error('Analysis error:', error)
+            setDomainAnalysis(prev => ({
+                ...prev,
+                loading: false,
+                error: error instanceof Error ? error.message : 'Analysis failed. Please check the domain and try again.'
+            }))
+        }
+    }
+
+    const handleCTAClick = () => {
+        trackEvent('hero_cta_click', 'conversion', 'recovery_plan_cta', 'inefficiency_hero', 1)
+
+        trackFunnelStep('hero_cta_click', 'conversion_funnel', {
+            source: 'inefficiency_hero',
+            current_case: realCases[currentCase].client,
+            timestamp: Date.now()
+        })
+
+        // Scroll to immediate value section
+        document.getElementById('recovery-plan')?.scrollIntoView({
+            behavior: 'smooth'
+        })
+    }
+
+    return (
+        <section
+            ref={containerRef}
+            className="relative min-h-screen flex items-center overflow-hidden bg-slate-900"
+            data-section="hero"
+        >
+            {/* Modern gradient background */}
+            <motion.div
+                className="absolute inset-0"
+                style={{ y: backgroundY }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.3),transparent_50%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(74,222,128,0.2),transparent_50%)]" />
+            </motion.div>
+
+            {/* Subtle grid pattern overlay */}
+            <div className="absolute inset-0 opacity-40">
+                <div
+                    className="w-full h-full bg-repeat"
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+                    }}
+                />
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+                {/* Left: Main content - executive-level value proposition */}
+                <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-white"
+                >
+                    {/* Strategic value proposition */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="mb-6"
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-full text-blue-300 text-sm font-medium mb-4">
+                            <Target className="w-4 h-4" />
+                            Digital Inefficiency Compression System
+                        </div>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                            Transform Digital 
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-500">
+                                {' '}Waste{' '}
+                            </span>
+                            into Margin
+                        </h1>
+                        <p className="text-xl text-slate-300 leading-relaxed max-w-xl">
+                            Our 48-hour recovery system identifies and eliminates digital inefficiencies that drain your bottom line.
+                            <strong className="text-white"> Boost margin without changing your core operations.</strong>
+                        </p>
+                    </motion.div>
+
+                    {/* Business case showcase - focus on financial impact */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8"
+                    >
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                            <span className="text-green-400 font-medium">BUSINESS CASE VERIFIED</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                            <div>
+                                <div className="text-2xl font-bold text-white mb-1">
+                                    {realCases[currentCase].client}
+                                </div>
+                                <div className="text-slate-300 text-sm mb-3">
+                                    {realCases[currentCase].technique}
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="flex justify-between">
+                                        <span className="text-slate-400">Before:</span>
+                                        <span className="text-red-400 font-medium">{realCases[currentCase].before}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-slate-400">After:</span>
+                                        <span className="text-green-400 font-medium">{realCases[currentCase].after}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col justify-center items-center text-center">
+                                <div className="text-3xl font-bold text-green-400 mb-1">
+                                    {realCases[currentCase].result}
+                                </div>
+                                <div className="text-slate-300 text-sm mb-2">
+                                    Financial Impact
+                                </div>
+                                <div className="flex items-center gap-1 text-xs text-slate-400">
+                                    <Clock className="w-3 h-3" />
+                                    Delivered in {realCases[currentCase].timeframe}
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Primary CTA - business-focused */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                    >
+                        <button
+                            onClick={handleCTAClick}
+                            className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                        >
+                            <BarChart className="w-5 h-5" />
+                            Get Your 48-Hour Recovery Plan
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                        <p className="text-slate-400 text-sm mt-3">
+                            Free assessment • No-obligation diagnosis • 48-hour implementation
+                        </p>
+                    </motion.div>
+
+                    {/* Digital Waste Scanner - interactive lead generation tool */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8 }}
+                        className="mt-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6"
+                    >
+                        <div className="flex items-center gap-2 mb-4">
+                            <Search className="w-5 h-5 text-blue-400" />
+                            <h3 className="text-white font-semibold">
+                                Free Digital Waste Scanner - Quantify Your Inefficiency in 60 Seconds
+                            </h3>
+                        </div>
+
+                        <div className="flex gap-3">
+                            <input
+                                type="text"
+                                placeholder="Enter your domain (e.g., company.com)"
+                                value={domainAnalysis.domain}
+                                onChange={(e) => setDomainAnalysis(prev => ({ ...prev, domain: e.target.value }))}
+                                onKeyPress={(e) => e.key === 'Enter' && analyzeDomain(domainAnalysis.domain)}
+                                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
+                                disabled={domainAnalysis.loading}
+                            />
+                            <button
+                                onClick={() => analyzeDomain(domainAnalysis.domain)}
+                                disabled={!domainAnalysis.domain || domainAnalysis.loading}
+                                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+                            >
+                                {domainAnalysis.loading ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        Analyzing...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Database className="w-4 h-4" />
+                                        Analyze
+                                    </>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* Analysis Results with business metrics */}
+                        {domainAnalysis.results && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                transition={{ duration: 0.5 }}
+                                className="mt-6 space-y-4"
+                            >
+                                {/* Business Metrics */}
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 text-center">
+                                        <div className="text-2xl font-bold text-red-400">
+                                            {domainAnalysis.results.digitalWasteScore}%
+                                        </div>
+                                        <div className="text-xs text-red-300">Digital Waste Score</div>
+                                    </div>
+                                    <div className="bg-orange-500/20 border border-orange-500/30 rounded-lg p-4 text-center">
+                                        <div className="text-2xl font-bold text-orange-400">
+                                            {domainAnalysis.results.recoveryTimeHours}h
+                                        </div>
+                                        <div className="text-xs text-orange-300">Recovery Time</div>
+                                    </div>
+                                    <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 text-center">
+                                        <div className="text-2xl font-bold text-green-400">
+                                            ${domainAnalysis.results.annualSavings.toLocaleString()}
+                                        </div>
+                                        <div className="text-xs text-green-300">Annual Recovery</div>
+                                    </div>
+                                </div>
+
+                                {/* Quick Wins */}
+                                <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                                    <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                                        <CheckCircle2 className="w-4 h-4 text-green-400" />
+                                        Immediate Digital Inefficiency Recovery Points
+                                    </h4>
+                                    <div className="space-y-2">
+                                        {domainAnalysis.results.priorityIssues.map((issue, index) => (
+                                            <div key={index} className="text-sm text-slate-300 flex items-center gap-2">
+                                                <ArrowRight className="w-3 h-3 text-blue-400 flex-shrink-0" />
+                                                {issue}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* CTA for detailed recovery plan */}
+                                <div className="bg-gradient-to-r from-blue-600/20 to-emerald-600/20 border border-blue-500/30 rounded-lg p-4 text-center">
+                                    <p className="text-white font-medium mb-2">
+                                        Get Your 48-Hour Digital Waste Recovery Plan
+                                    </p>
+                                    <p className="text-slate-300 text-sm mb-3">
+                                        Complete inefficiency diagnostic with implementation roadmap
+                                    </p>
+                                    <button className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 px-6 py-2 rounded-lg text-white font-medium transition-all">
+                                        Start ARCO Insight™ Plan →
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* Error state */}
+                        {domainAnalysis.error && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="mt-4 flex items-center gap-2 text-red-400 text-sm"
+                            >
+                                <AlertCircle className="w-4 h-4" />
+                                {domainAnalysis.error}
+                            </motion.div>
+                        )}
+                    </motion.div>
+                </motion.div>
+
+                {/* Right: Technical demonstration with Python analyzer */}
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="relative"
+                >
+                    {/* Python analyzer terminal */}
+                    <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden shadow-2xl">
+                        <div className="flex items-center gap-2 px-4 py-3 bg-slate-700 border-b border-slate-600">
+                            <div className="flex gap-2">
+                                <div className="w-3 h-3 bg-red-500 rounded-full" />
+                                <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                                <div className="w-3 h-3 bg-green-500 rounded-full" />
+                            </div>
+                            <div className="flex items-center gap-2 text-slate-300 text-sm ml-4">
+                                <Terminal className="w-4 h-4" />
+                                digital_inefficiency_scanner.py
+                            </div>
+                        </div>
+
+                        <div className="p-6 font-mono text-sm">
+                            {analyzerSteps.slice(0, analyzerStep + 1).map((step, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className={`mb-2 ${step.startsWith('✓')
+                                        ? 'text-green-400'
+                                        : step.startsWith('$')
+                                            ? 'text-blue-400'
+                                            : 'text-slate-300'
+                                        }`}
+                                >
+                                    {step}
+                                    {index === analyzerStep && (
+                                        <span className="animate-pulse text-white">|</span>
+                                    )}
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Floating business impact metrics */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1 }}
+                        className="absolute -top-6 -right-6 bg-green-500 text-white px-4 py-2 rounded-lg font-bold shadow-lg"
+                    >
+                        <div className="flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4" />
+                            90-Day ROI Guarantee
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.2 }}
+                        className="absolute -bottom-6 -left-6 bg-blue-500 text-white px-4 py-2 rounded-lg font-bold shadow-lg"
+                    >
+                        <div className="flex items-center gap-2">
+                            <Zap className="w-4 h-4" />
+                            48-Hour Recovery
+                        </div>
+                    </motion.div>
+                </motion.div>
+            </div>
+
+            {/* Scroll indicator */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5 }}
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60"
+            >
+                <div className="flex flex-col items-center gap-2">
+                    <span className="text-sm">View recovery solutions</span>
+                    <motion.div
+                        animate={{ y: [0, 10, 0] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="w-1 h-8 bg-gradient-to-b from-white/60 to-transparent rounded-full"
+                    />
+                </div>
+            </motion.div>
+        </section>
+    )
+}

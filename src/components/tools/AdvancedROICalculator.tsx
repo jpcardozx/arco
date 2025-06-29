@@ -120,13 +120,7 @@ export function AdvancedROICalculator() {
         setShowResults(true)
 
         // Track calculation completion
-        trackEvent({
-            event: 'roi_calculation_complete',
-            category: 'tools',
-            action: 'calculation',
-            label: 'roi_calculator',
-            value: Math.round(calculatedResults.roi)
-        })
+        trackEvent('roi_calculation_complete', 'tools', 'calculation', 'roi_calculator', Math.round(calculatedResults.roi))
 
         trackFunnelStep('roi_calculation_complete', 'lead_qualification', {
             monthly_traffic: inputs.monthlyTraffic,
@@ -144,13 +138,7 @@ export function AdvancedROICalculator() {
     }
 
     const handleGetQuote = () => {
-        trackEvent({
-            event: 'roi_quote_request',
-            category: 'conversion',
-            action: 'quote_request',
-            label: 'from_roi_calculator',
-            value: results ? Math.round(results.roi) : 0
-        })
+        trackEvent('roi_quote_request', 'conversion', 'quote_request', 'from_roi_calculator', results ? Math.round(results.roi) : 0)
 
         trackFunnelStep('roi_to_quote', 'conversion_funnel', {
             source: 'roi_calculator',
@@ -419,13 +407,7 @@ export function AdvancedROICalculator() {
                             <button
                                 onClick={() => {
                                     // Track report download
-                                    trackEvent({
-                                        event: 'roi_report_download',
-                                        category: 'lead_magnet',
-                                        action: 'download',
-                                        label: 'roi_report',
-                                        value: 1
-                                    })
+                                    trackEvent('roi_report_download', 'lead_magnet', 'download', 'roi_report', 1)
                                     alert('Detailed ROI report would be generated here.')
                                 }}
                                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"

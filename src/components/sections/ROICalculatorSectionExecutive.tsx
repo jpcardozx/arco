@@ -36,13 +36,7 @@ export function ROICalculatorSectionExecutive() {
     const [showResults, setShowResults] = useState(false)
 
     const handleCalculatorInteraction = (action: string, data?: any) => {
-        trackEvent({
-            event: 'calculator_interaction',
-            category: 'engagement',
-            action: action,
-            label: 'roi_calculator',
-            custom_parameters: data
-        })
+        trackEvent('calculator_interaction', 'engagement', action, 'roi_calculator', undefined, data)
 
         if (action === 'calculate_roi') {
             trackFunnelStep('calculator_use', 'conversion_funnel', {

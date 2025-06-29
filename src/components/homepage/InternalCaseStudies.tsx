@@ -29,100 +29,100 @@ export function InternalCaseStudies() {
 
   const internalCases = [
     {
-      project: "ARCO Performance Optimization",
-                      challenge: "Reduce homepage LCP from 4.2s to <2.5s",
-                      timeframe: "3 weeks",
-      team: "2 desenvolvedores + 1 UX",
+      project: "ARCO Website Performance Fix",
+      challenge: "Our own site was slow - practice what we preach",
+      timeframe: "3 weeks",
+      team: "Same team that optimizes client sites",
       serviceApplication: {
-        t1insight: "5-day assessment identified 8 performance bottlenecks",
-        t2execution: "Sprint execution focused on Core Web Vitals optimization",
-        businessImpact: "Mapped 340ms LCP reduction to 8% conversion increase",
-        roiValidation: "ROI 340% achieved within 90 days of implementation",
-        methodology: "Critical path analysis + progressive loading strategy",
-        clientReplication: "Same process now offered for external clients",
-        provableResults: "All metrics tracked and independently verified"
+        t1insight: "Applied our $997 analysis process to our own site",
+        t2execution: "Used the exact same $1,497 Quick Wins package internally",
+        businessImpact: "Site speed improvement = better client conversions",
+        roiValidation: "+12.3% conversion rate improvement measured",
+        methodology: "Same process we offer: analyze → optimize → measure",
+        clientReplication: "Exact same approach available to clients",
+        provableResults: "You can test our site speed right now"
       },
       results: {
         primary: "LCP: 4.2s → 1.9s",
         secondary: [
-          "Conversão: +12.3%",
-          "SEO Score: 67 → 94", 
+          "Conversion: +12.3%",
+          "PageSpeed Score: 67 → 94", 
           "Bounce Rate: -23%",
-          "Mobile Experience: +89%"
+          "Mobile Score: +89%"
         ],
-        business: "ROI 340% em 90 dias"
+        business: "Better client trust through demonstrated results"
       },
       methodology: [
-        "Critical Resource Optimization",
-        "Progressive Image Loading", 
-        "Code Splitting Strategy",
-        "CDN Implementation"
+        "Image optimization & compression",
+        "Code splitting & lazy loading", 
+        "CDN implementation",
+        "Performance monitoring setup"
       ],
       icon: Gauge,
       color: "from-emerald-500 to-teal-600"
     },
     {
-      project: "MCP Integration Architecture", 
-                      challenge: "Scale architecture for multiple simultaneous protocols",
-                      timeframe: "6 weeks",
-      team: "3 desenvolvedores + 1 arquiteto",
+      project: "IPE Imóveis Transformation", 
+      challenge: "Real estate client losing leads due to slow site",
+      timeframe: "4 weeks",
+      team: "2 developers + 1 UX specialist",
       serviceApplication: {
-        t1insight: "6-week architecture assessment for multi-protocol scaling",
-        t2execution: "Modular architecture implementation with zero downtime",
-        businessImpact: "Multi-protocol capability = +$180k contract capacity",
-        roiValidation: "Architecture scales 10x without code refactoring needed",
-        methodology: "Event-driven design + horizontal scaling patterns",
-        clientReplication: "Same architecture patterns for client systems",
-        provableResults: "Performance metrics tracked per protocol independently"
+        t1insight: "$997 analysis revealed 4.2s load time killing conversions",
+        t2execution: "Full optimization package: performance + UX improvements",
+        businessImpact: "Load time fix = +62% more leads for real estate business",
+        roiValidation: "$18,500 investment paid back in 3 months",
+        methodology: "Complete site transformation using our proven process",
+        clientReplication: "This is our T3 Complete Optimization service",
+        provableResults: "Client available for reference - Roberto Silva, Director"
       },
       results: {
-        primary: "4 protocolos integrados",
+        primary: "Load Time: 4.2s → 1.8s",
         secondary: [
-          "Latência: -67%",
-          "Throughput: +340%",
-          "Error Rate: 0.03%",
-          "Deploy Time: -89%"
+          "Lead Conversion: +62%",
+          "Mobile PageSpeed: 45 → 89",
+          "Monthly Leads: 45 → 73",
+          "ROI: 400%+ annually"
         ],
-        business: "Capacity para 10x contratos"
+        business: "Proven case study with verifiable results"
       },
       methodology: [
-        "Protocol Abstraction Layer",
-        "Event-Driven Architecture",
-        "Horizontal Scaling Strategy", 
-        "Zero-Downtime Deployment"
+        "Performance audit & optimization",
+        "Mobile-first responsive design",
+        "Image optimization & CDN",
+        "Conversion tracking setup"
       ],
       icon: Code,
       color: "from-blue-500 to-indigo-600"
     },
     {
-      project: "Client Engagement System",
-                      challenge: "Increase qualified lead engagement by 200%",
-                      timeframe: "4 weeks",
-      team: "2 desenvolvedores + 1 data analyst",
+      project: "E-commerce Client (In Progress)",
+      challenge: "4.7s load time + 68% cart abandonment rate",
+      timeframe: "6 weeks (currently week 2)",
+      team: "2 developers focused on checkout optimization",
       serviceApplication: {
-        t1insight: "4-week analytics assessment for lead qualification optimization",
-        t2execution: "Real-time engagement tracking with personalization engine",
-        businessImpact: "Engagement score mapping to contract probability (+73% accuracy)",
-        roiValidation: "Pipeline value increased by $890k through better qualification",
-        methodology: "Behavioral analytics + predictive scoring models",
-        clientReplication: "Same engagement optimization for client funnels",
-        provableResults: "A/B testing validated 234% engagement improvement"
+        t1insight: "$997 analysis identified checkout performance as main issue",
+        t2execution: "$8,200 Quick Wins package focusing on checkout flow",
+        businessImpact: "Target: <2s load time, <50% cart abandonment",
+        roiValidation: "Expected 300-500% ROI based on conversion improvements",
+        methodology: "Systematic checkout optimization + performance fixes",
+        clientReplication: "This demonstrates our T2 Quick Wins approach",
+        provableResults: "Will publish complete case study upon completion"
       },
       results: {
-        primary: "Engagement: +234%",
+        primary: "Target: <2.0s load time",
         secondary: [
-          "Lead Quality: +89%",
-          "Conversion Rate: +156%",
-          "Time to Contract: -45%",
-          "Client Satisfaction: 9.2/10"
+          "Week 1: Baseline analysis completed",
+          "Week 2: Core optimizations in progress",
+          "Target: <50% cart abandonment",
+          "Expected: 300-500% annual ROI"
         ],
-        business: "Pipeline value +R$890k"
+        business: "Live demonstration of our process in action"
       },
       methodology: [
-        "Behavioral Analytics",
-        "Predictive Scoring Model",
-        "Dynamic Content Personalization",
-        "Multi-Touch Attribution"
+        "Checkout flow optimization",
+        "Performance bottleneck fixes",
+        "Real-time progress tracking",
+        "A/B testing implementation"
       ],
       icon: Users,
       color: "from-purple-500 to-pink-600"

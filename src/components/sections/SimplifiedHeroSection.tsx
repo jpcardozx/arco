@@ -36,13 +36,7 @@ export function SimplifiedHeroSection() {
 
     const handleCTAClick = () => {
         // Track main CTA click
-        trackEvent({
-            event: 'cta_click',
-            category: 'conversion',
-            action: 'hero_cta_click',
-            label: 'main_cta',
-            value: 1
-        })
+        trackEvent('cta_click', 'conversion', 'hero_cta_click', 'main_cta', 1)
 
         // Track funnel progression
         trackFunnelStep('hero_cta_click', 'conversion_funnel', {

@@ -55,65 +55,65 @@ export function FrameworkBreakdown() {
   const serviceTiers = [
     {
       tier: 'T1',
-      title: 'No-Brainer Insight',
-      price: '$197',
+      title: 'Speed Analysis',
+      price: '$997',
       time: '5 days',
-      description: 'Quick assessment to identify biggest waste + performance wins',
+      description: 'We analyze your site speed and calculate exact revenue loss',
       icon: BarChart3,
       color: 'from-emerald-500 to-emerald-700',
       details: {
-        approach: 'Rapid Assessment & ROI Projection',
+        approach: 'Complete Site Analysis & Revenue Impact Assessment',
         deliverables: [
-          '5-minute Loom video walkthrough',
-          'SaaS waste vs LCP impact spreadsheet',
-          '12-month ROI estimate with confidence intervals',
-          'Priority ranking of quick wins'
+          '25-page technical analysis report',
+          'Video walkthrough of findings (15 min)',
+          'ROI projection with revenue loss calculation',
+          'Implementation roadmap with priorities'
         ],
-        tools: ['ARCO Waste Scanner', 'Performance Analyzer', 'ROI Calculator'],
-        gate: 'ROI projected ≥ 5x investment',
-        outcome: 'Clear roadmap with quantified business impact'
+        tools: ['Performance Audit Tools', 'Speed Analysis', 'ROI Calculator'],
+        gate: 'Find minimum $5,000 annual opportunity or full refund',
+        outcome: 'Clear understanding of your site\'s revenue impact'
       }
     },
     {
       tier: 'T2',
-      title: 'Sprint Execution',
-      price: '20% of savings OR $1,997',
-      time: '25 days',
-      description: 'Choose ONE: SaaS rightsizing OR performance optimization sprint',
+      title: 'Quick Wins Package',
+      price: '$1,497',
+      time: '3 weeks',
+      description: 'We implement the biggest performance fixes to get immediate results',
       icon: Zap,
       color: 'from-blue-500 to-blue-700',
       details: {
-        approach: 'Focused Implementation Sprint',
+        approach: 'High-Impact Performance Optimization Sprint',
         deliverables: [
-          'Option A: SaaS consolidation + license optimization',
-          'Option B: Core Web Vitals optimization + mobile performance',
-          'Measurable results with before/after metrics',
-          'Implementation complete with handover'
+          'Image optimization and compression',
+          'CSS/JS minification and caching setup',
+          'CDN implementation',
+          'Performance monitoring setup'
         ],
-        tools: ['Implementation Automation', 'Progress Tracking', 'Results Validation'],
-        gate: 'Savings or revenue increase measured and verified',
-        outcome: 'Immediate, measurable business impact in chosen area'
+        tools: ['Optimization Scripts', 'CDN Setup', 'Performance Monitoring'],
+        gate: '50% faster load time or money back',
+        outcome: 'Immediate site speed improvement and conversion boost'
       }
     },
     {
       tier: 'T3',
-      title: 'Growth Retainer',
-      price: '$2-4k/month + 10% of new savings',
-      time: '3-6 months',
-      description: 'Ongoing optimization across both SaaS + performance with automation',
+      title: 'Complete Optimization',
+      price: '$8,000-15,000',
+      time: '6-8 weeks',
+      description: 'Full site transformation: performance + UX + conversion optimization',
       icon: Target,
       color: 'from-purple-500 to-purple-700',
       details: {
-        approach: 'Continuous Optimization Engine',
+        approach: 'Complete Site Performance & Conversion Overhaul',
         deliverables: [
-          'Monthly optimization sprints (alternating SaaS/performance)',
-          'Custom automation tools and monitoring',
-          'Micro-apps for ongoing efficiency',
-          'Quarterly strategy reviews and roadmap updates'
+          'Full performance optimization (like IPE Imóveis)',
+          'UX improvements based on conversion data',
+          'Mobile-first optimization',
+          'Team training and handover'
         ],
-        tools: ['Custom Automation Suite', 'Monitoring Dashboard', 'Optimization Engine'],
-        gate: 'New optimizations pay back ≤ 60 days',
-        outcome: 'Self-sustaining optimization with predictable ROI'
+        tools: ['Complete Optimization Suite', 'Analytics Setup', 'Training Materials'],
+        gate: 'Measurable business impact within 90 days',
+        outcome: 'Site becomes a revenue-generating machine'
       }
     }
   ]

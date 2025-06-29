@@ -1,299 +1,308 @@
 'use client'
 
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, CheckCircle, Clock, DollarSign, TrendingUp } from 'lucide-react'
-import Link from 'next/link'import { createHref } from '@/utils/navigation';
-import { useEffect, useRef, useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { ArrowRight, CheckCircle, TrendingUp, Code, Terminal, Shield, Clock } from 'lucide-react'
+import { trackEvent, trackFunnelStep } from '@/lib/analytics'
+import { useContent } from '@/lib/content'
 
 /**
- * Enterprise Hero Component - Strategic Infrastructure Optimization
+ * ENTERPRISE HERO - TECHNICAL CREDIBILITY & AUTHORITY
  * 
- * Implements the commercial maturity framework for mid-market enterprise positioning.
- * Focuses on technical authority, process rigor, and measurable outcomes.
+ * Purpose:
+ * - Establish technical credibility for engineering leaders
+ * - Present clear problem-solution framework with measurable ROI
+ * - Enterprise-grade design with actionable metrics
+ * - Drive high-intent conversions through targeted CTAs
  */
 
-interface TrustIndicator {
-    icon: React.ComponentType<{ className?: string }>
-    label: string
-    description: string
-}
-
-interface PerformanceMetric {
-    value: string
-    label: string
-    context: string
-}
-
-const trustIndicators: TrustIndicator[] = [
-    {
-        icon: Clock,
-        label: 'Entrega em 24h',
-        description: 'Relatório completo com recomendações práticas'
-    },
-    {
-        icon: TrendingUp,
-        label: 'ROI em 2-4 meses',
-        description: 'Economia real através de otimizações técnicas'
-    },
-    {
-        icon: DollarSign,
-        label: 'R$ 2.8M economia média',
-        description: 'Resultado comprovado em 47 projetos'
-    }
-]
-
-const performanceMetrics: PerformanceMetric[] = [
-    {
-        value: 'R$ 2.8M',
-        label: 'Economia média identificada',
-        context: 'Em análises de infraestrutura realizadas'
-    },
-    {
-        value: '< 1.2s',
-        label: 'Tempo de carregamento',
-        context: 'Meta de performance garantida'
-    },
-    {
-        value: '10 dias',
-        label: 'Prazo de entrega',
-        context: 'Da análise inicial ao plano de ação'
-    }
-]
-
 export function EnterpriseHero() {
-    const [isVisible, setIsVisible] = useState(false)
+    const [isHovered, setIsHovered] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
-
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ['start start', 'end start']
-    })
-
-    const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100])
-    const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+    const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+    const content = useContent()
 
     useEffect(() => {
-        setIsVisible(true)
-    }, [])
+        if (isInView) {
+            trackFunnelStep('hero_view', 'conversion_funnel', {
+                section: 'enterprise_hero',
+                version: 'technical_authority',
+                timestamp: Date.now()
+            })
+        }
+    }, [isInView])
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                duration: 0.8,
-                staggerChildren: 0.15
-            }
+    const handlePrimaryCTA = () => {
+        trackEvent({
+            event: 'cta_click',
+            category: 'conversion',
+            action: 'primary_cta'
+        })
+
+        const contactSection = document.querySelector('[data-section="contact"]')
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' })
         }
     }
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 24 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.6,
-                ease: [0.25, 0.1, 0.25, 1]
-            }
+    const handleSecondaryCTA = () => {
+        trackEvent({
+            event: 'cta_click',
+            category: 'engagement',
+            action: 'secondary_cta'
+        })
+
+        const casesSection = document.querySelector('[data-section="cases"]')
+        if (casesSection) {
+            casesSection.scrollIntoView({ behavior: 'smooth' })
         }
     }
+
+    const MetricCard = ({ color, metric, delay }: { color: string, metric: any, delay: number }) => (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay, duration: 0.6 }}
+            whileHover={{ y: -5, transition: { duration: 0.3 } }}
+            className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/8 hover:border-white/20 transition-all duration-300"
+        >
+            <div className={`absolute top-0 left-0 h-1 w-full bg-gradient-to-r ${color} rounded-t-xl`} />
+            
+            <div className="w-full">
+                <div className="text-3xl font-bold text-white mb-2 font-mono">
+                    {metric.value}
+                </div>
+                <div className={`text-sm font-semibold ${color.includes('blue') ? 'text-blue-300' : 
+                                color.includes('emerald') ? 'text-emerald-300' : 
+                                color.includes('purple') ? 'text-purple-300' : 
+                                'text-amber-300'} mb-3`}>
+                    {metric.label}
+                </div>
+                <div className="text-xs text-slate-400 leading-relaxed">
+                    {metric.desc}
+                </div>
+            </div>
+        </motion.div>
+    )
 
     return (
-        <section
+        <section 
             ref={containerRef}
-            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50"
+            className="relative min-h-screen flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden" 
+            data-section="hero"
         >
-            {/* Background Elements */}
-            <motion.div
-                style={{ y: backgroundY }}
-                className="absolute inset-0"
-            >
-                {/* Subtle Grid Pattern */}
-                <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
+            {/* Technical background patterns */}
+            <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.08)_0%,transparent_50%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(99,102,241,0.06)_0%,transparent_50%)]" />
 
-                {/* Geometric Elements */}
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-slate-100/40 rounded-full blur-2xl" />
-            </motion.div>
+                <div className="absolute inset-0 opacity-[0.03]"
+                    style={{
+                        backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                                        linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+                        backgroundSize: '50px 50px'
+                    }}
+                />
+            </div>
 
-            {/* Main Content */}
-            <motion.div
-                style={{ opacity: contentOpacity }}
-                className="relative z-10 max-w-7xl mx-auto px-6 text-center"
-                variants={containerVariants}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-            >                {/* Authority Badge */}
-                <motion.div variants={itemVariants}>
-                    <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-full px-6 py-3 mb-8 shadow-sm">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
-                        <span className="text-sm font-medium text-slate-700">
-                            Otimização de infraestrutura para empresas em crescimento
-                        </span>
-                    </div>
-                </motion.div>
-
-                {/* Main Headline */}
-                <motion.h1
-                    variants={itemVariants}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-slate-900 mb-8 leading-none"
-                >
-                    Reduza custos
-                    <br />
-                    <span className="text-blue-600">de infraestrutura</span>
-                    <br />
-                    <span className="text-slate-600">em 90 dias</span>
-                </motion.h1>
-
-                {/* Supporting Statement */}
-                <motion.p
-                    variants={itemVariants}
-                    className="text-xl md:text-2xl text-slate-600 mb-12 max-w-4xl mx-auto leading-relaxed font-light"
-                >
-                    Sua empresa cresce, mas os custos de tecnologia explodem?
-                    <strong className="font-semibold text-slate-800"> Encontramos onde você está gastando dinheiro à toa</strong> e mostramos como otimizar sem prejudicar a performance.
-                </motion.p>
-
-                {/* Trust Indicators */}
-                <motion.div
-                    variants={itemVariants}
-                    className="flex flex-wrap justify-center items-center gap-8 mb-12 text-sm text-slate-600"
-                >
-                    {trustIndicators.map((indicator, index) => (
-                        <div key={index} className="flex items-center gap-3">
-                            <indicator.icon className="w-5 h-5 text-blue-600" />
-                            <div className="text-left">
-                                <div className="font-semibold text-slate-800">{indicator.label}</div>
-                                <div className="text-slate-600 text-xs">{indicator.description}</div>
-                            </div>
-                        </div>
-                    ))}
-                </motion.div>
-
-                {/* Primary CTAs */}
-                <motion.div
-                    variants={itemVariants}
-                    className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
-                >
+            <div className="container mx-auto px-6 lg:px-8 relative z-10">
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                    
+                    {/* Left Column - Technical Value Proposition */}
                     <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >                        <Link
-                        href={createHref("/diagnose")}
-                        className="group inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.7 }}
+                        className="text-white space-y-8"
                     >
-                            Quero uma análise gratuita
-                            <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
-
-                    <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        <Link
-                            href={createHref("/cases")}
-                            className="group inline-flex items-center border-2 border-slate-300 hover:border-slate-400 bg-white/80 backdrop-blur-sm text-slate-700 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
-                        >
-                            Ver casos de sucesso
-                        </Link>
-                    </motion.div>
-                </motion.div>
-
-                {/* Performance Metrics Preview */}
-                <motion.div
-                    variants={itemVariants}
-                    className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-                >
-                    {performanceMetrics.map((metric, index) => (
+                        {/* Technical Badge */}
                         <motion.div
-                            key={index}
-                            className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-slate-200/50 shadow-sm"
-                            whileHover={{ y: -4, shadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-                            transition={{ duration: 0.3 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                            className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 shadow-xl"
                         >
-                            <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-                                {metric.value}
-                            </div>
-                            <div className="text-lg font-semibold text-slate-800 mb-1">
-                                {metric.label}
-                            </div>
-                            <div className="text-sm text-slate-600 leading-relaxed">
-                                {metric.context}
+                            <Terminal className="w-4 h-4 text-blue-400" />
+                            <span className="text-sm font-medium text-blue-100">
+                                {content.hero.badge}
+                            </span>
+                        </motion.div>
+
+                        {/* Main Headline */}
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.3, duration: 0.6 }}
+                            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                        >
+                            <span className="text-white">{content.hero.headline}</span>
+                        </motion.h1>
+
+                        {/* Subheadline */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.4, duration: 0.6 }}
+                            className="text-xl text-slate-300 max-w-2xl leading-relaxed"
+                        >
+                            {content.hero.subheadline}
+                        </motion.p>
+
+                        {/* Key Guarantees */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.5, duration: 0.6 }}
+                            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                        >
+                            {content.hero.guarantees.map((guarantee, index) => (
+                                <div key={index} className="flex items-start gap-3">
+                                    <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                                    <span className="text-slate-300 text-sm">{guarantee}</span>
+                                </div>
+                            ))}
+                        </motion.div>
+
+                        {/* Call to Actions */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.6, duration: 0.6 }}
+                            className="flex flex-col sm:flex-row gap-4"
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                                onHoverStart={() => setIsHovered(true)}
+                                onHoverEnd={() => setIsHovered(false)}
+                                onClick={handlePrimaryCTA}
+                                className="group relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <span className="relative flex items-center">
+                                    <TrendingUp className="w-5 h-5 mr-2" />
+                                    {content.hero.cta.primary}
+                                    <ArrowRight className={`ml-2 w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+                                </span>
+                                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white/0 via-white/40 to-white/0" />
+                            </motion.button>
+
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={handleSecondaryCTA}
+                                className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800/80 backdrop-blur-sm border border-slate-700 text-slate-200 font-medium rounded-xl hover:bg-slate-700/80 hover:border-slate-600 transition-all duration-300"
+                            >
+                                <Code className="w-5 h-5 mr-2" />
+                                {content.hero.cta.secondary}
+                            </motion.button>
+                        </motion.div>
+
+                        {/* Trust Indicators */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.8, duration: 0.6 }}
+                            className="pt-6 border-t border-slate-700/50"
+                        >
+                            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-400">
+                                <div className="flex items-center gap-2">
+                                    <Shield className="w-4 h-4 text-blue-400" />
+                                    <span>Enterprise implementation</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                                    <span>Performance guaranteed</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-blue-400" />
+                                    <span>4-6 week delivery</span>
+                                </div>
                             </div>
                         </motion.div>
-                    ))}
-                </motion.div>
+                    </motion.div>
 
-                {/* Methodology Preview */}
-                <motion.div
-                    variants={itemVariants}
-                    className="mt-20 bg-gradient-to-r from-blue-50 to-slate-50 rounded-3xl p-12 border border-slate-200/50"
-                >
-                    <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8">
-                        Our Systematic Approach
-                    </h3>
+                    {/* Right Column - Technical Metrics & Code */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.8, delay: 0.3 }}
+                        className="space-y-8"
+                    >
+                        {/* Performance Metrics Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <MetricCard 
+                                color="from-blue-500 to-blue-600" 
+                                metric={content.hero.metrics.performance} 
+                                delay={0.4} 
+                            />
+                            <MetricCard 
+                                color="from-emerald-500 to-emerald-600" 
+                                metric={content.hero.metrics.revenue} 
+                                delay={0.5} 
+                            />
+                            <MetricCard 
+                                color="from-purple-500 to-purple-600" 
+                                metric={content.hero.metrics.infrastructure} 
+                                delay={0.6} 
+                            />
+                            <MetricCard 
+                                color="from-yellow-500 to-amber-600" 
+                                metric={content.hero.metrics.deployment} 
+                                delay={0.7} 
+                            />
+                        </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                step: '01',
-                                title: 'Technical Discovery',
-                                description: 'Comprehensive analysis of current infrastructure, performance baselines, and cost structures',
-                                duration: 'Days 1-3'
-                            },
-                            {
-                                step: '02',
-                                title: 'Efficiency Analysis',
-                                description: 'Systematic identification of redundancies, bottlenecks, and optimization opportunities',
-                                duration: 'Days 4-6'
-                            },
-                            {
-                                step: '03',
-                                title: 'Strategic Roadmap',
-                                description: 'Prioritized implementation plan with ROI projections and resource requirements',
-                                duration: 'Days 7-10'
-                            }
-                        ].map((phase, index) => (
-                            <div key={index} className="text-left">
-                                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full font-bold text-lg mb-4">
-                                    {phase.step}
+                        {/* Technical Terminal Demo */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.8, duration: 0.6 }}
+                            className="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden shadow-2xl"
+                        >
+                            {/* Terminal Header */}
+                            <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center gap-2">
+                                <div className="flex gap-2">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full" />
+                                    <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                                    <div className="w-3 h-3 bg-green-500 rounded-full" />
                                 </div>
-                                <h4 className="text-xl font-semibold text-slate-900 mb-2">
-                                    {phase.title}
-                                </h4>
-                                <p className="text-slate-600 mb-2 leading-relaxed">
-                                    {phase.description}
-                                </p>
-                                <div className="text-sm font-medium text-blue-600">
-                                    {phase.duration}
-                                </div>
+                                <span className="ml-2 text-slate-400 text-xs font-mono">
+                                    arco-performance-audit ~ react-optimization
+                                </span>
                             </div>
-                        ))}
-                    </div>
 
-                    <div className="mt-8 flex items-center justify-center gap-3 text-sm text-slate-500">
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                        <span>Performance guarantees with financial backing</span>
-                        <span>•</span>
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                        <span>Client retains all IP and infrastructure control</span>
-                    </div>
-                </motion.div>
-            </motion.div>            {/* Scroll Indicator */}
-            <motion.div
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-                animate={{ y: [0, 8, 0], opacity: 1 }}
-                transition={{ duration: 2, repeat: Infinity, delay: 2 }}
-                initial={{ opacity: 0 }}
-            >
-                <div className="w-6 h-10 border-2 border-slate-300 rounded-full flex justify-center">
-                    <div className="w-1 h-3 bg-slate-400 rounded-full mt-2 animate-pulse"></div>
+                            {/* Terminal Content */}
+                            <div className="p-4 font-mono text-xs text-slate-300 overflow-x-auto max-h-[200px] scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
+                                <div className="mb-1 text-green-400">$ npm run analyze-bundle-size</div>
+                                <div className="mb-1 text-slate-400">Analyzing bundle size...</div>
+                                <div className="mb-2 text-yellow-400">⚠️ Found 387kB of unused JS in main bundle</div>
+                                
+                                <div className="mb-1 text-green-400">$ lighthouse --performance-only</div>
+                                <div className="mb-1 text-slate-400">Running performance audit...</div>
+                                <div className="mb-1 text-red-400">❌ LCP: 4.2s (mobile) - 3.1s threshold</div>
+                                <div className="mb-2 text-red-400">❌ TTI: 7.8s (mobile) - 3.8s threshold</div>
+                                
+                                <div className="mb-1 text-green-400">$ optimize-react-components --analyze</div>
+                                <div className="mb-1 text-slate-400">Analyzing React rendering performance...</div>
+                                <div className="mb-1 text-yellow-400">⚠️ Detected 12 unnecessary re-renders</div>
+                                <div className="mb-2 text-yellow-400">⚠️ Identified 8 unoptimized data fetching patterns</div>
+                                
+                                <div className="mb-1 text-blue-400">📋 OPTIMIZATION RECOMMENDATIONS:</div>
+                                <div className="mb-1 text-slate-300">1. Implement code splitting (/dashboard bundle)</div>
+                                <div className="mb-1 text-slate-300">2. Optimize image delivery with next/image</div>
+                                <div className="mb-1 text-slate-300">3. Remove unused dependencies (8)</div>
+                                <div className="mb-1 text-slate-300">4. Implement memoization for heavy components</div>
+                                <div className="mb-1 text-slate-300">5. Move API calls to server components</div>
+                                <div className="mb-2 text-slate-300">6. Cache expensive calculations</div>
+                                
+                                <div className="text-emerald-400">📈 EXPECTED IMPROVEMENTS: 68% faster LCP, 56% reduced bundle size</div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
                 </div>
-            </motion.div>
+            </div>
         </section>
     )
 }
-
 

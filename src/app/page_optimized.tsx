@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import ProfessionalNavigation from "../components/layout/ProfessionalNavigation";
+import PersonalNavigation from "../components/layout/PersonalNavigation";
 import { UnifiedHeroSection } from "../components/sections/UnifiedHeroSection";
 import { UnifiedValueProposition } from "../components/sections/UnifiedValueProposition";
 import { OptimizedClientStories } from "../components/sections/OptimizedClientStories";
@@ -30,6 +30,15 @@ declare global {
         exitIntentTracked?: boolean
     }
 }
+
+/**
+ * ANÁLISE CRÍTICA (2025-06-27)
+ *
+ * Propósito: Homepage otimizada, foco em hero unificado, value proposition, cases, contato e footer.
+ * Pontos Fortes: Tracking simplificado, componentes otimizados, lazy loading inteligente.
+ * Pontos Fracos: Menos detalhamento em seções intermediárias, não possui fallback de erro.
+ * Recomendações: Revisar tracking e componentes para integração na homepage principal. Não remover sem análise de reaproveitamento.
+ */
 
 /**
  * OPTIMIZED HOMEPAGE
@@ -101,7 +110,7 @@ export default function OptimizedHomePage() {
 
     return (
         <>
-            <ProfessionalNavigation />
+            <PersonalNavigation />
             <UnifiedHeroSection />
             <UnifiedValueProposition />
             <OptimizedClientStories />

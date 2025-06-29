@@ -90,13 +90,7 @@ export function EnterpriseHeroSection() {
     }, [controls])
 
     const handleCTAClick = () => {
-        trackEvent({
-            event: 'enterprise_cta_click',
-            category: 'conversion',
-            action: 'hero_enterprise_cta',
-            label: 'technical_assessment',
-            value: 1
-        })
+        trackEvent('enterprise_cta_click', 'conversion', 'hero_enterprise_cta', 'enterprise_hero_section')
 
         trackFunnelStep('enterprise_hero_cta', 'technical_funnel', {
             cta_type: 'technical_assessment',

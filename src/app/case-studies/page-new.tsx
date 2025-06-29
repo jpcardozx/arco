@@ -6,7 +6,7 @@
 'use client'
 
 import React from 'react'
-import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import PersonalNavigation from '../../components/layout/PersonalNavigation'
 import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import { CaseStudyPlatform } from '../../components/case-studies/CaseStudyPlatform'
 
@@ -58,7 +58,7 @@ export default function CaseStudiesPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-            <ProfessionalNavigation />
+            <PersonalNavigation />
 
             <CaseStudyPlatform
                 onRequestReference={handleRequestReference}

@@ -145,13 +145,7 @@ export function SmartPersonalization() {
         }))
 
         // Track initial context
-        trackEvent({
-            event: 'user_context_detected',
-            category: 'personalization',
-            action: 'context_detection',
-            label: `${detectDeviceType()}_${detectReferrer()}`,
-            value: 1
-        })
+        trackEvent('user_context_detected', 'personalization', 'context_detection', `${detectDeviceType()}_${detectReferrer()}`, 1)
     }, [])
 
     useEffect(() => {
@@ -211,13 +205,7 @@ export function SmartPersonalization() {
                 setActiveVariant(matchingVariant)
                 setHasPersonalized(true)
 
-                trackEvent({
-                    event: 'content_personalized',
-                    category: 'personalization',
-                    action: 'variant_activated',
-                    label: matchingVariant.id,
-                    value: 1
-                })
+                trackEvent('content_personalized', 'personalization', 'variant_activated', matchingVariant.id, 1)
 
                 trackFunnelStep('content_personalized', 'engagement_funnel', {
                     variant_id: matchingVariant.id,
@@ -230,13 +218,7 @@ export function SmartPersonalization() {
 
     const handlePersonalizedCTA = () => {
         if (activeVariant) {
-            trackEvent({
-                event: 'personalized_cta_click',
-                category: 'conversion',
-                action: 'cta_click',
-                label: activeVariant.id,
-                value: 1
-            })
+            trackEvent('personalized_cta_click', 'conversion', 'cta_click', activeVariant.id, 1)
 
             trackFunnelStep('personalized_cta_click', 'conversion_funnel', {
                 variant_id: activeVariant.id,

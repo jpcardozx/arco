@@ -214,12 +214,7 @@ export function LivePerformanceDashboard() {
                                             }`}
                                         onClick={() => {
                                             setSelectedProject(index)
-                                            trackEvent({
-                                                event: 'performance_dashboard_project_switch',
-                                                category: 'credibility',
-                                                action: 'view_project_metrics',
-                                                label: project.name
-                                            })
+                                            trackEvent('performance_dashboard_project_switch', 'credibility', 'view_project_metrics', projects[index].name, index)
                                         }}
                                     >
                                         {project.name}

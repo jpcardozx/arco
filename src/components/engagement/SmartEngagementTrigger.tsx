@@ -31,12 +31,7 @@ export function SmartEngagementTrigger({ onClose }: EngagementTriggerProps) {
             if (e.clientY < 50 && !isVisible) {
                 setTriggerReason('exit_intent')
                 setIsVisible(true)
-                trackEvent({
-                    event: 'engagement_trigger',
-                    category: 'retention',
-                    action: 'exit_intent_trigger',
-                    label: 'smart_engagement'
-                })
+                trackEvent('engagement_trigger', 'retention', 'exit_intent_trigger', 'homepage')
             }
         }
 
@@ -50,12 +45,7 @@ export function SmartEngagementTrigger({ onClose }: EngagementTriggerProps) {
                 if (scrollPercent >= 75 && !hasInteracted && !isVisible) {
                     setTriggerReason('high_scroll')
                     setIsVisible(true)
-                    trackEvent({
-                        event: 'engagement_trigger',
-                        category: 'retention',
-                        action: 'high_scroll_trigger',
-                        label: 'smart_engagement'
-                    })
+                    trackEvent('engagement_trigger', 'retention', 'high_scroll_trigger', 'smart_engagement')
                 }
             }
         }
@@ -70,16 +60,10 @@ export function SmartEngagementTrigger({ onClose }: EngagementTriggerProps) {
             if (!isVisible && hasInteracted) {
                 setTriggerReason('long_engagement')
                 setIsVisible(true)
-                trackEvent({
-                    event: 'engagement_trigger',
-                    category: 'retention',
-                    action: 'long_engagement_trigger',
-                    label: 'smart_engagement'
-                })
+                trackEvent('engagement_trigger', 'retention', 'long_engagement_trigger', 'smart_engagement')
             }
         }, 120000) // 2 minutes
 
-        // Add listeners
         document.addEventListener('mouseleave', handleMouseLeave)
         window.addEventListener('scroll', handleScroll, { passive: true })
         document.addEventListener('click', handleInteraction)
@@ -94,22 +78,12 @@ export function SmartEngagementTrigger({ onClose }: EngagementTriggerProps) {
 
     const handleClose = () => {
         setIsVisible(false)
-        trackEvent({
-            event: 'engagement_trigger_close',
-            category: 'retention',
-            action: 'trigger_dismissed',
-            label: triggerReason || 'unknown'
-        })
+        trackEvent('engagement_trigger_close', 'retention', 'trigger_dismissed', triggerReason || 'unknown')
         onClose?.()
     }
 
     const handleCTAClick = (action: string) => {
-        trackEvent({
-            event: 'engagement_trigger_cta',
-            category: 'conversion',
-            action: action,
-            label: triggerReason || 'unknown'
-        })
+        trackEvent('engagement_trigger_cta', 'conversion', action, triggerReason || 'unknown')
 
         trackFunnelStep('engagement_trigger_conversion', 'retention_funnel', {
             trigger_reason: triggerReason,

@@ -87,12 +87,7 @@ export function UnifiedProofSection() {
     ]
 
     const handleCaseClick = (caseId: string) => {
-        trackEvent({
-            event: 'case_study_click',
-            category: 'content',
-            action: 'click',
-            label: caseId
-        })
+        trackEvent('case_study_click', 'content', 'click', caseId, 1)
     }
 
     const containerVariants = {

@@ -57,16 +57,15 @@ export function UnifiedHeroSection() {
     }, [isInView])
 
     const handleCTAClick = (ctaType: 'primary' | 'secondary') => {
-        trackEvent({
-            event: 'cta_click',
-            category: 'conversion',
-            action: 'click',
-            label: `hero_${ctaType}`,
-            custom_parameters: {
-                type: ctaType,
-                location: 'hero',
-                text: ctaType === 'primary' ? 'Get Free Technical Audit' : 'View Success Stories'
-            }
+        trackEvent('cta_click', 'conversion', 'click', `hero_${ctaType}_cta`, 1, {
+            location: 'hero',
+            text: ctaType === 'primary' ? 'Get Free Technical Audit' : 'View Success Stories'
+        })
+        
+        trackFunnelStep('hero_cta_click', 'conversion_funnel', {
+            cta_type: ctaType,
+            section: 'unified_hero',
+            timestamp: Date.now()
         })
     }
 

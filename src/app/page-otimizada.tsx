@@ -6,16 +6,16 @@ import { useAuth } from '../contexts/AuthContext'
 import { trackPageView, trackFunnelStep } from "../lib/analytics"
 
 // Navigation & Footer
-import ProfessionalNavigation from "../components/layout/ProfessionalNavigation"
+import PersonalNavigation from "../components/layout/PersonalNavigation"
 import { ProfessionalFooter } from "../components/layout/ProfessionalFooter"
 
 // Critical Above-the-fold content (SSR)
 import { ConversionFocusedHero } from "../components/sections/ConversionFocusedHero"
 
 // Below-the-fold components (Lazy loaded for performance)
-const TechnicalAuthoritySection = dynamic(() => 
-  import("../components/sections/TechnicalAuthoritySection").then(mod => ({ default: mod.TechnicalAuthoritySection })), 
-  { 
+const TechnicalAuthoritySection = dynamic(() =>
+  import("../components/sections/TechnicalAuthoritySection").then(mod => ({ default: mod.TechnicalAuthoritySection })),
+  {
     ssr: false,
     loading: () => (
       <div className="h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center">
@@ -25,9 +25,9 @@ const TechnicalAuthoritySection = dynamic(() =>
   }
 )
 
-const SocialProofPowerhouse = dynamic(() => 
-  import("../components/sections/SocialProofPowerhouse").then(mod => ({ default: mod.SocialProofPowerhouse })), 
-  { 
+const SocialProofPowerhouse = dynamic(() =>
+  import("../components/sections/SocialProofPowerhouse").then(mod => ({ default: mod.SocialProofPowerhouse })),
+  {
     ssr: false,
     loading: () => (
       <div className="h-96 bg-gradient-to-b from-black to-slate-950 flex items-center justify-center">
@@ -37,31 +37,40 @@ const SocialProofPowerhouse = dynamic(() =>
   }
 )
 
-const PowerfulValueProposition = dynamic(() => 
-  import("../components/sections/PowerfulValueProposition").then(mod => ({ default: mod.PowerfulValueProposition })), 
+const PowerfulValueProposition = dynamic(() =>
+  import("../components/sections/PowerfulValueProposition").then(mod => ({ default: mod.PowerfulValueProposition })),
   { ssr: false }
 )
 
-const LeadCapture = dynamic(() => 
-  import("../components/sections/LeadCapture").then(mod => ({ default: mod.LeadCapture })), 
+const LeadCapture = dynamic(() =>
+  import("../components/sections/LeadCapture").then(mod => ({ default: mod.LeadCapture })),
   { ssr: false }
 )
 
-const SocialProofUrgencySection = dynamic(() => 
-  import("../components/sections/SocialProofUrgencySection").then(mod => ({ default: mod.SocialProofUrgencySection })), 
+const SocialProofUrgencySection = dynamic(() =>
+  import("../components/sections/SocialProofUrgencySection").then(mod => ({ default: mod.SocialProofUrgencySection })),
   { ssr: false }
 )
 
 // Performance monitoring (lowest priority)
-const WebVitalsMonitor = dynamic(() => 
-  import("../components/performance/WebVitalsMonitor").then(mod => ({ default: mod.WebVitalsMonitor })), 
+const WebVitalsMonitor = dynamic(() =>
+  import("../components/performance/WebVitalsMonitor").then(mod => ({ default: mod.WebVitalsMonitor })),
   { ssr: false }
 )
 
-const SmartEngagementTrigger = dynamic(() => 
-  import("../components/engagement/SmartEngagementTrigger").then(mod => ({ default: mod.SmartEngagementTrigger })), 
+const SmartEngagementTrigger = dynamic(() =>
+  import("../components/engagement/SmartEngagementTrigger").then(mod => ({ default: mod.SmartEngagementTrigger })),
   { ssr: false }
 )
+
+/**
+ * ANÁLISE CRÍTICA (2025-06-27)
+ *
+ * Propósito: Homepage otimizada para conversão, múltiplas seções (autoridade, social proof, lead capture), lazy loading agressivo.
+ * Pontos Fortes: Estratégias de performance, foco em conversão, modularidade de seções.
+ * Pontos Fracos: Estrutura complexa, pode dificultar manutenção se não modularizado.
+ * Recomendações: Revisar estratégias de lazy loading e seções para enriquecer a homepage principal. Migrar o que for útil antes de remover.
+ */
 
 /**
  * HOMEPAGE OTIMIZADA - Baseada na Análise MCP
@@ -99,13 +108,13 @@ export default function HomePage() {
   return (
     <>
       {/* Navigation - Critical path */}
-      <ProfessionalNavigation />
-      
+      <PersonalNavigation />
+
       {/* HERO SECTION - Above the fold, SSR for LCP optimization */}
       <ConversionFocusedHero />
 
       {/* TECHNICAL AUTHORITY - Demonstrates expertise immediately */}
-      <TechnicalAuthoritySection 
+      <TechnicalAuthoritySection
         isAuthenticated={isAuthenticated}
         userTier={user?.tier || 'free'}
         onCTAClick={() => {

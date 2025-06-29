@@ -70,13 +70,7 @@ export function DirectValueProof() {
     const currentProof = valueProofs[selectedProof as keyof typeof valueProofs]
 
     const handleGetQuote = () => {
-        trackEvent({
-            event: 'value_proof_cta',
-            category: 'conversion',
-            action: 'get_quote',
-            label: selectedProof,
-            value: 1
-        })
+        trackEvent('value_proof_cta_click', 'conversion', 'get_quote', 'direct_value_proof_section')
 
         trackFunnelStep('value_proof_cta', 'conversion_funnel', {
             proof_type: selectedProof,
@@ -88,13 +82,7 @@ export function DirectValueProof() {
     }
 
     const handleQuickAnalysis = () => {
-        trackEvent({
-            event: 'quick_analysis_cta',
-            category: 'lead_magnet',
-            action: 'quick_analysis',
-            label: selectedProof,
-            value: 1
-        })
+        trackEvent('quick_analysis_cta', 'lead_magnet', 'quick_analysis', selectedProof, 1)
 
         // Open analysis tool in modal or new section
         alert('Quick analysis tool would open here - integrated with actual Lighthouse API')

@@ -66,17 +66,10 @@ export function ProfessionalContact() {
         e.preventDefault()
 
         // Track form submission
-        trackEvent({
-            event: 'form_submit',
-            category: 'conversion',
-            action: 'contact_form_submit',
-            label: 'main_contact',
-            value: 1,
-            custom_parameters: {
-                company: formData.company,
-                project_type: formData.projectType,
-                timeline: formData.timeline
-            }
+        trackEvent('form_submit', 'conversion', 'contact_form_submit', formData.projectType, 1, {
+            company: formData.company,
+            project_type: formData.projectType,
+            timeline: formData.timeline
         })
 
         // Track conversion funnel completion

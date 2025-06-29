@@ -54,31 +54,21 @@ export function AdvancedHeroSection() {
     const y = useTransform(scrollYProgress, [0, 1], [0, -50])
     const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
+    const variant = 'default';
+    
     useEffect(() => {
         if (isInView) {
-            trackEvent({
-                event: 'hero_section_viewed',
-                category: 'engagement',
-                action: 'view'
-            })
+            trackEvent('hero_section_viewed', 'engagement', 'view', `advanced_hero_${variant}`, Date.now())
         }
-    }, [isInView, isAuthenticated, user])
+    }, [isInView, variant])
 
     const handleCTAClick = (action: string) => {
         if (isAuthenticated) {
-            trackEvent({
-                event: 'authenticated_cta_click',
-                category: 'conversion',
-                action: action
-            })
+            trackEvent('authenticated_cta_click', 'conversion', action)
             // Scroll to intelligence hub
             document.getElementById('technical-intelligence')?.scrollIntoView({ behavior: 'smooth' })
         } else {
-            trackEvent({
-                event: 'unauthenticated_cta_click',
-                category: 'conversion',
-                action: action
-            })
+            trackEvent('unauthenticated_cta_click', 'conversion', action)
             setShowAuthModal(true)
             window.dispatchEvent(new CustomEvent('openAuthModal'))
         }

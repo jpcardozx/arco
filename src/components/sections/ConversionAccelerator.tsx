@@ -81,13 +81,7 @@ export function ConversionAccelerator() {
     ]
 
     const handleDownload = (resource: typeof resources[0]) => {
-        trackEvent({
-            event: 'resource_download',
-            category: 'conversion',
-            action: 'download_lead_magnet',
-            label: resource.id
-        })
-
+        trackEvent('resource_download', 'conversion', 'download_lead_magnet', resource.title, 1)
         trackFunnelStep('resource_download', 'conversion_funnel', {
             resource: resource.id,
             difficulty: resource.difficulty
@@ -100,12 +94,7 @@ export function ConversionAccelerator() {
     }
 
     const handleConsultationCTA = () => {
-        trackEvent({
-            event: 'consultation_request',
-            category: 'conversion',
-            action: 'primary_cta_click',
-            label: 'conversion_accelerator'
-        })
+        trackEvent('consultation_request', 'conversion', 'primary_cta_click', 'conversion_accelerator')
 
         trackFunnelStep('consultation_request', 'conversion_funnel', {
             source: 'conversion_accelerator',

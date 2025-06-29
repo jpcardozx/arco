@@ -623,7 +623,7 @@ class ArcoUnifiedIntelligenceServer {
         opportunityGaps: this.identifyOpportunityGaps(competitiveData),
         threatsAssessment: this.assessThreats(competitiveData)
       },
-      strategicRecommendations: this.generateCompetitiveStrategy(competitiveData),
+      strategicRecommendations: this.generateCompetitiveStrategy(competitors, 'positioning'),
       keywordOpportunities: includeKeywords ? this.identifyKeywordOpportunities(competitiveData) : null,
       timestamp: new Date().toISOString()
     };
@@ -746,10 +746,41 @@ class ArcoUnifiedIntelligenceServer {
       },
       async () => {
         return {
-          analytics: { sessions: 1247, conversionRate: 0.078, fallback: true },
-          search: { totalClicks: 3247, averageCTR: 0.071, fallback: true },
-          competitive: [{ competitor: 'fallback.com', marketShare: 0.08, fallback: true }],
-          apiHealth: { overall: 'degraded', fallback: true }
+          analytics: { 
+            sessions: 1247, 
+            pageviews: 3891,
+            conversionRate: 0.078, 
+            bounceRate: 0.32,
+            avgSessionDuration: 245,
+            userBehavior: [],
+            fallback: true 
+          },
+          search: { 
+            totalClicks: 3247, 
+            totalImpressions: 45780,
+            averageCTR: 0.071, 
+            averagePosition: 8.5,
+            topQueries: [],
+            performanceChanges: [],
+            fallback: true 
+          },
+          competitive: [{ 
+            competitor: 'fallback.com', 
+            domain: 'fallback.com',
+            estimatedTraffic: 250000,
+            topKeywords: [],
+            contentGaps: [],
+            technicalAdvantages: [],
+            marketShare: 0.08, 
+            fallback: true 
+          }],
+          apiHealth: { 
+            overall: 'degraded', 
+            analytics: 'fallback',
+            search: 'fallback',
+            competitive: 'fallback',
+            fallback: true 
+          }
         };
       },
       'comprehensive',
@@ -762,7 +793,7 @@ class ArcoUnifiedIntelligenceServer {
       executiveSummary: this.generateExecutiveSummary(comprehensiveData, reportType),
       keyMetrics: this.extractKeyMetrics(comprehensiveData),
       performanceAnalysis: this.analyzeOverallPerformance(comprehensiveData),
-      competitivePosition: this.analyzeCompetitivePosition(comprehensiveData.competitive),
+      competitivePosition: await this.assessCompetitivePosition(comprehensiveData.competitive?.map((c: any) => c.competitor) || [], ''),
       businessIntelligence: this.generateBusinessIntelligence(comprehensiveData),
       strategicInsights: this.generateStrategicInsights(comprehensiveData),
       recommendations: includeRecommendations ? this.generateComprehensiveRecommendations(comprehensiveData) : null,

@@ -45,7 +45,7 @@ function DepoimentoModal({ open, onClose }: { open: boolean, onClose: () => void
                             className="rounded-full bg-slate-800 p-1 border border-emerald-700"
                         />
                         <span className="text-sm text-slate-400">CEO Finmark</span>
-                        <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full">Diagnóstico ARCO</span>
+                        <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full">Revenue Recovery</span>
                     </figcaption>
                     <button
                         onClick={onClose}
@@ -78,7 +78,7 @@ export default function FechamentoArco() {
                     "rounded-full bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold shadow-xl ring-2 ring-emerald-600/50"
                 )}
             >                <ShieldCheck className="w-5 h-5" />
-                ARCO Professional Assessment
+                Revenue Recovery Assessment
             </motion.div>            {/* Headline and objective subcopy */}
             <motion.h2
                 initial={{ opacity: 0, y: 24 }}
@@ -86,7 +86,7 @@ export default function FechamentoArco() {
                 transition={{ duration: 0.55, delay: 0.21 }}
                 className="text-2xl md:text-3xl font-bold text-white text-center mb-5 drop-shadow-lg"
             >
-                Strategic Assessment for Business Decisions — Straight to the Point.
+                Curious About Where Your Funnel Loses Money?
             </motion.h2>
             <motion.p
                 initial={{ opacity: 0, y: 24 }}
@@ -94,7 +94,7 @@ export default function FechamentoArco() {
                 transition={{ duration: 0.5, delay: 0.27 }}
                 className="text-lg text-slate-300 text-center max-w-2xl mx-auto mb-8"
             >
-                Identify the true growth limiters and priorities of your digital funnel. No forced sales. No superficial analysis. You receive a detailed assessment with practical recommendations, prioritized by impact and feasibility.
+                Get a complimentary assessment that identifies exactly where your conversion funnel leaks revenue and the specific improvements that would have the highest business impact. No sales pitch. Just actionable insights.
             </motion.p>            {/* List of technical and operational differentiators */}
             <ul className="flex flex-col sm:flex-row flex-wrap justify-center gap-5 mb-9">
                 {DIFFERENTIATORS.map(({ icon, text }, i) => (
@@ -125,7 +125,7 @@ export default function FechamentoArco() {
                         "hover:brightness-105 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400/40"
                     )}
                 >
-                    Request Strategic Assessment
+                    Get Complimentary Assessment
                     <BadgeHelp className="ml-2 w-5 h-5 group-hover:animate-bounce" />
                 </motion.a>
                 <span className="flex items-center gap-2 mt-1 text-xs text-slate-400 font-medium uppercase tracking-wide">
@@ -162,7 +162,7 @@ export default function FechamentoArco() {
                         className="rounded-full bg-slate-800 p-1 border border-emerald-700"
                     />
                     <span className="text-sm text-slate-400">CEO Finmark</span>
-                    <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full">Diagnóstico ARCO</span>
+                    <span className="ml-2 px-2 py-0.5 text-xs bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full">Revenue Recovery</span>
                 </figcaption>
             </motion.figure>
             <DepoimentoModal open={showModal} onClose={() => setShowModal(false)} />

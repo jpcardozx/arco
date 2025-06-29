@@ -93,17 +93,11 @@ class ABTestManager {
     }
 
     private trackVariantAssignment(result: ABTestResult): void {
-        trackEvent({
-            event: 'ab_test_assignment',
-            category: 'experiment',
-            action: 'variant_assigned',
-            label: `${this.config.testName}_${result.variant}`,
-            custom_parameters: {
-                test_name: this.config.testName,
-                variant: result.variant,
-                user_id: result.userId,
-                session_id: result.sessionId
-            }
+        trackEvent('ab_test_assignment', 'experiment', 'variant_assigned', `${this.config.testName}_${result.variant}`, undefined, {
+            test_name: this.config.testName,
+            variant: result.variant,
+            user_id: result.userId,
+            session_id: result.sessionId
         })
     }
 
@@ -111,20 +105,13 @@ class ABTestManager {
         const test = this.getExistingTest()
         if (!test) return
 
-        trackEvent({
-            event: 'ab_test_conversion',
-            category: 'experiment',
-            action: 'conversion',
-            label: `${this.config.testName}_${test.variant}_${conversionType}`,
-            value,
-            custom_parameters: {
-                test_name: this.config.testName,
-                variant: test.variant,
-                conversion_type: conversionType,
-                user_id: test.userId,
-                session_id: test.sessionId,
-                time_to_conversion: Date.now() - test.startTime
-            }
+        trackEvent('ab_test_conversion', 'experiment', 'conversion', `${this.config.testName}_${test.variant}_${conversionType}`, value, {
+            test_name: this.config.testName,
+            variant: test.variant,
+            conversion_type: conversionType,
+            user_id: test.userId,
+            session_id: test.sessionId,
+            time_to_conversion: Date.now() - test.startTime
         })
     }
 
@@ -132,20 +119,14 @@ class ABTestManager {
         const test = this.getExistingTest()
         if (!test) return
 
-        trackEvent({
-            event: 'ab_test_engagement',
-            category: 'experiment',
-            action: 'engagement',
-            label: `${this.config.testName}_${test.variant}_${engagementType}`,
-            custom_parameters: {
-                test_name: this.config.testName,
-                variant: test.variant,
-                engagement_type: engagementType,
-                user_id: test.userId,
-                session_id: test.sessionId,
-                time_to_engagement: Date.now() - test.startTime,
-                ...data
-            }
+        trackEvent('ab_test_engagement', 'experiment', 'engagement', `${this.config.testName}_${test.variant}_${engagementType}`, undefined, {
+            test_name: this.config.testName,
+            variant: test.variant,
+            engagement_type: engagementType,
+            user_id: test.userId,
+            session_id: test.sessionId,
+            time_to_engagement: Date.now() - test.startTime,
+            ...data
         })
     }
 }

@@ -7,7 +7,7 @@
 'use client'
 
 import React from 'react'
-import ProfessionalNavigation from '../../components/layout/ProfessionalNavigation'
+import PersonalNavigation from '../../components/layout/PersonalNavigation'
 import { ProfessionalFooter } from '../../components/layout/ProfessionalFooter'
 import { ROICalculator } from '../../components/roi/ROICalculator'
 import type { CompanyProfile, ROICalculationResult } from '../../components/roi/ROICalculator'
@@ -102,7 +102,7 @@ export default function ROICalculatorPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-            <ProfessionalNavigation />
+            <PersonalNavigation />
 
             {/* Hero Section */}
             <section className="pt-24 pb-12 px-6">

@@ -84,13 +84,7 @@ export function TechnicalAssessmentTool() {
         setError('')
 
         // Track analysis start
-        trackEvent({
-            event: 'technical_assessment_start',
-            category: 'tools',
-            action: 'analysis_start',
-            label: 'website_audit',
-            value: 1
-        })
+        trackEvent('technical_assessment_start', 'tools', 'analysis_start', 'website_audit', 1)
 
         trackFunnelStep('technical_assessment_start', 'lead_qualification', {
             url: url,
@@ -192,13 +186,7 @@ export function TechnicalAssessmentTool() {
             setResult(mockResult)
 
             // Track successful analysis
-            trackEvent({
-                event: 'technical_assessment_complete',
-                category: 'tools',
-                action: 'analysis_complete',
-                label: 'website_audit',
-                value: mockResult.overall_score
-            })
+            trackEvent('technical_assessment_complete', 'tools', 'analysis_complete', 'website_audit', mockResult.overall_score)
 
             trackFunnelStep('technical_assessment_complete', 'lead_qualification', {
                 url: url,
@@ -236,26 +224,14 @@ export function TechnicalAssessmentTool() {
     }
 
     const handleDownloadReport = () => {
-        trackEvent({
-            event: 'assessment_report_download',
-            category: 'lead_magnet',
-            action: 'download',
-            label: 'technical_report',
-            value: 1
-        })
+        trackEvent('assessment_report_download', 'lead_magnet', 'download', 'technical_report', 1)
 
         // In production, generate and download actual PDF report
         alert('Full detailed report would be generated here. This demo shows the concept.')
     }
 
     const handleContactForOptimization = () => {
-        trackEvent({
-            event: 'assessment_contact_click',
-            category: 'conversion',
-            action: 'contact_from_assessment',
-            label: 'optimization_inquiry',
-            value: 1
-        })
+        trackEvent('assessment_contact_click', 'conversion', 'contact_from_assessment', 'optimization_inquiry', 1)
 
         trackFunnelStep('assessment_to_contact', 'conversion_funnel', {
             source: 'technical_assessment',

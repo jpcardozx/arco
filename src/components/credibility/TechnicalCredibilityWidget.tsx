@@ -61,17 +61,12 @@ export function TechnicalCredibilityWidget() {
     }, [])
 
     const handleRepoClick = (repo: GitHubRepo) => {
-        trackEvent({
-            event: 'github_repo_click',
-            category: 'credibility',
-            action: 'view_code',
-            label: repo.name
-        })
+        trackEvent('github_repo_click', 'credibility', 'view_code', repo.name, 0, { repo_stars: repo.stars, repo_url: repo.url })
     }
-
+    
     const stats = {
-        totalCommits: '2,847',
-        activeRepos: '12',
+        totalCommits: '2,400+',
+        activeRepos: '15',
         languages: 'TS, JS, Python',
         yearsActive: '8+'
     }

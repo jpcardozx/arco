@@ -57,36 +57,37 @@ export function FocusedHeroSection() {
     const realCases = [
         {
             client: 'IPE Ventures',
-            before: '4.2s load time',
-            after: '1.1s load time',
-            result: '+$240k revenue',
-            timeframe: '6 weeks',
-            technique: 'React SSR + CDN optimization'
+            before: '28% digital waste',
+            after: '4% digital waste',
+            result: '+$240k margin',
+            timeframe: '48 hours',
+            technique: 'Digital Inefficiency Compression'
         },
         {
             client: 'Xora Platform',
-            before: '45 performance score',
-            after: '94 performance score',
-            result: '+67% user signups',
-            timeframe: '4 weeks',
-            technique: 'Bundle splitting + lazy loading'
+            before: '34% stack overlap',
+            after: '7% stack overlap',
+            result: '+67% operational efficiency',
+            timeframe: '48 hours',
+            technique: 'SaaS stack rationalization'
         },
         {
             client: 'TechCorp Solutions',
-            before: '99.2% uptime',
-            after: '99.98% uptime',
-            result: '+$85k saved annually',
-            timeframe: '3 weeks',
-            technique: 'Infrastructure monitoring'
+            before: '22% redundant costs',
+            after: '3% redundant costs',
+            result: '+$85k bottom-line impact',
+            timeframe: '48 hours',
+            technique: 'Process inefficiency elimination'
         }]
 
     // Technical process demonstration
     const terminalCommands = [
-        '$ lighthouse --output=json --chrome-flags="--headless"',
-        '$ npm run bundle-analyzer --analyze',
-        '$ performance-budget --check --budget=2MB',
-        '✓ Core Web Vitals optimized: LCP < 1.2s',
-        '✓ Revenue impact measured: +47% conversion'
+        '$ python scan_digital_inefficiency.py --domain=client.com',
+        '$ analyzing SaaS dependencies and overlap...',
+        '$ calculating process friction scores...',
+        '✓ Digital waste identified: 28.4% of operations',
+        '✓ 48-hour recovery plan generated',
+        '✓ Projected margin impact: +$127,500 annually'
     ]
 
     useEffect(() => {
@@ -112,12 +113,7 @@ export function FocusedHeroSection() {
 
         try {
             // Track analysis attempt
-            trackEvent({
-                event: 'domain_analysis_attempt',
-                category: 'analysis',
-                action: 'domain_input',
-                label: domain
-            })
+            trackEvent('domain_analysis_attempt', 'analysis', 'domain_input', domain)
 
             // Real API call to our endpoint
             const response = await fetch('/api/analyze/domain', {
@@ -158,13 +154,7 @@ export function FocusedHeroSection() {
     }
 
     const handleCTAClick = () => {
-        trackEvent({
-            event: 'hero_cta_click',
-            category: 'conversion',
-            action: 'primary_cta',
-            label: 'focused_hero',
-            value: 1
-        })
+        trackEvent('hero_cta_click', 'conversion', 'primary_cta', 'focused_hero', 1)
 
         trackFunnelStep('hero_cta_click', 'conversion_funnel', {
             source: 'focused_hero',
@@ -220,19 +210,19 @@ export function FocusedHeroSection() {
                         transition={{ delay: 0.2 }}
                         className="mb-6"
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-sm font-medium mb-4">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-full text-blue-300 text-sm font-medium mb-4">
                             <Target className="w-4 h-4" />
-                            Critical Performance Issues
+                            Digital Inefficiency Compression System
                         </div>
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                            Your Website Is{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500">
-                                Bleeding Revenue
+                            Uncover Hidden{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-500">
+                                Digital Inefficiencies
                             </span>
                         </h1>
                         <p className="text-xl text-slate-300 leading-relaxed max-w-xl">
-                            Every second of load time costs you customers. We don't just optimize performance—
-                            <strong className="text-white"> we engineer revenue recovery.</strong>
+                            Our 48-hour recovery system identifies and eliminates digital waste in your operations.
+                            <strong className="text-white"> Turn overhead into opportunity.</strong>
                         </p>
                     </motion.div>
 
@@ -272,8 +262,8 @@ export function FocusedHeroSection() {
                                 <div className="text-3xl font-bold text-green-400 mb-1">
                                     {realCases[currentCase].result}
                                 </div>
-                                <div className="text-slate-300 text-sm mb-2">
-                                    Revenue Impact
+                                    <div className="text-slate-300 text-sm mb-2">
+                                    Financial Impact
                                 </div>
                                 <div className="flex items-center gap-1 text-xs text-slate-400">
                                     <Clock className="w-3 h-3" />
@@ -294,10 +284,10 @@ export function FocusedHeroSection() {
                             className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
                         >
                             <DollarSign className="w-5 h-5" />
-                            Calculate Your Revenue Loss
+                            Get 48-Hour Recovery Plan
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>                        <p className="text-slate-400 text-sm mt-3">
-                            Free analysis • No email required • Instant results
+                            Free diagnostic • No obligation • 48-hour implementation
                         </p>
                     </motion.div>
 
@@ -311,7 +301,7 @@ export function FocusedHeroSection() {
                         <div className="flex items-center gap-2 mb-4">
                             <Search className="w-5 h-5 text-blue-400" />
                             <h3 className="text-white font-semibold">
-                                Free Domain Analysis - See Your Issues in 60 Seconds
+                                Free Digital Waste Scan - See Inefficiency Patterns in 60 Seconds
                             </h3>
                         </div>
 
@@ -358,19 +348,19 @@ export function FocusedHeroSection() {
                                         <div className="text-2xl font-bold text-red-400">
                                             {domainAnalysis.results.performanceScore}
                                         </div>
-                                        <div className="text-xs text-red-300">Performance Score</div>
+                                        <div className="text-xs text-red-300">Inefficiency Score</div>
                                     </div>
                                     <div className="bg-orange-500/20 border border-orange-500/30 rounded-lg p-4 text-center">
                                         <div className="text-2xl font-bold text-orange-400">
                                             {domainAnalysis.results.lcp.toFixed(1)}s
                                         </div>
-                                        <div className="text-xs text-orange-300">LCP (Slow)</div>
+                                        <div className="text-xs text-orange-300">Digital Friction</div>
                                     </div>
                                     <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 text-center">
                                         <div className="text-2xl font-bold text-green-400">
                                             ${domainAnalysis.results.saasOverhead.toLocaleString()}
                                         </div>
-                                        <div className="text-xs text-green-300">Annual SaaS Waste</div>
+                                        <div className="text-xs text-green-300">Digital Waste Recovery</div>
                                     </div>
                                 </div>
 
@@ -378,7 +368,7 @@ export function FocusedHeroSection() {
                                 <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                                     <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-green-400" />
-                                        Immediate Optimization Opportunities
+                                        Immediate Digital Inefficiency Recovery Points
                                     </h4>
                                     <div className="space-y-2">
                                         {domainAnalysis.results.quickWins.map((win, index) => (
@@ -393,13 +383,13 @@ export function FocusedHeroSection() {
                                 {/* CTA for detailed analysis */}
                                 <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-lg p-4 text-center">
                                     <p className="text-white font-medium mb-2">
-                                        Get Full $149 Analysis + Fixes in 24 Hours
+                                        Get Your 48-Hour Inefficiency Recovery Plan
                                     </p>
                                     <p className="text-slate-300 text-sm mb-3">
-                                        Complete audit with code fixes and performance guarantees
+                                        Complete inefficiency diagnostic with implementation roadmap
                                     </p>
-                                    <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-6 py-2 rounded-lg text-white font-medium transition-all">
-                                        Start $149 Kick-Start →
+                                    <button className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 px-6 py-2 rounded-lg text-white font-medium transition-all">
+                                        Start ARCO Insight™ Plan →
                                     </button>
                                 </div>
                             </motion.div>
@@ -472,7 +462,7 @@ export function FocusedHeroSection() {
                     >
                         <div className="flex items-center gap-2">
                             <TrendingUp className="w-4 h-4" />
-                            +47% Revenue
+                            +47% Efficiency
                         </div>
                     </motion.div>
 
@@ -484,7 +474,7 @@ export function FocusedHeroSection() {
                     >
                         <div className="flex items-center gap-2">
                             <Zap className="w-4 h-4" />
-                            2.3s Faster
+                            48-Hour Recovery
                         </div>
                     </motion.div>
                 </motion.div>

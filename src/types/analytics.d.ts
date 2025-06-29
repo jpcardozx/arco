@@ -13,12 +13,17 @@ type FunnelStep = {
   metadata?: Record<string, any>;
 };
 
+interface TrackingEvent {
+  event: string;
+  category: string;
+  action: string;
+  label?: string;
+  value?: number;
+  custom_parameters?: Record<string, any>;
+}
+
 declare module '@/lib/analytics' {
-  export function trackEvent(
-    category: string,
-    action: string,
-    metadata?: Record<string, any>
-  ): void;
+  export function trackEvent(params: TrackingEvent): void;
   export function trackPageView(path: string, metadata?: Record<string, any>): void;
   export function trackFunnelStep(
     step: string,
