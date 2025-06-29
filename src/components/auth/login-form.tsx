@@ -8,6 +8,7 @@ import { signIn } from 'next-auth/react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import type { Route } from 'next';
 import {
     Github,
     Mail,
@@ -199,7 +200,7 @@ export function LoginForm() {
 
             // Redirect after success animation completes
             setTimeout(() => {
-                router.push('/dashboard');
+                router.push('/dashboard' as Route);
                 router.refresh();
             }, 800);
         } catch (err) {
