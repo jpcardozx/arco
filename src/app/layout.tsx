@@ -1,9 +1,11 @@
+
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import "../styles/critical.css";
 import { WebVitalsTracker, DevPerformanceMonitor } from '@/components/analytics/WebVitalsTracker';
 import { WebVitalsMonitor } from '@/components/analytics/WebVitalsMonitor';
 import { fontConfig, criticalCSS, inter } from '@/lib/fonts';
+import { Providers } from './providers'; // Import the new Providers component
 
 // Critical CSS inlined for zero render-blocking
 const criticalStyles = criticalCSS;
@@ -68,11 +70,13 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.className} antialiased bg-slate-900 text-white`}>
-        <AuthProvider>
-          <SimpleTranslationProvider>
-            {children}
-          </SimpleTranslationProvider>
-        </AuthProvider>
+        <Providers>
+          <AuthProvider>
+            <SimpleTranslationProvider>
+              {children}
+            </SimpleTranslationProvider>
+          </AuthProvider>
+        </Providers>
 
         {/* Performance Suite - PATCH 1 Implementation */}
         <ServiceWorkerRegistration />
