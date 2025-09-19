@@ -1,0 +1,999 @@
+{
+  "safe_deletions": [
+    {
+      "path": "src\\app\\about",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "page.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\analytics\\engagement",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\analytics\\mcp-usage",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\analytics\\objections",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\analytics\\performance",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\analytics\\web-vitals",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\analyze\\domain",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\auth\\[...nextauth]",
+      "score": 80,
+      "issues": [
+        "\u2705 Few unused files - PROBABLY SAFE"
+      ],
+      "contents": {
+        "files": [
+          "route.ts",
+          "route.ts.fixed",
+          "route.ts.new"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\competitive-intelligence",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\domain-intelligence",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\domain-intelligence-advanced",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\domain-intelligence-new",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\leads\\qualification",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\track-conversion",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\api\\web-vitals",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\offline",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "page.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\app\\services",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "page.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\architecture\\components",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "ComponentLibrary.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\architecture\\core",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "ArchitectureOrchestrator.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\architecture\\hero",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "EnhancedHeroSectionSTier.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\architecture\\performance",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "PerformanceFramework.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\architecture\\tokens",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "TokenSystemImplementation.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\architecture\\ux",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "LeadJourneyFramework.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\business",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "automation.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\hooks",
+      "score": 80,
+      "issues": [
+        "\u2705 Few unused files - PROBABLY SAFE"
+      ],
+      "contents": {
+        "files": [
+          "useMotionConfig.ts",
+          "useResponsiveVariant.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\layouts",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "STierGrid.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\visual",
+      "score": 90,
+      "issues": [
+        "\u2705 Single unused file - SAFE to delete"
+      ],
+      "contents": {
+        "files": [
+          "GlassmorphismCard.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\hydration",
+      "score": 80,
+      "issues": [
+        "\u2705 Few unused files - PROBABLY SAFE"
+      ],
+      "contents": {
+        "files": [
+          "ClientHydrationManager.ts",
+          "performance-monitor.ts"
+        ],
+        "subfolders": []
+      }
+    }
+  ],
+  "unsafe_deletions": [
+    {
+      "path": "src\\app",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "globals.css",
+          "layout.tsx",
+          "page.tsx",
+          "providers.tsx"
+        ],
+        "subfolders": [
+          "about",
+          "api",
+          "offline",
+          "services"
+        ]
+      }
+    },
+    {
+      "path": "src\\app\\api",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [],
+        "subfolders": [
+          "analytics",
+          "analyze",
+          "auth",
+          "competitive-intelligence",
+          "domain-intelligence",
+          "domain-intelligence-advanced",
+          "domain-intelligence-new",
+          "leads",
+          "track-conversion",
+          "web-vitals"
+        ]
+      }
+    },
+    {
+      "path": "src\\app\\api\\analytics",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "route.ts"
+        ],
+        "subfolders": [
+          "engagement",
+          "mcp-usage",
+          "objections",
+          "performance",
+          "web-vitals"
+        ]
+      }
+    },
+    {
+      "path": "src\\app\\api\\analyze",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [],
+        "subfolders": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "path": "src\\app\\api\\auth",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "auth-options.ts"
+        ],
+        "subfolders": [
+          "[...nextauth]"
+        ]
+      }
+    },
+    {
+      "path": "src\\app\\api\\leads",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [],
+        "subfolders": [
+          "qualification"
+        ]
+      }
+    },
+    {
+      "path": "src\\architecture",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "MIGRATION_GUIDE_S_TIER.md"
+        ],
+        "subfolders": [
+          "components",
+          "core",
+          "hero",
+          "performance",
+          "tokens",
+          "ux"
+        ]
+      }
+    },
+    {
+      "path": "src\\components",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "index.ts",
+          "MatureHero.tsx",
+          "SuccessCases.tsx"
+        ],
+        "subfolders": [
+          "home",
+          "layout",
+          "partner",
+          "ui"
+        ]
+      }
+    },
+    {
+      "path": "src\\components\\home",
+      "score": 10,
+      "issues": [
+        "\u26a0\ufe0f Single file used by 1 files - UNSAFE"
+      ],
+      "contents": {
+        "files": [
+          "HomePageClient.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\components\\layout",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "ConsolidatedNavigation.tsx",
+          "Footer.tsx",
+          "Grid.tsx",
+          "Header.tsx",
+          "index.ts",
+          "MainLayout.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\components\\partner",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "PartnerComponents.tsx",
+          "PartnerHero.tsx",
+          "ProjectPortfolio.tsx",
+          "TechnicalExpertise.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\components\\ui",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "alert.tsx",
+          "avatar.tsx",
+          "checkbox.tsx",
+          "dialog.tsx",
+          "index.ts",
+          "input.tsx",
+          "progress.tsx",
+          "radio-group.tsx",
+          "select.tsx",
+          "switch.tsx",
+          "tabs.tsx",
+          "tooltip.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "glass-components.tsx",
+          "glass-foundation.ts",
+          "index-new.ts",
+          "index.ts",
+          "mature.tsx",
+          "tokens.ts",
+          "utils.ts"
+        ],
+        "subfolders": [
+          "components",
+          "core",
+          "foundations",
+          "hooks",
+          "layouts",
+          "navigation",
+          "primitives",
+          "visual"
+        ]
+      }
+    },
+    {
+      "path": "src\\design-system\\components",
+      "score": 10,
+      "issues": [
+        "\u26a0\ufe0f Single file used by 1 files - UNSAFE"
+      ],
+      "contents": {
+        "files": [
+          "GlassCard.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\core",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "components.tsx",
+          "index.ts",
+          "theme.ts",
+          "tokens.ts",
+          "types.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\foundations",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 9 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "index.ts",
+          "tokens.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\navigation",
+      "score": 10,
+      "issues": [
+        "\u26a0\ufe0f Single file used by 2 files - UNSAFE"
+      ],
+      "contents": {
+        "files": [
+          "ProfessionalNavigation.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\primitives",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "index.ts"
+        ],
+        "subfolders": [
+          "Badge",
+          "Button",
+          "Card",
+          "Container",
+          "Typography"
+        ]
+      }
+    },
+    {
+      "path": "src\\design-system\\primitives\\Badge",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 3 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "Badge.tsx",
+          "index.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\primitives\\Button",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 4 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "Button.tsx",
+          "index.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\primitives\\Card",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 5 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "Card.tsx",
+          "index.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\primitives\\Container",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 5 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "Container.tsx",
+          "index.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\design-system\\primitives\\Typography",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 5 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "index.ts",
+          "Typography.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "analytics.ts",
+          "ANIMATION-SYSTEM-UPDATE.md",
+          "ANIMATION-SYSTEM.md",
+          "animations.ts",
+          "api-performance.ts",
+          "arco-intelligence.ts",
+          "badge-animations.ts",
+          "content-strategy.ts",
+          "content.ts",
+          "context-tester.ts",
+          "decision-tracker.ts",
+          "design-tokens.ts",
+          "fonts.ts",
+          "mcp-analytics.ts",
+          "mcp-logger.ts",
+          "micro-transitions.ts",
+          "motion.ts",
+          "portfolioAnalytics.ts",
+          "qa-progressive.ts",
+          "qa-runner.ts",
+          "qa-validate.ts",
+          "scroll-optimizer.ts",
+          "simple-context-manager.ts",
+          "tokens.ts",
+          "transitions.ts",
+          "utils.ts",
+          "web-vitals-optimizer.ts",
+          "web-vitals.ts"
+        ],
+        "subfolders": [
+          "business-logic",
+          "config",
+          "context",
+          "hooks",
+          "hydration",
+          "i18n",
+          "monitoring",
+          "utils"
+        ]
+      }
+    },
+    {
+      "path": "src\\lib\\business-logic",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 4 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "content-strategy.ts",
+          "performance.ts",
+          "types.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\config",
+      "score": 10,
+      "issues": [
+        "\u26a0\ufe0f Single file used by 1 files - UNSAFE"
+      ],
+      "contents": {
+        "files": [
+          "config.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\context",
+      "score": 10,
+      "issues": [
+        "\u26a0\ufe0f Single file used by 1 files - UNSAFE"
+      ],
+      "contents": {
+        "files": [
+          "user-preferences-context.tsx"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\hooks",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "useLanguageDetection.ts",
+          "useNavigation.ts",
+          "useOptimizedAnimation.ts",
+          "useTransitionAnimation.ts",
+          "useUserPreferences.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\i18n",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "context.tsx",
+          "finance-content.ts",
+          "index.ts",
+          "LanguageSwitcher.tsx",
+          "premium.ts",
+          "translations.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\monitoring",
+      "score": 10,
+      "issues": [
+        "\u26a0\ufe0f Single file used by 3 files - UNSAFE"
+      ],
+      "contents": {
+        "files": [
+          "web-vitals.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\lib\\utils",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "analytics.ts",
+          "cn.ts",
+          "connection-utils.ts",
+          "connectionUtils.ts",
+          "enhancedAnalytics.ts",
+          "feature-variants.ts",
+          "language-utils.ts",
+          "path-utils.ts",
+          "portfolioAnalytics.ts",
+          "ui-utils.ts",
+          "user-preferences.ts",
+          "with-translation-new.tsx",
+          "with-translation.tsx"
+        ],
+        "subfolders": [
+          "analytics"
+        ]
+      }
+    },
+    {
+      "path": "src\\lib\\utils\\analytics",
+      "score": 30,
+      "issues": [
+        "\u26a0\ufe0f Files have 2 total usages - CHECK FIRST"
+      ],
+      "contents": {
+        "files": [
+          "analytics.ts",
+          "index.ts"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\styles",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "background-system.ts",
+          "design-system.css",
+          "enhanced-hero.css",
+          "globals.css",
+          "patterns.css",
+          "professional.css",
+          "tailwind-loader.ts"
+        ],
+        "subfolders": [
+          "system"
+        ]
+      }
+    },
+    {
+      "path": "src\\styles\\system",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "glassmorphism.css",
+          "glassmorphism.scss",
+          "spacing.css",
+          "spacing.scss"
+        ],
+        "subfolders": []
+      }
+    },
+    {
+      "path": "src\\types",
+      "score": 0,
+      "issues": [
+        "\u274c Complex folder - MANUAL REVIEW NEEDED"
+      ],
+      "contents": {
+        "files": [
+          "analytics.d.ts",
+          "arco-section.ts",
+          "component-patches.d.ts",
+          "framer-motion.d.ts",
+          "gtag.d.ts",
+          "next-auth.d.ts",
+          "next-fixes.d.ts",
+          "next-routes.d.ts"
+        ],
+        "subfolders": []
+      }
+    }
+  ],
+  "needs_review": []
+}

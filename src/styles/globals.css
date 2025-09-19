@@ -1,4 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:wght@400;500;600;700&display=swap');
+/**
+ * ARCO Global Styles - Essential only
+ * 
+ * This file contains only essential global styles.
+ * The main design system is in design-system.css
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+/* Enhanced Hero Section Styles */
+@import './enhanced-hero.css';
+
+/* S-Tier System Imports */
+@import './system/glassmorphism.css';
+@import './system/spacing.css';
 
 @tailwind base;
 @tailwind components;
@@ -6,291 +20,362 @@
 
 @layer base {
   :root {
-    --color-primary-50: 239 246 255;
-    --color-primary-500: 59 130 246;
-    --color-primary-600: 37 99 235;
-    --color-primary-700: 29 78 216;
-    --color-accent-500: 34 197 94;
-    --color-accent-600: 22 163 74;
-    --gradient-hero: linear-gradient(
-      135deg,
-      rgb(239 246 255) 0%,
-      rgb(255 255 255) 50%,
-      rgb(240 253 244) 100%
-    );
+    /* Base Colors */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    /* Primary Brand */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 98%;
+    --primary-50: 214 100% 97%;
+    --primary-100: 214 95% 93%;
+    --primary-200: 213 97% 87%;
+    --primary-300: 212 96% 78%;
+    --primary-400: 213 94% 68%;
+    --primary-500: 217 91% 60%;
+    --primary-600: 221 83% 53%;
+    --primary-700: 224 76% 48%;
+    --primary-800: 226 71% 40%;
+    --primary-900: 224 64% 33%;
+    --primary-950: 226 55% 21%;
+
+    /* Secondary */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    /* Muted */
+    --muted: 210 40% 96%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    /* Accent */
+    --accent: 210 40% 96%;
+    --accent-foreground: 240 5.9% 10%;
+
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Border & Input */
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 217 91% 60%;
+
+    /* Radius */
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 240 10% 3.9%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217 91% 60%;
   }
 
   * {
-    @apply border-neutral-200;
+    @apply border-border;
   }
 
   html {
-    @apply scroll-smooth;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-variant-numeric: tabular-nums;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
   }
 
   body {
-    @apply bg-white text-neutral-900 antialiased font-sans;
-    font-feature-settings:
-      'rlig' 1,
-      'calt' 1;
+    @apply bg-background text-foreground antialiased;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    letter-spacing: -0.011em;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-serif text-balance;
-  }
-
-  p {
-    @apply text-balance leading-relaxed;
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 }
 
 @layer components {
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* ===== ARCO SIGNATURE DIVIDERS - ARQUITETÔNICOS E ESPECÍFICOS ===== */
+
+  .arco-divider {
+    @apply relative my-12 border-0;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
+  /* Divider para separação entre Hero e Portfolio - Técnico e Preciso */
+  .arco-divider--portfolio {
+    @apply h-0.5;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #1e293b 15%,
+      #0f172a 50%,
+      #1e293b 85%,
+      transparent 100%
+    );
+    position: relative;
+    margin: 6rem 0;
   }
 
-  .btn-secondary {
-    @apply bg-white text-neutral-900 border border-neutral-200 hover:bg-neutral-50 focus:ring-neutral-500 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
+  .arco-divider--portfolio::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+    border-radius: 1px;
   }
 
-  .btn-accent {
-    @apply bg-accent-600 text-white hover:bg-accent-700 focus:ring-accent-500 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
+  /* Divider para seções de cases - Elegante e Profissional */
+  .arco-divider--case-study {
+    @apply h-px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(51, 65, 85, 0.1) 20%,
+      rgba(51, 65, 85, 0.8) 40%,
+      rgba(51, 65, 85, 1) 50%,
+      rgba(51, 65, 85, 0.8) 60%,
+      rgba(51, 65, 85, 0.1) 80%,
+      transparent 100%
+    );
+    position: relative;
+    margin: 4rem 0;
   }
 
-  .btn-lg {
-    @apply px-8 py-4 text-lg;
-  }
-  /* Card System - Enhanced */
-  .card {
-    @apply bg-white rounded-2xl shadow-soft border border-neutral-100 p-8 transition-all duration-300 hover:shadow-medium;
-  }
-
-  .card-feature {
-    @apply card hover:border-primary-200 hover:-translate-y-1;
-  }
-
-  /* Section Layouts */
-  .section {
-    @apply py-24 px-6;
+  .arco-divider--case-study::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: #334155;
+    border-radius: 50%;
+    box-shadow:
+      -30px 0 0 -2px rgba(51, 65, 85, 0.6),
+      30px 0 0 -2px rgba(51, 65, 85, 0.6);
   }
 
-  .section-hero {
-    @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-accent-50;
+  /* Divider para about/bio - Pessoal e Sofisticado */
+  .arco-divider--about {
+    @apply h-px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(59, 130, 246, 0.2) 25%,
+      rgba(59, 130, 246, 0.6) 50%,
+      rgba(59, 130, 246, 0.2) 75%,
+      transparent 100%
+    );
+    position: relative;
+    margin: 3rem 0;
   }
 
-  .container-custom {
-    @apply max-w-7xl mx-auto;
+  .arco-divider--about::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 16px;
+    background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.8), transparent);
   }
 
-  /* Typography System */
-  .heading-xl {
-    @apply text-6xl md:text-7xl font-bold leading-tight;
+  /* Divider para footer - Arquitetônico e Final */
+  .arco-divider--footer {
+    @apply h-0.5;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #1e293b 10%,
+      #334155 25%,
+      #475569 50%,
+      #334155 75%,
+      #1e293b 90%,
+      transparent 100%
+    );
+    position: relative;
+    margin: 5rem 0 3rem 0;
   }
 
-  .heading-lg {
-    @apply text-4xl md:text-5xl font-bold leading-tight;
+  .arco-divider--footer::before,
+  .arco-divider--footer::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 8px;
+    background: #475569;
   }
 
-  .heading-md {
-    @apply text-2xl md:text-3xl font-semibold leading-snug;
+  .arco-divider--footer::before {
+    left: 25%;
   }
 
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
+  .arco-divider--footer::after {
+    right: 25%;
   }
 
-  /* Special Effects */
-  .glass {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20;
+  /* Divider técnico - Para seções de skills/expertise */
+  .arco-divider--technical {
+    @apply h-px;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 8px,
+      rgba(51, 65, 85, 0.4) 8px,
+      rgba(51, 65, 85, 0.4) 16px,
+      transparent 16px,
+      transparent 24px,
+      rgba(51, 65, 85, 0.8) 24px,
+      rgba(51, 65, 85, 0.8) 26px
+    );
+    position: relative;
+    margin: 2.5rem 0;
   }
 
-  .glow {
-    @apply shadow-large;
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+  /* Divider minimal - Para transições sutis */
+  .arco-divider--minimal {
+    @apply h-px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(148, 163, 184, 0.3) 40%,
+      rgba(148, 163, 184, 0.5) 50%,
+      rgba(148, 163, 184, 0.3) 60%,
+      transparent 100%
+    );
+    margin: 2rem 0;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* Status Indicators */
-  .badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
+  .arco-divider--dots::before {
+    @apply absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500 content-[''];
+    box-shadow:
+      -20px 0 0 -1px rgb(147, 197, 253),
+      20px 0 0 -1px rgb(147, 197, 253),
+      -40px 0 0 -2px rgb(191, 219, 254),
+      40px 0 0 -2px rgb(191, 219, 254);
   }
 
-  .badge-success {
-    @apply bg-accent-100 text-accent-800;
+  /* Spacing variants contextuais */
+  .arco-divider--section-break {
+    margin: 8rem 0;
   }
 
-  .badge-info {
-    @apply bg-primary-100 text-primary-800;
+  .arco-divider--content-break {
+    margin: 4rem 0;
+  }
+
+  .arco-divider--paragraph-break {
+    margin: 2rem 0;
+  }
+
+  /* Hover states para dividers interativos */
+  .arco-divider--portfolio:hover::before {
+    width: 160px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+    transition: all 0.4s ease;
+  }
+
+  .arco-divider--case-study:hover {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(51, 65, 85, 0.2) 20%,
+      rgba(59, 130, 246, 0.4) 40%,
+      rgba(59, 130, 246, 0.8) 50%,
+      rgba(59, 130, 246, 0.4) 60%,
+      rgba(51, 65, 85, 0.2) 80%,
+      transparent 100%
+    );
+    transition: all 0.4s ease;
+  }
+
+  /* ===== REMOVENDO CLASSES ANTIGAS E GENÉRICAS ===== */
+  /* Legacy section classes removed - replaced by ARCOContentSystem */
+
+  /* Legacy container classes removed - use Tailwind directly */
+
+  /* All legacy utility classes have been replaced by ARCOContentSystem and Tailwind CSS */
+  /* This section is kept for documentation purposes only */
+
+  /* Only valid S-tier classes remain */
+  .s-tier-section {
+    @apply py-16 px-6 lg:px-8;
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* ===== CUSTOM ANIMATIONS ===== */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
   }
-
-  .animation-delay-200 {
-    animation-delay: 0.2s;
-  }
-
-  .animation-delay-400 {
-    animation-delay: 0.4s;
-  }
-
-  .animation-delay-600 {
-    animation-delay: 0.6s;
+  50% {
+    transform: translateY(-10px);
   }
 }
 
-@layer components {
-  /* Button System */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
   }
-
-  .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
-  }
-
-  .btn-secondary {
-    @apply bg-white text-neutral-900 border border-neutral-200 hover:bg-neutral-50 focus:ring-neutral-500 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
-  }
-
-  .btn-accent {
-    @apply bg-accent-600 text-white hover:bg-accent-700 focus:ring-accent-500 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
-  }
-
-  .btn-ghost {
-    @apply text-neutral-700 hover:bg-neutral-100 focus:ring-neutral-500;
-  }
-
-  .btn-lg {
-    @apply px-8 py-4 text-lg;
-  }
-
-  .btn-sm {
-    @apply px-4 py-2 text-sm;
-  }
-
-  /* Card System */
-  .card {
-    @apply bg-white rounded-2xl shadow-soft border border-neutral-100 p-8 transition-all duration-300 hover:shadow-medium;
-  }
-
-  .card-feature {
-    @apply card hover:border-primary-200 hover:-translate-y-1;
-  }
-
-  .card-stat {
-    @apply card text-center bg-gradient-to-br from-white to-neutral-50 hover:from-primary-50 hover:to-white;
-  }
-
-  /* Section Layouts */
-  .section {
-    @apply py-24 px-6;
-  }
-
-  .section-hero {
-    @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-accent-50;
-  }
-
-  .container-custom {
-    @apply max-w-7xl mx-auto;
-  }
-
-  /* Typography System */
-  .heading-xl {
-    @apply text-6xl md:text-7xl font-bold leading-tight;
-  }
-
-  .heading-lg {
-    @apply text-4xl md:text-5xl font-bold leading-tight;
-  }
-
-  .heading-md {
-    @apply text-2xl md:text-3xl font-semibold leading-snug;
-  }
-
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
-  }
-
-  /* Special Effects */
-  .glass {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20;
-  }
-
-  .glow {
-    @apply shadow-large;
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
-  }
-
-  /* Status Indicators */
-  .badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
-  }
-
-  .badge-success {
-    @apply bg-accent-100 text-accent-800;
-  }
-
-  .badge-info {
-    @apply bg-primary-100 text-primary-800;
-  }
-  .badge-warning {
-    @apply bg-yellow-100 text-yellow-800;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@layer utilities {
-  /* Text utilities */
-  .text-balance {
-    text-wrap: balance;
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
-  .shadow-soft {
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+  100% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
   }
+}
 
-  .shadow-medium {
-    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.08);
-  }
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
 
-  .shadow-large {
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
-  }
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
 
-  /* Animation delays */
-  .animation-delay-200 {
-    animation-delay: 0.2s;
-  }
-
-  .animation-delay-400 {
-    animation-delay: 0.4s;
-  }
-
-  .animation-delay-600 {
-    animation-delay: 0.6s;
-  }
-
-  .animation-delay-800 {
-    animation-delay: 0.8s;
-  }
-
-  /* Scrollbar utilities */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
 }

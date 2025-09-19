@@ -1,53 +1,140 @@
-import Link from 'next/link';import { createHref } from '@/utils/navigation';
-import Image from 'next/image';
+/**
+ * ARCO Footer Component
+ * Professional footer with links and branding
+ */
 
-export default function Footer() {
-    return (
-        <footer className="bg-gray-900 text-white py-12">
-            <div className="container mx-auto px-4">
-                <div className="flex flex-wrap justify-between">
-                    {/* Logo e descrição */}
-                    <div className="w-full md:w-1/3 mb-8 md:mb-0">
-                        <div className="mb-4">
-                            <Link href={createHref("/")} className="text-2xl font-bold">ARCO</Link>
-                        </div>
-                        <p className="text-gray-400 mb-4">
-                            Uma abordagem estratégica para transformar problemas técnicos em ganhos financeiros
-                        </p>
-                    </div>
+'use client';
 
-                    {/* Links rápidos */}
-                    <div className="w-full md:w-1/4 mb-8 md:mb-0">
-                        <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
-                        <ul className="space-y-2">
-                            <li><Link href={createHref("/")} className="text-gray-400 hover:text-white">Home</Link></li>
-                            <li><Link href={createHref("/diagnose")} className="text-gray-400 hover:text-white">Diagnose</Link></li>
-                            <li><Link href={createHref("/solutions")} className="text-gray-400 hover:text-white">Solutions</Link></li>
-                            <li><Link href={createHref("/case-studies")} className="text-gray-400 hover:text-white">Case Studies</Link></li>
-                            <li><Link href={createHref("/contact")} className="text-gray-400 hover:text-white">Contact</Link></li>
-                        </ul>
-                    </div>
+import React from 'react';
+import Link from 'next/link';
+import { Typography } from '../primitives';
+import { Container } from '../primitives';
 
-                    {/* Contato */}
-                    <div className="w-full md:w-1/4">
-                        <h3 className="text-lg font-semibold mb-4">Contato</h3>
-                        <ul className="space-y-2 text-gray-400">
-                            <li className="flex items-center">
-                                <span>contact@arco.com</span>
-                            </li>
-                            <li className="flex items-center">
-                                <span>São Paulo, Brasil</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                    <p className="text-gray-500 text-sm">© 2025 ARCO. Todos os direitos reservados.</p>
-                </div>
-            </div>
-        </footer>
-    );
+interface FooterProps {
+    variant?: 'default' | 'minimal';
+    showSocial?: boolean;
 }
 
+const footerLinks = {
+    services: [
+        { label: 'Web Development', href: '/services/web-development' },
+        { label: 'UI/UX Design', href: '/services/design' },
+        { label: 'Consulting', href: '/services/consulting' }
+    ],
+    company: [
+        { label: 'About', href: '/about' },
+        { label: 'Case Studies', href: '/case-studies' },
+        { label: 'Contact', href: '/contact' }
+    ],
+    legal: [
+        { label: 'Privacy Policy', href: '/privacy' },
+        { label: 'Terms of Service', href: '/terms' }
+    ]
+};
 
+export const Footer: React.FC<FooterProps> = ({
+    variant = 'default',
+    showSocial = true
+}) => {
+    if (variant === 'minimal') {
+        return (
+            <footer className="border-t border-neutral-200 dark:border-neutral-800">
+                <Container size="xl" padding="lg">
+                    <div className="flex items-center justify-between py-6">
+                        <Typography variant="caption" className="text-neutral-600 dark:text-neutral-400">
+                            © 2025 ARCO. All rights reserved.
+                        </Typography>
+                    </div>
+                </Container>
+            </footer>
+        );
+    }
+
+    return (
+        <footer className="bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
+            <Container size="xl" padding="lg">
+                <div className="py-12">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        {/* Brand */}
+                        <div className="space-y-4">
+                            <div className="flex items-center space-x-2">
+                                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                                    <span className="text-white font-bold text-sm">A</span>
+                                </div>
+                                <Typography variant="h6" className="font-bold">ARCO</Typography>
+                            </div>
+                            <Typography variant="body" className="text-neutral-600 dark:text-neutral-400 max-w-xs">
+                                Professional web development and design solutions for modern businesses.
+                            </Typography>
+                        </div>
+
+                        {/* Services */}
+                        <div className="space-y-4">
+                            <Typography variant="subtitle" className="font-semibold">Services</Typography>
+                            <ul className="space-y-2">
+                                {footerLinks.services.map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Company */}
+                        <div className="space-y-4">
+                            <Typography variant="subtitle" className="font-semibold">Company</Typography>
+                            <ul className="space-y-2">
+                                {footerLinks.company.map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Legal */}
+                        <div className="space-y-4">
+                            <Typography variant="subtitle" className="font-semibold">Legal</Typography>
+                            <ul className="space-y-2">
+                                {footerLinks.legal.map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Bottom */}
+                    <div className="mt-8 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+                        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                            <Typography variant="caption" className="text-neutral-600 dark:text-neutral-400">
+                                © 2025 ARCO. All rights reserved.
+                            </Typography>
+                            <Typography variant="caption" className="text-neutral-600 dark:text-neutral-400">
+                                Built with Next.js & TypeScript
+                            </Typography>
+                        </div>
+                    </div>
+                </div>
+            </Container>
+        </footer>
+    );
+};
+
+export type { FooterProps };

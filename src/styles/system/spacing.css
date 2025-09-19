@@ -1,0 +1,97 @@
+/**
+ * Spacing System - S-Tier Layout Architecture
+ * Consistent spacing system for visual rhythm and hierarchy
+ * 
+ * @version 2.0.0
+ * @author ARCO Development Team
+ * @last-updated 2025-07-14
+ */
+
+/* ==================== SECTION SPACING SYSTEM ==================== */
+
+.section-spacing {
+  /* Responsive section spacing using clamp for fluid scaling */
+  padding-top: clamp(60px, 8vw, 160px);
+  padding-bottom: clamp(60px, 8vw, 160px);
+}
+
+.section-spacing-sm {
+  padding-top: clamp(40px, 6vw, 80px);
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+
+.section-spacing-lg {
+  padding-top: clamp(80px, 12vw, 200px);
+  padding-bottom: clamp(80px, 12vw, 200px);
+}
+
+/* ==================== CONTAINER SPACING SYSTEM ==================== */
+
+.container-spacing {
+  /* Responsive container padding */
+  padding-left: clamp(16px, 4vw, 80px);
+  padding-right: clamp(16px, 4vw, 80px);
+}
+
+.container-centered {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 4vw, 80px);
+  padding-right: clamp(16px, 4vw, 80px);
+}
+
+/* ==================== COMPONENT SPACING SYSTEM ==================== */
+
+.component-spacing {
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.component-spacing-lg {
+  padding: clamp(24px, 4vw, 48px);
+}
+
+/* Component gap spacing */
+.mb-component {
+  margin-bottom: clamp(24px, 4vw, 48px);
+}
+
+/* ==================== UTILITY SPACING CLASSES ==================== */
+
+.p-component {
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.px-component {
+  padding-left: clamp(16px, 3vw, 32px);
+  padding-right: clamp(16px, 3vw, 32px);
+}
+
+.py-component {
+  padding-top: clamp(16px, 3vw, 32px);
+  padding-bottom: clamp(16px, 3vw, 32px);
+}
+
+/* ==================== RESPONSIVE BREAKPOINT SPECIFIC SPACING ==================== */
+
+@media (min-width: 768px) {
+  .md\:section-spacing {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+
+  .md\:component-spacing {
+    padding: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:section-spacing {
+    padding-top: 160px;
+    padding-bottom: 160px;
+  }
+
+  .lg\:component-spacing {
+    padding: 48px;
+  }
+}

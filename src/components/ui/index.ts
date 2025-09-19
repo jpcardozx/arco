@@ -1,53 +1,23 @@
-// Primitive Components
-export { Button, buttonVariants } from './primitive/button'
-export type { ButtonProps } from './primitive/button'
+/**
+ * UI Components (shadcn/ui)
+ * 
+ * Componentes prontos e acessíveis baseados em Radix UI
+ * Integrados com design system ARCO
+ */
 
-// Compound Components  
-export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  cardVariants,
-} from './compound/card'
-export type {
-  CardProps,
-  CardHeaderProps,
-  CardTitleProps,
-  CardContentProps,
-  CardFooterProps,
-} from './compound/card'
+// Form Components
+export { Input } from "./input";
+export { Checkbox } from "./checkbox";
+export { RadioGroup, RadioGroupItem } from "./radio-group";
+export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
+export { Switch } from "./switch";
 
-// Legacy Layout Components (temporary)
-export {
-  Section,
-  Heading2,
-  Heading3,
-  BodyRegular,
-  Caption,
-} from './legacy/typography'
-export type {
-  SectionProps,
-  HeadingProps,
-  BodyRegularProps,
-  CaptionProps,
-} from './legacy/typography'
+// Feedback Components
+export { Alert, AlertDescription, AlertTitle } from "./alert";
+export { Progress } from "./progress";
+export { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
-// Design System Tokens
-export { tokens as designTokens } from '../../design-system/tokens'
-export { getToken } from '../../design-system/tokens/types'
-export type { 
-  DesignTokens,
-  ColorScale,
-  SpacingScale,
-  FontSize,
-  FontWeight,
-  Shadow,
-  Radius,
-  Breakpoint,
-} from '../../design-system/tokens/types'
-
-// Utilities
-export { cn } from '../../lib/utils'
+// Layout Components
+export { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
+export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";

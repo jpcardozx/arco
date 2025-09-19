@@ -1,0 +1,492 @@
+/**
+ * Spacing System - S-Tier Layout Architecture
+ * Consistent spacing system for visual rhythm and hierarchy
+ * 
+ * @version 2.0.0
+ * @author ARCO Development Team
+ * @last-updated 2025-07-14
+ */
+
+/* ==================== SECTION SPACING SYSTEM ==================== */
+
+.section-spacing {
+  /* Responsive section spacing using clamp for fluid scaling */
+  padding-top: clamp(60px, 8vw, 160px);
+  padding-bottom: clamp(60px, 8vw, 160px);
+}
+
+.section-spacing-sm {
+  padding-top: clamp(40px, 6vw, 80px);
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+
+.section-spacing-lg {
+  padding-top: clamp(80px, 12vw, 200px);
+  padding-bottom: clamp(80px, 12vw, 200px);
+}
+
+.section-spacing-xl {
+  padding-top: clamp(100px, 15vw, 240px);
+  padding-bottom: clamp(100px, 15vw, 240px);
+}
+
+/* Section spacing variants for specific use cases */
+.section-hero {
+  padding-top: clamp(120px, 18vw, 280px);
+  padding-bottom: clamp(80px, 12vw, 160px);
+}
+
+.section-content {
+  padding-top: clamp(60px, 8vw, 120px);
+  padding-bottom: clamp(60px, 8vw, 120px);
+}
+
+.section-feature {
+  padding-top: clamp(80px, 10vw, 160px);
+  padding-bottom: clamp(80px, 10vw, 160px);
+}
+
+.section-footer {
+  padding-top: clamp(60px, 8vw, 120px);
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+
+/* ==================== CONTAINER SPACING SYSTEM ==================== */
+
+.container-spacing {
+  /* Responsive container padding */
+  padding-left: clamp(16px, 4vw, 80px);
+  padding-right: clamp(16px, 4vw, 80px);
+}
+
+.container-spacing-sm {
+  padding-left: clamp(12px, 3vw, 48px);
+  padding-right: clamp(12px, 3vw, 48px);
+}
+
+.container-spacing-lg {
+  padding-left: clamp(24px, 6vw, 120px);
+  padding-right: clamp(24px, 6vw, 120px);
+}
+
+/* Container max-width with centered alignment */
+.container-centered {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  @extend .container-spacing;
+}
+
+.container-narrow {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  @extend .container-spacing;
+}
+
+.container-wide {
+  max-width: 1680px;
+  margin-left: auto;
+  margin-right: auto;
+  @extend .container-spacing;
+}
+
+/* ==================== COMPONENT SPACING SYSTEM ==================== */
+
+/* Component internal spacing */
+.component-spacing {
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.component-spacing-sm {
+  padding: clamp(12px, 2vw, 20px);
+}
+
+.component-spacing-lg {
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.component-spacing-xl {
+  padding: clamp(32px, 5vw, 64px);
+}
+
+/* Component external spacing (margins) */
+.component-gap {
+  margin-bottom: clamp(24px, 4vw, 48px);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.component-gap-sm {
+  margin-bottom: clamp(16px, 2vw, 24px);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.component-gap-lg {
+  margin-bottom: clamp(32px, 6vw, 64px);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ==================== ELEMENT SPACING SYSTEM ==================== */
+
+/* Element spacing for fine-grained control */
+.element-spacing {
+  gap: clamp(8px, 1.5vw, 16px);
+}
+
+.element-spacing-sm {
+  gap: clamp(4px, 1vw, 8px);
+}
+
+.element-spacing-lg {
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.element-spacing-xl {
+  gap: clamp(16px, 3vw, 32px);
+}
+
+/* Stack spacing for vertical layouts */
+.stack {
+  display: flex;
+  flex-direction: column;
+  
+  &.stack-sm {
+    gap: clamp(8px, 1vw, 12px);
+  }
+  
+  &.stack-md {
+    gap: clamp(12px, 2vw, 20px);
+  }
+  
+  &.stack-lg {
+    gap: clamp(20px, 3vw, 32px);
+  }
+  
+  &.stack-xl {
+    gap: clamp(28px, 4vw, 48px);
+  }
+}
+
+/* Grid spacing for grid layouts */
+.grid-spacing {
+  display: grid;
+  gap: clamp(16px, 3vw, 32px);
+  
+  &.grid-spacing-sm {
+    gap: clamp(12px, 2vw, 20px);
+  }
+  
+  &.grid-spacing-lg {
+    gap: clamp(24px, 4vw, 48px);
+  }
+  
+  &.grid-spacing-xl {
+    gap: clamp(32px, 5vw, 64px);
+  }
+}
+
+/* ==================== RHYTHM SYSTEM ==================== */
+
+/* Visual rhythm classes for consistent vertical spacing */
+.rhythm-section {
+  > * + * {
+    margin-top: clamp(40px, 6vw, 80px);
+  }
+}
+
+.rhythm-component {
+  > * + * {
+    margin-top: clamp(24px, 3vw, 32px);
+  }
+}
+
+.rhythm-element {
+  > * + * {
+    margin-top: clamp(12px, 2vw, 16px);
+  }
+}
+
+.rhythm-text {
+  > * + * {
+    margin-top: clamp(8px, 1vw, 12px);
+  }
+}
+
+/* ==================== RESPONSIVE BREAKPOINT SPECIFIC SPACING ==================== */
+
+/* Mobile first approach with specific breakpoint overrides */
+@media (min-width: 640px) {
+  .sm\:section-spacing {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  
+  .sm\:container-spacing {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  
+  .sm\:component-spacing {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:section-spacing {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+  
+  .md\:container-spacing {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  
+  .md\:component-spacing {
+    padding: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:section-spacing {
+    padding-top: 160px;
+    padding-bottom: 160px;
+  }
+  
+  .lg\:container-spacing {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+  
+  .lg\:component-spacing {
+    padding: 48px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:section-spacing {
+    padding-top: 200px;
+    padding-bottom: 200px;
+  }
+  
+  .xl\:container-spacing {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+  
+  .xl\:component-spacing {
+    padding: 64px;
+  }
+}
+
+/* ==================== SPECIAL PURPOSE SPACING ==================== */
+
+/* Form spacing */
+.form-spacing {
+  .form-group + .form-group {
+    margin-top: clamp(16px, 2vw, 24px);
+  }
+  
+  .form-actions {
+    margin-top: clamp(24px, 4vw, 40px);
+    padding-top: clamp(16px, 3vw, 24px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Card spacing */
+.card-spacing {
+  padding: clamp(20px, 3vw, 32px);
+  
+  .card-header + .card-content {
+    margin-top: clamp(16px, 2vw, 24px);
+  }
+  
+  .card-content + .card-footer {
+    margin-top: clamp(20px, 3vw, 32px);
+    padding-top: clamp(16px, 2vw, 24px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Navigation spacing */
+.nav-spacing {
+  .nav-item + .nav-item {
+    margin-left: clamp(16px, 2vw, 32px);
+  }
+  
+  @media (max-width: 768px) {
+    .nav-item + .nav-item {
+      margin-left: 0;
+      margin-top: clamp(8px, 1vw, 12px);
+    }
+  }
+}
+
+/* Button group spacing */
+.button-group {
+  display: flex;
+  gap: clamp(8px, 1.5vw, 16px);
+  
+  &.button-group-sm {
+    gap: clamp(4px, 1vw, 8px);
+  }
+  
+  &.button-group-lg {
+    gap: clamp(12px, 2vw, 24px);
+  }
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+    
+    .button {
+      width: 100%;
+    }
+  }
+}
+
+/* ==================== UTILITY SPACING CLASSES ==================== */
+
+/* Margin utilities */
+.m-section { margin: clamp(60px, 8vw, 120px); }
+.mt-section { margin-top: clamp(60px, 8vw, 120px); }
+.mb-section { margin-bottom: clamp(60px, 8vw, 120px); }
+.ml-section { margin-left: clamp(60px, 8vw, 120px); }
+.mr-section { margin-right: clamp(60px, 8vw, 120px); }
+.mx-section { margin-left: clamp(60px, 8vw, 120px); margin-right: clamp(60px, 8vw, 120px); }
+.my-section { margin-top: clamp(60px, 8vw, 120px); margin-bottom: clamp(60px, 8vw, 120px); }
+
+.m-component { margin: clamp(16px, 3vw, 32px); }
+.mt-component { margin-top: clamp(16px, 3vw, 32px); }
+.mb-component { margin-bottom: clamp(16px, 3vw, 32px); }
+.ml-component { margin-left: clamp(16px, 3vw, 32px); }
+.mr-component { margin-right: clamp(16px, 3vw, 32px); }
+.mx-component { margin-left: clamp(16px, 3vw, 32px); margin-right: clamp(16px, 3vw, 32px); }
+.my-component { margin-top: clamp(16px, 3vw, 32px); margin-bottom: clamp(16px, 3vw, 32px); }
+
+.m-element { margin: clamp(8px, 1.5vw, 16px); }
+.mt-element { margin-top: clamp(8px, 1.5vw, 16px); }
+.mb-element { margin-bottom: clamp(8px, 1.5vw, 16px); }
+.ml-element { margin-left: clamp(8px, 1.5vw, 16px); }
+.mr-element { margin-right: clamp(8px, 1.5vw, 16px); }
+.mx-element { margin-left: clamp(8px, 1.5vw, 16px); margin-right: clamp(8px, 1.5vw, 16px); }
+.my-element { margin-top: clamp(8px, 1.5vw, 16px); margin-bottom: clamp(8px, 1.5vw, 16px); }
+
+/* Padding utilities */
+.p-section { padding: clamp(60px, 8vw, 120px); }
+.pt-section { padding-top: clamp(60px, 8vw, 120px); }
+.pb-section { padding-bottom: clamp(60px, 8vw, 120px); }
+.pl-section { padding-left: clamp(60px, 8vw, 120px); }
+.pr-section { padding-right: clamp(60px, 8vw, 120px); }
+.px-section { padding-left: clamp(60px, 8vw, 120px); padding-right: clamp(60px, 8vw, 120px); }
+.py-section { padding-top: clamp(60px, 8vw, 120px); padding-bottom: clamp(60px, 8vw, 120px); }
+
+.p-component { padding: clamp(16px, 3vw, 32px); }
+.pt-component { padding-top: clamp(16px, 3vw, 32px); }
+.pb-component { padding-bottom: clamp(16px, 3vw, 32px); }
+.pl-component { padding-left: clamp(16px, 3vw, 32px); }
+.pr-component { padding-right: clamp(16px, 3vw, 32px); }
+.px-component { padding-left: clamp(16px, 3vw, 32px); padding-right: clamp(16px, 3vw, 32px); }
+.py-component { padding-top: clamp(16px, 3vw, 32px); padding-bottom: clamp(16px, 3vw, 32px); }
+
+.p-element { padding: clamp(8px, 1.5vw, 16px); }
+.pt-element { padding-top: clamp(8px, 1.5vw, 16px); }
+.pb-element { padding-bottom: clamp(8px, 1.5vw, 16px); }
+.pl-element { padding-left: clamp(8px, 1.5vw, 16px); }
+.pr-element { padding-right: clamp(8px, 1.5vw, 16px); }
+.px-element { padding-left: clamp(8px, 1.5vw, 16px); padding-right: clamp(8px, 1.5vw, 16px); }
+.py-element { padding-top: clamp(8px, 1.5vw, 16px); padding-bottom: clamp(8px, 1.5vw, 16px); }
+
+/* ==================== LAYOUT COMPOSITION CLASSES ==================== */
+
+/* Page layout */
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  .page-header {
+    flex-shrink: 0;
+  }
+  
+  .page-main {
+    flex-grow: 1;
+    @extend .section-spacing;
+  }
+  
+  .page-footer {
+    flex-shrink: 0;
+  }
+}
+
+/* Section layout */
+.section-layout {
+  @extend .section-spacing;
+  @extend .container-centered;
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: clamp(40px, 6vw, 80px);
+  }
+  
+  .section-content {
+    @extend .rhythm-component;
+  }
+  
+  .section-footer {
+    margin-top: clamp(40px, 6vw, 80px);
+    text-align: center;
+  }
+}
+
+/* ==================== ACCESSIBILITY SPACING ==================== */
+
+/* Ensure adequate spacing for touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  
+  + .touch-target {
+    margin-top: 8px;
+  }
+}
+
+/* Focus spacing for keyboard navigation */
+.focus-spacing {
+  &:focus-visible {
+    outline-offset: 4px;
+  }
+}
+
+/* ==================== PRINT SPACING ==================== */
+
+@media print {
+  .section-spacing,
+  .section-spacing-sm,
+  .section-spacing-lg,
+  .section-spacing-xl {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  
+  .component-spacing {
+    padding: 12px;
+  }
+  
+  .rhythm-section > * + * {
+    margin-top: 16px;
+  }
+  
+  .rhythm-component > * + * {
+    margin-top: 12px;
+  }
+}

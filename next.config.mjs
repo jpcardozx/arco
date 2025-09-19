@@ -1,14 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Critical build performance optimizations
+  reactStrictMode: true,
+  
+  // Next.js 15 Turbopack configuration
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },  experimental: {
+  },
+  
+  experimental: {
     scrollRestoration: true,
     typedRoutes: true,
+    // Simpler experimental features
+    // Aggressive package optimization
     optimizePackageImports: [
       'lucide-react',
       'framer-motion',
@@ -18,41 +26,39 @@ const nextConfig = {
       '@radix-ui/react-tabs',
       'recharts',
       'react-icons',
-      '@heroicons/react'
+      '@nextui-org/react',
+      'clsx',
+      'tailwind-merge'
     ],
+    // Optimization features for performance and build speed
     optimizeCss: true,
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    esmExternals: true,
+    forceSwcTransforms: true,
   },
+  
+  // Build optimizations
   typescript: {
     ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: false,
-  },  // Performance optimizations
+  },
+  
+  // Performance optimizations
   poweredByHeader: false,
   compress: true,
   
-  // Bundle optimization
+  // Aggressive modular imports for tree shaking
   modularizeImports: {
-    '@heroicons/react/24/outline': {
-      transform: '@heroicons/react/24/outline/{{member}}',
-    },
-    '@heroicons/react/24/solid': {
-      transform: '@heroicons/react/24/solid/{{member}}',
-    },
     'react-icons': {
       transform: 'react-icons/{{member}}',
     },
     'lucide-react': {
       transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
       skipDefaultConversion: true,
+    },
+    '@nextui-org/react': {
+      transform: '@nextui-org/react/dist/{{member}}',
     },
   },
 
@@ -92,46 +98,29 @@ const nextConfig = {
     ];
   },
   
-  // Webpack optimizations
+  // Simplified webpack config to avoid chunk loading errors
   webpack: (config, { isServer, dev }) => {
+    // Watch optimizations for faster rebuilds
     config.watchOptions = {
       ...config.watchOptions,
       ignored: /node_modules/,
+      aggregateTimeout: 200,
+      poll: false,
     };
 
-    // Optimize bundle splitting
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          // Separate chunk for heavy libraries
-          framerMotion: {
-            name: 'framer-motion',
-            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            chunks: 'all',
-            priority: 10,
-          },
-          // Lucide icons in separate chunk
-          lucideReact: {
-            name: 'lucide-react',
-            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-            chunks: 'all',
-            priority: 10,
-          },
-          // Radix UI components
-          radixUI: {
-            name: 'radix-ui',
-            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-            chunks: 'all',
-            priority: 10,
-          }
-        }
-      }
+    // Development optimizations
+    if (dev) {
+      config.optimization.removeAvailableModules = false;
+      config.optimization.removeEmptyChunks = false;
+      config.optimization.splitChunks = false;
     }
     
     return config;
   },
 };
 
-export default nextConfig;
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
+export default withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})(nextConfig);
