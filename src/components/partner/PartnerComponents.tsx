@@ -259,7 +259,7 @@ export const ProjectPortfolio: React.FC = () => {
 // Contact CTA Component
 export const ContactCTA: React.FC = () => {
     return (
-        <GlassCard variant="section" className="p-8 text-center">
+        <GlassCard variant="default" className="p-8 text-center">
             <GlassText variant="h2" className="mb-4">
                 Ready to Optimize Your Revenue?
             </GlassText>
@@ -271,7 +271,6 @@ export const ContactCTA: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <GlassButton
                     variant="primary"
-                    size="lg"
                     onClick={() => window.open('mailto:joao@arco.com', '_blank')}
                 >
                     <Mail className="w-5 h-5 mr-2" />
@@ -279,7 +278,6 @@ export const ContactCTA: React.FC = () => {
                 </GlassButton>
                 <GlassButton
                     variant="secondary"
-                    size="lg"
                     onClick={() => window.open('https://calendly.com/arco-jpcardozx', '_blank')}
                 >
                     <Calendar className="w-5 h-5 mr-2" />

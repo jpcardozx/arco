@@ -6,7 +6,7 @@
 'use client';
 
 import React from 'react';
-import { Header } from './Header';
+import { SimplifiedNavigation } from './SimplifiedNavigation';
 import { Footer } from './Footer';
 import { ThemeProvider } from '../../design-system/core/theme';
 
@@ -31,10 +31,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <ThemeProvider>
             <div className={`min-h-screen flex flex-col ${className}`}>
                 {showHeader && (
-                    <Header
-                        variant={headerVariant}
-                        showNavigation={true}
-                    />
+                    <SimplifiedNavigation />
                 )}
 
                 <main className="flex-1">
