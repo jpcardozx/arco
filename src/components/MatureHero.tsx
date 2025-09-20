@@ -8,7 +8,31 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './primitives/Button/Button';
 import { Container } from './primitives/Container/Container';
-// import { MetricCard, useTracking } from '../design-system/mature';
+import { useTracking } from '../lib/useTracking';
+
+// Simple MetricCard component for proof metrics
+interface MetricCardProps {
+    label: string;
+    value: string;
+    change?: string;
+    color?: 'green' | 'blue' | 'red';
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ label, value, change, color = 'blue' }) => {
+    const colorClasses = {
+        green: 'text-green-600 bg-green-50',
+        blue: 'text-blue-600 bg-blue-50', 
+        red: 'text-red-600 bg-red-50'
+    };
+
+    return (
+        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
+            <div className="font-bold text-lg">{value}</div>
+            <div className="text-xs">{label}</div>
+            {change && <div className="text-xs font-medium">+{change}</div>}
+        </div>
+    );
+};
 
 interface HeroProps {
     onAuditClick?: () => void;

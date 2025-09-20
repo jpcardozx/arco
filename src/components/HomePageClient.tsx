@@ -3,7 +3,7 @@
 import React from 'react';
 import { Container } from './primitives';
 import { Typography } from './primitives';
-import { Grid, GridItem } from '../layout/Grid';
+import { Grid, GridItem } from './layout/Grid';
 import { Card } from './primitives';
 import { Button } from './primitives';
 import { Badge } from './primitives';

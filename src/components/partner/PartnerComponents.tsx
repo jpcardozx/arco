@@ -26,7 +26,7 @@ interface PartnerHeroProps {
 
 export const PartnerHero: React.FC<PartnerHeroProps> = ({ data }) => {
     return (
-        <GlassCard variant="hero" className="p-8">
+        <GlassCard variant="elevated" className="p-8">
             <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
                 {/* Profile Image */}
                 <div className="relative">

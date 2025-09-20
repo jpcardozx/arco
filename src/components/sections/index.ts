@@ -1,3 +1,3 @@
 // Sections exports
-// export * from './HeroSectionV4'; // File is empty - needs implementation
-// Add other sections as needed
+// TODO: Add section components here when they are implemented
+export {};
