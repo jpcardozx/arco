@@ -11,29 +11,72 @@ from pydantic import BaseModel, HttpUrl
 from typing import Optional, List, Dict, Any
 import asyncio
 import aiohttp
-import dns.resolver
 import ssl
 import socket
 from urllib.parse import urlparse
 import time
 import json
 from datetime import datetime
-import psutil
 import subprocess
-import whois
-from bs4 import BeautifulSoup
-import requests
-from textstat import flesch_reading_ease, flesch_kincaid_grade
 import hashlib
 import os
-import nmap
-import sslyze
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import numpy as np
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+
+# Core dependencies that should always be available
+import requests
+from bs4 import BeautifulSoup
+
+# Optional dependencies - import with error handling
+try:
+    import dns.resolver
+    DNS_AVAILABLE = True
+except ImportError:
+    DNS_AVAILABLE = False
+
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+
+try:
+    import whois
+    WHOIS_AVAILABLE = True
+except ImportError:
+    WHOIS_AVAILABLE = False
+
+try:
+    from textstat import flesch_reading_ease, flesch_kincaid_grade
+    TEXTSTAT_AVAILABLE = True
+except ImportError:
+    TEXTSTAT_AVAILABLE = False
+
+try:
+    import nmap
+    NMAP_AVAILABLE = True
+except ImportError:
+    NMAP_AVAILABLE = False
+
+try:
+    import sslyze
+    SSLYZE_AVAILABLE = True
+except ImportError:
+    SSLYZE_AVAILABLE = False
+
+try:
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    SELENIUM_AVAILABLE = True
+except ImportError:
+    SELENIUM_AVAILABLE = False
+
+try:
+    import numpy as np
+    import pandas as pd
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    ML_AVAILABLE = True
+except ImportError:
+    ML_AVAILABLE = False
 
 app = FastAPI(
     title="ARCO Intelligence API",
@@ -81,6 +124,25 @@ class ConversionAnalysisRequest(BaseModel):
     url: HttpUrl
     funnel_steps: List[str]
     target_actions: List[str]
+
+# Health check endpoint
+@app.get("/api/health")
+async def health_check():
+    """Check API health and available features"""
+    return {
+        "status": "healthy",
+        "features": {
+            "dns_analysis": DNS_AVAILABLE,
+            "system_monitoring": PSUTIL_AVAILABLE,
+            "whois_lookup": WHOIS_AVAILABLE,
+            "text_analysis": TEXTSTAT_AVAILABLE,
+            "network_scanning": NMAP_AVAILABLE,
+            "ssl_analysis": SSLYZE_AVAILABLE,
+            "browser_automation": SELENIUM_AVAILABLE,
+            "machine_learning": ML_AVAILABLE
+        },
+        "core_features": ["basic_http_analysis", "content_parsing", "security_headers"]
+    }
 
 # Advanced Domain Intelligence
 @app.post("/api/domain-intelligence")
@@ -142,6 +204,16 @@ async def analyze_domain(
 
 async def _analyze_dns_infrastructure(domain: str):
     """Advanced DNS infrastructure analysis"""
+    if not DNS_AVAILABLE:
+        return {
+            "nameservers": [],
+            "mx_records": [],
+            "txt_records": [],
+            "cdn_detection": {},
+            "dns_security": {},
+            "error": "DNS analysis not available - dnspython not installed"
+        }
+    
     try:
         dns_analysis = {
             "nameservers": [],
