@@ -9,7 +9,33 @@ import React from 'react';
 import { Container } from './primitives/Container/Container';
 import { Card } from './primitives/Card/Card';
 import { Button } from './primitives/Button/Button';
-// import { MetricCard, useTracking } from '../design-system/mature';
+import { useTracking } from '../lib/useTracking';
+
+// Simple MetricCard component for case results
+interface MetricCardProps {
+    label: string;
+    value: string;
+    change?: string;
+    improvement?: string;
+    color?: 'green' | 'blue' | 'red';
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ label, value, change, improvement, color = 'blue' }) => {
+    const colorClasses = {
+        green: 'text-green-600 bg-green-50',
+        blue: 'text-blue-600 bg-blue-50', 
+        red: 'text-red-600 bg-red-50'
+    };
+
+    return (
+        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
+            <div className="font-bold text-sm">{value}</div>
+            <div className="text-xs">{label}</div>
+            {change && <div className="text-xs font-medium">+{change}</div>}
+            {improvement && <div className="text-xs font-medium">{improvement}</div>}
+        </div>
+    );
+};
 
 interface CaseStudy {
     company: string;

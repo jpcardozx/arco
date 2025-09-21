@@ -33,7 +33,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
 interface GlassTextProps {
     children: React.ReactNode;
     className?: string;
-    variant?: 'body' | 'title' | 'subtitle';
+    variant?: 'body' | 'title' | 'subtitle' | 'h1' | 'h2' | 'h3' | 'caption';
 }
 
 export const GlassText: React.FC<GlassTextProps> = ({
@@ -44,7 +44,11 @@ export const GlassText: React.FC<GlassTextProps> = ({
     const variants = {
         body: 'text-neutral-700 dark:text-neutral-300',
         title: 'text-xl font-semibold text-neutral-900 dark:text-neutral-100',
-        subtitle: 'text-lg font-medium text-neutral-800 dark:text-neutral-200'
+        subtitle: 'text-lg font-medium text-neutral-800 dark:text-neutral-200',
+        h1: 'text-3xl font-bold text-neutral-900 dark:text-neutral-100',
+        h2: 'text-2xl font-bold text-neutral-900 dark:text-neutral-100',
+        h3: 'text-xl font-semibold text-neutral-900 dark:text-neutral-100',
+        caption: 'text-sm text-neutral-600 dark:text-neutral-400'
     };
 
     return (
@@ -57,23 +61,25 @@ export const GlassText: React.FC<GlassTextProps> = ({
 interface GlassBadgeProps {
     children: React.ReactNode;
     className?: string;
-    color?: 'primary' | 'secondary' | 'success' | 'warning';
+    variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'info' | 'purple';
 }
 
 export const GlassBadge: React.FC<GlassBadgeProps> = ({
     children,
     className = '',
-    color = 'primary'
+    variant = 'primary'
 }) => {
-    const colors = {
+    const variants = {
         primary: 'bg-primary-100/80 text-primary-900 border-primary-200/50',
         secondary: 'bg-secondary-100/80 text-secondary-900 border-secondary-200/50',
         success: 'bg-emerald-100/80 text-emerald-900 border-emerald-200/50',
-        warning: 'bg-amber-100/80 text-amber-900 border-amber-200/50'
+        warning: 'bg-amber-100/80 text-amber-900 border-amber-200/50',
+        info: 'bg-blue-100/80 text-blue-900 border-blue-200/50',
+        purple: 'bg-purple-100/80 text-purple-900 border-purple-200/50'
     };
 
     return (
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border backdrop-blur-sm ${colors[color]} ${className}`}>
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border backdrop-blur-sm ${variants[variant]} ${className}`}>
             {children}
         </span>
     );
