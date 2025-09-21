@@ -44,7 +44,7 @@ export const UnifiedValueProposition: React.FC = () => {
             step: "02", 
             title: "Optimization Implementation",
             description: "Systematic performance improvements with real-time monitoring",
-            deliverable: "LCP < 1.8s, CLS < 0.1, INP < 200ms guaranteed"
+            deliverable: "LCP &lt; 1.8s, CLS &lt; 0.1, INP &lt; 200ms guaranteed"
         },
         {
             step: "03",

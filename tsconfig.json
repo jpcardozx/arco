@@ -140,7 +140,8 @@
     "node_modules",
     "backup-old-components",
     "maintenance/archive/**/*",
-    "docs/deprecated/**/*"
+    "docs/deprecated/**/*",
+    "mcp/**/*"
   ],
   "ts-node": {
     "compilerOptions": {

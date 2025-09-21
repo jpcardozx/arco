@@ -106,7 +106,7 @@ export const OptimizedClientStories: React.FC = () => {
     const overallStats = [
         { metric: "Average ROI", value: "3.2x", timeframe: "First 60 days" },
         { metric: "Revenue Recovery", value: "$50K+", timeframe: "Per month average" },
-        { metric: "Performance Improvement", value: "LCP < 1.8s", timeframe: "Guaranteed" },
+        { metric: "Performance Improvement", value: "LCP &lt; 1.8s", timeframe: "Guaranteed" },
         { metric: "Client Satisfaction", value: "100%", timeframe: "Retention rate" }
     ];
 

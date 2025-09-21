@@ -99,7 +99,7 @@ export const TechnicalExpertise: React.FC = () => {
         {
             category: "Performance Engineering",
             skills: [
-                "Core Web Vitals Optimization (LCP <2.5s)",
+                "Core Web Vitals Optimization (LCP &lt;2.5s)",
                 "Bundle Size Reduction (avg. 60%)",
                 "Critical Rendering Path Optimization",
                 "Progressive Web App Implementation"
