@@ -16,10 +16,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "types": [
-      "next",
-      "next/image-types/global",
-      "jest",
-      "@testing-library/jest-dom"
+      "node"
     ],
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -133,8 +130,7 @@
     "**/*.tsx",
     "build/types/**/*.ts",
     "next-env.d.ts",
-    "src/types/**/*.ts",
-    ".next/types/**/*.ts"
+    "src/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

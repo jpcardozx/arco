@@ -95,6 +95,7 @@ export const UnifiedHeroSection: React.FC<UnifiedHeroSectionProps> = ({ onAuditC
                                 <div className="text-xs text-black">Conversion boost</div>
                             </div>
                             <div className="p-3 rounded-lg text-green-600 bg-green-50">
+                                {/* Performance target: LCP < 1.8s */}
                                 <div className="font-bold text-lg">LCP &lt; 1.8s</div>
                                 <div className="text-xs text-black">guaranteed</div>
                             </div>
