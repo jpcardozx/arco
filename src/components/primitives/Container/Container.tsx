@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens } from '@/components/system/design-tokens';
+import { designTokens } from '@/design-system/tokens';
 
 export interface ContainerProps {
   children?: React.ReactNode;
@@ -64,6 +64,7 @@ export const Container: React.FC<ContainerProps> = ({
   ].filter(Boolean).join(' ');
 
   return (
+    // @ts-expect-error - Dynamic component prop type
     <Component className={combinedClasses}>
       {children}
     </Component>

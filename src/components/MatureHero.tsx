@@ -5,6 +5,8 @@
  * Problema → Solução → Prova → Ação
  */
 
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Button } from './primitives/Button/Button';
 import { Container } from './primitives/Container/Container';
