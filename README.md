@@ -2,6 +2,10 @@
 
 Modern React application with clean architecture.
 
+## Build Status
+
+✅ **All build errors fixed!** The application is ready to deploy.
+
 ## Structure
 
 ```
@@ -17,7 +21,17 @@ src/
 ## Development
 
 ```bash
-npm run dev
-npm run build
-npm run test
+pnpm install        # Install dependencies
+pnpm dev            # Start development server
+pnpm build          # Build for production
+pnpm test           # Run tests
+```
+
+## Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+Quick deploy to Vercel:
+```bash
+vercel --prod
 ```
