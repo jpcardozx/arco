@@ -5,7 +5,16 @@
       "Bash(chmod:*)",
       "Bash(./fix-html-entities.sh:*)",
       "Bash(npx tsc:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "WebFetch(domain:github.com)",
+      "Read(//home/jpcardozx/projetos/**)",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)",
+      "WebSearch",
+      "Bash(pnpm run:*)",
+      "Bash(node:*)",
+      "Bash(git --version)",
+      "mcp__chrome-devtools__evaluate_script"
     ],
     "deny": []
   }

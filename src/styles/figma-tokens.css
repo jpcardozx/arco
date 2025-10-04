@@ -1,0 +1,70 @@
+/**
+ * ARCO Design System - Figma Color Tokens
+ * Cores extraídas do design do Figma
+ */
+
+:root {
+  /* Color Schemes */
+  --color-scheme-1-background: #ffffff;
+  --color-scheme-1-foreground: #f8f9fa;
+  --color-scheme-1-text: #1a1a1a;
+  --color-scheme-1-border: #e5e7eb;
+
+  --color-scheme-2-background: #ffffff;
+  --color-scheme-2-foreground: #f8f9fa;
+  --color-scheme-2-text: #1a1a1a;
+  --color-scheme-2-border: #e5e7eb;
+
+  --color-scheme-3-background: #f3f4f6;
+  --color-scheme-3-foreground: #ffffff;
+  --color-scheme-3-text: #1a1a1a;
+  --color-scheme-3-border: #d1d5db;
+
+  /* Primary Colors */
+  --color-manz: #fbbf24; /* Amarelo/Dourado do botão */
+  --color-neutral: #f5f5f5;
+  --color-neutral-darker: #6b7280;
+  --color-neutral-darkest: #111827;
+  --color-white: #ffffff;
+
+  /* Opacity Colors */
+  --opacity-neutral-darkest-5: rgba(17, 24, 39, 0.05);
+  --opacity-white-10: rgba(255, 255, 255, 0.1);
+  --opacity-transparent: rgba(0, 0, 0, 0);
+
+  /* Secondary Schemes */
+  --schemes-secondary-container: #f3f4f6;
+}
+
+/* CSS Custom Properties para uso direto */
+.bg-Color-Scheme-1-Background { background-color: var(--color-scheme-1-background); }
+.bg-Color-Scheme-2-Background { background-color: var(--color-scheme-2-background); }
+.bg-Color-Scheme-3-Background { background-color: var(--color-scheme-3-background); }
+.bg-Color-Scheme-1-Foreground { background-color: var(--color-scheme-1-foreground); }
+.bg-Color-Scheme-2-Foreground { background-color: var(--color-scheme-2-foreground); }
+.bg-Color-Scheme-3-Foreground { background-color: var(--color-scheme-3-foreground); }
+
+.text-Color-Scheme-1-Text { color: var(--color-scheme-1-text); }
+.text-Color-Scheme-2-Text { color: var(--color-scheme-2-text); }
+.text-Color-Scheme-3-Text { color: var(--color-scheme-3-text); }
+
+.bg-Color-Manz { background-color: var(--color-manz); }
+.bg-Color-Neutral { background-color: var(--color-neutral); }
+.bg-Color-Neutral-Darker { background-color: var(--color-neutral-darker); }
+.bg-Color-Neutral-Darkest { background-color: var(--color-neutral-darkest); }
+.bg-Color-White { background-color: var(--color-white); }
+
+.text-Color-Neutral-Darkest { color: var(--color-neutral-darkest); }
+.text-Color-White { color: var(--color-white); }
+
+.border-Color-Scheme-1-Border { border-color: var(--color-scheme-1-border); }
+.border-Color-Scheme-2-Border { border-color: var(--color-scheme-2-border); }
+.border-Color-Scheme-3-Border { border-color: var(--color-scheme-3-border); }
+
+.bg-Opacity-Neutral-Darkest-5 { background-color: var(--opacity-neutral-darkest-5); }
+.bg-Opacity-White-10 { background-color: var(--opacity-white-10); }
+.bg-Schemes-Secondary-Container { background-color: var(--schemes-secondary-container); }
+
+.outline-Color-Manz { outline-color: var(--color-manz); }
+.outline-Color-Neutral-Darker { outline-color: var(--color-neutral-darker); }
+.outline-Opacity-Transparent { outline-color: var(--opacity-transparent); }

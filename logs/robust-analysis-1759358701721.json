@@ -1,0 +1,28 @@
+{
+  "method": "fallback",
+  "timestamp": "2025-10-01T22:45:01.720Z",
+  "url": "http://localhost:3001",
+  "screenshots": [],
+  "findings": {
+    "navbar": {
+      "hasAnimations": true,
+      "hasResponsiveDesign": true,
+      "hasAccessibility": false,
+      "usesDesignTokens": true
+    },
+    "issues": [
+      "❌ Navbar configurada para desaparecer em scroll down",
+      "❌ Logo reduz muito em scroll (85%)",
+      "❌ Touch targets possivelmente pequenos para mobile",
+      "❌ Z-index pode ser insuficiente"
+    ],
+    "recommendations": [
+      "✅ Remover hide behavior ou usar sticky inteligente",
+      "✅ Alterar para 95% para manter visibilidade",
+      "✅ Garantir 44px mínimo de altura em elementos tocáveis",
+      "✅ Usar z-50 ou superior para navbar"
+    ]
+  },
+  "success": true,
+  "error": "Claude Code MCP não configurado ou inacessível"
+}

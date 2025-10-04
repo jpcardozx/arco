@@ -6,7 +6,7 @@
 'use client';
 
 import React from 'react';
-import { SimplifiedNavigation } from './SimplifiedNavigation';
+import { EnhancedNavigation } from '../navigation/EnhancedNavigation';
 import { Footer } from './Footer';
 import { ThemeProvider } from '../../design-system/core/theme';
 
@@ -29,19 +29,19 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
     return (
         <ThemeProvider>
-            <div className={`min-h-screen flex flex-col ${className}`}>
+            <div className={`min-h-screen flex flex-col overflow-x-hidden prevent-overflow ${className}`}>
                 {showHeader && (
-                    <SimplifiedNavigation />
+                    <EnhancedNavigation />
                 )}
 
-                <main className="flex-1">
+                <main className="flex-1 w-full overflow-x-hidden">
                     {children}
                 </main>
 
                 {showFooter && (
                     <Footer
                         variant={footerVariant}
-                        showSocial={true}
+                        showPreFooter={true}
                     />
                 )}
             </div>

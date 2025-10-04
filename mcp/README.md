@@ -8,6 +8,7 @@
 - Advanced competitive positioning and market intelligence
 - Expert-level component analysis with business context
 - ML-powered insights from real data integration
+- **🆕 Chrome DevTools integration for automated testing & performance monitoring**
 
 ## Overview
 
@@ -98,6 +99,42 @@ src/mcp/clients/arco-intelligence-tester.ts
 
 - Comprehensive capability validation
 - Week 1a/1b gate testing
+
+### 🆕 Chrome DevTools MCP Integration
+
+#### Automated Testing & Performance Monitoring
+
+```bash
+mcp/servers/chrome-devtools-mcp-integration.ts
+```
+
+**Capabilities:**
+- Performance analysis with Core Web Vitals
+- Visual regression testing
+- Lighthouse audits (Performance, Accessibility, SEO)
+- E2E user flow testing
+- Network request analysis
+- Bundle size optimization
+- Accessibility scanning (WCAG compliance)
+- Console error monitoring
+
+**Quick Start:**
+```bash
+./mcp/scripts/setup-chrome-devtools.sh
+```
+
+**Documentation:**
+- Full Guide: `mcp/integrations/chrome-devtools-mcp.md`
+- Examples: `mcp/integrations/chrome-devtools-examples.ts`
+- Summary: `mcp/integrations/CHROME_DEVTOOLS_SUMMARY.md`
+
+**AI Assistant Usage:**
+```
+✅ "Analyze ARCO homepage performance"
+✅ "Run visual regression tests"
+✅ "Check accessibility compliance"
+✅ "Test contact form submission flow"
+```
 - Performance benchmarking
 - Integration validation
 

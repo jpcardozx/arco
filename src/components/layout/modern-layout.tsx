@@ -5,8 +5,24 @@
 
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { buttonVariants, cardVariants, containerVariants } from '@/lib/design-tokens'
 import { VariantProps, cva } from 'class-variance-authority'
+
+// Container Variants
+const containerVariants = {
+  size: {
+    sm: 'max-w-3xl',
+    md: 'max-w-5xl',
+    lg: 'max-w-7xl',
+    xl: 'max-w-screen-2xl',
+    full: 'max-w-full'
+  },
+  padding: {
+    none: 'px-0',
+    sm: 'px-4',
+    md: 'px-6',
+    lg: 'px-8'
+  }
+}
 
 // Container Component
 const containerClass = cva(
@@ -200,6 +216,17 @@ export function Muted({
             {...props}
         />
     )
+}
+
+// Card Variants
+const cardVariants = {
+  variant: {
+    default: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800',
+    elevated: 'bg-white dark:bg-neutral-900 shadow-lg border border-neutral-200 dark:border-neutral-800',
+    executive: 'bg-gradient-to-br from-neutral-900 to-neutral-800 border border-neutral-700 text-white',
+    glass: 'bg-white/60 dark:bg-neutral-900/60 backdrop-blur-lg border border-white/30 dark:border-neutral-700/50',
+    premium: 'bg-gradient-to-br from-blue-900 to-purple-900 border border-blue-700 text-white shadow-2xl'
+  }
 }
 
 // Executive Card Component

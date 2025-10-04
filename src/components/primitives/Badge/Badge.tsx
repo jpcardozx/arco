@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens } from '@/components/system/design-tokens';
+import { designTokens } from '@/design-system/tokens';
 
 export interface BadgeProps {
   children?: React.ReactNode;

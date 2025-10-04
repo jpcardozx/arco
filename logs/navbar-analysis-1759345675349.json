@@ -1,0 +1,73 @@
+{
+  "timestamp": "2025-10-01T19:07:54.073Z",
+  "url": "http://localhost:3000",
+  "viewports": {
+    "desktop": {},
+    "tablet": {},
+    "mobile": {}
+  },
+  "issues": [
+    {
+      "severity": "low",
+      "category": "layout",
+      "description": "Navbar sem gap CSS - espaçamento pode estar inconsistente",
+      "recommendation": "Usar propriedade gap para espaçamento uniforme entre items",
+      "affectedViewports": [
+        "desktop"
+      ]
+    },
+    {
+      "severity": "medium",
+      "category": "layout",
+      "description": "Z-index muito baixo (0) - navbar pode ser sobreposta",
+      "recommendation": "Definir z-index: 1000 ou superior para garantir sobreposição",
+      "affectedViewports": [
+        "desktop"
+      ]
+    },
+    {
+      "severity": "high",
+      "category": "accessibility",
+      "description": "Navbar sem aria-label - dificulta navegação com screen readers",
+      "recommendation": "Adicionar aria-label=\"Navegação principal\" na tag <nav>",
+      "affectedViewports": [
+        "all"
+      ]
+    },
+    {
+      "severity": "high",
+      "category": "accessibility",
+      "description": "Sem link \"pular para conteúdo\" - má acessibilidade de teclado",
+      "recommendation": "Adicionar <a href=\"#main-content\">Pular para conteúdo</a> no início",
+      "affectedViewports": [
+        "all"
+      ]
+    },
+    {
+      "severity": "high",
+      "category": "ux",
+      "description": "Navbar não é fixa/sticky - desaparece ao fazer scroll",
+      "recommendation": "Implementar position: sticky ou fixed para melhor navegação",
+      "affectedViewports": [
+        "all"
+      ]
+    },
+    {
+      "severity": "low",
+      "category": "ux",
+      "description": "Navbar sem sombra - pode não se destacar do conteúdo",
+      "recommendation": "Adicionar box-shadow sutil para criar profundidade visual",
+      "affectedViewports": [
+        "all"
+      ]
+    }
+  ],
+  "score": {
+    "layout": 89,
+    "responsive": 100,
+    "accessibility": 73,
+    "performance": 100,
+    "ux": 77,
+    "overall": 88
+  }
+}

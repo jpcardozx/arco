@@ -6,7 +6,7 @@
 'use client';
 
 import React from 'react';
-import { designTokens } from '../../components/system/design-tokens';
+import { designTokens } from '../tokens';
 
 interface ThemeProviderProps {
   children: React.ReactNode;

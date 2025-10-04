@@ -111,7 +111,7 @@ const CaseCard: React.FC<{ caseStudy: CaseStudy; index: number }> = ({ caseStudy
     const { trackEvent } = useTracking();
 
     return (
-        <Card className="h-full" hover>
+        <Card className="h-full" hover={true}>
             <div className="space-y-6">
 
                 {/* Header */}

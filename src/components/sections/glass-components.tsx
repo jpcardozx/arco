@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { designTokens } from '../system/design-tokens';
+import { cn } from '@/lib/utils';
 
 interface GlassCardProps {
     children: React.ReactNode;

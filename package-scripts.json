@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "db:status": "npx supabase status",
+    "db:verify-rls": "npx supabase db execute \"SELECT schemaname, tablename, COUNT(*) as policy_count FROM pg_policies GROUP BY schemaname, tablename ORDER BY schemaname, tablename;\" --db-url postgresql://postgres:postgres@127.0.0.1:54322/postgres",
+    "db:migrations": "npx supabase migration list --local",
+    "db:push": "npx supabase db push --local",
+    "db:reset": "npx supabase db reset",
+    "db:gen-types": "npx supabase gen types typescript --local > src/types/supabase.ts",
+    "db:studio": "xdg-open http://127.0.0.1:54323",
+    "db:logs": "npx supabase logs -f db",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:link": "npx supabase link --project-ref vkclegvrqprevcdgosan",
+    "supabase:push-prod": "npx supabase db push"
+  }
+}

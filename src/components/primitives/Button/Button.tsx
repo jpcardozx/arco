@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens } from '../../system/design-tokens';
+import { cn } from '@/lib/utils';
 
 export interface ButtonProps {
   children?: React.ReactNode;
