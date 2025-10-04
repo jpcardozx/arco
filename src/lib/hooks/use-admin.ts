@@ -35,7 +35,7 @@ export function useAdminStats() {
         throw error
       }
 
-      return data as AdminStats
+      return (data as unknown) as AdminStats
     },
     refetchInterval: 30000, // Atualiza a cada 30 segundos
   })
@@ -63,7 +63,7 @@ export function useConversionMetrics() {
         throw error
       }
 
-      return data as ConversionMetrics
+      return (data as unknown) as ConversionMetrics
     },
     refetchInterval: 60000, // Atualiza a cada 1 minuto
   })
@@ -141,9 +141,9 @@ export function useAuditLog(filters?: {
     queryFn: async () => {
       const supabase = createSupabaseBrowserClient()
       const { data, error } = await supabase.rpc('get_audit_log', {
-        filter_table: filters?.table || null,
-        filter_action: filters?.action || null,
-        filter_user_id: filters?.userId || null,
+        filter_table: filters?.table || undefined,
+        filter_action: filters?.action || undefined,
+        filter_user_id: filters?.userId || undefined,
         limit_count: filters?.limit || 50,
         offset_count: filters?.offset || 0,
       })
