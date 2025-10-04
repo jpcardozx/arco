@@ -105,6 +105,8 @@
     "@react-spring/web": "^10.0.3",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.58.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@tanstack/react-query": "^5.81.5",
     "@tsparticles/basic": "^3.9.1",
