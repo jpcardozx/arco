@@ -5,7 +5,6 @@ import { TransitionBridge } from '../components/sections/TransitionBridge';
 import { UnifiedValueProposition } from '../components/sections/UnifiedValueProposition';
 import { OptimizedClientStories } from '../components/sections/OptimizedClientStories';
 import { ExecutionShowcase } from '../components/sections/ExecutionShowcase';
-import { EnhancedROICalculator } from '../components/sections/EnhancedROICalculator';
 import { StrategicVelocitySection } from '../components/sections/StrategicVelocity';
 import { FigmaFinalCTA } from '../components/sections';
 
@@ -38,23 +37,10 @@ export default function HomePage() {
             {/* URL Analyzer - Lead magnet com redirect para /mydomain */}
             <URLAnalyzerSection />
 
-            {/* Transition: Hero → ROI */}
+            {/* Transition: Analyzer → Value Prop */}
             <TransitionBridge
-                question="Quanto você está deixando de ganhar sem um sistema profissional de captação?"
-                context="A maioria dos prestadores de serviços locais perde 60-80% dos leads potenciais"
-                variant="question"
-            />
-
-            {/* ROI Calculator - Lead magnet */}
-            <div id="roi-calculator">
-                <EnhancedROICalculator />
-            </div>
-
-            {/* Transition: ROI → Value Prop */}
-            <TransitionBridge
-                statement="Agora que você viu o potencial, veja como entregamos esses resultados"
-                variant="statement"
-                showArrow={true}
+                statement="Nossa abordagem integra estratégia, tecnologia e execução"
+                variant="minimal"
             />
 
             {/* Value Proposition */}
@@ -62,9 +48,8 @@ export default function HomePage() {
 
             {/* Transition: Value Prop → Cases */}
             <TransitionBridge
-                question="Mas isso funciona de verdade?"
-                context="Veja empresas que já alcançaram +350% em leads qualificados"
-                variant="question"
+                statement="Resultados de implementações anteriores"
+                variant="minimal"
             />
 
             {/* Execution Showcase - Technical excellence demonstration */}

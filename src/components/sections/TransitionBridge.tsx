@@ -5,13 +5,12 @@
  *
  * Conecta seções criando narrativa fluida
  * Transições suaves com movimento sutil
- * Uso estratégico de perguntas retóricas
- * Background: GridAndGlow para elegância sutil
+ * Variant minimal: sóbrio e profissional
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/design-system/tokens';
 
 interface TransitionBridgeProps {
@@ -23,55 +22,12 @@ interface TransitionBridgeProps {
   className?: string;
 }
 
-// Background Component: Grid & Glow
-const GridAndGlowBg: React.FC = () => {
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      document.documentElement.style.setProperty('--mouse-x', `${clientX}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${clientY}px`);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  return (
-    <>
-      <style jsx>{`
-        .grid-glow-bg {
-          width: 100%;
-          height: 100%;
-          background-image: 
-            linear-gradient(to right, rgba(20, 184, 166, 0.08) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(20, 184, 166, 0.08) 1px, transparent 1px);
-          background-size: 60px 60px;
-          position: absolute;
-          inset: 0;
-        }
-        .grid-glow-bg::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: radial-gradient(circle 250px at var(--mouse-x) var(--mouse-y), rgba(20, 184, 166, 0.15), transparent);
-          opacity: 0.4;
-          transition: background 0.2s ease-out;
-          pointer-events: none;
-        }
-      `}</style>
-      <div className="grid-glow-bg" />
-    </>
-  );
-};
-
 export const TransitionBridge: React.FC<TransitionBridgeProps> = ({
   question,
   statement,
   context,
   variant = 'question',
-  showArrow = true,
+  showArrow = false,
   className
 }) => {
   const content = question || statement;
@@ -81,13 +37,10 @@ export const TransitionBridge: React.FC<TransitionBridgeProps> = ({
   return (
     <section
       className={cn(
-        "py-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 relative overflow-hidden",
+        "py-8 sm:py-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 relative overflow-hidden",
         className
       )}
     >
-      {/* Grid & Glow Background */}
-      <GridAndGlowBg />
-
       <div className="max-w-4xl mx-auto text-center px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -95,27 +48,33 @@ export const TransitionBridge: React.FC<TransitionBridgeProps> = ({
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          {/* Main content */}
+          {/* Question variant */}
           {variant === 'question' && content && (
             <h3 className="text-2xl lg:text-3xl font-semibold text-white mb-3">
               {content}
             </h3>
           )}
 
+          {/* Statement variant */}
           {variant === 'statement' && content && (
             <p className="text-xl lg:text-2xl font-medium text-slate-300 mb-3">
               {content}
             </p>
           )}
 
+          {/* Minimal variant - sóbrio e profissional */}
           {variant === 'minimal' && content && (
-            <p className="text-lg text-slate-400 font-medium">
-              {content}
-            </p>
+            <div className="flex items-center justify-center gap-4">
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-slate-700 to-slate-600" />
+              <p className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wider">
+                {content}
+              </p>
+              <div className="h-px w-16 bg-gradient-to-l from-transparent via-slate-700 to-slate-600" />
+            </div>
           )}
 
           {/* Context */}
-          {context && (
+          {context && variant !== 'minimal' && (
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -128,7 +87,7 @@ export const TransitionBridge: React.FC<TransitionBridgeProps> = ({
           )}
 
           {/* Arrow indicator */}
-          {showArrow && (
+          {showArrow && variant !== 'minimal' && (
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
