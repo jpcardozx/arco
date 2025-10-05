@@ -103,26 +103,25 @@ export const StrategicVelocitySection: React.FC = () => {
 
   return (
     <section 
-      className="relative py-16 sm:py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
+      className="relative py-12 sm:py-16 lg:py-20 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
       aria-labelledby="strategic-velocity-heading"
     >
       <StrategicBackground />
 
       <Container className="relative z-10">
         {/* ============================================================
-            HEADER
+            HEADER - Compacto e Profissional
             ============================================================ */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-8 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: ANIMATION_DURATION.NORMAL }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-block mb-3"
           >
-            <Badge className="px-4 py-2 text-sm border-teal-500/30 bg-teal-500/10 text-teal-400 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Por que você perde clientes
+            <Badge className="px-3 py-1.5 text-xs font-medium border-slate-700 bg-slate-800/50 text-slate-300 backdrop-blur-sm">
+              Análise de Conversão
             </Badge>
           </motion.div>
 
@@ -132,13 +131,13 @@ export const StrategicVelocitySection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight"
           >
-            <span className="bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-              A maioria perde{' '}
+            <span className="text-white">
+              A maioria dos prestadores de serviços perde{' '}
             </span>
             <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-              70-80% dos leads
+              70-80% dos leads qualificados
             </span>
           </motion.h2>
 
@@ -147,20 +146,16 @@ export const StrategicVelocitySection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed px-4"
+            className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed px-4"
           >
-            Não por falta de qualidade, mas porque{' '}
-            <span className="text-orange-400 font-semibold">
-              pede compromisso grande antes de provar valor
-            </span>
-            .
+            Não por falta de qualidade técnica, mas por solicitar investimentos substanciais antes de demonstrar valor tangível.
           </motion.p>
         </div>
 
         {/* ============================================================
-            PROBLEMAS (3 cards)
+            PROBLEMAS (3 cards) - Compacto
             ============================================================ */}
-        <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3 mb-12 sm:mb-16 px-4 sm:px-0">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 md:grid-cols-3 mb-8 sm:mb-12 px-4 sm:px-0">
           {leadProblems.map((problem, index) => (
             <ProblemCard
               key={index}
@@ -174,41 +169,37 @@ export const StrategicVelocitySection: React.FC = () => {
         </div>
 
         {/* ============================================================
-            SOLUÇÃO - Headline
+            SOLUÇÃO - Headline Profissional
             ============================================================ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16 px-4"
+          className="text-center mb-8 sm:mb-12 px-4"
         >
-          <Badge className="px-4 py-2 text-sm border-teal-500/30 bg-gradient-to-r from-teal-500/20 to-emerald-500/20 text-teal-400 backdrop-blur-sm mb-4 inline-block">
-            A solução
+          <Badge className="px-3 py-1.5 text-xs font-medium border-teal-700 bg-teal-900/30 text-teal-300 backdrop-blur-sm mb-3 inline-block">
+            Metodologia Progressiva
           </Badge>
 
-          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight">
-            <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
-              4 passos simples
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">
+            <span className="text-white">
+              Progressão estratégica em{' '}
             </span>
-            <span className="text-white"> que reduzem o risco </span>
-            <br className="hidden sm:block" />
-            <span className="text-white">e </span>
-            <span className="bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent">
-              aumentam a confiança
+            <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
+              4 etapas
             </span>
           </h3>
 
-          <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Em vez de pedir <span className="text-red-400 font-semibold">R$ 10-50 mil de cara</span>,
-            comece pequeno e construa confiança progressivamente.
+          <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Construção gradual de confiança através de entregas incrementais, minimizando risco percebido e maximizando taxa de conversão.
           </p>
         </motion.div>
 
         {/* ============================================================
-            4 PASSOS (Collapsibles)
+            4 PASSOS (Collapsibles) - Grid Compacto
             ============================================================ */}
-        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-12 sm:mb-16 px-4 sm:px-0">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8 sm:mb-10 px-4 sm:px-0">
           {fourSteps.map((step, index) => (
             <StepCard
               key={index}
@@ -227,21 +218,21 @@ export const StrategicVelocitySection: React.FC = () => {
         </div>
 
         {/* ============================================================
-            MÉTRICAS - Comparação Visual
+            MÉTRICAS - Comparação Visual Compacta
             ============================================================ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-12 sm:mb-16 px-4 sm:px-0"
+          className="mb-8 sm:mb-10 px-4 sm:px-0"
         >
-          <h3 className="text-xl sm:text-2xl font-bold text-white text-center mb-6">
-            Resultados esperados
+          <h3 className="text-lg sm:text-xl font-bold text-white text-center mb-4">
+            Benchmark de Performance
           </h3>
 
-          <p className="text-sm text-slate-400 text-center mb-8 max-w-xl mx-auto">
-            Baseado em 200+ prestadores de serviços locais que implementaram isso
+          <p className="text-xs sm:text-sm text-slate-500 text-center mb-6 max-w-xl mx-auto">
+            Dados baseados em 200+ implementações no mercado brasileiro
           </p>
 
           {/* Grid de métricas */}
@@ -297,14 +288,14 @@ export const StrategicVelocitySection: React.FC = () => {
         </motion.div>
 
         {/* ============================================================
-            PROGRESSÃO ESTRATÉGICA - Guide para CTA
+            PROGRESSÃO ESTRATÉGICA - Guide para CTA Compacto
             ============================================================ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-12 sm:mb-16 px-4 sm:px-0"
+          className="mb-8 sm:mb-10 px-4 sm:px-0"
         >
           <h3 className="text-2xl sm:text-3xl font-bold text-center mb-4">
             <span className="text-white">{progressionGuide.headline}</span>
@@ -380,14 +371,14 @@ export const StrategicVelocitySection: React.FC = () => {
         </motion.div>
 
         {/* ============================================================
-            CTAs DUAL
+            CTAs DUAL - Compacto
             ============================================================ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto mb-12 px-4 sm:px-0"
+          className="grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto mb-8 px-4 sm:px-0"
         >
           <CTACard
             type="free"
