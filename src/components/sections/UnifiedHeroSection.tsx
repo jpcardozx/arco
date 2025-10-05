@@ -166,17 +166,35 @@ export const UnifiedHeroSection: React.FC<UnifiedHeroSectionProps> = ({ onAuditC
                                     </p>
                                 </div>
 
-                                <Button
-                                    variant="primary"
-                                    size="lg"
-                                    className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700"
-                                    onClick={() => {
-                                        trackEvent('audit_contact_clicked', results);
-                                        window.open('https://calendly.com/arco-performance', '_blank');
-                                    }}
-                                >
-                                    Fix These Issues → Recover ${Math.floor(results.monthlyLoss * 0.8).toLocaleString()}/month
-                                </Button>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                                    <Button
+                                        variant="primary"
+                                        size="lg"
+                                        className="bg-emerald-600 hover:bg-emerald-700"
+                                        onClick={() => {
+                                            trackEvent('audit_contact_clicked', results);
+                                            window.open('https://calendly.com/arco-performance', '_blank');
+                                        }}
+                                    >
+                                        Agendar Consultoria
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="lg"
+                                        className="border-teal-400 text-teal-400 hover:bg-teal-400/10"
+                                        onClick={() => {
+                                            trackEvent('detailed_analysis_clicked', {
+                                                domain: results.domain
+                                            });
+                                            window.location.href = '/mydomain';
+                                        }}
+                                    >
+                                        Análise Detalhada →
+                                    </Button>
+                                </div>
+                                <p className="text-xs text-gray-400 text-center mt-3">
+                                    Perda estimada: ${Math.floor(results.monthlyLoss * 0.8).toLocaleString()}/mês recuperável
+                                </p>
                             </div>
                         )}
                     </div>

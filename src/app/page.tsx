@@ -1,5 +1,6 @@
 import { MainLayout } from '../components/layout/MainLayout';
 import { PremiumHeroSection } from '../components/sections/PremiumHeroSection';
+import { URLAnalyzerSection } from '../components/sections/URLAnalyzerSection';
 import { TransitionBridge } from '../components/sections/TransitionBridge';
 import { UnifiedValueProposition } from '../components/sections/UnifiedValueProposition';
 import { OptimizedClientStories } from '../components/sections/OptimizedClientStories';
@@ -34,6 +35,9 @@ export default function HomePage() {
                 variant="premium"
             />
 
+            {/* URL Analyzer - Lead magnet com redirect para /mydomain */}
+            <URLAnalyzerSection />
+
             {/* Transition: Hero → ROI */}
             <TransitionBridge
                 question="Quanto você está deixando de ganhar sem um sistema profissional de captação?"
@@ -62,11 +66,6 @@ export default function HomePage() {
                 context="Veja empresas que já alcançaram +350% em leads qualificados"
                 variant="question"
             />
-
-            {/* Client Stories - Social Proof */}
-            <div id="cases">
-                <OptimizedClientStories />
-            </div>
 
             {/* Execution Showcase - Technical excellence demonstration */}
             <ExecutionShowcase />

@@ -1,0 +1,32 @@
+# ========================================
+# ARCO - Python Scripts Requirements
+# Phase 3: Backend Integration
+# ========================================
+
+# Domain validation
+dnspython==2.4.2
+python-whois==0.8.0
+requests==2.31.0
+beautifulsoup4==4.12.2
+
+# Email validation
+validate-email==1.3
+py3dns==3.2.1
+
+# Database (PostgreSQL)
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.23
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Data validation
+pydantic==2.5.0
+
+# Analytics (optional - Phase 4)
+# mixpanel==4.10.0
+# posthog==3.1.0
+
+# Web scraping (for Lighthouse/performance - optional)
+# selenium==4.15.2
+# lighthouse==0.0.1

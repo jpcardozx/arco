@@ -131,14 +131,9 @@ export const StrategicVelocitySection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight text-white"
           >
-            <span className="text-white">
-              A maioria dos prestadores de serviços perde{' '}
-            </span>
-            <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-              70-80% dos leads qualificados
-            </span>
+            Por que tantos leads qualificados não fecham?
           </motion.h2>
 
           <motion.p
@@ -148,7 +143,7 @@ export const StrategicVelocitySection: React.FC = () => {
             viewport={{ once: true }}
             className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed px-4"
           >
-            Não por falta de qualidade técnica, mas por solicitar investimentos substanciais antes de demonstrar valor tangível.
+            O problema raramente é técnico. Na maioria dos casos, clientes desistem porque precisam confiar em promessas grandes antes de ver qualquer resultado concreto.
           </motion.p>
         </div>
 
@@ -182,17 +177,12 @@ export const StrategicVelocitySection: React.FC = () => {
             Metodologia Progressiva
           </Badge>
 
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">
-            <span className="text-white">
-              Progressão estratégica em{' '}
-            </span>
-            <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
-              4 etapas
-            </span>
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight text-white">
+            Uma abordagem mais sensata
           </h3>
 
           <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Construção gradual de confiança através de entregas incrementais, minimizando risco percebido e maximizando taxa de conversão.
+            Construir confiança progressivamente. Permitir que o cliente avalie a qualidade do trabalho antes de fazer investimentos maiores.
           </p>
         </motion.div>
 
@@ -228,11 +218,11 @@ export const StrategicVelocitySection: React.FC = () => {
           className="mb-8 sm:mb-10 px-4 sm:px-0"
         >
           <h3 className="text-lg sm:text-xl font-bold text-white text-center mb-4">
-            Benchmark de Performance
+            O que essa abordagem permite
           </h3>
 
           <p className="text-xs sm:text-sm text-slate-500 text-center mb-6 max-w-xl mx-auto">
-            Dados baseados em 200+ implementações no mercado brasileiro
+            Benefícios práticos da progressão gradual
           </p>
 
           {/* Grid de métricas */}

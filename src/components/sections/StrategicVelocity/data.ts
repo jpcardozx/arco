@@ -21,21 +21,21 @@ import {
 export const leadProblems = [
   {
     icon: Clock,
-    title: 'Demora muito',
-    stat: '45-90 dias',
-    description: 'Da primeira conversa até fechar, passa quase 3 meses. Você perde clientes para quem age mais rápido.'
+    title: 'Ciclos longos',
+    stat: 'Fricção',
+    description: 'Processos de venda extensos criam oportunidade para desistência. O cliente pode encontrar alternativas mais ágeis.'
   },
   {
     icon: DollarSign,
-    title: 'Preço incerto',
-    stat: '70% desiste',
-    description: 'Quando você diz "depende do projeto", o cliente pensa no pior cenário e desiste antes de começar.'
+    title: 'Incerteza de investimento',
+    stat: 'Barreira',
+    description: 'Orçamentos sem escopo definido geram insegurança. Clientes tendem a imaginar cenários desfavoráveis.'
   },
   {
     icon: AlertCircle,
-    title: 'Risco alto',
-    stat: '80% não fecha',
-    description: 'Cliente não sabe se você entrega antes de pagar R$ 10-50 mil. É muito dinheiro para apostar no desconhecido.'
+    title: 'Falta de validação prévia',
+    stat: 'Risco',
+    description: 'Investimentos significativos sem demonstração anterior de resultados dificultam a decisão de compra.'
   }
 ];
 
@@ -45,40 +45,40 @@ export const leadProblems = [
 
 export const fourSteps = [
   {
-    step: 'Passo 1',
+    step: 'Etapa 1',
     icon: FileText,
-    title: 'Material Gratuito',
+    title: 'Conteúdo Educativo',
     color: 'teal' as const,
-    description: 'Checklist ou guia que o cliente baixa e usa hoje mesmo. Sem compromisso.',
-    example: 'Checklist: "15 erros que fazem você perder clientes no Google"',
-    benefit: 'Cliente aprende algo útil e pensa: "Se o grátis é bom assim, imagina o pago"'
+    description: 'Material de valor que demonstra conhecimento técnico e abordagem profissional.',
+    example: 'Guias práticos ou checklists aplicáveis ao negócio do cliente',
+    benefit: 'Estabelece credibilidade inicial sem solicitar investimento'
   },
   {
-    step: 'Passo 2',
+    step: 'Etapa 2',
     icon: Calendar,
-    title: 'Diagnóstico Barato',
+    title: 'Análise Pontual',
     color: 'orange' as const,
-    description: 'Análise paga de R$ 300-700 em 3-7 dias. Cliente paga pouco, você mostra resultado rápido.',
-    example: 'Diagnóstico Express (R$ 497): Análise do site + plano de ação priorizado',
-    benefit: 'Cliente qualifica: tem dinheiro, tem urgência, e vê que você entrega'
+    description: 'Avaliação específica com escopo e preço definidos. Permite validação mútua.',
+    example: 'Diagnóstico técnico com recomendações priorizadas',
+    benefit: 'Cliente avalia qualidade do trabalho com investimento controlado'
   },
   {
-    step: 'Passo 3',
+    step: 'Etapa 3',
     icon: Target,
-    title: 'Pacote Fechado',
+    title: 'Projeto Estruturado',
     color: 'purple' as const,
-    description: 'Escopo claro, prazo definido (14-60 dias), preço fixo. Sem "depende".',
-    example: 'Pacote Performance (R$ 8.900): Site otimizado + campanhas Google em 21 dias',
-    benefit: 'Cliente não tem medo de surpresa. Sabe exatamente o que vai pagar e receber'
+    description: 'Escopo detalhado, cronograma estabelecido, investimento transparente.',
+    example: 'Implementação completa com entregas e prazos acordados',
+    benefit: 'Clareza total sobre expectativas, custos e resultados esperados'
   },
   {
-    step: 'Passo 4',
+    step: 'Etapa 4',
     icon: TrendingUp,
-    title: 'Manutenção Mensal',
+    title: 'Parceria Contínua',
     color: 'teal' as const,
-    description: 'Depois que funciona, cliente quer manter. Valor mensal fixo para otimização contínua.',
-    example: 'Retainer (R$ 2.500/mês): Manutenção + otimização baseada em dados reais',
-    benefit: 'Cliente não quer perder o resultado conquistado. Mensalidade previsível'
+    description: 'Manutenção e otimização após validação dos resultados iniciais.',
+    example: 'Suporte recorrente com foco em melhorias incrementais',
+    benefit: 'Relacionamento de longo prazo baseado em resultados comprovados'
   }
 ];
 
@@ -88,24 +88,24 @@ export const fourSteps = [
 
 export const benchmarkMetrics = [
   {
-    label: 'Baixam o checklist',
-    value: '15-20%',
-    description: 'De cada 100 visitantes, 15-20 baixam o material'
+    label: 'Engajamento inicial',
+    value: 'Maior',
+    description: 'Conteúdo de valor atrai leads mais qualificados'
   },
   {
-    label: 'Agendam diagnóstico',
-    value: '30%',
-    description: 'De cada 100 que baixaram, 30 agendam'
+    label: 'Qualificação',
+    value: 'Melhor',
+    description: 'Análise pontual identifica clientes com fit real'
   },
   {
-    label: 'Pagam diagnóstico',
-    value: '20%',
-    description: 'De cada 100 que agendaram, 20 pagam R$ 497'
+    label: 'Redução de atrito',
+    value: 'Evidente',
+    description: 'Projetos com escopo claro reduzem idas-e-vindas'
   },
   {
-    label: 'Fecham pacote',
-    value: '40%',
-    description: 'De cada 100 que pagaram, 40 fecham R$ 8-15k'
+    label: 'Previsibilidade',
+    value: 'Maior',
+    description: 'Etapas definidas facilitam planejamento de ambos'
   }
 ];
 
@@ -115,31 +115,31 @@ export const benchmarkMetrics = [
 
 export const ctaOptions = {
   free: {
-    badge: '📄 Começar aprendendo',
-    title: 'Checklist Gratuito',
-    description: '15 pontos que fazem você perder clientes (e como corrigir cada um). Leitura de 8 minutos.',
+    badge: 'Material de referência',
+    title: 'Conteúdo Educativo',
+    description: 'Recursos práticos para avaliar e melhorar sua presença digital.',
     features: [
-      'PDF de 1 página, direto ao ponto',
-      'Pode aplicar hoje mesmo',
-      'Sem pedir telefone ou reunião',
-      'Zero spam depois'
+      'Guias aplicáveis ao seu contexto',
+      'Baseado em implementações reais',
+      'Sem solicitar dados de contato',
+      'Sem compromisso ou follow-up comercial'
     ],
-    buttonText: 'Baixar Checklist Grátis',
-    footer: 'Email instantâneo • Sem contato comercial'
+    buttonText: 'Acessar Material',
+    footer: 'Acesso imediato • Privacidade respeitada'
   },
   paid: {
-    badge: '🎯 Começar implementando',
-    title: 'Diagnóstico Express',
-    price: 'R$ 497',
-    description: 'Análise completa do seu site + campanhas atuais. Plano de ação priorizado entregue em 7 dias úteis.',
+    badge: 'Avaliação profissional',
+    title: 'Análise Técnica',
+    price: 'Sob consulta',
+    description: 'Diagnóstico detalhado da sua presença digital com recomendações prioritizadas.',
     features: [
-      'Análise técnica (site + Google Analytics + Ads)',
-      'Relatório com 3-5 ações prioritárias',
-      '30 min de reunião para tirar dúvidas',
-      'Útil mesmo se não fechar pacote depois'
+      'Análise de performance e oportunidades',
+      'Documento com ações recomendadas',
+      'Sessão de alinhamento incluída',
+      'Útil independente de continuação'
     ],
-    buttonText: 'Agendar Diagnóstico',
-    footer: 'Próxima vaga: 3 dias • Garantia de entrega'
+    buttonText: 'Consultar Disponibilidade',
+    footer: 'Agendamento sujeito à capacidade atual'
   }
 };
 
@@ -148,23 +148,23 @@ export const ctaOptions = {
 // ============================================================================
 
 export const progressionGuide = {
-  headline: 'Qual o seu momento?',
-  description: 'Escolha o passo que faz sentido agora:',
+  headline: 'Como começar',
+  description: 'Escolha o ponto de entrada adequado:',
   scenarios: [
     {
-      situation: 'Ainda não sei se preciso',
+      situation: 'Estou explorando opções',
       recommendation: 'free',
-      reasoning: 'Baixe o checklist e veja se você está perdendo clientes por erros evitáveis'
+      reasoning: 'Materiais educativos permitem avaliação inicial sem compromisso'
     },
     {
-      situation: 'Sei que preciso, mas quero testar',
+      situation: 'Preciso de uma avaliação especializada',
       recommendation: 'paid',
-      reasoning: 'Diagnóstico Express (R$ 497) prova se conseguimos aumentar seus resultados'
+      reasoning: 'Análise técnica oferece visão clara de oportunidades e esforço necessário'
     },
     {
-      situation: 'Já estou perdendo clientes agora',
+      situation: 'Tenho urgência em melhorar resultados',
       recommendation: 'paid',
-      reasoning: 'Diagnóstico Express identifica o problema e cria plano de 14 dias'
+      reasoning: 'Diagnóstico identifica prioridades e viabiliza planejamento objetivo'
     }
   ]
 };
@@ -174,20 +174,20 @@ export const progressionGuide = {
 // ============================================================================
 
 export const transparency = {
-  title: 'Quando isso NÃO funciona',
-  description: 'Seja honesto consigo mesmo:',
+  title: 'Considerações importantes',
+  description: 'Avalie se este momento é adequado:',
   criteria: [
     {
-      condition: 'Você tem menos de 10 leads por mês',
-      advice: 'Foque em SEO orgânico primeiro. Tráfego pago só funciona com volume mínimo.'
+      condition: 'Volume de leads atual muito limitado',
+      advice: 'Pode ser mais estratégico focar primeiro em canais orgânicos antes de investir em automação e conversão.'
     },
     {
-      condition: 'Orçamento de mídia abaixo de R$ 2 mil/mês',
-      advice: 'Valor muito baixo para testar. Economize mais 2-3 meses antes de começar.'
+      condition: 'Orçamento de marketing restrito',
+      advice: 'Implementações efetivas requerem investimento mínimo viável. Considere acumular recursos antes de iniciar.'
     },
     {
-      condition: 'Não consegue atender +50% de demanda',
-      advice: 'Resolva capacidade interna primeiro. Mais leads sem estrutura só gera frustração.'
+      condition: 'Capacidade operacional já no limite',
+      advice: 'Aumentar conversão sem capacidade de atendimento gera insatisfação. Estruturação interna é pré-requisito.'
     }
   ]
 };
