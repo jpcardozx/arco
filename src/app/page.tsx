@@ -3,6 +3,7 @@ import { PremiumHeroSection } from '../components/sections/PremiumHeroSection';
 import { TransitionBridge } from '../components/sections/TransitionBridge';
 import { UnifiedValueProposition } from '../components/sections/UnifiedValueProposition';
 import { OptimizedClientStories } from '../components/sections/OptimizedClientStories';
+import { ExecutionShowcase } from '../components/sections/ExecutionShowcase';
 import { EnhancedROICalculator } from '../components/sections/EnhancedROICalculator';
 import { StrategicVelocitySection } from '../components/sections/StrategicVelocity';
 import { FigmaFinalCTA } from '../components/sections';
@@ -66,6 +67,9 @@ export default function HomePage() {
             <div id="cases">
                 <OptimizedClientStories />
             </div>
+
+            {/* Execution Showcase - Technical excellence demonstration */}
+            <ExecutionShowcase />
 
             {/* Strategic Velocity Framework - Productized packages + retainer ladder */}
             <StrategicVelocitySection />
