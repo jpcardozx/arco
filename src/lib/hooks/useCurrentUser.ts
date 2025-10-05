@@ -11,12 +11,17 @@ import type { User } from '@supabase/supabase-js'
 
 export interface CurrentUser extends User {
   role?: 'admin' | 'user' | 'client'
+  full_name?: string
+  name?: string
+  company?: string
 }
 
 export interface UseCurrentUserReturn {
   user: CurrentUser | null
   loading: boolean
   error: Error | null
+  isAuthenticated: boolean
+  signOut: () => Promise<void>
 }
 
 export function useCurrentUser(): UseCurrentUserReturn {
@@ -78,5 +83,17 @@ export function useCurrentUser(): UseCurrentUserReturn {
     }
   }, [])
 
-  return { user, loading, error }
+  const signOut = async () => {
+    const supabase = createSupabaseBrowserClient()
+    await supabase.auth.signOut()
+    setUser(null)
+  }
+
+  return { 
+    user, 
+    loading, 
+    error,
+    isAuthenticated: !!user,
+    signOut
+  }
 }
