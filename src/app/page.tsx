@@ -1,37 +1,28 @@
 import { MainLayout } from '../components/layout/MainLayout';
-import { PremiumHeroSection } from '../components/sections/PremiumHeroSection';
+import { UnifiedHeroSection } from '../components/sections/UnifiedHeroSection';
 import { TransitionBridge } from '../components/sections/TransitionBridge';
 import { UnifiedValueProposition } from '../components/sections/UnifiedValueProposition';
 import { OptimizedClientStories } from '../components/sections/OptimizedClientStories';
-import { EnhancedROICalculator } from '../components/sections/EnhancedROICalculator';
+import { ROICalculator } from '../components/sections/ROICalculator.original';
 import { StrategicVelocitySection } from '../components/sections/StrategicVelocity';
 import { FigmaFinalCTA } from '../components/sections';
+import { WebVitalsMonitor } from '../components/performance/WebVitalsMonitor';
 
 /**
- * HOMEPAGE - Hero premium original + funil otimizado + storytelling
+ * HOMEPAGE - VERSÃO HÍBRIDA
+ * 
+ * Combina o melhor de duas épocas:
+ * - UnifiedHeroSection: Hero interativo com audit tool (commit 9793ba9)
+ * - ROICalculator Original: Cálculos sofisticados por indústria
+ * - TransitionBridge: UX flow moderno
+ * - WebVitalsMonitor: Performance tracking em tempo real
  */
 
 export default function HomePage() {
     return (
         <MainLayout>
-            {/* Hero Premium com macOS window */}
-            <PremiumHeroSection
-                badge={{
-                    text: "Analise de Performance"
-                }}
-                title="Prestadores de Serviços Locais: +350% em Leads Qualificados"
-                subtitle="Sistema completo de captação web + tráfego qualificado em 48h. Metodologia comprovada em 200+ empresas com ROI médio de 420%."
-                primaryCta={{
-                    text: "Descobrir Meu Potencial",
-                    href: "#roi-calculator"
-                }}
-                secondaryCta={{
-                    text: "Ver Casos de Sucesso",
-                    href: "#cases"
-                }}
-                showParticles={true}
-                variant="premium"
-            />
+            {/* Hero INTERATIVO com website audit tool */}
+            <UnifiedHeroSection />
 
             {/* Transition: Hero → ROI */}
             <TransitionBridge
@@ -40,9 +31,9 @@ export default function HomePage() {
                 variant="question"
             />
 
-            {/* ROI Calculator - Lead magnet */}
+            {/* ROI Calculator ORIGINAL - Lead magnet com cálculos sofisticados */}
             <div id="roi-calculator">
-                <EnhancedROICalculator />
+                <ROICalculator />
             </div>
 
             {/* Transition: ROI → Value Prop */}
@@ -72,6 +63,9 @@ export default function HomePage() {
 
             {/* Final CTA */}
             <FigmaFinalCTA />
+
+            {/* Web Vitals Monitor - Performance tracking (não invasivo) */}
+            <WebVitalsMonitor />
         </MainLayout>
     );
 }
