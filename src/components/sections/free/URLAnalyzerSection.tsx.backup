@@ -1,0 +1,940 @@
+'use client';
+
+import React, { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Link as LinkIcon,
+  Search,
+  CheckCircle2,
+  AlertCircle,
+  Zap,
+  Shield,
+  Eye,
+  Users,
+  Target,
+  Sparkles,
+  ArrowRight,
+  Loader2,
+  Clock,
+  Award,
+  AlertTriangle,
+  XCircle,
+  ChevronDown,
+  TrendingUp
+} from 'lucide-react';
+import { Container } from '@/components/primitives/Container/Container';
+
+/**
+ * URL Analyzer Section - REFACTORED DARK MODE
+ * Design: Clean dark mode com acentos teal/green da paleta
+ * - Fundo escuro sólido (slate-900/950)
+ * - Cards com bg-slate-800/900 + borders sutis
+ * - Acentos: teal-500 (primary), emerald-500 (success), orange-500 (warning)
+ * - Sem gradientes excessivos ou glassmorphism complexo
+ * - Legibilidade e clareza como prioridade
+ */
+
+interface AnalysisResult {
+  url: string;
+  score: number;
+  issues: AnalysisIssue[];
+  metrics: AnalysisMetric[];
+  opportunities: Opportunity[];
+}
+
+interface AnalysisIssue {
+  id: string;
+  severity: 'critical' | 'warning' | 'info';
+  title: string;
+  description: string;
+  impact: string;
+  solution: string;
+  icon: typeof AlertCircle;
+}
+
+interface AnalysisMetric {
+  id: string;
+  label: string;
+  value: string;
+  status: 'good' | 'warning' | 'poor';
+  icon: typeof TrendingUp;
+  change?: string;
+  benchmark?: string;
+}
+
+interface Opportunity {
+  id: string;
+  title: string;
+  description: string;
+  impact: 'high' | 'medium' | 'low';
+  icon: typeof Sparkles;
+  expectedGain: string;
+}
+
+interface URLAnalyzerSectionProps {
+  variant?: 'free' | 'home';
+  ctaOverride?: {
+    text: string;
+    href: string;
+  };
+}
+
+export function URLAnalyzerSection({
+  variant = 'free',
+  ctaOverride
+}: URLAnalyzerSectionProps = {}) {
+  const [url, setUrl] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState(0);
+  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [progressValue, setProgressValue] = useState(0);
+  const [expandedIssue, setExpandedIssue] = useState<string | null>(null);
+  const [hoveredMetric, setHoveredMetric] = useState<string | null>(null);
+  const reducedMotion = useReducedMotion();
+
+  // Enhanced analysis steps
+  const analysisSteps = [
+    { icon: Search, text: 'Escaneando estrutura e HTML...', duration: 700, detail: 'Verificando tags, semântica e hierarquia' },
+    { icon: Shield, text: 'Medindo performance e Core Web Vitals...', duration: 900, detail: 'LCP, FID, CLS e tempo de carregamento' },
+    { icon: Eye, text: 'Analisando experiência do usuário...', duration: 650, detail: 'Contraste, legibilidade e navegação' },
+    { icon: Target, text: 'Identificando oportunidades de conversão...', duration: 850, detail: 'CTAs, formulários e prova social' },
+    { icon: CheckCircle, text: 'Compilando insights acionáveis...', duration: 500, detail: 'Gerando recomendações prioritizadas' },
+  ];
+
+  // URL validation
+  const isValidUrl = (urlString: string): boolean => {
+    try {
+      const urlObj = new URL(urlString);
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
+  // Progressive progress bar
+  useEffect(() => {
+    if (isAnalyzing && analysisStep < analysisSteps.length) {
+      const stepProgress = ((analysisStep) / analysisSteps.length) * 100;
+      const targetProgress = ((analysisStep + 1) / analysisSteps.length) * 100;
+
+      let currentProgress = stepProgress;
+      const increment = (targetProgress - stepProgress) / 40;
+
+      const interval = setInterval(() => {
+        currentProgress += increment;
+        if (currentProgress >= targetProgress) {
+          setProgressValue(targetProgress);
+          clearInterval(interval);
+        } else {
+          setProgressValue(currentProgress);
+        }
+      }, analysisSteps[analysisStep].duration / 40);
+
+      return () => clearInterval(interval);
+    }
+  }, [isAnalyzing, analysisStep, analysisSteps]);
+
+  // Handle analysis
+  const handleAnalyze = useCallback(async () => {
+    if (!url.trim()) {
+      setError('Por favor, insira uma URL válida');
+      return;
+    }
+
+    if (!isValidUrl(url)) {
+      setError('URL inválida. Use o formato: https://seusite.com');
+      return;
+    }
+
+    setError(null);
+    setIsAnalyzing(true);
+    setAnalysisStep(0);
+    setProgressValue(0);
+    setResult(null);
+    setExpandedIssue(null);
+
+    try {
+      // Simulate progressive loading
+      for (let i = 0; i < analysisSteps.length; i++) {
+        setAnalysisStep(i);
+        await new Promise(resolve => setTimeout(resolve, analysisSteps[i].duration));
+      }
+
+      // Mock result with enhanced data
+      const mockResult: AnalysisResult = {
+        url,
+        score: 67,
+        issues: [
+          {
+            id: '1',
+            severity: 'critical',
+            title: 'CTA principal invisível',
+            description: 'Seu botão de ação não se destaca visualmente e está abaixo da dobra',
+            impact: 'Pode reduzir conversões em até 45%',
+            solution: 'Reposicione acima da dobra, use cores contrastantes e aumente o tamanho em 40%',
+            icon: AlertTriangle,
+          },
+          {
+            id: '2',
+            severity: 'warning',
+            title: 'Formulário muito extenso',
+            description: 'Você pede 8 campos - o ideal são 3-4 para primeira conversão',
+            impact: 'Taxa de abandono pode atingir 65%',
+            solution: 'Use formulário progressivo: Nome, Email e Telefone primeiro. Outros dados depois.',
+            icon: AlertCircle,
+          },
+          {
+            id: '3',
+            severity: 'info',
+            title: 'Ausência de prova social',
+            description: 'Sem depoimentos, números de clientes ou cases visíveis',
+            impact: 'Credibilidade reduzida em ~35%',
+            solution: 'Adicione seção com "500+ clientes", depoimentos em vídeo e logos de empresas',
+            icon: Users,
+          },
+        ],
+        metrics: [
+          {
+            id: '1',
+            label: 'Velocidade de Carregamento',
+            value: '3.8s',
+            status: 'poor',
+            icon: Clock,
+            change: '+1.4s vs. ideal',
+            benchmark: 'Ideal: 2.4s',
+          },
+          {
+            id: '2',
+            label: 'Taxa de Conversão Estimada',
+            value: '1.5%',
+            status: 'poor',
+            icon: Target,
+            change: '-2.7% vs. benchmark',
+            benchmark: 'Mercado: 4.2%',
+          },
+          {
+            id: '3',
+            label: 'Clareza da Proposta',
+            value: '5/10',
+            status: 'warning',
+            icon: Eye,
+            benchmark: 'Meta: 8/10',
+          },
+          {
+            id: '4',
+            label: 'Mobile Experience',
+            value: '7.5/10',
+            status: 'warning',
+            icon: Shield,
+            benchmark: 'Otimizável',
+          },
+        ],
+        opportunities: [
+          {
+            id: '1',
+            title: 'Implementar urgência visual no CTA',
+            description: 'Timer regressivo + badge "Últimas 3 vagas" próximo ao botão principal',
+            impact: 'high',
+            icon: Zap,
+            expectedGain: '+35% conversão',
+          },
+          {
+            id: '2',
+            title: 'Simplifique formulário inicial',
+            description: 'Reduza para 3 campos essenciais com preenchimento automático e validação em tempo real',
+            impact: 'high',
+            icon: CheckCircle2,
+            expectedGain: '+40% completude',
+          },
+          {
+            id: '3',
+            title: 'Adicione prova social quantificada',
+            description: 'Mostre "850+ clientes atendidos", "R$ 4.2M gerados" ou "98% satisfação" com visual destacado',
+            impact: 'medium',
+            icon: Award,
+            expectedGain: '+25% confiança',
+          },
+        ],
+      };
+
+      setResult(mockResult);
+    } catch (err) {
+      setError('Erro ao analisar URL. Tente novamente.');
+    } finally {
+      setIsAnalyzing(false);
+      setProgressValue(100);
+    }
+  }, [url, analysisSteps]);
+
+  // Reset
+  const handleReset = () => {
+    setResult(null);
+    setUrl('');
+    setError(null);
+    setExpandedIssue(null);
+    setProgressValue(0);
+    setHoveredMetric(null);
+  };
+
+  return (
+    <section className="relative py-20 md:py-28 overflow-hidden">
+      {/* PREMIUM NEON GLASS BACKGROUND - Enhanced variation */}
+      <div className="absolute inset-0">
+        {/* Deep foundation */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950" />
+
+        {/* Animated Neon Orbs - Different palette */}
+        {!reducedMotion && (
+          <>
+            {/* Emerald neon orb */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(16,185,129,0.4) 0%, rgba(16,185,129,0.1) 40%, transparent 70%)',
+                width: '600px',
+                height: '600px',
+                top: '12%',
+                left: '8%',
+                filter: 'blur(75px)',
+              }}
+              animate={{
+                x: [0, 80, 0],
+                y: [0, -60, 0],
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 14,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+
+            {/* Orange neon orb */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(249,115,22,0.45) 0%, rgba(249,115,22,0.12) 40%, transparent 70%)',
+                width: '550px',
+                height: '550px',
+                bottom: '15%',
+                right: '12%',
+                filter: 'blur(80px)',
+              }}
+              animate={{
+                x: [0, -70, 0],
+                y: [0, 70, 0],
+                scale: [1, 1.35, 1],
+                opacity: [0.35, 0.55, 0.35],
+              }}
+              transition={{
+                duration: 17,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: 4,
+              }}
+            />
+
+            {/* Teal accent orb */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(20,184,166,0.38) 0%, rgba(20,184,166,0.1) 40%, transparent 70%)',
+                width: '500px',
+                height: '500px',
+                top: '48%',
+                left: '45%',
+                filter: 'blur(70px)',
+              }}
+              animate={{
+                x: [0, 60, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.25, 1],
+                opacity: [0.25, 0.4, 0.25],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: 6,
+              }}
+            />
+          </>
+        )}
+
+        {/* Premium Frosted Glass Layer */}
+        <div className="absolute inset-0 backdrop-blur-[2px] bg-gradient-to-b from-slate-950/55 via-slate-900/45 to-slate-950/65" />
+
+        {/* Animated Grid Pattern */}
+        <motion.div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(20,184,166,0.7) 1.5px, transparent 1.5px)',
+            backgroundSize: '60px 60px',
+          }}
+          animate={{
+            opacity: [0.03, 0.05, 0.03],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      </div>
+
+      <Container size="xl" className="relative z-10">
+        {/* Enhanced Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-14 sm:mb-18"
+        >
+          {/* Badge with neon pulse */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="inline-block mb-7 relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/40 to-emerald-500/40 rounded-full blur-2xl animate-pulse" />
+            <Badge className="relative px-6 py-3 bg-gradient-to-r from-teal-500/20 via-emerald-500/25 to-orange-500/20 border-2 border-teal-400/50 text-teal-300 text-sm font-black backdrop-blur-xl shadow-2xl shadow-teal-500/30">
+              <Sparkles className="w-5 h-5 mr-2.5 inline animate-pulse" />
+              Análise Gratuita • Resultados em 10s • Sem Cadastro
+            </Badge>
+          </motion.div>
+
+          {/* Title with enhanced gradient */}
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight mb-7">
+            <span className="text-white drop-shadow-lg">
+              Descubra o que está
+            </span>
+            <br />
+            <span className="relative inline-block mt-2">
+              <span className="absolute inset-0 bg-gradient-to-r from-teal-400 via-emerald-400 to-orange-400 blur-3xl opacity-50" />
+              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-emerald-400 to-orange-400">
+                freando suas conversões
+              </span>
+            </span>
+          </h2>
+
+          {/* Enhanced description */}
+          <p className="text-lg sm:text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto font-medium">
+            Cole a URL da sua landing page e receba uma análise profissional detalhada.{' '}
+            <strong className="text-white">Identifique problemas críticos</strong> e descubra oportunidades de crescimento.
+          </p>
+        </motion.div>
+
+        {/* Premium Interactive Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 45, scale: 0.94 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 0.61, 0.36, 1] }}
+          className="relative"
+        >
+          {/* Outer neon glow */}
+          <div className="absolute -inset-[3px] rounded-3xl bg-gradient-to-r from-teal-400/40 via-emerald-400/40 to-orange-400/40 blur-3xl -z-10 opacity-80" />
+
+          <Card className="relative overflow-hidden border-2 border-white/25 rounded-3xl shadow-[0_25px_100px_rgba(0,0,0,0.7)]">
+            {/* Strong glass background */}
+            <div className="absolute inset-0 bg-white/[0.09] backdrop-blur-3xl rounded-3xl" />
+
+            {/* Enhanced gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.1] via-transparent to-orange-500/[0.08] pointer-events-none rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-white/[0.02] pointer-events-none rounded-3xl" />
+
+            {/* Top neon accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-teal-400 through-emerald-400 to-transparent" />
+
+            <CardContent className="relative z-10 p-8 sm:p-12 lg:p-16">
+              <AnimatePresence mode="wait">
+                {!result && !isAnalyzing && (
+                  <motion.div
+                    key="input"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <div className="space-y-8">
+                      {/* URL Input with real-time validation */}
+                      <div className="relative group">
+                        <motion.div
+                          animate={url && isValidUrl(url) ? { scale: [1, 1.02, 1] } : {}}
+                          transition={{ duration: 0.4 }}
+                        >
+                          <LinkIcon className={`absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 transition-all duration-400 ${
+                            url && isValidUrl(url)
+                              ? 'text-teal-400 scale-110'
+                              : 'text-slate-500 group-focus-within:text-teal-400'
+                          }`} />
+                          <Input
+                            type="url"
+                            placeholder="https://seusite.com/landing-page"
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
+                            className={`pl-14 pr-14 h-18 text-lg sm:text-xl bg-white/10 backdrop-blur-xl text-white placeholder:text-slate-500 transition-all duration-400 font-semibold rounded-2xl ${
+                              url && isValidUrl(url)
+                                ? 'border-2 border-teal-500 ring-4 ring-teal-500/30 shadow-lg shadow-teal-500/20'
+                                : error
+                                ? 'border-2 border-red-500 ring-4 ring-red-500/20'
+                                : 'border-2 border-white/15 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20'
+                            }`}
+                          />
+                          {url && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.7 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              className="absolute right-5 top-1/2 -translate-y-1/2"
+                            >
+                              {isValidUrl(url) ? (
+                                <CheckCircle className="w-6 h-6 text-teal-400" />
+                              ) : (
+                                <XCircle className="w-6 h-6 text-red-400" />
+                              )}
+                            </motion.div>
+                          )}
+                        </motion.div>
+                        {error && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="absolute -bottom-8 left-0 text-sm text-red-400 flex items-center gap-2 font-bold"
+                          >
+                            <AlertCircle className="w-5 h-5" />
+                            {error}
+                          </motion.p>
+                        )}
+                      </div>
+
+                      {/* CTA Button with enhanced interactions */}
+                      <motion.div
+                        whileHover={{ scale: 1.03, y: -3 }}
+                        whileTap={{ scale: 0.97 }}
+                      >
+                        <Button
+                          onClick={handleAnalyze}
+                          disabled={!url.trim() || !isValidUrl(url)}
+                          className="w-full h-18 bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-500 hover:from-teal-500 hover:via-emerald-500 hover:to-teal-400 text-white font-black text-lg sm:text-xl shadow-2xl shadow-teal-500/50 transition-all duration-400 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden group rounded-2xl"
+                        >
+                          {/* Enhanced shine effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-250%] group-hover:translate-x-[250%] transition-transform duration-800" />
+
+                          <div className="relative flex items-center justify-center gap-4">
+                            <Search className="w-7 h-7" />
+                            <span>Analisar Minha Página Agora</span>
+                            <ArrowRight className="w-7 h-7 group-hover:translate-x-2 transition-transform" />
+                          </div>
+                        </Button>
+                      </motion.div>
+
+                      {/* Enhanced trust indicators */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-10 border-t-2 border-white/15">
+                        {[
+                          { icon: Shield, text: 'Análise 100% segura', color: 'teal', desc: 'SSL & privacidade garantida' },
+                          { icon: Zap, text: 'Resultados em 10s', color: 'emerald', desc: 'Feedback instantâneo' },
+                          { icon: Award, text: 'Sem cadastro', color: 'orange', desc: 'Totalmente gratuito' },
+                        ].map((item, idx) => (
+                          <motion.div
+                            key={item.text}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6 + idx * 0.1 }}
+                            whileHover={{ scale: 1.06, y: -4 }}
+                            className="relative group"
+                          >
+                            <div className={`absolute inset-0 bg-gradient-to-br from-${item.color}-500/25 to-transparent rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-400`} />
+                            <div className="relative flex items-start gap-4 p-5 rounded-2xl bg-white/5 backdrop-blur-sm border-2 border-white/10 group-hover:border-white/25 transition-all duration-400">
+                              <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-${item.color}-500/25 to-transparent border-2 border-${item.color}-400/40 flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                                <item.icon className={`w-6 h-6 text-${item.color}-400`} />
+                              </div>
+                              <div>
+                                <p className="text-sm font-black text-white mb-1">{item.text}</p>
+                                <p className="text-xs text-slate-400 font-medium">{item.desc}</p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {isAnalyzing && (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="py-20 space-y-12"
+                  >
+                    {/* Enhanced current step */}
+                    <motion.div
+                      key={analysisStep}
+                      initial={{ opacity: 0, y: 25, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      className="flex flex-col items-center gap-8"
+                    >
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                        className="relative"
+                      >
+                        <div className="absolute inset-0 bg-teal-500/40 rounded-full blur-2xl" />
+                        {React.createElement(analysisSteps[analysisStep].icon, {
+                          className: 'relative w-16 h-16 text-teal-400',
+                          strokeWidth: 2.5,
+                        })}
+                      </motion.div>
+                      <div className="text-center space-y-3">
+                        <p className="text-2xl sm:text-3xl text-white font-black drop-shadow-lg">
+                          {analysisSteps[analysisStep].text}
+                        </p>
+                        <p className="text-base text-slate-400 font-medium">
+                          {analysisSteps[analysisStep].detail}
+                        </p>
+                        <p className="text-sm text-slate-500 font-semibold">
+                          Etapa {analysisStep + 1} de {analysisSteps.length}
+                        </p>
+                      </div>
+                    </motion.div>
+
+                    {/* Enhanced progress bar */}
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/30 via-emerald-500/30 to-orange-500/30 rounded-full blur-2xl" />
+                        <Progress
+                          value={progressValue}
+                          className="relative h-4 bg-white/10 border-2 border-white/20 [&>div]:bg-gradient-to-r [&>div]:from-teal-500 [&>div]:via-emerald-500 [&>div]:to-teal-400"
+                        />
+                      </div>
+                      <div className="flex justify-between text-sm text-slate-400 font-bold">
+                        <span>{Math.round(progressValue)}% concluído</span>
+                        <span>~{Math.max(1, analysisSteps.length - analysisStep - 1)}s restantes</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {result && (
+                  <motion.div
+                    key="result"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="space-y-12"
+                  >
+                    {/* Enhanced Score Header */}
+                    <div className="text-center space-y-7">
+                      <motion.div
+                        initial={{ scale: 0.4, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: 'spring', stiffness: 180, damping: 12 }}
+                        className="inline-flex items-center justify-center relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-teal-500/50 to-orange-500/50 rounded-full blur-[80px]" />
+                        <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-teal-500/25 via-emerald-500/25 to-orange-500/25 border-4 border-teal-400/50 backdrop-blur-xl flex items-center justify-center shadow-2xl shadow-teal-500/30">
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.4, type: 'spring', stiffness: 150 }}
+                            className="text-6xl sm:text-7xl font-black text-white drop-shadow-2xl"
+                          >
+                            {result.score}
+                          </motion.span>
+                        </div>
+                      </motion.div>
+
+                      <div>
+                        <h3 className="text-3xl sm:text-4xl font-black text-white mb-4 drop-shadow-lg">
+                          Pontuação de Conversão
+                        </h3>
+                        <p className="text-xl text-slate-300 font-bold">
+                          {result.score >= 80 && '🎉 Excelente! Sua página está bem otimizada.'}
+                          {result.score >= 60 && result.score < 80 && '👍 Boa! Mas há grandes oportunidades de melhoria.'}
+                          {result.score < 60 && '⚠️ Há muito potencial não explorado aqui.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Issues Section */}
+                    <div className="space-y-6">
+                      <h4 className="text-2xl font-black text-white flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500/25 to-orange-500/25 border-2 border-red-400/40 flex items-center justify-center">
+                          <AlertTriangle className="w-7 h-7 text-red-400" />
+                        </div>
+                        Problemas Críticos Identificados
+                      </h4>
+                      <div className="grid gap-5">
+                        {result.issues.map((issue, index) => (
+                          <motion.div
+                            key={issue.id}
+                            initial={{ opacity: 0, x: -40 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 + index * 0.12 }}
+                          >
+                            <Card
+                              className={`relative overflow-hidden cursor-pointer transition-all duration-400 ${
+                                expandedIssue === issue.id ? 'bg-white/12 scale-[1.02]' : 'bg-white/6'
+                              } backdrop-blur-xl border-2 ${
+                                issue.severity === 'critical'
+                                  ? 'border-red-500/50 hover:border-red-500/70'
+                                  : issue.severity === 'warning'
+                                  ? 'border-orange-500/50 hover:border-orange-500/70'
+                                  : 'border-blue-500/50 hover:border-blue-500/70'
+                              } hover:shadow-xl rounded-2xl`}
+                              onClick={() => setExpandedIssue(expandedIssue === issue.id ? null : issue.id)}
+                            >
+                              <div className="p-6">
+                                <div className="flex gap-5">
+                                  <div
+                                    className={`flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center ${
+                                      issue.severity === 'critical'
+                                        ? 'bg-red-500/25 border-2 border-red-400/50'
+                                        : issue.severity === 'warning'
+                                        ? 'bg-orange-500/25 border-2 border-orange-400/50'
+                                        : 'bg-blue-500/25 border-2 border-blue-400/50'
+                                    }`}
+                                  >
+                                    <issue.icon
+                                      className={`w-7 h-7 ${
+                                        issue.severity === 'critical'
+                                          ? 'text-red-400'
+                                          : issue.severity === 'warning'
+                                          ? 'text-orange-400'
+                                          : 'text-blue-400'
+                                      }`}
+                                    />
+                                  </div>
+                                  <div className="flex-1 space-y-3">
+                                    <div className="flex items-start justify-between gap-3">
+                                      <h5 className="font-black text-white text-xl">{issue.title}</h5>
+                                      <Badge className={`text-xs font-bold whitespace-nowrap ${
+                                        issue.severity === 'critical' ? 'bg-red-500/25 text-red-300 border-red-400/50' :
+                                        issue.severity === 'warning' ? 'bg-orange-500/25 text-orange-300 border-orange-400/50' :
+                                        'bg-blue-500/25 text-blue-300 border-blue-400/50'
+                                      }`}>
+                                        {issue.severity === 'critical' ? '🚨 Crítico' : issue.severity === 'warning' ? '⚠️ Atenção' : 'ℹ️ Info'}
+                                      </Badge>
+                                    </div>
+                                    <p className="text-base text-slate-300 font-semibold leading-relaxed">{issue.description}</p>
+                                    <p className="text-sm text-slate-400 italic flex items-start gap-2 font-medium">
+                                      <span className="text-lg">💡</span>
+                                      <span>{issue.impact}</span>
+                                    </p>
+
+                                    <AnimatePresence>
+                                      {expandedIssue === issue.id && (
+                                        <motion.div
+                                          initial={{ opacity: 0, height: 0 }}
+                                          animate={{ opacity: 1, height: 'auto' }}
+                                          exit={{ opacity: 0, height: 0 }}
+                                          className="pt-4 border-t-2 border-white/15"
+                                        >
+                                          <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-br from-teal-500/15 to-emerald-500/15 border-2 border-teal-400/30">
+                                            <CheckCircle2 className="w-6 h-6 text-teal-400 flex-shrink-0 mt-0.5" />
+                                            <div>
+                                              <p className="text-sm font-black text-teal-300 mb-2">Solução Recomendada:</p>
+                                              <p className="text-sm text-slate-200 font-semibold leading-relaxed">{issue.solution}</p>
+                                            </div>
+                                          </div>
+                                        </motion.div>
+                                      )}
+                                    </AnimatePresence>
+
+                                    <button className="flex items-center gap-2 text-sm text-teal-400 hover:text-teal-300 font-bold transition-colors group">
+                                      <span>{expandedIssue === issue.id ? 'Ver menos' : 'Ver solução'}</span>
+                                      <ChevronDown className={`w-4 h-4 transition-transform ${expandedIssue === issue.id ? 'rotate-180' : ''}`} />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Enhanced Metrics */}
+                    <div className="space-y-6">
+                      <h4 className="text-2xl font-black text-white flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500/25 to-emerald-500/25 border-2 border-teal-400/40 flex items-center justify-center">
+                          <BarChart3 className="w-7 h-7 text-teal-400" />
+                        </div>
+                        Métricas Analisadas
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        {result.metrics.map((metric, index) => (
+                          <motion.div
+                            key={metric.id}
+                            initial={{ opacity: 0, y: 25 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            whileHover={{ scale: 1.04, y: -6 }}
+                            onHoverStart={() => setHoveredMetric(metric.id)}
+                            onHoverEnd={() => setHoveredMetric(null)}
+                          >
+                            <Card className="relative p-6 bg-white/6 backdrop-blur-xl border-2 border-white/15 hover:border-teal-400/40 transition-all duration-400 overflow-hidden rounded-2xl group">
+                              <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 ${
+                                metric.status === 'good' ? 'bg-teal-500/15' :
+                                metric.status === 'warning' ? 'bg-orange-500/15' :
+                                'bg-red-500/15'
+                              }`} />
+                              <div className="relative flex items-start gap-5">
+                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${
+                                  metric.status === 'good' ? 'bg-teal-500/25 border-2 border-teal-400/40' :
+                                  metric.status === 'warning' ? 'bg-orange-500/25 border-2 border-orange-400/40' :
+                                  'bg-red-500/25 border-2 border-red-400/40'
+                                }`}>
+                                  <metric.icon className={`w-7 h-7 ${
+                                    metric.status === 'good' ? 'text-teal-400' :
+                                    metric.status === 'warning' ? 'text-orange-400' :
+                                    'text-red-400'
+                                  }`} />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-sm text-slate-400 mb-2 font-bold">{metric.label}</p>
+                                  <p className="text-3xl font-black text-white mb-2">{metric.value}</p>
+                                  {metric.change && (
+                                    <p className="text-xs text-slate-500 font-bold mb-1">{metric.change}</p>
+                                  )}
+                                  {metric.benchmark && (
+                                    <p className="text-xs text-teal-400 font-bold">{metric.benchmark}</p>
+                                  )}
+                                </div>
+                              </div>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Enhanced Opportunities */}
+                    <div className="space-y-6">
+                      <h4 className="text-2xl font-black text-white flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500/25 to-pink-500/25 border-2 border-purple-400/40 flex items-center justify-center">
+                          <Sparkles className="w-7 h-7 text-purple-400" />
+                        </div>
+                        Oportunidades de Alto Impacto
+                      </h4>
+                      <div className="grid gap-5">
+                        {result.opportunities.map((opp, index) => (
+                          <motion.div
+                            key={opp.id}
+                            initial={{ opacity: 0, x: 40 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.6 + index * 0.12 }}
+                            whileHover={{ scale: 1.03, x: 6 }}
+                          >
+                            <Card className="relative p-6 bg-gradient-to-br from-teal-500/12 via-emerald-500/12 to-purple-500/12 backdrop-blur-xl border-2 border-teal-400/40 hover:border-teal-400/60 transition-all duration-400 overflow-hidden rounded-2xl group">
+                              <div className="absolute inset-0 bg-gradient-to-r from-teal-500/0 via-emerald-500/10 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                              <div className="relative flex gap-5">
+                                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500/25 via-emerald-500/25 to-purple-500/25 border-2 border-teal-400/50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                  <opp.icon className="w-7 h-7 text-teal-400" />
+                                </div>
+                                <div className="flex-1 space-y-3">
+                                  <div className="flex items-start justify-between gap-4">
+                                    <h5 className="font-black text-white text-xl leading-tight">{opp.title}</h5>
+                                    <Badge
+                                      className={`text-xs font-black whitespace-nowrap ${
+                                        opp.impact === 'high'
+                                          ? 'bg-teal-500/25 text-teal-300 border-teal-400/50'
+                                          : opp.impact === 'medium'
+                                          ? 'bg-orange-500/25 text-orange-300 border-orange-400/50'
+                                          : 'bg-purple-500/25 text-purple-300 border-purple-400/50'
+                                      }`}
+                                    >
+                                      {opp.impact === 'high' ? '🔥 Alto Impacto' : opp.impact === 'medium' ? '⚡ Médio Impacto' : '💎 Baixo Impacto'}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-base text-slate-300 font-semibold leading-relaxed">{opp.description}</p>
+                                  <div className="flex items-center gap-2 pt-2">
+                                    <TrendingUp className="w-5 h-5 text-teal-400" />
+                                    <span className="text-sm font-black text-teal-400">{opp.expectedGain}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Enhanced CTA Footer */}
+                    <div className="pt-10 border-t-2 border-white/20 space-y-7">
+                      <div className="text-center space-y-5">
+                        <motion.div
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.9 }}
+                        >
+                          <p className="text-2xl text-slate-200 font-black mb-3">
+                            🚀 Pronto para implementar essas melhorias?
+                          </p>
+                          <p className="text-lg text-slate-400 font-semibold">
+                            Nossa equipe especializada pode aumentar suas conversões em{' '}
+                            <strong className="text-teal-400 text-xl">até 350%</strong> em menos de 48 horas
+                          </p>
+                        </motion.div>
+
+                        <div className="flex flex-col sm:flex-row gap-5 justify-center pt-5">
+                          <Button
+                            onClick={handleReset}
+                            variant="outline"
+                            className="h-14 px-8 border-2 border-white/30 bg-white/5 hover:bg-white/10 text-white backdrop-blur-xl font-black text-base rounded-2xl"
+                          >
+                            Analisar Outra Página
+                          </Button>
+                          <motion.div whileHover={{ scale: 1.06, y: -2 }} whileTap={{ scale: 0.94 }}>
+                            <Button
+                              onClick={() => {
+                                if (ctaOverride?.href) {
+                                  window.location.href = ctaOverride.href;
+                                }
+                              }}
+                              className="h-14 px-10 bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-500 hover:from-teal-500 hover:via-emerald-500 hover:to-teal-400 text-white font-black shadow-2xl shadow-teal-500/50 relative overflow-hidden group text-base rounded-2xl"
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                              <span className="relative">{ctaOverride?.text || 'Falar com Especialista'}</span>
+                              <ArrowRight className="relative w-6 h-6 ml-2" />
+                            </Button>
+                          </motion.div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Enhanced trust footer */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="mt-14 text-center"
+        >
+          <div className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white/5 backdrop-blur-xl border-2 border-white/15 shadow-xl">
+            <Users className="w-6 h-6 text-teal-400" />
+            <p className="text-base text-slate-400 font-bold">
+              Já analisamos mais de{' '}
+              <strong className="text-white text-lg">2.800+ páginas</strong> para empresas que{' '}
+              <strong className="text-teal-400">triplicaram suas conversões</strong>
+            </p>
+          </div>
+        </motion.div>
+      </Container>
+    </section>
+  );
+}
