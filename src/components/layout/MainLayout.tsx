@@ -6,7 +6,7 @@
 'use client';
 
 import React from 'react';
-import { EnhancedNavigation } from '../navigation/EnhancedNavigation';
+import { PolishedGlassmorphicNavbar } from '../navigation/PolishedGlassmorphicNavbar';
 import { Footer } from './Footer';
 import { ThemeProvider } from '../../design-system/core/theme';
 
@@ -31,7 +31,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <ThemeProvider>
             <div className={`min-h-screen flex flex-col overflow-x-hidden prevent-overflow ${className}`}>
                 {showHeader && (
-                    <EnhancedNavigation />
+                    <PolishedGlassmorphicNavbar />
                 )}
 
                 <main className="flex-1 w-full overflow-x-hidden">
