@@ -22,7 +22,7 @@ export async function getUsers() {
     .from('user_profiles')
     .select('user_type')
     .eq('id', user.id)
-    .single()
+    .single<Pick<UserProfile, 'user_type'>>()
 
   if (profile?.user_type !== 'admin') {
     throw new Error('Forbidden: Admin access required')
@@ -32,6 +32,7 @@ export async function getUsers() {
     .from('user_profiles')
     .select('*')
     .order('created_at', { ascending: false })
+    .returns<UserProfile[]>()
 
   if (error) throw error
   
@@ -61,7 +62,7 @@ export async function getUserStats() {
     .from('user_profiles')
     .select('user_type')
     .eq('id', user.id)
-    .single()
+    .single<Pick<UserProfile, 'user_type'>>()
 
   if (profile?.user_type !== 'admin') {
     throw new Error('Forbidden: Admin access required')
@@ -70,6 +71,7 @@ export async function getUserStats() {
   const { data, error } = await supabase
     .from('user_profiles')
     .select('tier, user_type, subscription_status')
+    .returns<Pick<UserProfile, 'tier' | 'user_type' | 'subscription_status'>[]>()
 
   if (error) throw error
 
