@@ -916,6 +916,405 @@ export interface Database {
           updated_at?: string
         }
       }
+      checklist_verifications: {
+        Row: {
+          id: string
+          checklist_id: string
+          item_id: string
+          verification_type: string
+          status: string
+          score: number | null
+          details: Json
+          url_tested: string | null
+          screenshot_url: string | null
+          verified_at: string | null
+          expires_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          checklist_id: string
+          item_id: string
+          verification_type?: string
+          status?: string
+          score?: number | null
+          details?: Json
+          url_tested?: string | null
+          screenshot_url?: string | null
+          verified_at?: string | null
+          expires_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          checklist_id?: string
+          item_id?: string
+          verification_type?: string
+          status?: string
+          score?: number | null
+          details?: Json
+          url_tested?: string | null
+          screenshot_url?: string | null
+          verified_at?: string | null
+          expires_at?: string | null
+          created_at?: string
+        }
+      }
+      checklist_relationships: {
+        Row: {
+          id: string
+          checklist_id: string
+          client_profile_id: string | null
+          project_id: string | null
+          lead_id: string | null
+          relationship_type: string
+          auto_sync: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          checklist_id: string
+          client_profile_id?: string | null
+          project_id?: string | null
+          lead_id?: string | null
+          relationship_type?: string
+          auto_sync?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          checklist_id?: string
+          client_profile_id?: string | null
+          project_id?: string | null
+          lead_id?: string | null
+          relationship_type?: string
+          auto_sync?: boolean
+          created_at?: string
+        }
+      }
+      checklist_templates: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          category: string
+          is_public: boolean
+          created_by: string
+          items_template: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          category: string
+          is_public?: boolean
+          created_by: string
+          items_template: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          category?: string
+          is_public?: boolean
+          created_by?: string
+          items_template?: Json
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      client_profiles: {
+        Row: {
+          id: string
+          client_id: string
+          business_type: string
+          industry: string
+          company_size: string
+          annual_revenue: string
+          primary_contact_name: string | null
+          primary_contact_email: string | null
+          primary_contact_phone: string | null
+          current_website: string | null
+          platform: string
+          has_analytics: boolean
+          primary_goals: string[]
+          pain_points: string[]
+          budget_range: string
+          brand_colors: Json
+          design_style: string
+          satisfaction_score: number
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          business_type?: string
+          industry?: string
+          company_size?: string
+          annual_revenue?: string
+          primary_contact_name?: string | null
+          primary_contact_email?: string | null
+          primary_contact_phone?: string | null
+          current_website?: string | null
+          platform?: string
+          has_analytics?: boolean
+          primary_goals?: string[]
+          pain_points?: string[]
+          budget_range?: string
+          brand_colors?: Json
+          design_style?: string
+          satisfaction_score?: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          business_type?: string
+          industry?: string
+          company_size?: string
+          annual_revenue?: string
+          primary_contact_name?: string | null
+          primary_contact_email?: string | null
+          primary_contact_phone?: string | null
+          current_website?: string | null
+          platform?: string
+          has_analytics?: boolean
+          primary_goals?: string[]
+          pain_points?: string[]
+          budget_range?: string
+          brand_colors?: Json
+          design_style?: string
+          satisfaction_score?: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      client_interactions: {
+        Row: {
+          id: string
+          client_id: string
+          interaction_type: string
+          channel: string
+          subject: string | null
+          summary: string | null
+          sentiment: string
+          contact_person: string | null
+          duration_minutes: number | null
+          outcome: string | null
+          next_action: string | null
+          next_action_date: string | null
+          attachments: Json
+          created_by: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          interaction_type: string
+          channel: string
+          subject?: string | null
+          summary?: string | null
+          sentiment?: string
+          contact_person?: string | null
+          duration_minutes?: number | null
+          outcome?: string | null
+          next_action?: string | null
+          next_action_date?: string | null
+          attachments?: Json
+          created_by: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          interaction_type?: string
+          channel?: string
+          subject?: string | null
+          summary?: string | null
+          sentiment?: string
+          contact_person?: string | null
+          duration_minutes?: number | null
+          outcome?: string | null
+          next_action?: string | null
+          next_action_date?: string | null
+          attachments?: Json
+          created_by?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      whatsapp_messages: {
+        Row: {
+          id: string
+          contact_id: string
+          message_id: string
+          direction: string
+          content: string
+          media_url: string | null
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          contact_id: string
+          message_id: string
+          direction: string
+          content: string
+          media_url?: string | null
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          contact_id?: string
+          message_id?: string
+          direction?: string
+          content?: string
+          media_url?: string | null
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      whatsapp_contacts: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          phone_number: string
+          profile_picture_url: string | null
+          last_message_at: string | null
+          unread_count: number
+          is_blocked: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          phone_number: string
+          profile_picture_url?: string | null
+          last_message_at?: string | null
+          unread_count?: number
+          is_blocked?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          phone_number?: string
+          profile_picture_url?: string | null
+          last_message_at?: string | null
+          unread_count?: number
+          is_blocked?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      transactions: {
+        Row: {
+          id: string
+          user_id: string
+          type: string
+          category: string
+          description: string
+          amount: number
+          transaction_date: string
+          status: string
+          payment_method: string | null
+          invoice_id: string | null
+          client_id: string | null
+          project_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: string
+          category: string
+          description: string
+          amount: number
+          transaction_date: string
+          status?: string
+          payment_method?: string | null
+          invoice_id?: string | null
+          client_id?: string | null
+          project_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: string
+          category?: string
+          description?: string
+          amount?: number
+          transaction_date?: string
+          status?: string
+          payment_method?: string | null
+          invoice_id?: string | null
+          client_id?: string | null
+          project_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      invoices: {
+        Row: {
+          id: string
+          user_id: string
+          client_id: string
+          invoice_number: string
+          amount: number
+          status: string
+          due_date: string
+          paid_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          client_id: string
+          invoice_number: string
+          amount: number
+          status?: string
+          due_date: string
+          paid_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          client_id?: string
+          invoice_number?: string
+          amount?: number
+          status?: string
+          due_date?: string
+          paid_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
