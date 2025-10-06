@@ -42,7 +42,9 @@ import {
     StarOff,
     BarChart2,
     Network,
-    MessageCircle
+    MessageCircle,
+    Shield,
+    FolderKanban
 } from 'lucide-react'
 
 interface MenuItem {
