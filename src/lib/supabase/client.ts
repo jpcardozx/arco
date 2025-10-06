@@ -6,7 +6,7 @@
 'use client'
 
 import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/database'
+import type { Database } from '@/types/supabase'
 
 let client: ReturnType<typeof createBrowserClient<Database>> | null = null
 
@@ -26,3 +26,7 @@ export function createSupabaseBrowserClient() {
 export function getSupabaseClient() {
   return createSupabaseBrowserClient()
 }
+
+// Default export for backward compatibility
+export const createClient = createSupabaseBrowserClient
+export default createSupabaseBrowserClient

@@ -22,20 +22,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
-interface TimelineEvent {
-  id: string
-  type: 'message' | 'document' | 'payment' | 'meeting' | 'email' | 'call' | 'milestone'
-  title: string
-  description: string
-  timestamp: string
-  metadata?: {
-    amount?: number
-    status?: 'completed' | 'pending' | 'cancelled'
-    participants?: string[]
-    [key: string]: any
-  }
-}
+import type { TimelineEvent } from '@/lib/hooks'
 
 interface ClientHistoryTimelineProps {
   events?: TimelineEvent[]

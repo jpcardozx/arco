@@ -42,9 +42,17 @@ import {
     Skeleton,
     MetricsGrid
 } from '@/lib/design-system/components'
-import { CloudStorageService, CloudFile as CloudServiceFile, CloudFolder } from '@/app/lib/supabase/cloud-storage-service'
 import { ShareModal } from '@/components/shared/ShareModal'
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser'
+import { 
+    getCloudFiles, 
+    uploadCloudFile, 
+    deleteCloudFile, 
+    toggleStarredFile,
+    downloadCloudFile,
+    getStorageStats as getStorageStatsAction,
+    createShareLink
+} from './actions'
 
 // Local interface for compatibility
 interface CloudFile {
@@ -98,43 +106,27 @@ export default function CloudPage() {
     const loadFiles = async () => {
         setLoading(true)
         try {
-            console.log('Loading files from path:', currentPath)
-
-            const result = await CloudStorageService.getFiles(currentPath)
-            console.log('CloudStorageService.getFiles result:', result)
-
-            if (result.error) {
-                console.error('CloudStorageService returned error:', result.error)
-                throw new Error(`Erro ao carregar arquivos: ${result.error.message || 'Erro desconhecido'}`)
-            }
-
-            if (!result.files) {
-                console.warn('No files returned from CloudStorageService')
-                setFiles([])
-                return
-            }
-
-            // Convert API files to local interface
-            const convertedFiles: CloudFile[] = result.files.map((file: any) => ({
+            const filesData = await getCloudFiles(currentPath)
+            
+            // Convert to local interface
+            const convertedFiles: CloudFile[] = filesData.map(file => ({
                 id: file.id,
                 name: file.name,
-                type: 'file',
+                type: 'file' as const,
                 size: file.size,
-                mimeType: file.type,
-                createdAt: file.created_at,
-                modifiedAt: file.updated_at,
-                owner: 'Usuário Atual',
-                shared: false,
-                starred: false,
-                tags: [],
+                mimeType: file.mime_type,
+                createdAt: file.created_at || new Date().toISOString(),
+                modifiedAt: file.updated_at || file.created_at || new Date().toISOString(),
+                owner: 'Você',
+                shared: file.is_public || false,
+                starred: file.starred || false,
+                tags: file.tags || [],
                 path: file.path,
-                url: file.path,
+                url: file.url,
                 thumbnail: undefined
             }))
 
-            console.log('Converted files:', convertedFiles)
             setFiles(convertedFiles)
-            // showNotification('success', 'Arquivos carregados com sucesso') // Removido para não poluir UI
         } catch (error) {
             console.error('Erro ao carregar arquivos:', error)
             setFiles([])
@@ -146,14 +138,8 @@ export default function CloudPage() {
 
     const loadStorageStats = async () => {
         try {
-            // Use real stats based on current files
-            const totalSize = files.reduce((sum, file) => sum + file.size, 0)
-            setStorageStats({
-                used: totalSize,
-                total: 5 * 1024 * 1024 * 1024, // 5GB limit
-                files: files.length,
-                folders: 0 // TODO: Implement folder counting
-            })
+            const stats = await getStorageStatsAction()
+            setStorageStats(stats)
         } catch (error) {
             console.error('Erro ao carregar estatísticas:', error)
         }
@@ -175,19 +161,17 @@ export default function CloudPage() {
             let uploadedFiles = 0
 
             for (const file of Array.from(uploadFiles)) {
-                console.log(`Uploading file: ${file.name}`)
+                const formData = new FormData()
+                formData.append('file', file)
 
-                const { path, error } = await CloudStorageService.uploadFile(file, currentPath)
+                const result = await uploadCloudFile(formData, currentPath)
 
-                if (error) {
-                    console.error(`Error uploading ${file.name}:`, error)
-                    throw new Error(`Erro ao fazer upload de ${file.name}: ${error}`)
+                if (!result.success || result.error) {
+                    throw new Error(`Erro ao fazer upload de ${file.name}: ${result.error}`)
                 }
 
                 uploadedFiles++
                 setUploadProgress((uploadedFiles / totalFiles) * 100)
-
-                console.log(`Successfully uploaded: ${file.name} to ${path}`)
             }
 
             await loadFiles()
@@ -228,28 +212,40 @@ export default function CloudPage() {
         if (!file) return
 
         try {
-            const deleteResult = await CloudStorageService.deleteFile(file.path)
+            const result = await deleteCloudFile(id)
 
-            if (deleteResult && deleteResult.success) {
-                setFiles(prev => prev.filter(f => f.id !== id))
+            if (result.success) {
+                await loadFiles()
                 await loadStorageStats()
                 showNotification('success', `"${file.name}" foi excluído`)
             } else {
-                throw new Error('Erro ao excluir arquivo')
+                throw new Error(result.error || 'Erro ao excluir arquivo')
             }
         } catch (error) {
             console.error('Erro ao excluir:', error)
-            showNotification('error', 'Erro ao excluir arquivo')
+            showNotification('error', error instanceof Error ? error.message : 'Erro ao excluir arquivo')
         }
     }
 
     const handleToggleStar = async (id: string) => {
-        // TODO: Implement star/favorite functionality
-        setFiles(prev => prev.map(f =>
-            f.id === id ? { ...f, starred: !f.starred } : f
-        ))
         const file = files.find(f => f.id === id)
-        showNotification('success', file?.starred ? 'Removido dos favoritos' : 'Adicionado aos favoritos')
+        if (!file) return
+
+        const newStarred = !file.starred
+        
+        try {
+            const result = await toggleStarredFile(id, newStarred)
+            
+            if (result.success) {
+                await loadFiles()
+                showNotification('success', newStarred ? 'Adicionado aos favoritos' : 'Removido dos favoritos')
+            } else {
+                throw new Error(result.error || 'Erro ao atualizar favorito')
+            }
+        } catch (error) {
+            console.error('Erro ao favoritar:', error)
+            showNotification('error', error instanceof Error ? error.message : 'Erro ao atualizar favorito')
+        }
     }
 
     // Funções auxiliares

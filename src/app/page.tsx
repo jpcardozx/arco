@@ -5,6 +5,7 @@ import { TransitionBridge } from '../components/sections/TransitionBridge';
 import { UnifiedValueProposition } from '../components/sections/UnifiedValueProposition';
 import { OptimizedClientStories } from '../components/sections/OptimizedClientStories';
 import { ExecutionShowcase } from '../components/sections/ExecutionShowcase';
+import { TechStackSection } from '../components/sections/TechStackSection';
 import { StrategicVelocitySection } from '../components/sections/StrategicVelocity';
 import { FigmaFinalCTA } from '../components/sections';
 
@@ -54,6 +55,9 @@ export default function HomePage() {
 
             {/* Execution Showcase - Technical excellence demonstration */}
             <ExecutionShowcase />
+
+            {/* Tech Stack - Infrastructure showcase */}
+            <TechStackSection />
 
             {/* Strategic Velocity Framework - Productized packages + retainer ladder */}
             <StrategicVelocitySection />

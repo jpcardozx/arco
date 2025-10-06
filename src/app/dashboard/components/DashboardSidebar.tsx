@@ -61,21 +61,31 @@ interface MenuCategory {
 
 const menuItems: MenuCategory[] = [
     {
-        category: 'Início',
+        category: 'Visão Geral',
         items: [
-            { icon: Home, label: 'Início', href: '/dashboard', color: 'text-blue-600' }
+            { icon: Home, label: 'Dashboard', href: '/dashboard', color: 'text-blue-600' }
         ]
     },
     {
-        category: 'Integração Jetimob',
+        category: 'Diagnóstico',
         items: [
-            { icon: Network, label: 'Jetimob API', href: '/dashboard/jetimob', color: 'text-emerald-600' }
+            { icon: Activity, label: 'Diagnósticos', href: '/dashboard/diagnostico', color: 'text-purple-600' },
+            { icon: Target, label: 'Plano de Ação', href: '/dashboard/plano-de-acao', color: 'text-indigo-600' }
         ]
     },
     {
-        category: 'Documentos & Armazenamento',
+        category: 'Monitoramento',
         items: [
-            { icon: Cloud, label: 'Nuvem Ipé', href: '/dashboard/cloud', color: 'text-blue-600' },
+            { icon: TrendingUp, label: 'Crescimento', href: '/dashboard/crescimento', color: 'text-green-600' },
+            { icon: Shield, label: 'Saúde', href: '/dashboard/saude', color: 'text-red-600' }
+        ]
+    },
+    {
+        category: 'Operações',
+        items: [
+            { icon: FolderKanban, label: 'Projetos', href: '/dashboard/operacoes', color: 'text-orange-600' },
+            { icon: Cloud, label: 'Arquivos', href: '/dashboard/cloud', color: 'text-blue-600' },
+            { icon: FileText, label: 'Documentos', href: '/dashboard/documents', color: 'text-gray-600' }
         ]
     },
     {
@@ -100,13 +110,13 @@ const menuItems: MenuCategory[] = [
             { icon: TrendingUp, label: 'Funil de Vendas', href: '/dashboard/funil', color: 'text-emerald-600' },
             { icon: BarChart2, label: 'Leads', href: '/dashboard/leads', color: 'text-blue-600' },
             { icon: Target, label: 'Campanhas', href: '/dashboard/campaigns', color: 'text-pink-600' },
-            { icon: Calculator, label: 'Calculadora', href: '/dashboard/calculator', color: 'text-blue-600' }
+
         ]
     },
     {
         category: 'Administração',
         items: [
-            { icon: Percent, label: 'Alíquotas', href: '/dashboard/aliquotas', color: 'text-orange-600' },
+
             { icon: UserCircle, label: 'Meu Perfil', href: '/dashboard/profile', color: 'text-blue-600' },
             { icon: Settings, label: 'Configurações', href: '/dashboard/settings', color: 'text-gray-500' }
         ]
@@ -143,7 +153,11 @@ export default function DashboardSidebar({ collapsed = false, onToggle }: Dashbo
                 width: collapsed ? '80px' : '280px',
             }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="bg-white border-r border-grey-300 shadow-lg flex flex-col relative z-10 rounded-md"
+            className={`
+                bg-white border-r border-grey-300 shadow-lg flex flex-col relative rounded-md
+                ${collapsed ? 'z-10' : 'z-30 lg:z-10'}
+                ${!collapsed ? 'fixed lg:relative inset-y-0 left-0' : 'hidden lg:flex'}
+            `}
         >
             {/* Header */}
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
@@ -156,8 +170,8 @@ export default function DashboardSidebar({ collapsed = false, onToggle }: Dashbo
                     >
                         <Link href="/" className="flex flex-1 items-center justify-center group">
                             <Image
-                                src="/images/ipeLogoWritten.png"
-                                alt="Ipê Imóveis"
+                                src="/logos/horizontal/white.png"
+                                alt="ARCO"
                                 width={140}
                                 height={42}
                                 className="object-contain transition-all duration-300 group-hover:scale-105"

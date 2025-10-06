@@ -56,32 +56,27 @@ export default function UsersPage() {
 
     const rbacManager = RBACManager.getInstance()
 
-    // TODO: Replace with actual API call to fetch users from backend
-    // Mock data removed for production - connect to real user management API
-    const mockUsers: UserProfile[] = []
-
     useEffect(() => {
-        // Carregar usuários do backend
-        const loadUsers = async () => {
-            try {
-                // TODO: Implement actual API call to fetch users
-                // const response = await fetch('/api/users')
-                // const users = await response.json()
-
-                setState(prev => ({
-                    ...prev,
-                    users: mockUsers, // Will be empty until real API is connected
-                    filteredUsers: mockUsers,
-                    loading: false
-                }))
-            } catch (error) {
-                console.error('Erro ao carregar usuários:', error)
-                setState(prev => ({ ...prev, loading: false }))
-            }
-        }
-
         loadUsers()
     }, [])
+
+    const loadUsers = async () => {
+        try {
+            // Importar actions dinamicamente
+            const { getUsers } = await import('./actions')
+            const data = await getUsers()
+            
+            setState(prev => ({
+                ...prev,
+                users: data as any,
+                filteredUsers: data as any,
+                loading: false
+            }))
+        } catch (error) {
+            console.error('Erro ao carregar usuários:', error)
+            setState(prev => ({ ...prev, loading: false, users: [], filteredUsers: [] }))
+        }
+    }
 
     // Filtrar usuários baseado na pesquisa e status
     useEffect(() => {

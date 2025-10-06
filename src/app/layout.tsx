@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
-import { Toaster } from '@/components/ui/sonner';
+import { ToastProvider } from '@/components/providers/toast-provider';
+import { QueryProvider } from '@/components/providers/query-provider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://arco.com'),
-  title: 'ARCO | Premium Web & Traffic Services - Enterprise Digital Excellence',
-  description: 'Sophisticated web infrastructure and traffic optimization services for discerning businesses. Strategic technical consulting with quantified ROI and measurable performance improvements.',
+  metadataBase: new URL('https://consultingarco.com'),
+  title: 'ARCO | Web & Tráfego',
+  description: 'web infrastructure and traffic optimization services for discerning businesses. Strategic technical consulting with quantified ROI and measurable performance improvements.',
   keywords: [
-    'premium web services', 
+    'web services', 
     'traffic optimization', 
     'enterprise consulting', 
     'performance engineering',
@@ -73,8 +74,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
-        <Toaster position="top-right" richColors />
+        <QueryProvider>
+          {children}
+          <ToastProvider />
+        </QueryProvider>
       </body>
     </html>
   );

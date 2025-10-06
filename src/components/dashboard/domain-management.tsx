@@ -25,38 +25,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
-interface DomainData {
-  domain: string
-  isVerified: boolean
-  ssl: {
-    enabled: boolean
-    expiry: string
-    issuer: string
-  }
-  dns: {
-    status: 'healthy' | 'warning' | 'error'
-    records: {
-      type: string
-      name: string
-      value: string
-      status: 'ok' | 'warning' | 'error'
-    }[]
-  }
-  performance: {
-    speed: number // 0-100
-    seo: number
-    accessibility: number
-    bestPractices: number
-  }
-  pages: {
-    url: string
-    title: string
-    views: number
-    avgTime: string
-    bounceRate: number
-  }[]
-}
+import type { DomainData } from '@/lib/hooks'
 
 interface DomainManagementProps {
   domainData?: DomainData

@@ -55,8 +55,7 @@ export const ROLES: Record<UserRole, RoleConfig> = {
       '/dashboard/mail',
       '/dashboard/calculator',
       '/dashboard/funil',
-      '/dashboard/aliquotas',
-      '/dashboard/commissions',
+
     ]
   },
 

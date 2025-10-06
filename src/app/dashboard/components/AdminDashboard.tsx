@@ -5,8 +5,8 @@
 
 'use client'
 
+import { useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { redirect } from 'next/navigation'
 import {
   Users,
   UserCheck,
@@ -19,16 +19,15 @@ import {
   Shield,
   Database,
   RefreshCw,
-  AlertCircle,
   CheckCircle2,
   Clock
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { LoadingSpinner, DashboardSkeleton } from '@/components/ui/enhanced-loading'
+import { DashboardSkeleton } from '@/components/ui/enhanced-loading'
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser'
-import { useAdminStats, useConversionMetrics, useMonthlyRevenue } from '@/lib/hooks/use-admin'
+import { useAdminStats, useConversionMetrics, useMonthlyRevenue } from '@/lib/hooks'
 import { toast } from 'sonner'
 
 interface AdminDashboardProps {
@@ -39,8 +38,14 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
   // Validação de role - SEGURANÇA CRÍTICA
   const { user, loading: userLoading } = useCurrentUser()
   
+  // Se não é admin, retorna null e deixa MainDashboard fazer o roteamento
+  // Evita redirect loop
   if (!userLoading && user?.role !== 'admin') {
-    redirect('/dashboard')
+    return (
+      <div className="min-h-[600px] flex items-center justify-center">
+        <p className="text-slate-400">Acesso não autorizado</p>
+      </div>
+    )
   }
 
   // Fetch dados reais
@@ -50,8 +55,8 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
 
   const isLoading = userLoading || statsLoading || conversionLoading || revenueLoading
 
-  // Dados reais do backend
-  const adminStats = stats ? [
+  // Dados reais do backend - memoizado para performance
+  const adminStats = useMemo(() => stats ? [
     {
       id: 'total-users',
       label: 'Usuários Ativos',
@@ -94,7 +99,7 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
       color: 'text-orange-500',
       bgColor: 'bg-orange-500/10'
     }
-  ] : []
+  ] : [], [stats, revenue, conversion])
 
   const systemHealth = [
     { label: 'API Status', status: 'operational', uptime: '99.9%' },
@@ -103,14 +108,14 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
     { label: 'Email Service', status: 'degraded', uptime: '97.2%' }
   ]
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     try {
       await refetchStats()
       toast.success('Dashboard atualizado com sucesso!')
     } catch (error) {
       toast.error('Erro ao atualizar dashboard')
     }
-  }
+  }, [refetchStats])
 
   if (isLoading) {
     return <DashboardSkeleton />
@@ -146,7 +151,7 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {adminStats.map((stat, index) => (
           <motion.div
             key={stat.id}
@@ -155,7 +160,7 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
             transition={{ delay: index * 0.1 }}
           >
             <Card className="border-slate-800 bg-slate-900/50 hover:bg-slate-900/80 transition-colors">
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                     <stat.icon className={`h-5 w-5 ${stat.color}`} />
@@ -178,7 +183,7 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* System Health */}
         <Card className="border-slate-800 bg-slate-900/50 lg:col-span-2">
           <CardHeader>

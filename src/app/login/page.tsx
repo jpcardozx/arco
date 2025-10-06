@@ -11,6 +11,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -32,6 +33,9 @@ import {
 
 // Layout
 import { MainLayout } from '@/components/layout/MainLayout';
+
+// Auth
+import { signIn } from '@/lib/supabase/auth';
 
 // shadcn/ui components
 import { Button } from '@/components/ui/button';
@@ -59,6 +63,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loginMethod, setLoginMethod] = useState<'email' | 'social'>('email');
@@ -81,21 +86,28 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      console.log('Login attempt:', data);
-
-      toast.success('Login realizado com sucesso!', {
-        description: 'Redirecionando para o dashboard...',
-        icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
+      const result = await signIn({
+        email: data.email,
+        password: data.password,
       });
 
-      // Redirect logic here
-      // router.push('/dashboard');
-    } catch (error) {
+      if (result.user) {
+        toast.success('Login realizado com sucesso!', {
+          description: 'Redirecionando para o dashboard...',
+          icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
+        });
+
+        // Redirect to dashboard
+        setTimeout(() => {
+          router.push('/dashboard');
+          router.refresh();
+        }, 500);
+      }
+    } catch (error: any) {
+      console.error('[LoginPage] Error:', error);
+
       toast.error('Erro ao fazer login', {
-        description: 'Verifique suas credenciais e tente novamente.',
+        description: error.message || 'Verifique suas credenciais e tente novamente.',
         icon: <AlertCircle className="w-5 h-5 text-red-500" />,
       });
     } finally {
@@ -108,10 +120,9 @@ export default function LoginPage() {
     setLoginMethod('social');
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      toast.success(`Login com ${provider === 'google' ? 'Google' : 'GitHub'} iniciado`, {
-        description: 'Você será redirecionado...',
+      // TODO: Implement OAuth with Supabase
+      toast.info(`Login com ${provider === 'google' ? 'Google' : 'GitHub'}`, {
+        description: 'Em desenvolvimento. Use email/senha por enquanto.',
       });
     } catch (error) {
       toast.error('Erro no login social', {
@@ -151,6 +162,7 @@ export default function LoginPage() {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
+          style={{ willChange: 'transform, opacity' }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-blue-500 rounded-full blur-3xl pointer-events-none"
         />
 
@@ -432,22 +444,31 @@ export default function LoginPage() {
                 <div className="absolute inset-0 bg-gradient-to-bl from-blue-500/[0.03] via-transparent to-purple-500/[0.03] pointer-events-none" />
 
                 <div className="relative z-10 space-y-12">
-                  {/* Logo ARCO Vertical Black */}
+                  {/* Logo ARCO Vertical Black - WITH ELEGANT GLOW */}
                   <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
                     className="flex justify-center"
                   >
-                    <Image
-                      src="/logos/vertical/black.png"
-                      alt="ARCO"
-                      width={200}
-                      height={200}
-                      className="h-36 w-auto"
-                      priority
-                      quality={95}
-                    />
+                    {/* Glassmorphic glow container */}
+                    <div className="relative group">
+                      {/* White glow backdrop with blur */}
+                      <div className="absolute inset-0 -m-8 rounded-3xl bg-white/20 backdrop-blur-xl shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all duration-500 group-hover:shadow-[0_0_80px_rgba(255,255,255,0.4)]" />
+                      
+                      {/* Logo */}
+                      <div className="relative z-10 p-0">
+                        <Image
+                          src="/logos/vertical/black.png"
+                          alt="ARCO"
+                          width={200}
+                          height={200}
+                          className="h-36 w-auto drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"
+                          priority
+                          quality={95}
+                        />
+                      </div>
+                    </div>
                   </motion.div>
 
                   {/* Headline */}
@@ -457,13 +478,13 @@ export default function LoginPage() {
                     transition={{ delay: 0.5, duration: 0.6 }}
                     className="space-y-5 text-center max-w-sm mx-auto"
                   >
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-[1.15] tracking-tight">
-                      Seus funnels.<br />
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-300 leading-[1.15] tracking-tight">
+                      Performance digital<br />
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
                         Sob controle.
                       </span>
                     </h2>
-                    <p className="text-slate-600 leading-relaxed text-base">
+                    <p className="text-slate-400 leading-relaxed text-base">
                       Gerencie conversões, leads e campanhas em um único dashboard inteligente.
                     </p>
                   </motion.div>

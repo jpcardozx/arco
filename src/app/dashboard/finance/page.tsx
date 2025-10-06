@@ -61,76 +61,32 @@ export default function FinancePage() {
     const loadFinancialData = async () => {
         setLoading(true)
         try {
-            // Simulate loading
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            // Import actions dynamically
+            const { getFinancialSummary, getTransactions } = await import('./actions')
+            
+            // Load summary
+            const summaryData = await getFinancialSummary(selectedPeriod)
+            setSummary(summaryData)
 
-            setSummary({
-                totalIncome: 487500,
-                totalExpenses: 124300,
-                totalCommissions: 73125,
-                netProfit: 363200,
-                pendingPayments: 45600,
-                monthlyGrowth: 12.8
+            // Load transactions with filters
+            const transactionsData = await getTransactions({
+                type: filterType,
+                period: selectedPeriod
             })
-
-            setTransactions([
-                {
-                    id: '1',
-                    type: 'income',
-                    category: 'Venda',
-                    description: 'Venda Casa Centro - Comissão',
-                    amount: 24500,
-                    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-                    status: 'completed',
-                    propertyId: 'prop-123',
-                    clientId: 'client-456',
-                    paymentMethod: 'transferencia'
-                },
-                {
-                    id: '2',
-                    type: 'commission',
-                    category: 'Comissão Vendedor',
-                    description: 'Comissão Maria Silva - Casa Centro',
-                    amount: 12250,
-                    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-                    status: 'pending',
-                    agentId: 'agent-789',
-                    paymentMethod: 'pix'
-                },
-                {
-                    id: '3',
-                    type: 'expense',
-                    category: 'Marketing',
-                    description: 'Anúncios Facebook/Instagram',
-                    amount: 2500,
-                    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
-                    status: 'completed',
-                    paymentMethod: 'cartao'
-                },
-                {
-                    id: '4',
-                    type: 'income',
-                    category: 'Locação',
-                    description: 'Taxa de Locação - Apt Vista Alegre',
-                    amount: 3600,
-                    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
-                    status: 'completed',
-                    propertyId: 'prop-567',
-                    paymentMethod: 'transferencia'
-                },
-                {
-                    id: '5',
-                    type: 'expense',
-                    category: 'Operacional',
-                    description: 'Material de escritório',
-                    amount: 850,
-                    date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
-                    status: 'completed',
-                    paymentMethod: 'dinheiro'
-                }
-            ])
+            
+            setTransactions(transactionsData as any)
         } catch (error) {
             console.error('Error loading financial data:', error)
+            // Set empty data on error
+            setSummary({
+                totalIncome: 0,
+                totalExpenses: 0,
+                totalCommissions: 0,
+                netProfit: 0,
+                pendingPayments: 0,
+                monthlyGrowth: 0
+            })
+            setTransactions([])
         } finally {
             setLoading(false)
         }

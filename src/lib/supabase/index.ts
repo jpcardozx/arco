@@ -11,18 +11,11 @@ export {
   getSupabaseClient,
 } from './client';
 
-// Service exports
-export { ClientsService } from './clients-service';
-export { TasksService } from './tasks-service';
-
 // Type exports
 export type {
-  Client,
-  ClientInput,
-  ClientUpdate,
-  Task,
-  TaskInput,
-  TaskUpdate,
+  Lead,
+  LeadInput,
+  LeadUpdate,
   User,
   UseCurrentUserReturn,
 } from '@/lib/types/supabase-helpers';

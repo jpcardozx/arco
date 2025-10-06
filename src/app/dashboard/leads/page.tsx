@@ -97,6 +97,7 @@ export default function LeadsPage() {
     const [sourceFilter, setSourceFilter] = useState<'all' | Lead['source']>('all')
     const [priorityFilter, setPriorityFilter] = useState<'all' | Lead['priority']>('all')
 
+    const [allLeads, setAllLeads] = useState<Lead[]>([])
     const [stats, setStats] = useState({
         total: 0, new: 0, contacted: 0, qualified: 0, proposal: 0, won: 0, lost: 0,
         conversionRate: 0, avgScore: 0, hotLeads: 0
@@ -104,34 +105,82 @@ export default function LeadsPage() {
 
     useEffect(() => {
         loadLeads()
-    }, [statusFilter, sourceFilter, priorityFilter, searchQuery])
+    }, [])
+
+    // Apply filters when filter states change
+    useEffect(() => {
+        applyFilters()
+    }, [statusFilter, sourceFilter, priorityFilter, searchQuery, allLeads])
 
     const loadLeads = async () => {
         setLoading(true)
         try {
-            const demoLeads = getDemoLeads()
-            let filteredLeads = demoLeads
+            // Importar actions dinamicamente
+            const { getLeads, getLeadStats } = await import('./actions')
+            const [leadsData, statsData] = await Promise.all([
+                getLeads(),
+                getLeadStats()
+            ])
 
-            if (statusFilter !== 'all') filteredLeads = filteredLeads.filter(lead => lead.status === statusFilter)
-            if (sourceFilter !== 'all') filteredLeads = filteredLeads.filter(lead => lead.source === sourceFilter)
-            if (priorityFilter !== 'all') filteredLeads = filteredLeads.filter(lead => lead.priority === priorityFilter)
+            // Map database format to component format
+            const mappedLeads: Lead[] = leadsData.map((lead: any) => ({
+                id: lead.id,
+                name: lead.full_name || 'Sem nome',
+                email: lead.email,
+                phone: lead.phone,
+                source: (lead.source || 'other') as Lead['source'],
+                status: (lead.status || 'new') as Lead['status'],
+                priority: 'medium' as Lead['priority'], // DB doesn't have priority yet
+                service_interest: lead.company_name || 'Serviço não especificado',
+                score: calculateLeadScore(lead),
+                created_at: lead.created_at,
+                conversion_probability: calculateConversionProbability(lead)
+            }))
 
-            if (searchQuery) {
-                const query = searchQuery.toLowerCase()
-                filteredLeads = filteredLeads.filter(lead =>
-                    lead.name.toLowerCase().includes(query) ||
-                    lead.email?.toLowerCase().includes(query) ||
-                    lead.service_interest.toLowerCase().includes(query)
-                )
-            }
-
-            setLeads(filteredLeads)
-            calculateStats(demoLeads)
+            setAllLeads(mappedLeads)
+            setStats({
+                total: statsData.total,
+                new: statsData.new,
+                contacted: statsData.contacted,
+                qualified: statsData.qualified,
+                proposal: 0,
+                won: statsData.converted,
+                lost: 0,
+                conversionRate: statsData.total > 0 ? (statsData.converted / statsData.total) * 100 : 0,
+                avgScore: 70,
+                hotLeads: mappedLeads.filter(l => l.status === 'qualified').length
+            })
         } catch (error) {
             console.error('Error loading leads:', error)
+            setAllLeads([])
         } finally {
             setLoading(false)
         }
+    }
+
+    const applyFilters = () => {
+        let filtered = allLeads
+
+        if (statusFilter !== 'all') {
+            filtered = filtered.filter(lead => lead.status === statusFilter)
+        }
+        if (sourceFilter !== 'all') {
+            filtered = filtered.filter(lead => lead.source === sourceFilter)
+        }
+        if (priorityFilter !== 'all') {
+            filtered = filtered.filter(lead => lead.priority === priorityFilter)
+        }
+
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase()
+            filtered = filtered.filter(lead =>
+                lead.name.toLowerCase().includes(query) ||
+                lead.email?.toLowerCase().includes(query) ||
+                lead.service_interest?.toLowerCase().includes(query)
+            )
+        }
+
+        setLeads(filtered)
     }
 
     const calculateStats = (allLeads: Lead[]) => {

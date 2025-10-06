@@ -6,17 +6,17 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Lead, LeadInput, LeadUpdate } from '@/lib/types/supabase-helpers';
+import type { Lead, LeadInput, LeadUpdate, LeadWithName } from '@/lib/types/supabase-helpers';
 
 // Re-export types for external use
-export type { Lead, LeadInput, LeadUpdate } from '@/lib/types/supabase-helpers';
+export type { Lead, LeadInput, LeadUpdate, LeadWithName } from '@/lib/types/supabase-helpers';
 
 export class LeadsService {
   /**
    * Busca todos os leads do usuário autenticado
    * RLS garante que apenas leads do usuário sejam retornados
    */
-  static async getLeads(supabase: SupabaseClient): Promise<Lead[]> {
+  static async getLeads(supabase: SupabaseClient): Promise<LeadWithName[]> {
     const { data, error } = await supabase
       .from('leads')
       .select('*')
@@ -24,13 +24,13 @@ export class LeadsService {
 
     if (error) throw error;
 
-    return (data || []).map(this.mapToLead);
+    return (data || []).map(this.mapToLeadWithName);
   }
 
   /**
    * Busca um lead específico por ID
    */
-  static async getLead(supabase: SupabaseClient, id: string): Promise<Lead | null> {
+  static async getLead(supabase: SupabaseClient, id: string): Promise<LeadWithName | null> {
     const { data, error } = await supabase
       .from('leads')
       .select('*')
@@ -42,23 +42,26 @@ export class LeadsService {
       throw error;
     }
 
-    return data ? this.mapToLead(data) : null;
+    return data ? this.mapToLeadWithName(data) : null;
   }
 
   /**
    * Cria um novo lead
+   * Aceita tanto LeadInput (com full_name) quanto objeto com 'name' para compatibilidade
    */
   static async createLead(
     supabase: SupabaseClient,
-    input: LeadInput
-  ): Promise<Lead> {
+    input: LeadInput | (Omit<LeadInput, 'full_name'> & { name?: string | null })
+  ): Promise<LeadWithName> {
     const leadData = {
-      name: input.name,
+      full_name: 'full_name' in input ? input.full_name : (input as any).name,
       email: input.email,
       phone: input.phone,
       source: input.source,
       status: input.status || 'new',
-      notes: input.notes,
+      company_name: input.company_name,
+      assigned_to: input.assigned_to,
+      analysis_id: input.analysis_id,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -71,27 +74,34 @@ export class LeadsService {
 
     if (error) throw error;
 
-    return this.mapToLead(data);
+    return this.mapToLeadWithName(data);
   }
 
   /**
    * Atualiza um lead existente
+   * Aceita tanto LeadUpdate quanto objeto com 'name' para compatibilidade
    */
   static async updateLead(
     supabase: SupabaseClient,
     id: string,
-    updates: LeadUpdate
-  ): Promise<Lead> {
+    updates: LeadUpdate | (Omit<LeadUpdate, 'full_name'> & { name?: string | null })
+  ): Promise<LeadWithName> {
     const updateData: any = {
       updated_at: new Date().toISOString(),
     };
 
-    if (updates.name !== undefined) updateData.name = updates.name;
+    // Mapear 'name' -> 'full_name' para compatibilidade
+    if ('name' in updates && updates.name !== undefined) {
+      updateData.full_name = updates.name;
+    } else if ('full_name' in updates && updates.full_name !== undefined) {
+      updateData.full_name = updates.full_name;
+    }
+
     if (updates.email !== undefined) updateData.email = updates.email;
     if (updates.phone !== undefined) updateData.phone = updates.phone;
     if (updates.source !== undefined) updateData.source = updates.source;
     if (updates.status !== undefined) updateData.status = updates.status;
-    if (updates.notes !== undefined) updateData.notes = updates.notes;
+    if (updates.company_name !== undefined) updateData.company_name = updates.company_name;
 
     const { data, error } = await supabase
       .from('leads')
@@ -102,7 +112,7 @@ export class LeadsService {
 
     if (error) throw error;
 
-    return this.mapToLead(data);
+    return this.mapToLeadWithName(data);
   }
 
   /**
@@ -156,29 +166,20 @@ export class LeadsService {
   }
 
   /**
-   * Mapeia dados do Supabase para tipo Lead
-   * Converte snake_case para camelCase e garante tipos corretos
+   * Mapeia dados do Supabase para tipo LeadWithName
+   * Converte full_name -> name para compatibilidade com código existente
    */
-  private static mapToLead(data: any): Lead {
+  private static mapToLeadWithName(data: any): LeadWithName {
     return {
       id: data.id,
-      name: data.name,
+      name: data.full_name,
       email: data.email,
       phone: data.phone,
       source: data.source,
       status: data.status,
-      priority: data.priority,
-      interest_type: data.interest_type,
-      notes: data.notes,
-      // company: mappedLead.company,
+      company_name: data.company_name,
       assigned_to: data.assigned_to || null,
-      budget_max: data.budget_max || null,
-      budget_min: data.budget_min || null,
-      last_contact: data.last_contact || null,
-      next_follow_up: data.next_follow_up || null,
-      preferred_location: data.preferred_location || null,
-      lead_score: data.lead_score || null,
-      metadata: data.metadata || null,
+      analysis_id: data.analysis_id || null,
       created_at: data.created_at,
       updated_at: data.updated_at,
     };

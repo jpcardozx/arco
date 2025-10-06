@@ -138,7 +138,8 @@
     "backup-old-components",
     "maintenance/archive/**/*",
     "docs/deprecated/**/*",
-    "mcp/**/*"
+    "mcp/**/*",
+    "supabase/functions/**/*"
   ],
   "ts-node": {
     "compilerOptions": {

@@ -45,7 +45,14 @@ export async function signIn(credentials: SignInCredentials) {
  */
 export async function signUp(credentials: SignUpCredentials) {
   const supabase = createSupabaseBrowserClient()
-  
+
+  // Validate email domain (disposable check)
+  const { isDisposableEmail } = await import('@/lib/email/disposable-domains')
+
+  if (isDisposableEmail(credentials.email)) {
+    throw new Error('Emails temporários não são permitidos. Use um email permanente.')
+  }
+
   const { data, error } = await supabase.auth.signUp({
     email: credentials.email,
     password: credentials.password,
@@ -54,6 +61,7 @@ export async function signUp(credentials: SignUpCredentials) {
         full_name: credentials.full_name,
         ...credentials.metadata,
       },
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   })
 

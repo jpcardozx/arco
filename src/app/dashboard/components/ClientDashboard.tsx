@@ -17,7 +17,6 @@ import {
   Target,
   Clock,
   CheckCircle2,
-  ArrowRight,
   Download,
   MessageSquare,
   Sparkles
@@ -30,6 +29,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DomainManagement } from '@/components/dashboard/domain-management'
 import { ClientHistoryTimeline } from '@/components/dashboard/client-history-timeline'
 import { DataSharingConsent } from '@/components/dashboard/data-sharing-consent'
+import { useClientMetrics, useClientDomain, useClientTimeline } from '@/lib/hooks'
+import { DashboardSkeleton, StatsGridSkeleton } from '@/components/dashboard/loading-skeletons'
+import { ErrorDisplay } from '@/components/dashboard/error-display'
 
 interface ClientDashboardProps {
   userName?: string
@@ -38,13 +40,34 @@ interface ClientDashboardProps {
 export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<'7d' | '30d' | '90d'>('30d')
 
-  // Mock data - substituir por dados reais da API
-  const clientMetrics = [
+  // Fetch data from Supabase
+  const { data: metrics, isLoading: metricsLoading, error: metricsError, refetch: refetchMetrics } = useClientMetrics()
+  const { data: domainData, isLoading: domainLoading, error: domainError } = useClientDomain()
+  const { data: timelineData, isLoading: timelineLoading, error: timelineError } = useClientTimeline(50)
+
+  // Show full dashboard skeleton on initial load
+  if (metricsLoading && domainLoading && timelineLoading) {
+    return <DashboardSkeleton />
+  }
+
+  // Show error if metrics fail (critical)
+  if (metricsError) {
+    return (
+      <ErrorDisplay
+        error={metricsError as Error}
+        onRetry={refetchMetrics}
+        context="ClientDashboard - Metrics"
+      />
+    )
+  }
+
+  // Map metrics to card format
+  const clientMetrics = metrics ? [
     {
       id: 'leads',
       label: 'Leads Gerados',
-      value: '247',
-      change: '+42%',
+      value: String(metrics.leads_generated || 0),
+      change: metrics.leads_change ? `${metrics.leads_change > 0 ? '+' : ''}${metrics.leads_change.toFixed(1)}%` : '+0%',
       icon: Users,
       color: 'text-blue-500',
       bgColor: 'bg-blue-500/10',
@@ -53,18 +76,18 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
     {
       id: 'conversions',
       label: 'Conversões',
-      value: '58',
-      change: '+35%',
+      value: String(metrics.conversions || 0),
+      change: `${Math.round(metrics.conversion_rate || 0)}%`,
       icon: Target,
       color: 'text-emerald-500',
       bgColor: 'bg-emerald-500/10',
-      description: 'Taxa: 23.5%'
+      description: `Taxa: ${metrics.conversion_rate?.toFixed(1) || 0}%`
     },
     {
       id: 'roi',
       label: 'ROI',
-      value: '420%',
-      change: '+18%',
+      value: metrics.roi ? `${metrics.roi.toFixed(0)}%` : '0%',
+      change: metrics.roi_change ? `${metrics.roi_change > 0 ? '+' : ''}${metrics.roi_change.toFixed(1)}%` : '+0%',
       icon: TrendingUp,
       color: 'text-teal-500',
       bgColor: 'bg-teal-500/10',
@@ -73,14 +96,14 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
     {
       id: 'views',
       label: 'Visualizações',
-      value: '12.4k',
-      change: '+28%',
+      value: metrics.page_views ? `${(metrics.page_views / 1000).toFixed(1)}k` : '0',
+      change: metrics.views_change ? `${metrics.views_change > 0 ? '+' : ''}${metrics.views_change.toFixed(1)}%` : '+0%',
       icon: Eye,
       color: 'text-orange-500',
       bgColor: 'bg-orange-500/10',
       description: 'Alcance total'
     }
-  ]
+  ] : []
 
   const projectProgress = {
     current: 65,
@@ -155,7 +178,7 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
 
       {/* Main Dashboard Tabs */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-slate-800/50">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-slate-800/50">
           <TabsTrigger value="overview">Visão Geral</TabsTrigger>
           <TabsTrigger value="domain">Domínio & DNS</TabsTrigger>
           <TabsTrigger value="history">Histórico</TabsTrigger>
@@ -165,7 +188,10 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
         {/* Overview Tab - Métricas e Progresso */}
         <TabsContent value="overview" className="space-y-6 mt-6">
           {/* Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {metricsLoading ? (
+            <StatsGridSkeleton />
+          ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             {clientMetrics.map((metric, index) => (
               <motion.div
                 key={metric.id}
@@ -174,7 +200,7 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
                 transition={{ delay: index * 0.1 }}
               >
                 <Card className="border-slate-800 bg-slate-900/50 hover:bg-slate-900/80 transition-all hover:scale-105">
-                  <CardContent className="p-6">
+                  <CardContent className="p-4 sm:p-6">
                     <div className="flex items-center justify-between mb-3">
                       <div className={`p-3 rounded-lg ${metric.bgColor}`}>
                         <metric.icon className={`h-5 w-5 ${metric.color}`} />
@@ -191,8 +217,9 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
               </motion.div>
             ))}
           </div>
+          )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Project Progress */}
         <Card className="border-slate-800 bg-slate-900/50 lg:col-span-2">
           <CardHeader>
@@ -282,7 +309,7 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
       </div>
 
       {/* Documents & Support */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         <Card className="border-slate-800 bg-slate-900/50">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
@@ -342,12 +369,32 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
 
         {/* Domain & DNS Tab - Gestão de Domínio */}
         <TabsContent value="domain" className="mt-6">
-          <DomainManagement />
+          {domainLoading ? (
+            <StatsGridSkeleton />
+          ) : domainError ? (
+            <ErrorDisplay
+              error={domainError as Error}
+              onRetry={() => window.location.reload()}
+              context="Domain Management"
+            />
+          ) : (
+            <DomainManagement domainData={domainData || undefined} />
+          )}
         </TabsContent>
 
         {/* History Tab - Timeline de Interações */}
         <TabsContent value="history" className="mt-6">
-          <ClientHistoryTimeline />
+          {timelineLoading ? (
+            <StatsGridSkeleton />
+          ) : timelineError ? (
+            <ErrorDisplay
+              error={timelineError as Error}
+              onRetry={() => window.location.reload()}
+              context="Client Timeline"
+            />
+          ) : (
+            <ClientHistoryTimeline events={timelineData || []} />
+          )}
         </TabsContent>
 
         {/* Privacy Tab - Controle de Dados */}

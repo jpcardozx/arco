@@ -1,0 +1,434 @@
+/**
+ * Dashboard Server Actions
+ * Supabase-native backend - read operations with RLS enforcement
+ */
+
+'use server'
+
+import { createSupabaseServer } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type Tables = Database['public']['Tables']
+type AnalysisRequest = Tables['analysis_requests']['Row']
+type AnalysisResult = Tables['analysis_results']['Row']
+type Project = Tables['projects']['Row']
+type SupportTicket = Tables['support_tickets']['Row']
+type StorageItem = Tables['storage_items']['Row']
+type UserProfile = Tables['user_profiles']['Row']
+
+// ============================================================================
+// AUTH & USER
+// ============================================================================
+
+export async function getCurrentUser() {
+  const supabase = await createSupabaseServer()
+  const { data: { user }, error } = await supabase.auth.getUser()
+  
+  if (error || !user) {
+    return null
+  }
+
+  // Fetch user profile with tier
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single()
+
+  return { ...user, profile }
+}
+
+// ============================================================================
+// ANALYSIS (Free + Paid)
+// ============================================================================
+
+export async function getUserAnalyses() {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('analysis_requests')
+    .select(`
+      *,
+      analysis_results (*)
+    `)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  if (error) throw error
+  return data as (AnalysisRequest & { analysis_results: AnalysisResult[] })[]
+}
+
+export async function getAnalysisById(id: string) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('analysis_requests')
+    .select(`
+      *,
+      analysis_results (*)
+    `)
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .single()
+
+  if (error) throw error
+  return data as AnalysisRequest & { analysis_results: AnalysisResult[] }
+}
+
+export async function createAnalysisRequest(url: string) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  // Check quota (free users: 3/month)
+  if (user.profile?.tier === 'free') {
+    const { count } = await supabase
+      .from('analysis_requests')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .gte('created_at', new Date(new Date().setDate(1)).toISOString()) // This month
+    
+    if (count && count >= 3) {
+      throw new Error('Monthly quota exceeded. Upgrade to paid plan.')
+    }
+  }
+
+  const { data, error } = await supabase
+    .from('analysis_requests')
+    .insert({
+      user_id: user.id,
+      url,
+      status: 'pending',
+    })
+    .select()
+    .single()
+
+  if (error) throw error
+  
+  revalidatePath('/dashboard/diagnostico')
+  return data
+}
+
+export async function deleteAnalysis(id: string) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { error } = await supabase
+    .from('analysis_requests')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', user.id)
+
+  if (error) throw error
+  
+  revalidatePath('/dashboard/diagnostico')
+}
+
+// ============================================================================
+// PERFORMANCE METRICS (Paid only)
+// ============================================================================
+
+export async function getPerformanceMetrics(url: string, days = 7) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - days)
+
+  const { data, error } = await supabase
+    .from('performance_metrics')
+    .select('*')
+    .eq('url', url)
+    .gte('measured_at', startDate.toISOString())
+    .order('measured_at', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+export async function getARCOIndexHistory(days = 7) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - days)
+
+  const { data, error } = await supabase
+    .from('analysis_results')
+    .select(`
+      arco_index,
+      performance_score,
+      security_score,
+      seo_score,
+      accessibility_score,
+      created_at,
+      analysis_requests!inner(url)
+    `)
+    .gte('created_at', startDate.toISOString())
+    .order('created_at', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+// ============================================================================
+// UPTIME MONITORING (Paid only)
+// ============================================================================
+
+export async function getUptimeData(url: string, hours = 24) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+
+  const startTime = new Date()
+  startTime.setHours(startTime.getHours() - hours)
+
+  const { data, error } = await supabase
+    .from('uptime_checks')
+    .select('*')
+    .eq('url', url)
+    .gte('checked_at', startTime.toISOString())
+    .order('checked_at', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+// ============================================================================
+// DOMAIN HEALTH (Paid only)
+// ============================================================================
+
+export async function getDomainHealth(url: string) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+
+  const { data, error } = await supabase
+    .from('domain_monitoring')
+    .select('*')
+    .eq('url', url)
+    .order('checked_at', { ascending: false })
+    .limit(1)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+// ============================================================================
+// PROJECTS (Paid only)
+// ============================================================================
+
+export async function getUserProjects() {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('projects')
+    .select(`
+      *,
+      project_milestones(*)
+    `)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  if (error) throw error
+  return data
+}
+
+export async function updateMilestone(milestoneId: string, completed: boolean) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { error } = await supabase
+    .from('project_milestones')
+    .update({ completed })
+    .eq('id', milestoneId)
+
+  if (error) throw error
+  
+  revalidatePath('/dashboard/operacoes')
+}
+
+// ============================================================================
+// SUPPORT TICKETS
+// ============================================================================
+
+export async function getUserTickets() {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('support_tickets')
+    .select(`
+      *,
+      support_ticket_messages(*)
+    `)
+    .eq('client_id', user.id)
+    .order('created_at', { ascending: false })
+
+  if (error) throw error
+  return data
+}
+
+export async function createTicket(data: { subject: string; description: string; priority: string }) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: ticket, error } = await supabase
+    .from('support_tickets')
+    .insert({
+      client_id: user.id,
+      subject: data.subject,
+      description: data.description,
+      priority: data.priority,
+      status: 'open',
+    })
+    .select()
+    .single()
+
+  if (error) throw error
+  
+  revalidatePath('/dashboard/operacoes')
+  return ticket
+}
+
+export async function sendTicketMessage(ticketId: string, content: string) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { error } = await supabase
+    .from('support_ticket_messages')
+    .insert({
+      ticket_id: ticketId,
+      author_id: user.id,
+      message: content,
+    })
+
+  if (error) throw error
+  
+  revalidatePath('/dashboard/operacoes')
+}
+
+// ============================================================================
+// STORAGE (Paid only)
+// ============================================================================
+
+export async function getUserFiles() {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('storage_items')
+    .select('*')
+    .eq('uploaded_by', user.id)
+    .order('uploaded_at', { ascending: false })
+
+  if (error) throw error
+  return data
+}
+
+export async function deleteFile(fileId: string) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  // Get file path
+  const { data: file } = await supabase
+    .from('storage_items')
+    .select('file_path')
+    .eq('id', fileId)
+    .eq('uploaded_by', user.id)
+    .single()
+
+  if (!file) throw new Error('File not found')
+
+  // Delete from storage
+  await supabase.storage.from('user-files').remove([file.file_path])
+
+  // Delete from database
+  const { error } = await supabase
+    .from('storage_items')
+    .delete()
+    .eq('id', fileId)
+    .eq('uploaded_by', user.id)
+
+  if (error) throw error
+  
+  revalidatePath('/dashboard/operacoes')
+}
+
+export async function getStorageQuota() {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: files } = await supabase
+    .from('storage_items')
+    .select('size_bytes')
+    .eq('uploaded_by', user.id)
+
+  const used = files?.reduce((sum, f) => sum + (f.size_bytes || 0), 0) || 0
+  const limit = (user.profile as UserProfile)?.tier === 'paid' ? 10737418240 : 0 // 10GB for paid, 0 for free
+
+  return { used, limit, percentage: limit > 0 ? (used / limit) * 100 : 0 }
+}
+
+// ============================================================================
+// PLAYBOOKS (Free + Paid)
+// ============================================================================
+
+export async function getPlaybooks(filters?: { category?: string; impact?: string }) {
+  const supabase = await createSupabaseServer()
+  const user = await getCurrentUser()
+  
+  if (!user) throw new Error('Unauthorized')
+
+  let query = supabase
+    .from('playbooks')
+    .select('*')
+    .order('impact_score', { ascending: false })
+
+  if (filters?.category) {
+    query = query.eq('category', filters.category)
+  }
+
+  const { data, error } = await query
+
+  if (error) throw error
+  return data
+}

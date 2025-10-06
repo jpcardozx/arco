@@ -1,0 +1,585 @@
+'use client'
+
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Area,
+  AreaChart,
+} from 'recharts'
+import {
+  Activity,
+  Zap,
+  Shield,
+  Globe,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  TrendingUp,
+  Server,
+  Lock,
+  Wifi,
+  AlertCircle,
+} from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+
+// Mock Performance Data
+const mockPerformanceData = [
+  { date: '01 Fev', lcp: 1.2, fid: 85, cls: 0.05, lighthouse: 92 },
+  { date: '02 Fev', lcp: 1.1, fid: 80, cls: 0.04, lighthouse: 94 },
+  { date: '03 Fev', lcp: 1.3, fid: 90, cls: 0.06, lighthouse: 91 },
+  { date: '04 Fev', lcp: 1.0, fid: 75, cls: 0.03, lighthouse: 95 },
+  { date: '05 Fev', lcp: 1.2, fid: 82, cls: 0.05, lighthouse: 93 },
+]
+
+// Mock Security Data
+const mockSecurityScans = [
+  {
+    id: '1',
+    date: '2025-02-05T10:00:00Z',
+    score: 88,
+    vulnerabilities_high: 0,
+    vulnerabilities_medium: 2,
+    vulnerabilities_low: 5,
+    ssl_valid: true,
+    headers_configured: true,
+  },
+  {
+    id: '2',
+    date: '2025-02-04T10:00:00Z',
+    score: 85,
+    vulnerabilities_high: 0,
+    vulnerabilities_medium: 3,
+    vulnerabilities_low: 6,
+    ssl_valid: true,
+    headers_configured: true,
+  },
+]
+
+// Mock Uptime Data
+const mockUptimeData = [
+  { date: '00:00', uptime: 100, response_time: 120 },
+  { date: '04:00', uptime: 100, response_time: 135 },
+  { date: '08:00', uptime: 100, response_time: 145 },
+  { date: '12:00', uptime: 99.8, response_time: 180 },
+  { date: '16:00', uptime: 100, response_time: 150 },
+  { date: '20:00', uptime: 100, response_time: 125 },
+]
+
+// Mock Domain Health
+const mockDomainHealth = {
+  domain: 'example.com',
+  ssl: {
+    valid: true,
+    expires_at: '2025-06-15',
+    issuer: 'Let\'s Encrypt',
+    days_remaining: 131,
+  },
+  dns: {
+    a_record: { status: 'ok', value: '192.0.2.1' },
+    mx_record: { status: 'ok', value: 'mail.example.com' },
+    spf_record: { status: 'ok', value: 'v=spf1 include:_spf.google.com ~all' },
+    dmarc_record: { status: 'warning', value: 'Missing DMARC policy' },
+  },
+  blacklist: {
+    status: 'clean',
+    checked_lists: 15,
+    last_check: '2025-02-05T10:00:00Z',
+  },
+}
+
+export default function SaudePage() {
+  const searchParams = useSearchParams()
+  const defaultTab = searchParams.get('tab') || 'performance'
+  const [activeTab, setActiveTab] = useState(defaultTab)
+
+  const currentPerformance = mockPerformanceData[mockPerformanceData.length - 1]
+  const currentSecurity = mockSecurityScans[0]
+  const avgUptime = mockUptimeData.reduce((acc, d) => acc + d.uptime, 0) / mockUptimeData.length
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Monitoramento de Saúde</h1>
+        <p className="text-muted-foreground">
+          Acompanhe performance, segurança e disponibilidade em tempo real
+        </p>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-blue-600" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Lighthouse
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{currentPerformance.lighthouse}</div>
+            <Progress value={currentPerformance.lighthouse} className="mt-2 h-1" />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Shield className="h-4 w-4 text-red-600" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Segurança
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{currentSecurity.score}/100</div>
+            <p className="text-xs text-green-600 mt-1">Nenhuma vulnerabilidade crítica</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Activity className="h-4 w-4 text-green-600" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Uptime (24h)
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{avgUptime.toFixed(2)}%</div>
+            <p className="text-xs text-green-600 mt-1">Excelente disponibilidade</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Globe className="h-4 w-4 text-purple-600" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Domínio
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-600" />
+              <span className="text-lg font-semibold">Saudável</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">SSL válido por 131 dias</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="performance">
+            <Zap className="mr-2 h-4 w-4" />
+            Performance
+          </TabsTrigger>
+          <TabsTrigger value="seguranca">
+            <Shield className="mr-2 h-4 w-4" />
+            Segurança
+          </TabsTrigger>
+          <TabsTrigger value="dominio">
+            <Globe className="mr-2 h-4 w-4" />
+            Domínio & Uptime
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Performance Tab */}
+        <TabsContent value="performance" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Core Web Vitals</CardTitle>
+              <CardDescription>Métricas de experiência do usuário (últimos 7 dias)</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* LCP */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <h4 className="text-sm font-semibold">LCP (Largest Contentful Paint)</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Tempo até o maior elemento visível
+                    </p>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800 border-green-300">
+                    {currentPerformance.lcp}s
+                  </Badge>
+                </div>
+                <Progress value={85} className="h-2" />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Meta: {'<'}2.5s (Bom) | Atual: Excelente
+                </p>
+              </div>
+
+              {/* FID */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <h4 className="text-sm font-semibold">FID (First Input Delay)</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Tempo de resposta à primeira interação
+                    </p>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800 border-green-300">
+                    {currentPerformance.fid}ms
+                  </Badge>
+                </div>
+                <Progress value={90} className="h-2" />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Meta: {'<'}100ms (Bom) | Atual: Excelente
+                </p>
+              </div>
+
+              {/* CLS */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <h4 className="text-sm font-semibold">CLS (Cumulative Layout Shift)</h4>
+                    <p className="text-xs text-muted-foreground">Estabilidade visual do layout</p>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800 border-green-300">
+                    {currentPerformance.cls}
+                  </Badge>
+                </div>
+                <Progress value={95} className="h-2" />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Meta: {'<'}0.1 (Bom) | Atual: Excelente
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Lighthouse Score (Histórico)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={mockPerformanceData}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                  <XAxis
+                    dataKey="date"
+                    className="text-xs"
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                  />
+                  <YAxis
+                    domain={[0, 100]}
+                    className="text-xs"
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--background))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="lighthouse"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                    name="Lighthouse Score"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Security Tab */}
+        <TabsContent value="seguranca" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Análise de Segurança</CardTitle>
+                  <CardDescription>Última varredura: Há 2 horas</CardDescription>
+                </div>
+                <Button size="sm" variant="outline">
+                  <Shield className="mr-2 h-4 w-4" />
+                  Nova Varredura
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Security Score */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-semibold">Score Geral de Segurança</h4>
+                  <span className="text-3xl font-bold text-green-600">{currentSecurity.score}</span>
+                </div>
+                <Progress value={currentSecurity.score} className="h-3" />
+              </div>
+
+              {/* Vulnerabilities */}
+              <div>
+                <h4 className="text-sm font-semibold mb-3">Vulnerabilidades Identificadas</h4>
+                <div className="grid gap-3">
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
+                    <div className="flex items-center gap-3">
+                      <AlertCircle className="h-5 w-5 text-red-600" />
+                      <div>
+                        <p className="text-sm font-medium">Alta Severidade</p>
+                        <p className="text-xs text-muted-foreground">
+                          Requer ação imediata
+                        </p>
+                      </div>
+                    </div>
+                    <Badge variant="destructive">{currentSecurity.vulnerabilities_high}</Badge>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
+                    <div className="flex items-center gap-3">
+                      <AlertTriangle className="h-5 w-5 text-amber-600" />
+                      <div>
+                        <p className="text-sm font-medium">Média Severidade</p>
+                        <p className="text-xs text-muted-foreground">
+                          Ação recomendada em breve
+                        </p>
+                      </div>
+                    </div>
+                    <Badge variant="secondary">{currentSecurity.vulnerabilities_medium}</Badge>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
+                    <div className="flex items-center gap-3">
+                      <AlertTriangle className="h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium">Baixa Severidade</p>
+                        <p className="text-xs text-muted-foreground">
+                          Monitoramento contínuo
+                        </p>
+                      </div>
+                    </div>
+                    <Badge variant="outline">{currentSecurity.vulnerabilities_low}</Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* SSL & Headers */}
+              <div>
+                <h4 className="text-sm font-semibold mb-3">Configurações de Segurança</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">SSL/TLS configurado corretamente</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">Headers de segurança (CSP, HSTS, etc.)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">HTTPS obrigatório habilitado</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">Sem bibliotecas JS vulneráveis</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Domain & Uptime Tab */}
+        <TabsContent value="dominio" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* SSL Status */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Lock className="h-5 w-5 text-green-600" />
+                  <CardTitle>Status SSL/TLS</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Validade</span>
+                  <Badge className="bg-green-100 text-green-800 border-green-300">Válido</Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Expira em</span>
+                  <span className="text-sm font-medium">{mockDomainHealth.ssl.days_remaining} dias</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Data de Expiração</span>
+                  <span className="text-sm font-medium">{mockDomainHealth.ssl.expires_at}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Emissor</span>
+                  <span className="text-sm font-medium">{mockDomainHealth.ssl.issuer}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* DNS Records */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Server className="h-5 w-5 text-blue-600" />
+                  <CardTitle>Registros DNS</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">A Record</span>
+                  </div>
+                  <code className="text-xs">{mockDomainHealth.dns.a_record.value}</code>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">MX Record</span>
+                  </div>
+                  <code className="text-xs">{mockDomainHealth.dns.mx_record.value}</code>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">SPF Record</span>
+                  </div>
+                  <Badge variant="secondary" className="text-xs">Configurado</Badge>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded-lg bg-amber-50 border border-amber-200">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    <span className="text-sm">DMARC Record</span>
+                  </div>
+                  <Badge variant="secondary" className="bg-amber-100 text-amber-800 text-xs">Ausente</Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Uptime Monitoring */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Activity className="h-5 w-5 text-green-600" />
+                <CardTitle>Monitoramento de Uptime (Últimas 24 horas)</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <AreaChart data={mockUptimeData}>
+                  <defs>
+                    <linearGradient id="colorUptime" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                  <XAxis
+                    dataKey="date"
+                    className="text-xs"
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                  />
+                  <YAxis
+                    domain={[99, 100]}
+                    className="text-xs"
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--background))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="uptime"
+                    stroke="#10b981"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorUptime)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Response Time */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-blue-600" />
+                <CardTitle>Tempo de Resposta (Últimas 24 horas)</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={mockUptimeData}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                  <XAxis
+                    dataKey="date"
+                    className="text-xs"
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                  />
+                  <YAxis
+                    className="text-xs"
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--background))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                    }}
+                  />
+                  <Bar dataKey="response_time" fill="#3b82f6" name="Response Time (ms)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Blacklist Status */}
+          <Card className="border-green-200 bg-green-50/50">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <CardTitle>Status em Blacklists</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">Seu domínio está limpo</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Verificado em {mockDomainHealth.blacklist.checked_lists} listas públicas
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Última verificação: Há 2 horas
+                  </p>
+                </div>
+                <Badge className="bg-green-100 text-green-800 border-green-300">Clean</Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}

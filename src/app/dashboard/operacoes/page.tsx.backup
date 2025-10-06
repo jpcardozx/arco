@@ -1,0 +1,657 @@
+'use client';
+
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Progress } from '@/components/ui/progress';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  FolderKanban,
+  MessageSquare,
+  FileUp,
+  CheckCircle2,
+  Circle,
+  Clock,
+  AlertCircle,
+  Calendar,
+  User,
+  Paperclip,
+  Send,
+  Upload,
+  File,
+  FileText,
+  Image as ImageIcon,
+  Video,
+  Download,
+  Trash2,
+  ExternalLink,
+} from 'lucide-react';
+
+// Mock data - Projetos
+const mockProjects = [
+  {
+    id: 1,
+    name: 'Migração Next.js 15',
+    status: 'in_progress',
+    progress: 75,
+    startDate: '2025-01-01',
+    deadline: '2025-01-15',
+    milestones: [
+      { id: 1, name: 'Setup inicial', completed: true },
+      { id: 2, name: 'Migração de rotas', completed: true },
+      { id: 3, name: 'Testes de integração', completed: false },
+      { id: 4, name: 'Deploy em produção', completed: false },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Otimização Core Web Vitals',
+    status: 'in_progress',
+    progress: 45,
+    startDate: '2024-12-20',
+    deadline: '2025-01-10',
+    milestones: [
+      { id: 1, name: 'Audit inicial', completed: true },
+      { id: 2, name: 'Compressão de imagens', completed: true },
+      { id: 3, name: 'Lazy loading', completed: false },
+      { id: 4, name: 'Code splitting', completed: false },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Implementação SSL/TLS',
+    status: 'completed',
+    progress: 100,
+    startDate: '2024-12-10',
+    deadline: '2024-12-20',
+    milestones: [
+      { id: 1, name: 'Aquisição certificado', completed: true },
+      { id: 2, name: 'Configuração servidor', completed: true },
+      { id: 3, name: 'Redirect HTTP→HTTPS', completed: true },
+      { id: 4, name: 'Testes de segurança', completed: true },
+    ],
+  },
+  {
+    id: 4,
+    name: 'SEO On-Page Completo',
+    status: 'pending',
+    progress: 0,
+    startDate: '2025-01-15',
+    deadline: '2025-02-01',
+    milestones: [
+      { id: 1, name: 'Keyword research', completed: false },
+      { id: 2, name: 'Meta tags optimization', completed: false },
+      { id: 3, name: 'Schema markup', completed: false },
+      { id: 4, name: 'Internal linking', completed: false },
+    ],
+  },
+];
+
+// Mock data - Tickets de suporte
+const mockTickets = [
+  {
+    id: 1,
+    title: 'Site lento em mobile',
+    status: 'open',
+    priority: 'high',
+    category: 'performance',
+    createdAt: '2025-01-04 14:23',
+    messages: [
+      {
+        id: 1,
+        author: 'Cliente',
+        content: 'Meu site está muito lento quando acesso pelo celular. Demora mais de 5 segundos para carregar.',
+        timestamp: '2025-01-04 14:23',
+      },
+      {
+        id: 2,
+        author: 'Suporte ARCO',
+        content: 'Olá! Vou analisar o site e verificar as métricas de performance mobile. Aguarde retorno em até 2 horas.',
+        timestamp: '2025-01-04 14:45',
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Erro 404 em páginas antigas',
+    status: 'in_progress',
+    priority: 'medium',
+    category: 'technical',
+    createdAt: '2025-01-03 10:15',
+    messages: [
+      {
+        id: 1,
+        author: 'Cliente',
+        content: 'Algumas páginas antigas estão retornando erro 404. Links do Google estão quebrados.',
+        timestamp: '2025-01-03 10:15',
+      },
+      {
+        id: 2,
+        author: 'Suporte ARCO',
+        content: 'Identifiquei 12 páginas com erro 404. Vou configurar redirects 301 para as novas URLs. Previsão: 1 dia.',
+        timestamp: '2025-01-03 11:30',
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Dúvida sobre ARCO Index',
+    status: 'resolved',
+    priority: 'low',
+    category: 'question',
+    createdAt: '2025-01-02 16:40',
+    messages: [
+      {
+        id: 1,
+        author: 'Cliente',
+        content: 'Como é calculado o ARCO Index? Quais fatores influenciam a pontuação?',
+        timestamp: '2025-01-02 16:40',
+      },
+      {
+        id: 2,
+        author: 'Suporte ARCO',
+        content: 'O ARCO Index combina 4 pilares: Performance (Google Lighthouse), Security (vulnerabilidades), SEO (otimizações) e Accessibility (WCAG 2.1). Cada pilar tem peso igual (25%).',
+        timestamp: '2025-01-02 17:05',
+      },
+      {
+        id: 3,
+        author: 'Cliente',
+        content: 'Perfeito, obrigado!',
+        timestamp: '2025-01-02 17:12',
+      },
+    ],
+  },
+];
+
+// Mock data - Arquivos
+const mockFiles = [
+  {
+    id: 1,
+    name: 'lighthouse-report-2025-01-04.pdf',
+    type: 'pdf',
+    size: 2.3,
+    uploadedAt: '2025-01-04 15:32',
+    category: 'reports',
+  },
+  {
+    id: 2,
+    name: 'logo-optimized.webp',
+    type: 'image',
+    size: 0.45,
+    uploadedAt: '2025-01-03 11:20',
+    category: 'assets',
+  },
+  {
+    id: 3,
+    name: 'video-tutorial-seo.mp4',
+    type: 'video',
+    size: 125.6,
+    uploadedAt: '2025-01-02 09:15',
+    category: 'tutorials',
+  },
+  {
+    id: 4,
+    name: 'analise-competidores.xlsx',
+    type: 'document',
+    size: 1.8,
+    uploadedAt: '2025-01-01 14:45',
+    category: 'analysis',
+  },
+  {
+    id: 5,
+    name: 'backup-database-2024-12-31.sql',
+    type: 'document',
+    size: 45.2,
+    uploadedAt: '2024-12-31 23:59',
+    category: 'backups',
+  },
+];
+
+const statusConfig = {
+  pending: { label: 'Pendente', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
+  in_progress: { label: 'Em Andamento', color: 'bg-blue-100 text-blue-800', icon: Circle },
+  completed: { label: 'Concluído', color: 'bg-green-100 text-green-800', icon: CheckCircle2 },
+  open: { label: 'Aberto', color: 'bg-red-100 text-red-800', icon: AlertCircle },
+  resolved: { label: 'Resolvido', color: 'bg-green-100 text-green-800', icon: CheckCircle2 },
+};
+
+const priorityConfig = {
+  low: { label: 'Baixa', color: 'bg-gray-100 text-gray-800' },
+  medium: { label: 'Média', color: 'bg-amber-100 text-amber-800' },
+  high: { label: 'Alta', color: 'bg-red-100 text-red-800' },
+};
+
+const fileIcons = {
+  pdf: FileText,
+  image: ImageIcon,
+  video: Video,
+  document: File,
+};
+
+export default function OperacoesPage() {
+  const [activeTab, setActiveTab] = useState('projects');
+  const [selectedTicket, setSelectedTicket] = useState<number | null>(null);
+  const [newMessage, setNewMessage] = useState('');
+
+  // Cálculos para storage
+  const totalStorage = mockFiles.reduce((sum, file) => sum + file.size, 0);
+  const storageLimit = 10240; // 10GB in MB
+  const storagePercentage = (totalStorage / storageLimit) * 100;
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold">Operações</h1>
+        <p className="text-muted-foreground">
+          Gerencie projetos, suporte e arquivos do seu site
+        </p>
+      </div>
+
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="projects">
+            <FolderKanban className="mr-2 h-4 w-4" />
+            Projetos
+          </TabsTrigger>
+          <TabsTrigger value="support">
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Suporte
+          </TabsTrigger>
+          <TabsTrigger value="files">
+            <FileUp className="mr-2 h-4 w-4" />
+            Arquivos
+          </TabsTrigger>
+        </TabsList>
+
+        {/* TAB 1: PROJECTS */}
+        <TabsContent value="projects" className="space-y-6">
+          {/* Quick Stats */}
+          <div className="grid gap-4 md:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total de Projetos</CardTitle>
+                <FolderKanban className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{mockProjects.length}</div>
+                <p className="text-xs text-muted-foreground">2 em andamento</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Concluídos</CardTitle>
+                <CheckCircle2 className="h-4 w-4 text-green-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {mockProjects.filter((p) => p.status === 'completed').length}
+                </div>
+                <p className="text-xs text-muted-foreground">25% do total</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Milestones Atingidos</CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {mockProjects.reduce((sum, p) => sum + p.milestones.filter((m) => m.completed).length, 0)}
+                </div>
+                <p className="text-xs text-muted-foreground">De 16 total</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Próximo Deadline</CardTitle>
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">10 Jan</div>
+                <p className="text-xs text-muted-foreground">Otimização CWV</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Projects List */}
+          <div className="space-y-4">
+            {mockProjects.map((project) => {
+              const StatusIcon = statusConfig[project.status as keyof typeof statusConfig].icon;
+              return (
+                <Card key={project.id}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CardTitle>{project.name}</CardTitle>
+                          <Badge className={statusConfig[project.status as keyof typeof statusConfig].color}>
+                            <StatusIcon className="mr-1 h-3 w-3" />
+                            {statusConfig[project.status as keyof typeof statusConfig].label}
+                          </Badge>
+                        </div>
+                        <CardDescription>
+                          Início: {new Date(project.startDate).toLocaleDateString('pt-BR')} • 
+                          Deadline: {new Date(project.deadline).toLocaleDateString('pt-BR')}
+                        </CardDescription>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        Ver Detalhes
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {/* Progress Bar */}
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">Progresso</span>
+                        <span className="text-muted-foreground">{project.progress}%</span>
+                      </div>
+                      <Progress value={project.progress} className="h-2" />
+                    </div>
+
+                    {/* Milestones */}
+                    <div>
+                      <h4 className="text-sm font-medium mb-3">Milestones</h4>
+                      <div className="grid gap-2 md:grid-cols-2">
+                        {project.milestones.map((milestone) => (
+                          <div
+                            key={milestone.id}
+                            className="flex items-center gap-2 p-2 border rounded"
+                          >
+                            {milestone.completed ? (
+                              <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                            ) : (
+                              <Circle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                            )}
+                            <span
+                              className={`text-sm ${
+                                milestone.completed ? 'text-muted-foreground line-through' : ''
+                              }`}
+                            >
+                              {milestone.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        {/* TAB 2: SUPPORT */}
+        <TabsContent value="support" className="space-y-6">
+          {/* Quick Stats */}
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Tickets Abertos</CardTitle>
+                <AlertCircle className="h-4 w-4 text-red-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {mockTickets.filter((t) => t.status === 'open' || t.status === 'in_progress').length}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {mockTickets.filter((t) => t.priority === 'high').length} alta prioridade
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Resolvidos Hoje</CardTitle>
+                <CheckCircle2 className="h-4 w-4 text-green-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">1</div>
+                <p className="text-xs text-muted-foreground">Tempo médio: 4h 30min</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Satisfação</CardTitle>
+                <User className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">4.8/5.0</div>
+                <p className="text-xs text-muted-foreground">Baseado em 24 avaliações</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Tickets List */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Tickets */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Todos os Tickets</h3>
+                <Button>
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Novo Ticket
+                </Button>
+              </div>
+
+              {mockTickets.map((ticket) => {
+                const StatusIcon = statusConfig[ticket.status as keyof typeof statusConfig].icon;
+                return (
+                  <Card
+                    key={ticket.id}
+                    className={`cursor-pointer transition-all ${
+                      selectedTicket === ticket.id ? 'ring-2 ring-blue-600' : ''
+                    }`}
+                    onClick={() => setSelectedTicket(ticket.id)}
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-base">{ticket.title}</CardTitle>
+                          <CardDescription className="mt-1">
+                            Criado em {ticket.createdAt}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge className={statusConfig[ticket.status as keyof typeof statusConfig].color}>
+                          <StatusIcon className="mr-1 h-3 w-3" />
+                          {statusConfig[ticket.status as keyof typeof statusConfig].label}
+                        </Badge>
+                        <Badge className={priorityConfig[ticket.priority as keyof typeof priorityConfig].color}>
+                          {priorityConfig[ticket.priority as keyof typeof priorityConfig].label}
+                        </Badge>
+                        <Badge variant="outline">{ticket.category}</Badge>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Messages */}
+            <div>
+              {selectedTicket ? (
+                <Card className="h-[600px] flex flex-col">
+                  <CardHeader>
+                    <CardTitle>
+                      {mockTickets.find((t) => t.id === selectedTicket)?.title}
+                    </CardTitle>
+                    <CardDescription>
+                      Ticket #{selectedTicket.toString().padStart(4, '0')}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col">
+                    {/* Messages */}
+                    <div className="flex-1 space-y-4 overflow-y-auto mb-4">
+                      {mockTickets
+                        .find((t) => t.id === selectedTicket)
+                        ?.messages.map((message) => (
+                          <div
+                            key={message.id}
+                            className={`flex ${
+                              message.author === 'Cliente' ? 'justify-end' : 'justify-start'
+                            }`}
+                          >
+                            <div
+                              className={`max-w-[80%] p-3 rounded-lg ${
+                                message.author === 'Cliente'
+                                  ? 'bg-blue-600 text-white'
+                                  : 'bg-muted'
+                              }`}
+                            >
+                              <p className="text-sm font-medium mb-1">{message.author}</p>
+                              <p className="text-sm">{message.content}</p>
+                              <p
+                                className={`text-xs mt-2 ${
+                                  message.author === 'Cliente'
+                                    ? 'text-blue-100'
+                                    : 'text-muted-foreground'
+                                }`}
+                              >
+                                {message.timestamp}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+
+                    {/* Input */}
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="icon">
+                        <Paperclip className="h-4 w-4" />
+                      </Button>
+                      <Input
+                        placeholder="Digite sua mensagem..."
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                      />
+                      <Button size="icon">
+                        <Send className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="h-[600px] flex items-center justify-center">
+                  <CardContent className="text-center">
+                    <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">
+                      Selecione um ticket para ver as mensagens
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* TAB 3: FILES */}
+        <TabsContent value="files" className="space-y-6">
+          {/* Storage Stats */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Armazenamento</CardTitle>
+                  <CardDescription>
+                    {totalStorage.toFixed(2)} MB de {(storageLimit / 1024).toFixed(0)} GB usados
+                  </CardDescription>
+                </div>
+                <Badge variant={storagePercentage > 80 ? 'destructive' : 'secondary'}>
+                  {storagePercentage.toFixed(1)}% usado
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Progress value={storagePercentage} className="h-2" />
+              {storagePercentage > 80 && (
+                <p className="text-sm text-red-600 mt-2">
+                  ⚠️ Espaço de armazenamento próximo do limite. Considere excluir arquivos antigos.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Upload Area */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Fazer Upload</CardTitle>
+              <CardDescription>Arraste arquivos ou clique para selecionar</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:border-blue-600 transition-colors">
+                <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-sm text-muted-foreground mb-2">
+                  Arraste e solte seus arquivos aqui
+                </p>
+                <p className="text-xs text-muted-foreground mb-4">
+                  ou clique para selecionar (máx. 100 MB por arquivo)
+                </p>
+                <Button>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Selecionar Arquivos
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Files List */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Seus Arquivos ({mockFiles.length})</CardTitle>
+              <CardDescription>Arquivos enviados e relatórios gerados</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {mockFiles.map((file) => {
+                  const FileIcon = fileIcons[file.type as keyof typeof fileIcons] || File;
+                  return (
+                    <div
+                      key={file.id}
+                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <FileIcon className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{file.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {file.size} MB • {file.uploadedAt}
+                          </p>
+                        </div>
+                        <Badge variant="outline" className="flex-shrink-0">
+                          {file.category}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2 ml-4">
+                        <Button variant="ghost" size="sm">
+                          <Download className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <ExternalLink className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Trash2 className="h-4 w-4 text-red-600" />
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

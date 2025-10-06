@@ -3,31 +3,27 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, User, Phone, Mail, MapPin, Building2, Save, AlertCircle } from 'lucide-react'
-import { Lead, LeadStatus, LeadInput, LeadUpdate } from '@/lib/types/supabase-helpers'
-import { LeadsServiceWrapper as LeadsService } from '@/lib/services/client-wrapper'
+import { Lead, LeadStatus, LeadInput, LeadUpdate, LeadWithName } from '@/lib/types/supabase-helpers'
+import { LeadsService } from '@/lib/supabase/leads-service'
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser'
+import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 
 interface LeadModalProps {
     isOpen: boolean
     onClose: () => void
     onSave: () => void
-    lead?: Lead // Para edição
+    lead?: LeadWithName // Para edição
 }
 
 export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
     const { user } = useCurrentUser()
     const [formData, setFormData] = useState({
-        name: '',
+        full_name: '',
         email: '',
         phone: '',
-        notes: '',
+        company_name: '',
         source: 'website' as string,
         status: 'new' as LeadStatus,
-        priority: 'medium' as 'low' | 'medium' | 'high',
-        interest_type: 'buy' as string,
-        budget_min: '',
-        budget_max: '',
-        preferred_location: ''
     })
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState<Record<string, string>>({})
@@ -35,31 +31,21 @@ export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
     useEffect(() => {
         if (lead) {
             setFormData({
-                name: lead.name || '',
+                full_name: lead.name || '',
                 email: lead.email,
                 phone: lead.phone || '',
-                notes: lead.notes || '',
+                company_name: lead.company_name || '',
                 source: lead.source || 'website',
                 status: lead.status as LeadStatus,
-                priority: lead.priority as 'low' | 'medium' | 'high' || 'medium',
-                interest_type: lead.interest_type || 'buy',
-                budget_min: lead.budget_min?.toString() || '',
-                budget_max: lead.budget_max?.toString() || '',
-                preferred_location: lead.preferred_location || ''
             })
         } else {
             setFormData({
-                name: '',
+                full_name: '',
                 email: '',
                 phone: '',
-                notes: '',
+                company_name: '',
                 source: 'website',
                 status: 'new',
-                priority: 'medium',
-                interest_type: 'buy',
-                budget_min: '',
-                budget_max: '',
-                preferred_location: ''
             })
         }
     }, [lead, isOpen])
@@ -67,18 +53,10 @@ export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
     const validateForm = () => {
         const newErrors: Record<string, string> = {}
 
-        if (!formData.name.trim()) {
-            newErrors.name = 'Nome é obrigatório'
-        }
-
         if (!formData.email.trim()) {
             newErrors.email = 'Email é obrigatório'
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             newErrors.email = 'Email inválido'
-        }
-
-        if (!formData.phone.trim()) {
-            newErrors.phone = 'Telefone é obrigatório'
         }
 
         setErrors(newErrors)
@@ -93,41 +71,30 @@ export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
         setLoading(true)
 
         try {
+            const supabase = createSupabaseBrowserClient()
+
             if (lead?.id) {
                 const leadData: LeadUpdate = {
-                    name: formData.name.trim(),
+                    full_name: formData.full_name.trim() || null,
                     email: formData.email.trim(),
-                    phone: formData.phone.trim(),
-                    notes: formData.notes.trim(),
-                    source: formData.source,
+                    phone: formData.phone.trim() || null,
+                    company_name: formData.company_name.trim() || null,
+                    source: formData.source || null,
                     status: formData.status,
-                    priority: formData.priority,
-                    interest_type: formData.interest_type,
-                    budget_min: formData.budget_min ? parseFloat(formData.budget_min) : null,
-                    budget_max: formData.budget_max ? parseFloat(formData.budget_max) : null,
-                    preferred_location: formData.preferred_location.trim() || null,
                 }
-                await LeadsService.updateLead(lead.id, leadData)
+                await LeadsService.updateLead(supabase, lead.id, leadData)
             } else {
                 const leadData: LeadInput = {
-                    name: formData.name.trim(),
+                    full_name: formData.full_name.trim() || null,
                     email: formData.email.trim(),
-                    phone: formData.phone.trim(),
-                    notes: formData.notes.trim(),
-                    source: formData.source,
+                    phone: formData.phone.trim() || null,
+                    company_name: formData.company_name.trim() || null,
+                    source: formData.source || null,
                     status: formData.status,
-                    priority: formData.priority,
-                    interest_type: formData.interest_type,
-                    budget_min: formData.budget_min ? parseFloat(formData.budget_min) : null,
-                    budget_max: formData.budget_max ? parseFloat(formData.budget_max) : null,
-                    preferred_location: formData.preferred_location.trim() || null,
                     assigned_to: user?.id || null,
-                    last_contact: null,
-                    next_follow_up: null,
-                    lead_score: null,
-                    metadata: null,
+                    analysis_id: null,
                 }
-                await LeadsService.createLead(leadData)
+                await LeadsService.createLead(supabase, leadData)
             }
 
             onSave()
@@ -180,15 +147,11 @@ export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
                                     </label>
                                     <input
                                         type="text"
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name ? 'border-red-500' : 'border-gray-300'
-                                            }`}
+                                        value={formData.full_name}
+                                        onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Nome completo do lead"
                                     />
-                                    {errors.name && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                                    )}
                                 </div>
 
                                 {/* Email */}
@@ -214,36 +177,33 @@ export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         <Phone size={16} className="inline mr-2" />
-                                        Telefone *
+                                        Telefone
                                     </label>
                                     <input
                                         type="tel"
                                         value={formData.phone}
                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.phone ? 'border-red-500' : 'border-gray-300'
-                                            }`}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="(11) 99999-9999"
                                     />
-                                    {errors.phone && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-                                    )}
                                 </div>
 
-                                {/* Notas */}
+                                {/* Empresa */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Notas
+                                        <Building2 size={16} className="inline mr-2" />
+                                        Empresa
                                     </label>
-                                    <textarea
-                                        value={formData.notes}
-                                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                                    <input
+                                        type="text"
+                                        value={formData.company_name}
+                                        onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        rows={3}
-                                        placeholder="Notas sobre o lead..."
+                                        placeholder="Nome da empresa"
                                     />
                                 </div>
 
-                                {/* Status e Tipo */}
+                                {/* Status e Source */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -264,63 +224,19 @@ export function LeadModal({ isOpen, onClose, onSave, lead }: LeadModalProps) {
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Interesse
+                                            Origem
                                         </label>
                                         <select
-                                            value={formData.interest_type}
-                                            onChange={(e) => setFormData({ ...formData, interest_type: e.target.value })}
+                                            value={formData.source}
+                                            onChange={(e) => setFormData({ ...formData, source: e.target.value })}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                         >
-                                            <option value="buy">Comprar</option>
-                                            <option value="rent">Alugar</option>
-                                            <option value="sell">Vender</option>
-                                            <option value="evaluate">Avaliar</option>
+                                            <option value="website">Website</option>
+                                            <option value="referral">Indicação</option>
+                                            <option value="social">Redes Sociais</option>
+                                            <option value="ads">Anúncios</option>
                                         </select>
                                     </div>
-                                </div>
-
-                                {/* Orçamento */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Orçamento Mín.
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.budget_min}
-                                            onChange={(e) => setFormData({ ...formData, budget_min: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="0"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Orçamento Máx.
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.budget_max}
-                                            onChange={(e) => setFormData({ ...formData, budget_max: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Localização */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        <MapPin size={16} className="inline mr-2" />
-                                        Localização Preferida
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={formData.preferred_location}
-                                        onChange={(e) => setFormData({ ...formData, preferred_location: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="Bairro, cidade ou região preferida"
-                                    />
                                 </div>
 
                                 {/* Error Message */}

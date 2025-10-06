@@ -1,0 +1,403 @@
+'use client'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts'
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Zap,
+  Shield,
+  Globe,
+  Target,
+  Calendar,
+  ArrowUpRight,
+  Sparkles,
+} from 'lucide-react'
+import Link from 'next/link'
+
+// Mock data - will be replaced with real Supabase queries
+const mockARCOHistory = [
+  { date: '01 Jan', arco_index: 72, performance: 75, security: 68, seo: 80, accessibility: 65 },
+  { date: '08 Jan', arco_index: 76, performance: 78, security: 72, seo: 82, accessibility: 68 },
+  { date: '15 Jan', arco_index: 79, performance: 82, security: 75, seo: 85, accessibility: 72 },
+  { date: '22 Jan', arco_index: 83, performance: 85, security: 80, seo: 87, accessibility: 78 },
+  { date: '29 Jan', arco_index: 87, performance: 90, security: 82, seo: 92, accessibility: 84 },
+  { date: '05 Fev', arco_index: 89, performance: 92, security: 85, seo: 94, accessibility: 86 },
+  { date: '12 Fev', arco_index: 91, performance: 94, security: 88, seo: 95, accessibility: 88 },
+]
+
+const mockWeeklyFocus = {
+  title: 'Otimização de Performance',
+  description: 'Esta semana estamos focados em melhorar os Core Web Vitals do seu site.',
+  tasks: [
+    { title: 'Otimizar imagens da homepage', status: 'completed' },
+    { title: 'Implementar lazy loading', status: 'completed' },
+    { title: 'Minificar CSS/JS', status: 'in_progress' },
+    { title: 'Configurar CDN', status: 'pending' },
+  ],
+  progress: 50,
+}
+
+const mockRecentInsights = [
+  {
+    id: '1',
+    title: 'Análise de Segurança - Janeiro 2025',
+    excerpt: 'Implementamos headers de segurança CSP e HSTS, aumentando o score de 75 para 88.',
+    published_at: '2025-01-28T10:00:00Z',
+    category: 'security',
+  },
+  {
+    id: '2',
+    title: 'Otimizações de Performance Realizadas',
+    excerpt: 'Com as otimizações de imagens e CDN, reduzimos o LCP de 2.5s para 1.2s.',
+    published_at: '2025-01-21T10:00:00Z',
+    category: 'performance',
+  },
+]
+
+const getScoreColor = (score: number) => {
+  if (score >= 90) return 'text-green-600'
+  if (score >= 70) return 'text-amber-600'
+  return 'text-red-600'
+}
+
+const getScoreBgColor = (score: number) => {
+  if (score >= 90) return 'bg-green-50 border-green-200'
+  if (score >= 70) return 'bg-amber-50 border-amber-200'
+  return 'bg-red-50 border-red-200'
+}
+
+const categoryIcons = {
+  performance: Zap,
+  security: Shield,
+  seo: TrendingUp,
+  accessibility: Globe,
+}
+
+export default function OverviewPage() {
+  const currentScore = mockARCOHistory[mockARCOHistory.length - 1]
+  const previousScore = mockARCOHistory[mockARCOHistory.length - 2]
+  const scoreDiff = currentScore.arco_index - previousScore.arco_index
+  const percentChange = ((scoreDiff / previousScore.arco_index) * 100).toFixed(1)
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Painel Estratégico</h1>
+          <p className="text-muted-foreground">
+            Acompanhe a evolução do seu ARCO Index e o progresso da parceria
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/assessment">
+            <Target className="mr-2 h-4 w-4" />
+            Nova Análise
+          </Link>
+        </Button>
+      </div>
+
+      {/* ARCO Index Hero */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className={`border-2 ${getScoreBgColor(currentScore.arco_index)}`}>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                ARCO Index Atual
+              </CardTitle>
+              {scoreDiff > 0 ? (
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              ) : (
+                <TrendingDown className="h-4 w-4 text-red-600" />
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-baseline gap-3">
+              <span className={`text-5xl font-bold ${getScoreColor(currentScore.arco_index)}`}>
+                {currentScore.arco_index}
+              </span>
+              <span className="text-xl text-muted-foreground">/100</span>
+            </div>
+            <div className="mt-2 flex items-center gap-2">
+              <Badge variant={scoreDiff > 0 ? 'default' : 'destructive'} className="gap-1">
+                <ArrowUpRight className="h-3 w-3" />
+                {scoreDiff > 0 ? '+' : ''}
+                {scoreDiff} pontos ({percentChange}%)
+              </Badge>
+              <span className="text-xs text-muted-foreground">vs semana anterior</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Scores por Categoria
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+                  <Zap className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Performance</p>
+                  <p className="text-xl font-bold">{currentScore.performance}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-100">
+                  <Shield className="h-5 w-5 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Segurança</p>
+                  <p className="text-xl font-bold">{currentScore.security}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
+                  <TrendingUp className="h-5 w-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">SEO</p>
+                  <p className="text-xl font-bold">{currentScore.seo}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
+                  <Globe className="h-5 w-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Acessibilidade</p>
+                  <p className="text-xl font-bold">{currentScore.accessibility}</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ARCO Index Historical Chart */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Evolução do ARCO Index</CardTitle>
+              <CardDescription>Acompanhe o progresso ao longo do tempo</CardDescription>
+            </div>
+            <Tabs defaultValue="7d" className="w-auto">
+              <TabsList>
+                <TabsTrigger value="7d">7 dias</TabsTrigger>
+                <TabsTrigger value="30d">30 dias</TabsTrigger>
+                <TabsTrigger value="90d">90 dias</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={350}>
+            <AreaChart data={mockARCOHistory}>
+              <defs>
+                <linearGradient id="colorARCO" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+              <XAxis
+                dataKey="date"
+                className="text-xs"
+                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              />
+              <YAxis
+                domain={[0, 100]}
+                className="text-xs"
+                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'hsl(var(--background))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px',
+                }}
+              />
+              <Area
+                type="monotone"
+                dataKey="arco_index"
+                stroke="#f59e0b"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#colorARCO)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Detailed Metrics Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Métricas Detalhadas</CardTitle>
+          <CardDescription>Evolução de cada categoria ao longo do tempo</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={mockARCOHistory}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+              <XAxis
+                dataKey="date"
+                className="text-xs"
+                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              />
+              <YAxis
+                domain={[0, 100]}
+                className="text-xs"
+                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'hsl(var(--background))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px',
+                }}
+              />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="performance"
+                stroke="#3b82f6"
+                strokeWidth={2}
+                name="Performance"
+              />
+              <Line
+                type="monotone"
+                dataKey="security"
+                stroke="#ef4444"
+                strokeWidth={2}
+                name="Segurança"
+              />
+              <Line type="monotone" dataKey="seo" stroke="#10b981" strokeWidth={2} name="SEO" />
+              <Line
+                type="monotone"
+                dataKey="accessibility"
+                stroke="#8b5cf6"
+                strokeWidth={2}
+                name="Acessibilidade"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Weekly Focus & Insights */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Weekly Focus */}
+        <Card className="border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-amber-600" />
+              <CardTitle>Foco da Semana</CardTitle>
+            </div>
+            <CardDescription className="text-amber-900/70">
+              {mockWeeklyFocus.title}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">{mockWeeklyFocus.description}</p>
+
+            <div className="space-y-2">
+              {mockWeeklyFocus.tasks.map((task, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  {task.status === 'completed' ? (
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500">
+                      <span className="text-xs text-white">✓</span>
+                    </div>
+                  ) : task.status === 'in_progress' ? (
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-500 border-t-transparent" />
+                  ) : (
+                    <div className="h-5 w-5 rounded-full border-2 border-gray-300" />
+                  )}
+                  <span className="text-sm">{task.title}</span>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between text-sm mb-2">
+                <span className="text-muted-foreground">Progresso</span>
+                <span className="font-semibold">{mockWeeklyFocus.progress}%</span>
+              </div>
+              <div className="h-2 w-full rounded-full bg-amber-200">
+                <div
+                  className="h-2 rounded-full bg-amber-600 transition-all"
+                  style={{ width: `${mockWeeklyFocus.progress}%` }}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Insights */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-purple-600" />
+              <CardTitle>Análises da Agência</CardTitle>
+            </div>
+            <CardDescription>Últimos insights publicados pela nossa equipe</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {mockRecentInsights.map((insight) => {
+              const CategoryIcon = categoryIcons[insight.category as keyof typeof categoryIcons]
+
+              return (
+                <div key={insight.id} className="border-b last:border-0 pb-4 last:pb-0">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 shrink-0">
+                      <CategoryIcon className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-sm line-clamp-1">{insight.title}</h4>
+                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                        {insight.excerpt}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {new Date(insight.published_at).toLocaleDateString('pt-BR', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/dashboard/insights">Ver Todas as Análises</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}

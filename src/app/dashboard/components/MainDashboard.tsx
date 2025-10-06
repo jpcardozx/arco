@@ -7,7 +7,7 @@
 
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser'
 import { getDashboardView } from '@/lib/auth/rbac'
-import { LoadingSpinner } from '@/components/ui/enhanced-loading'
+import { DashboardSkeleton } from '@/components/ui/enhanced-loading'
 
 // Role-specific dashboards
 import { AdminDashboard } from './AdminDashboard'
@@ -18,14 +18,7 @@ export default function MainDashboard() {
   const { user, loading: userLoading } = useCurrentUser()
 
   if (userLoading) {
-    return (
-      <div className="min-h-[600px] flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="mt-4 text-gray-600">Carregando dashboard...</p>
-        </div>
-      </div>
-    )
+    return <DashboardSkeleton />
   }
 
   if (!user) {
@@ -37,10 +30,15 @@ export default function MainDashboard() {
   }
 
   // Determine which dashboard to show based on user role
-  const dashboardView = getDashboardView((user as any).role)
+  // Type assertion segura - user já foi validado acima
+  type UserWithRole = { role?: 'admin' | 'user' | 'client' }
+  const userRole = (user as UserWithRole).role || 'client'
+  const dashboardView = getDashboardView(userRole)
 
   // Render appropriate dashboard
-  const userName = user.full_name || user.email?.split('@')[0] || 'Usuário'
+  const userName = (user as { full_name?: string; email?: string }).full_name || 
+                   (user as { email?: string }).email?.split('@')[0] || 
+                   'Usuário'
   
   switch (dashboardView) {
     case 'admin':

@@ -55,82 +55,22 @@ export default function CampaignsPage() {
     }, [])
 
     const loadCampaigns = async () => {
+        setLoading(true)
         try {
-            // Simulando dados de campanhas
-            const mockCampaigns: Campaign[] = [
-                {
-                    id: '1',
-                    name: 'Apartamentos Premium - Itaim',
-                    type: 'social_media',
-                    status: 'active',
-                    budget: 5000,
-                    spent: 3200,
-                    impressions: 45000,
-                    clicks: 2300,
-                    leads: 89,
-                    conversions: 12,
-                    start_date: '2025-01-01',
-                    end_date: '2025-01-31',
-                    target_audience: 'Executivos 30-45 anos, renda alta',
-                    created_at: '2024-12-28T10:00:00.000Z'
-                },
-                {
-                    id: '2',
-                    name: 'Casas Familiares - Zona Sul',
-                    type: 'ppc',
-                    status: 'active',
-                    budget: 8000,
-                    spent: 4500,
-                    impressions: 28000,
-                    clicks: 1850,
-                    leads: 67,
-                    conversions: 8,
-                    start_date: '2025-01-05',
-                    end_date: '2025-02-05',
-                    target_audience: 'Famílias com filhos, 25-40 anos',
-                    created_at: '2025-01-02T14:30:00.000Z'
-                },
-                {
-                    id: '3',
-                    name: 'Newsletter Mensal',
-                    type: 'email',
-                    status: 'completed',
-                    budget: 500,
-                    spent: 500,
-                    impressions: 12000,
-                    clicks: 890,
-                    leads: 34,
-                    conversions: 5,
-                    start_date: '2024-12-01',
-                    end_date: '2024-12-31',
-                    target_audience: 'Base de clientes existente',
-                    created_at: '2024-11-25T09:15:00.000Z'
-                },
-                {
-                    id: '4',
-                    name: 'Imóveis de Luxo - São Paulo',
-                    type: 'social_media',
-                    status: 'paused',
-                    budget: 12000,
-                    spent: 2800,
-                    impressions: 18000,
-                    clicks: 750,
-                    leads: 23,
-                    conversions: 2,
-                    start_date: '2024-12-15',
-                    end_date: '2025-02-15',
-                    target_audience: 'Alto padrão, 35+ anos',
-                    created_at: '2024-12-10T16:45:00.000Z'
-                }
-            ]
-
-            setCampaigns(mockCampaigns)
+            // Importar actions dinamicamente
+            const { getCampaigns } = await import('./actions')
+            const data = await getCampaigns()
+            
+            setCampaigns(data)
         } catch (error) {
             console.error('Error loading campaigns:', error)
+            setCampaigns([])
         } finally {
             setLoading(false)
         }
     }
+
+
 
     const getStatusBadge = (status: Campaign['status']) => {
         const styles = {

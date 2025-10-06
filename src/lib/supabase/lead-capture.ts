@@ -58,8 +58,8 @@ export async function captureLead(
     const enrichedData = options.autoEnrich ? await enrichLeadData(data) : data
     
     // Preparar dados para inserção
-    const leadData: Lead = {
-      name: enrichedData.name,
+    const leadData = {
+      full_name: enrichedData.name || null,
       email: enrichedData.email,
       phone: enrichedData.phone || null,
       // company: formData.company,
@@ -158,12 +158,11 @@ export async function convertLeadToUser(
       password: password,
       options: {
         data: {
-          full_name: lead.name,
+          full_name: lead.full_name || lead.email,
           phone: lead.phone,
-          company: (lead.metadata as any)?.company || null,
+          company: lead.company_name || null,
           converted_from_lead: leadId,
           lead_source: lead.source,
-          lead_campaign: (lead.metadata as any)?.campaign || null,
         },
       },
     })

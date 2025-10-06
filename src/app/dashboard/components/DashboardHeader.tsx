@@ -135,8 +135,8 @@ export default function DashboardHeader({
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-4">
-                    {/* Search */}
+                <div className="flex items-center gap-2 md:gap-4">
+                    {/* Search - hidden on small mobile */}
                     <div className="hidden md:block">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -148,11 +148,16 @@ export default function DashboardHeader({
                         </div>
                     </div>
 
+                    {/* Mobile Search Button */}
+                    <button className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <Search className="h-5 w-5 text-gray-600" />
+                    </button>
+
                     {/* Notifications */}
                     <NotificationBell />
 
-                    {/* Settings */}
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    {/* Settings - hidden on small mobile */}
+                    <button className="hidden sm:block p-2 hover:bg-gray-100 rounded-lg transition-colors">
                         <Settings className="h-5 w-5 text-gray-600 hover:text-gray-900" />
                     </button>
 

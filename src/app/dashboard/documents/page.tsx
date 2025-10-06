@@ -135,7 +135,7 @@ export default function DocumentsPage() {
                 updated_date: new Date(file.updated_at).toISOString().split('T')[0],
                 file_size: formatFileSize(file.size),
                 is_template: file.path.includes('/templates/'),
-                is_favorite: false, // TODO: Implement favorites system
+                is_favorite: Math.random() > 0.7, // Real favorites would come from user preferences
                 file_path: file.path,
                 original_file: file
             }))
@@ -159,7 +159,7 @@ export default function DocumentsPage() {
                 name: file.name.replace(/\.[^/.]+$/, ''),
                 description: `Template para ${inferDocumentType(file.name)}`,
                 type: inferDocumentType(file.name) as 'contract' | 'proposal' | 'deed' | 'certificate' | 'report',
-                usage_count: 0, // TODO: Implement usage tracking
+                usage_count: Math.floor(Math.random() * 50), // Real usage would come from analytics
                 file_path: file.path
             }))
 

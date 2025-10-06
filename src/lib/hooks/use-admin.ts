@@ -216,7 +216,7 @@ export function useUsers() {
     queryFn: async () => {
       const supabase = createSupabaseBrowserClient()
       const { data, error } = await supabase
-        .from('users')
+        .from('user_profiles')
         .select('*')
         .order('created_at', { ascending: false })
 
@@ -225,7 +225,7 @@ export function useUsers() {
         throw error
       }
 
-      return data as User[]
+      return data as any[]
     },
   })
 }
@@ -234,11 +234,11 @@ export function useUpdateUserRole() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ userId, role }: { userId: string; role: 'admin' | 'user' | 'client' }) => {
+    mutationFn: async ({ userId, role }: { userId: string; role: 'admin' | 'client' }) => {
       const supabase = createSupabaseBrowserClient()
       const { data, error } = await supabase
-        .from('users')
-        .update({ role })
+        .from('user_profiles')
+        .update({ user_type: role })
         .eq('id', userId)
         .select()
         .single()
@@ -248,7 +248,7 @@ export function useUpdateUserRole() {
         throw error
       }
 
-      return data as User
+      return data as any
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })

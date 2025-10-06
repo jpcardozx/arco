@@ -26,6 +26,8 @@ const preSignupSchema = z.object({
     ),
   name: z.string().min(2, 'Nome muito curto'),
   phone: z.string().optional(),
+  requestId: z.string().uuid().optional(), // Link to domain_analysis_requests
+  sessionId: z.string().optional(), // Session tracking
 });
 
 export async function POST(req: NextRequest) {
@@ -74,6 +76,19 @@ export async function POST(req: NextRequest) {
     };
 
     console.log('[API] Pre-signup created:', presignup);
+
+    // PHASE 3.5: Update domain_analysis_requests with user info
+    if (data.requestId) {
+      try {
+        // TODO: Update domain_analysis_requests table
+        // SET email = data.email, name = data.name, phone = data.phone, status = 'identified'
+        // WHERE id = data.requestId
+        console.log('[API] Would update domain_analysis_request:', data.requestId);
+      } catch (error) {
+        console.error('[API] Failed to link domain analysis:', error);
+        // Non-critical, continue with signup
+      }
+    }
 
     // TODO Phase 3: Send confirmation email
     // await sendConfirmationEmail(data.email, data.name, token);

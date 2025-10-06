@@ -7,30 +7,24 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/supabase-generated'
 
 // ============================================
 // TABELAS - ROW TYPES (leitura)
 // ============================================
 
-export type Client = Database['public']['Tables']['clients']['Row']
-export type Task = Database['public']['Tables']['tasks']['Row']
 export type Lead = Database['public']['Tables']['leads']['Row']
 
 // ============================================
 // INSERT TYPES (criação)
 // ============================================
 
-export type ClientInsert = Database['public']['Tables']['clients']['Insert']
-export type TaskInsert = Database['public']['Tables']['tasks']['Insert']
 export type LeadInsert = Database['public']['Tables']['leads']['Insert']
 
 // ============================================
 // UPDATE TYPES (atualização)
 // ============================================
 
-export type ClientUpdate = Database['public']['Tables']['clients']['Update']
-export type TaskUpdate = Database['public']['Tables']['tasks']['Update']
 export type LeadUpdate = Database['public']['Tables']['leads']['Update']
 
 // ============================================
@@ -54,8 +48,6 @@ export type TypedSupabaseClient = SupabaseClient<Database>
 // ============================================
 
 // Extrair enums do schema gerado (se existirem)
-export type ClientStatus = Client['status']
-export type TaskStatus = Task['status']
 export type LeadStatus = Lead['status']
 
 // Se forem strings literais, adicionar fallback
@@ -97,52 +89,34 @@ export interface useUpdateLead {
 
 /**
  * Tipo para queries com select específico
- * Uso: SelectClient<'id' | 'name' | 'email'>
+ * Uso: SelectLead<'id' | 'full_name' | 'email'>
  */
-export type SelectClient<T extends keyof Client> = Pick<Client, T>
-export type SelectTask<T extends keyof Task> = Pick<Task, T>
 export type SelectLead<T extends keyof Lead> = Pick<Lead, T>
 
 /**
  * Tipo para campos opcionais em updates
  */
-export type PartialClient = Partial<Client>
-export type PartialTask = Partial<Task>
 export type PartialLead = Partial<Lead>
 
 /**
  * Tipo sem campos de sistema (id, timestamps)
  */
-export type ClientInput = Omit<Client, 'id' | 'created_at' | 'updated_at'>
-export type TaskInput = Omit<Task, 'id' | 'created_at' | 'updated_at'>
 export type LeadInput = Omit<Lead, 'id' | 'created_at' | 'updated_at'>
+
+/**
+ * Lead com campo 'name' para compatibilidade com código legado
+ * Mapeia full_name -> name para uso em componentes
+ */
+export type LeadWithName = Omit<Lead, 'full_name'> & { name: string | null }
 
 // ============================================
 // TYPE GUARDS
 // ============================================
 
-export function isClient(obj: any): obj is Client {
-  return (
-    obj &&
-    typeof obj.id === 'string' &&
-    typeof obj.name === 'string' &&
-    typeof obj.email === 'string'
-  )
-}
-
-export function isTask(obj: any): obj is Task {
-  return (
-    obj &&
-    typeof obj.id === 'string' &&
-    typeof obj.title === 'string'
-  )
-}
-
 export function isLead(obj: any): obj is Lead {
   return (
     obj &&
     typeof obj.id === 'string' &&
-    typeof obj.name === 'string' &&
     typeof obj.email === 'string'
   )
 }
@@ -157,12 +131,6 @@ export function isLead(obj: any): obj is Lead {
  */
 
 // Tipos legados (deprecated - use os principais acima)
-/** @deprecated Use Client from supabase-helpers */
-export type LegacyClient = Client
-
-/** @deprecated Use Task from supabase-helpers */
-export type LegacyTask = Task
-
 /** @deprecated Use Lead from supabase-helpers */
 export type LegacyLead = Lead
 
@@ -174,11 +142,7 @@ export type LegacyLead = Lead
 export type { Database }
 
 // Re-exportar Json type do Supabase
-export type Json = Database['public']['Tables']['clients']['Row']['notes'] extends infer T
-  ? T extends string | null
-    ? Record<string, any> | null
-    : never
-  : never
+export type Json = Record<string, any> | null
 
 // ============================================
 // EXEMPLO DE USO
@@ -186,29 +150,29 @@ export type Json = Database['public']['Tables']['clients']['Row']['notes'] exten
 
 /**
  * EXEMPLO: Como usar esses tipos
- * 
+ *
  * // 1. Importar
- * import type { Client, TypedSupabaseClient } from '@/lib/types/supabase-helpers'
- * 
+ * import type { Lead, TypedSupabaseClient } from '@/lib/types/supabase-helpers'
+ *
  * // 2. Usar em funções
- * async function getClient(supabase: TypedSupabaseClient, id: string): Promise<Client | null> {
+ * async function getLead(supabase: TypedSupabaseClient, id: string): Promise<Lead | null> {
  *   const { data } = await supabase
- *     .from('clients')  // ✅ Autocomplete de tabelas
+ *     .from('leads')     // ✅ Autocomplete de tabelas
  *     .select('*')       // ✅ Autocomplete de campos
  *     .eq('id', id)      // ✅ Validação de tipos
  *     .single()
- *   
+ *
  *   return data
  * }
- * 
+ *
  * // 3. Usar em componentes
- * interface ClientCardProps {
- *   client: Client  // ✅ Tipo gerado automaticamente
+ * interface LeadCardProps {
+ *   lead: Lead  // ✅ Tipo gerado automaticamente
  * }
- * 
+ *
  * // 4. Criar novos registros
- * const newClient: ClientInsert = {
- *   name: 'João Silva',
+ * const newLead: LeadInsert = {
+ *   full_name: 'João Silva',
  *   email: 'joao@example.com',
  *   // ✅ TypeScript valida todos os campos obrigatórios
  * }
