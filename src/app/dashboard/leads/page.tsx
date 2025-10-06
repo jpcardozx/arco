@@ -25,6 +25,7 @@ import {
     Briefcase,
     Linkedin
 } from 'lucide-react'
+import { calculateLeadScore, calculateConversionProbability } from '@/lib/utils/lead-scoring'
 
 interface Lead {
     id: string

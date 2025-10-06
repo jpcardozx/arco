@@ -224,7 +224,7 @@ export default function TestChecklistPage() {
               icon={RotateCcw}
               onClick={resetChecklist}
               disabled={!checklistId || loading}
-              variant="outline"
+              variant="secondary"
             >
               Resetar
             </PremiumButton>
@@ -279,10 +279,10 @@ export default function TestChecklistPage() {
               <div className="flex flex-col items-center">
                 <ProgressRing
                   progress={stats.progress_percentage}
-                  size={120}
-                  strokeWidth={8}
+                  size="xl"
+                  thickness={8}
                   color="teal"
-                  showAnimation={true}
+                  animated={true}
                   label={`${stats.progress_percentage}%`}
                 />
                 <p className="text-white/60 text-sm mt-2">Progresso Geral</p>

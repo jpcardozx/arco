@@ -616,9 +616,9 @@ export default function EnhancedDashboard() {
                         <ProgressRing
                           progress={progress}
                           size="md"
-                          strokeWidth={3}
+                          thickness={3}
                           color="teal"
-                          showLabel={false}
+                          showValue={false}
                         />
                       </div>
                     </div>

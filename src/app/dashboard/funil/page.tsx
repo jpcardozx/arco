@@ -188,7 +188,7 @@ export default function FunnelPage() {
             count: stageLeads.length,
             value: totalValue,
             conversion_rate: avgScore,
-            avg_time_in_stage: calculateAverageTimeInStage(stage) // Real calculation based on lead history
+            avg_time_in_stage: calculateAverageTimeInStage(stageId) // Real calculation based on lead history
         }
     }
 

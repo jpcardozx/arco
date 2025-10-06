@@ -312,8 +312,9 @@ export async function createTicket(data: { subject: string; description: string;
   const { data: ticket, error } = await supabase
     .from('support_tickets')
     .insert({
-      user_id: user.id,
+      client_id: user.id,
       subject: data.subject,
+      description: data.subject,
       priority: data.priority as TicketPriority,
       status: 'open' as const,
     })
@@ -336,8 +337,8 @@ export async function sendTicketMessage(ticketId: string, content: string) {
     .from('support_ticket_messages')
     .insert({
       ticket_id: ticketId,
-      sender_id: user.id,
-      content,
+      author_id: user.id,
+      message: content,
     })
 
   if (error) throw error

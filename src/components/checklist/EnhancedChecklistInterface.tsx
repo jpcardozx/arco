@@ -264,7 +264,7 @@ function EnhancedChecklistInterface({
                 progress={stats?.progress_percentage || 0}
                 size="xl"
                 color="teal"
-                showAnimation={true}
+                animated={true}
                 label={`${stats?.progress_percentage || 0}%`}
               />
               <p className="text-white/60 text-sm mt-2">Progresso Geral</p>

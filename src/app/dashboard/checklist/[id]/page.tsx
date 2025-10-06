@@ -44,7 +44,7 @@ const difficultyIcons = {
 export default function InteractiveChecklistPage() {
   const params = useParams()
   const router = useRouter()
-  const checklistId = params.id as string
+  const checklistId = params?.id as string
   
   const { 
     checklist, 

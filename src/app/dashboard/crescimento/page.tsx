@@ -152,7 +152,7 @@ export default function CrescimentoPage() {
     displayData.reduce((sum, day) => sum + day.bounceRate, 0) / displayData.length
   ).toFixed(1);
   const avgSessionDuration = Math.round(
-    mockAnalyticsData.reduce((sum, day) => sum + day.avgSession, 0) / mockAnalyticsData.length
+    (analyticsData || []).reduce((sum: number, day: any) => sum + (day.avgSession || 0), 0) / (analyticsData?.length || 1) || 0
   );
 
   // Cálculos para Ads
@@ -265,7 +265,7 @@ export default function CrescimentoPage() {
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={mockAnalyticsData}>
+                <LineChart data={analyticsData || []}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                   <XAxis dataKey="date" className="text-xs" />
                   <YAxis className="text-xs" />
@@ -375,7 +375,7 @@ export default function CrescimentoPage() {
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={250}>
-                <AreaChart data={mockAnalyticsData}>
+                <AreaChart data={analyticsData || []}>
                   <defs>
                     <linearGradient id="colorBounce" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />

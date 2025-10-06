@@ -10,7 +10,7 @@ import { revalidatePath } from 'next/cache'
 import type { Database } from '@/types/supabase'
 
 type AnalysisRequest = Database['public']['Tables']['analysis_requests']['Row']
-type AnalysisResult = Database['public']['Tables']['analysis_results']['Row']
+type DatabaseAnalysisResult = Database['public']['Tables']['analysis_results']['Row']
 
 export interface Analysis {
   id: string
@@ -19,10 +19,10 @@ export interface Analysis {
   arco_index: number | null
   error_message: string | null
   created_at: string
-  results: AnalysisResult | null
+  results: AnalysisResultInterface | null
 }
 
-export interface AnalysisResult {
+export interface AnalysisResultInterface {
   id: string
   analysis_id: string
   // Performance metrics
@@ -75,7 +75,7 @@ export async function getAnalyses() {
     arco_index: analysis.arco_index,
     error_message: analysis.error_message,
     created_at: analysis.created_at,
-    results: (analysis.analysis_results?.[0] as AnalysisResult) || null,
+    results: (analysis.analysis_results?.[0] as DatabaseAnalysisResult) || null,
   }))
 }
 
@@ -110,7 +110,7 @@ export async function getAnalysisById(id: string) {
     arco_index: data.arco_index,
     error_message: data.error_message,
     created_at: data.created_at,
-    results: (data.analysis_results?.[0] as AnalysisResult) || null,
+    results: (data.analysis_results?.[0] as DatabaseAnalysisResult) || null,
   }
 }
 

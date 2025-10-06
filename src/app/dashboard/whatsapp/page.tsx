@@ -30,6 +30,7 @@ import {
   Mic,
   ImageIcon
 } from 'lucide-react'
+import { generateDemoMessages } from '@/lib/utils/whatsapp-demo'
 
 interface Contact {
   id: string

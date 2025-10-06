@@ -7,7 +7,7 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/supabase-generated'
+import type { Database } from '@/types/supabase'
 
 // ============================================
 // TABELAS - ROW TYPES (leitura)
