@@ -7,6 +7,9 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type Lead = Database['public']['Tables']['leads']['Row']
 
 export async function getFunnelLeads() {
   const supabase = await createSupabaseServer()

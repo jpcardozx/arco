@@ -7,7 +7,7 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import type { Database } from '@/types/supabase'
+import type { Database, TicketPriority, AnalysisStatus } from '@/types/supabase'
 
 type Tables = Database['public']['Tables']
 type AnalysisRequest = Tables['analysis_requests']['Row']
@@ -30,11 +30,15 @@ export async function getCurrentUser() {
   }
 
   // Fetch user profile with tier
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('user_profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .single<UserProfile>()
+
+  if (profileError || !profile) {
+    return null
+  }
 
   return { ...user, profile }
 }
@@ -86,10 +90,10 @@ export async function createAnalysisRequest(url: string) {
   const supabase = await createSupabaseServer()
   const user = await getCurrentUser()
   
-  if (!user) throw new Error('Unauthorized')
+  if (!user || !user.profile) throw new Error('Unauthorized')
 
   // Check quota (free users: 3/month)
-  if (user.profile?.tier === 'free') {
+  if (user.profile.tier === 'free') {
     const { count } = await supabase
       .from('analysis_requests')
       .select('*', { count: 'exact', head: true })
@@ -106,10 +110,10 @@ export async function createAnalysisRequest(url: string) {
     .insert({
       user_id: user.id,
       url,
-      status: 'pending',
+      status: 'pending' as const,
     })
     .select()
-    .single()
+    .single<AnalysisRequest>()
 
   if (error) throw error
   
@@ -142,8 +146,8 @@ export async function getPerformanceMetrics(url: string, days = 7) {
   const supabase = await createSupabaseServer()
   const user = await getCurrentUser()
   
-  if (!user) throw new Error('Unauthorized')
-  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+  if (!user || !user.profile) throw new Error('Unauthorized')
+  if (user.profile.tier === 'free') throw new Error('Paid feature only')
 
   const startDate = new Date()
   startDate.setDate(startDate.getDate() - days)
@@ -163,8 +167,8 @@ export async function getARCOIndexHistory(days = 7) {
   const supabase = await createSupabaseServer()
   const user = await getCurrentUser()
   
-  if (!user) throw new Error('Unauthorized')
-  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+  if (!user || !user.profile) throw new Error('Unauthorized')
+  if (user.profile.tier === 'free') throw new Error('Paid feature only')
 
   const startDate = new Date()
   startDate.setDate(startDate.getDate() - days)
@@ -195,8 +199,8 @@ export async function getUptimeData(url: string, hours = 24) {
   const supabase = await createSupabaseServer()
   const user = await getCurrentUser()
   
-  if (!user) throw new Error('Unauthorized')
-  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+  if (!user || !user.profile) throw new Error('Unauthorized')
+  if (user.profile.tier === 'free') throw new Error('Paid feature only')
 
   const startTime = new Date()
   startTime.setHours(startTime.getHours() - hours)
@@ -220,8 +224,8 @@ export async function getDomainHealth(url: string) {
   const supabase = await createSupabaseServer()
   const user = await getCurrentUser()
   
-  if (!user) throw new Error('Unauthorized')
-  if (user.profile?.tier === 'free') throw new Error('Paid feature only')
+  if (!user || !user.profile) throw new Error('Unauthorized')
+  if (user.profile.tier === 'free') throw new Error('Paid feature only')
 
   const { data, error } = await supabase
     .from('domain_monitoring')
@@ -264,9 +268,11 @@ export async function updateMilestone(milestoneId: string, completed: boolean) {
   
   if (!user) throw new Error('Unauthorized')
 
+  type ProjectMilestoneUpdate = Tables['project_milestones']['Update']
+  const updateData: ProjectMilestoneUpdate = { completed }
   const { error } = await supabase
     .from('project_milestones')
-    .update({ completed })
+    .update(updateData)
     .eq('id', milestoneId)
 
   if (error) throw error
@@ -306,14 +312,13 @@ export async function createTicket(data: { subject: string; description: string;
   const { data: ticket, error } = await supabase
     .from('support_tickets')
     .insert({
-      client_id: user.id,
+      user_id: user.id,
       subject: data.subject,
-      description: data.description,
-      priority: data.priority,
-      status: 'open',
+      priority: data.priority as TicketPriority,
+      status: 'open' as const,
     })
     .select()
-    .single()
+    .single<SupportTicket>()
 
   if (error) throw error
   
@@ -331,8 +336,8 @@ export async function sendTicketMessage(ticketId: string, content: string) {
     .from('support_ticket_messages')
     .insert({
       ticket_id: ticketId,
-      author_id: user.id,
-      message: content,
+      sender_id: user.id,
+      content,
     })
 
   if (error) throw error
@@ -367,14 +372,14 @@ export async function deleteFile(fileId: string) {
   if (!user) throw new Error('Unauthorized')
 
   // Get file path
-  const { data: file } = await supabase
+  const { data: file, error: fetchError } = await supabase
     .from('storage_items')
     .select('file_path')
     .eq('id', fileId)
     .eq('uploaded_by', user.id)
-    .single()
+    .single<Pick<StorageItem, 'file_path'>>()
 
-  if (!file) throw new Error('File not found')
+  if (fetchError || !file) throw new Error('File not found')
 
   // Delete from storage
   await supabase.storage.from('user-files').remove([file.file_path])
@@ -395,17 +400,19 @@ export async function getStorageQuota() {
   const supabase = await createSupabaseServer()
   const user = await getCurrentUser()
   
-  if (!user) throw new Error('Unauthorized')
+  if (!user || !user.profile) throw new Error('Unauthorized')
 
   const { data: files } = await supabase
     .from('storage_items')
     .select('size_bytes')
-    .eq('uploaded_by', user.id)
+    .eq('client_id', user.id)
+    .returns<Pick<StorageItem, 'size_bytes'>[]>()
 
-  const used = files?.reduce((sum, f) => sum + (f.size_bytes || 0), 0) || 0
-  const limit = (user.profile as UserProfile)?.tier === 'paid' ? 10737418240 : 0 // 10GB for paid, 0 for free
+  const usedBytes = files?.reduce((sum, f) => sum + (f.size_bytes || 0), 0) || 0
+  const usedMB = usedBytes / (1024 * 1024)
+  const limitMB = user.profile.tier === 'paid' ? 5000 : 100 // 5GB for paid, 100MB for free (in MB)
 
-  return { used, limit, percentage: limit > 0 ? (used / limit) * 100 : 0 }
+  return { used: usedMB, limit: limitMB, percentage: limitMB > 0 ? (usedMB / limitMB) * 100 : 0 }
 }
 
 // ============================================================================

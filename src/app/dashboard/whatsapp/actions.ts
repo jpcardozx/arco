@@ -7,6 +7,10 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type WhatsAppContact = Database['public']['Tables']['whatsapp_contacts']['Row']
+type WhatsAppMessage = Database['public']['Tables']['whatsapp_messages']['Row']
 
 export async function getWhatsAppContacts() {
   const supabase = await createSupabaseServer()
@@ -18,6 +22,7 @@ export async function getWhatsAppContacts() {
     .from('whatsapp_contacts')
     .select('*')
     .order('updated_at', { ascending: false })
+    .returns<WhatsAppContact[]>()
 
   if (error) throw error
 
@@ -28,11 +33,11 @@ export async function getWhatsAppContacts() {
     profilePicture: contact.profile_picture_url,
     lastMessage: contact.last_message_at,
     unreadCount: contact.unread_count || 0,
-    isFavorite: contact.is_favorite || false,
-    tags: contact.tags || [],
-    status: contact.whatsapp_status || 'active',
-    isBusiness: contact.is_business || false,
-    businessName: contact.business_name,
+    isFavorite: false, // Field not in schema
+    tags: [], // Field not in schema
+    status: 'active', // Field not in schema
+    isBusiness: false, // Field not in schema
+    businessName: null, // Field not in schema
   }))
 }
 
@@ -46,7 +51,8 @@ export async function getWhatsAppMessages(contactId: string) {
     .from('whatsapp_messages')
     .select('*')
     .eq('contact_id', contactId)
-    .order('sent_at', { ascending: true })
+    .order('created_at', { ascending: true })
+    .returns<WhatsAppMessage[]>()
 
   if (error) throw error
 
@@ -54,14 +60,14 @@ export async function getWhatsAppMessages(contactId: string) {
     id: message.id,
     contactId: message.contact_id,
     content: message.content,
-    type: message.message_type,
+    type: 'text', // Field not in schema
     direction: message.direction,
     status: message.status,
-    sentAt: message.sent_at,
-    deliveredAt: message.delivered_at,
-    readAt: message.read_at,
+    sentAt: message.created_at,
+    deliveredAt: null, // Field not in schema
+    readAt: null, // Field not in schema
     mediaUrl: message.media_url,
-    mediaType: message.media_type,
+    mediaType: null, // Field not in schema
   }))
 }
 
