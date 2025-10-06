@@ -7,6 +7,10 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type AnalysisRequest = Database['public']['Tables']['analysis_requests']['Row']
+type AnalysisResult = Database['public']['Tables']['analysis_results']['Row']
 
 export interface Analysis {
   id: string
@@ -49,6 +53,10 @@ export async function getAnalyses() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  type AnalysisWithResults = AnalysisRequest & {
+    analysis_results: AnalysisResult[]
+  }
+
   const { data, error } = await supabase
     .from('analysis_requests')
     .select(`
@@ -56,6 +64,7 @@ export async function getAnalyses() {
       analysis_results (*)
     `)
     .order('created_at', { ascending: false })
+    .returns<AnalysisWithResults[]>()
 
   if (error) throw error
 
@@ -79,6 +88,10 @@ export async function getAnalysisById(id: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  type AnalysisWithResults = AnalysisRequest & {
+    analysis_results: AnalysisResult[]
+  }
+
   const { data, error } = await supabase
     .from('analysis_requests')
     .select(`
@@ -86,7 +99,7 @@ export async function getAnalysisById(id: string) {
       analysis_results (*)
     `)
     .eq('id', id)
-    .single()
+    .single<AnalysisWithResults>()
 
   if (error) throw error
 
@@ -124,10 +137,10 @@ export async function createAnalysis(url: string) {
     .insert({
       user_id: user.id,
       url,
-      status: 'pending',
+      status: 'pending' as const,
     })
     .select()
-    .single()
+    .single<AnalysisRequest>()
 
   if (error) throw error
 

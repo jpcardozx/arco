@@ -7,6 +7,10 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type Transaction = Database['public']['Tables']['transactions']['Row']
+type Invoice = Database['public']['Tables']['invoices']['Row']
 
 // ============================================
 // FINANCIAL SUMMARY

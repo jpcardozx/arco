@@ -7,6 +7,10 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type Campaign = Database['public']['Tables']['campaigns']['Row']
+type CampaignMetric = Database['public']['Tables']['campaign_metrics']['Row']
 
 export async function getCampaigns() {
   const supabase = await createSupabaseServer()
@@ -18,6 +22,7 @@ export async function getCampaigns() {
     .from('campaigns')
     .select('*')
     .order('created_at', { ascending: false })
+    .returns<Campaign[]>()
 
   if (error) throw error
   
@@ -51,6 +56,7 @@ export async function getCampaignMetrics(campaignId: string) {
     .eq('campaign_id', campaignId)
     .order('date', { ascending: false })
     .limit(30)
+    .returns<CampaignMetric[]>()
 
   if (error) throw error
   
@@ -76,24 +82,22 @@ export async function createCampaign(campaignData: any) {
     .from('user_profiles')
     .select('id')
     .eq('id', user.id)
-    .single()
+    .single<{ id: string }>()
 
   const { data, error } = await supabase
     .from('campaigns')
     .insert({
       client_id: profile?.id || user.id,
       name: campaignData.name,
-      platform: campaignData.type || 'other',
+      platform: (campaignData.type || 'google_ads') as 'google_ads' | 'meta_ads' | 'linkedin_ads' | 'tiktok_ads',
       budget_total: campaignData.budget || 0,
       budget_daily: campaignData.budget_daily || 0,
-      status: 'active',
+      status: 'active' as const,
       start_date: campaignData.start_date,
       end_date: campaignData.end_date,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
     })
     .select()
-    .single()
+    .single<Campaign>()
 
   if (error) throw error
   
@@ -110,8 +114,7 @@ export async function updateCampaignStatus(campaignId: string, status: string) {
   const { error } = await supabase
     .from('campaigns')
     .update({ 
-      status,
-      updated_at: new Date().toISOString() 
+      status: status as 'active' | 'paused' | 'ended',
     })
     .eq('id', campaignId)
 

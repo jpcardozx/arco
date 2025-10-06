@@ -7,6 +7,9 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type UserProfile = Database['public']['Tables']['user_profiles']['Row']
 
 export async function getUsers() {
   const supabase = await createSupabaseServer()

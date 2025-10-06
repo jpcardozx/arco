@@ -7,6 +7,10 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import type { Database } from '@/types/supabase'
+
+type WhatsAppContact = Database['public']['Tables']['whatsapp_contacts']['Row']
+type WhatsAppMessage = Database['public']['Tables']['whatsapp_messages']['Row']
 
 export async function getWhatsAppContacts() {
   const supabase = await createSupabaseServer()
