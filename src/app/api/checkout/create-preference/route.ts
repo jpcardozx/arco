@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Preference } from 'mercadopago';
-import { mercadoPagoClient } from '@/lib/payments/mercadopago/client';
+import { mercadoPagoClient, MP_CONFIG } from '@/lib/payments/mercadopago/client';
 import { logger } from '@/lib/logger';
 import { createClient } from '@supabase/supabase-js';
 import { createPreferenceLimiter, getClientIp, checkRateLimit } from '@/lib/rate-limiting/checkout-limiter';
@@ -13,6 +13,15 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if MercadoPago is enabled
+    if (!MP_CONFIG.enabled || !mercadoPagoClient) {
+      logger.error('MercadoPago not configured');
+      return NextResponse.json(
+        { error: 'Payment system not available' },
+        { status: 503 }
+      );
+    }
+
     // Rate limiting
     const clientIp = getClientIp(request);
     const rateLimit = await checkRateLimit(createPreferenceLimiter, clientIp);

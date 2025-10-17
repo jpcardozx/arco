@@ -26,23 +26,7 @@ const logger = winston.createLogger({
   ],
 });
 
-// Adicionar transporte para CloudWatch em produção (opcional)
-if (process.env.NODE_ENV === 'production' && process.env.AWS_CLOUDWATCH_LOG_GROUP) {
-  // Instalar: pnpm add winston-cloudwatch
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const WinstonCloudWatch = require('winston-cloudwatch');
-    
-    logger.add(
-      new WinstonCloudWatch({
-        logGroupName: process.env.AWS_CLOUDWATCH_LOG_GROUP,
-        logStreamName: `instance-${process.env.INSTANCE_ID || 'default'}`,
-        awsRegion: process.env.AWS_REGION || 'sa-east-1',
-      })
-    );
-  } catch (error) {
-    console.warn('CloudWatch logger não disponível:', error);
-  }
-}
+// CloudWatch transport removido - usar logs nativos da Vercel/plataforma
+// Para produção, logs são automaticamente coletados pela plataforma de hosting
 
 export { logger };

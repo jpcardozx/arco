@@ -387,126 +387,239 @@ export function URLAnalyzerSection() {
           </div>
         </motion.div>
 
-        {/* Results Modal - Elegant Beta Version */}
+        {/* Results Modal - Enhanced Premium Beta Version */}
         <AnimatePresence>
           {showResultsModal && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-              onClick={() => setShowResultsModal(false)}
-            >
+            <>
+              {/* Backdrop with blur */}
               <motion.div
-                initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="relative w-full max-w-md bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Accent border glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-teal-500/5 to-transparent pointer-events-none" />
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+                onClick={() => setShowResultsModal(false)}
+              />
 
-                {/* Header */}
-                <div className="relative z-10 px-6 py-5 border-b border-slate-700/50 flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Globe className="w-5 h-5 text-teal-400" />
-                      <h3 className="text-lg font-bold text-white">Análise Iniciada</h3>
+              {/* Modal Container */}
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.9, opacity: 0, y: 30 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 400, 
+                    damping: 25,
+                    mass: 0.8
+                  }}
+                  className="relative w-full max-w-lg pointer-events-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Glass card with gradient border */}
+                  <div className="relative bg-gradient-to-br from-slate-900/95 via-slate-900/98 to-slate-950/95 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden">
+                    {/* Animated gradient accent */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2, duration: 0.5 }}
+                      className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-teal-500/20 to-cyan-500/10 rounded-full blur-3xl"
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3, duration: 0.5 }}
+                      className="absolute -bottom-24 -left-24 w-48 h-48 bg-gradient-to-tr from-blue-500/10 to-violet-500/10 rounded-full blur-3xl"
+                    />
+
+                    {/* Header with close button */}
+                    <div className="relative z-10 px-6 py-5 border-b border-slate-700/50">
+                      <div className="flex items-start justify-between mb-3">
+                        <motion.div
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.2 }}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="p-2 rounded-xl bg-gradient-to-br from-teal-500/20 to-cyan-500/10 border border-teal-500/30">
+                            <Globe className="w-5 h-5 text-teal-400" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-bold text-white">Análise Iniciada</h3>
+                            <p className="text-xs text-slate-400 mt-0.5">Processando métricas web</p>
+                          </div>
+                        </motion.div>
+                        <motion.button
+                          initial={{ scale: 0, rotate: -90 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          whileHover={{ scale: 1.1, rotate: 90 }}
+                          whileTap={{ scale: 0.9 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                          onClick={() => setShowResultsModal(false)}
+                          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        >
+                          <X className="w-5 h-5 text-slate-400" />
+                        </motion.button>
+                      </div>
+
+                      {/* Beta Badge */}
+                      <motion.div
+                        initial={{ scale: 0, x: -20 }}
+                        animate={{ scale: 1, x: 0 }}
+                        transition={{ delay: 0.3, type: "spring", stiffness: 400, damping: 15 }}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/30 backdrop-blur-sm"
+                      >
+                        <Zap className="w-3.5 h-3.5 text-amber-400" />
+                        <span className="text-xs font-semibold text-amber-300">Versão Beta</span>
+                        <span className="text-[10px] text-amber-500/60">• Em desenvolvimento</span>
+                      </motion.div>
                     </div>
-                    <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30">
-                      <Zap className="w-3 h-3 text-amber-400" />
-                      <span className="text-xs font-medium text-amber-300">Versão Beta</span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setShowResultsModal(false)}
-                    className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
-                  >
-                    <X className="w-5 h-5 text-slate-400" />
-                  </button>
-                </div>
 
-                {/* Content */}
-                <div className="relative z-10 px-6 py-6 space-y-6">
-                  {/* Domain Display */}
-                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
-                    <p className="text-xs text-slate-400 uppercase tracking-wider mb-2">Domínio Analisado</p>
-                    <p className="text-lg font-semibold text-white font-mono break-all">{lastAnalyzedDomain}</p>
-                  </div>
-
-                  {/* Analysis Metrics Grid */}
-                  <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-3">Dados Coletados</p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Activity className="w-4 h-4 text-teal-400" />
-                          <span className="text-xs font-medium text-slate-300">Performance</span>
+                    {/* Content */}
+                    <div className="relative z-10 px-6 py-6 space-y-5">
+                      {/* Domain Display with animation */}
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="p-4 rounded-xl bg-gradient-to-br from-slate-800/70 to-slate-800/40 border border-slate-700/50 backdrop-blur-sm"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs text-slate-400 uppercase tracking-wider font-medium">Domínio Analisado</p>
+                          <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                            className="w-2 h-2 rounded-full bg-teal-400 shadow-lg shadow-teal-400/50"
+                          />
                         </div>
-                        <p className="text-xs text-slate-500">Core Web Vitals</p>
-                      </div>
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
-                        <div className="flex items-center gap-2 mb-1">
-                          <FileSearch className="w-4 h-4 text-cyan-400" />
-                          <span className="text-xs font-medium text-slate-300">SEO</span>
-                        </div>
-                        <p className="text-xs text-slate-500">Meta Tags, Schema</p>
-                      </div>
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Lock className="w-4 h-4 text-emerald-400" />
-                          <span className="text-xs font-medium text-slate-300">Segurança</span>
-                        </div>
-                        <p className="text-xs text-slate-500">HTTPS, Headers</p>
-                      </div>
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Eye className="w-4 h-4 text-violet-400" />
-                          <span className="text-xs font-medium text-slate-300">UX</span>
-                        </div>
-                        <p className="text-xs text-slate-500">Acessibilidade</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Info Box */}
-                  <div className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
-                    <div className="flex gap-3">
-                      <AlertCircle className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-xs font-medium text-blue-300 mb-1">Recurso em Desenvolvimento</p>
-                        <p className="text-xs text-blue-200/70 leading-relaxed">
-                          Relatório completo em breve. Por enquanto, dados básicos de auditoria pública.
+                        <p className="text-base font-bold font-mono break-all bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                          {lastAnalyzedDomain}
                         </p>
+                      </motion.div>
+
+                      {/* Analysis Metrics Grid with stagger */}
+                      <div>
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.5 }}
+                          className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-3 flex items-center gap-2"
+                        >
+                          <Activity className="w-3.5 h-3.5" />
+                          Métricas Coletadas
+                        </motion.p>
+                        <div className="grid grid-cols-2 gap-3">
+                          {[
+                            { icon: Activity, label: "Performance", desc: "Core Web Vitals, LCP, FID", color: "teal", delay: 0.6 },
+                            { icon: FileSearch, label: "SEO", desc: "Meta tags, Open Graph, Schema", color: "cyan", delay: 0.65 },
+                            { icon: Lock, label: "Segurança", desc: "HTTPS, CSP, Headers HTTP", color: "emerald", delay: 0.7 },
+                            { icon: Eye, label: "Acessibilidade", desc: "ARIA, Contraste, Navegação", color: "violet", delay: 0.75 },
+                          ].map((metric, index) => {
+                            const Icon = metric.icon;
+                            return (
+                              <motion.div
+                                key={metric.label}
+                                initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                transition={{ 
+                                  delay: metric.delay,
+                                  type: "spring",
+                                  stiffness: 400,
+                                  damping: 20
+                                }}
+                                whileHover={{ 
+                                  scale: 1.03,
+                                  borderColor: `rgb(var(--${metric.color}-500) / 0.5)`,
+                                  transition: { duration: 0.2 }
+                                }}
+                                className="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/40 hover:border-teal-500/40 transition-all backdrop-blur-sm"
+                              >
+                                <div className="flex items-center gap-2.5 mb-2">
+                                  <div className={`p-1.5 rounded-lg bg-${metric.color}-500/10 border border-${metric.color}-500/20`}>
+                                    <Icon className={`w-4 h-4 text-${metric.color}-400`} />
+                                  </div>
+                                  <span className="text-sm font-semibold text-slate-200">{metric.label}</span>
+                                </div>
+                                <p className="text-[11px] text-slate-500 leading-relaxed">{metric.desc}</p>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
                       </div>
+
+                      {/* Info Box with pulse animation */}
+                      <motion.div
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.8 }}
+                        className="relative p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/30 overflow-hidden"
+                      >
+                        <motion.div
+                          animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.1, 0.3] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                          className="absolute -top-10 -right-10 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl"
+                        />
+                        <div className="relative flex gap-3">
+                          <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-sm font-semibold text-blue-300 mb-1.5">Recurso em Desenvolvimento Ativo</p>
+                            <p className="text-xs text-blue-200/80 leading-relaxed mb-2">
+                              Relatório detalhado em breve com insights acionáveis e comparações competitivas.
+                            </p>
+                            <div className="flex items-center gap-2 text-[11px] text-blue-300/60">
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                              <span>Powered by Lighthouse & PageSpeed Insights</span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      {/* Actions with hover effects */}
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.9 }}
+                        className="space-y-3 pt-2"
+                      >
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setShowResultsModal(false)}
+                          className="w-full px-5 py-3.5 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-semibold text-sm transition-all shadow-lg shadow-teal-900/30 hover:shadow-teal-900/40 hover:shadow-xl relative overflow-hidden group"
+                        >
+                          <motion.div
+                            initial={{ x: "-100%" }}
+                            whileHover={{ x: "100%" }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+                          />
+                          <span className="relative">Entendido</span>
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => setShowResultsModal(false)}
+                          className="w-full px-5 py-3 rounded-xl bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 font-medium text-sm transition-all border border-slate-700/50 hover:border-slate-600/50 backdrop-blur-sm"
+                        >
+                          Fechar
+                        </motion.button>
+                      </motion.div>
+
+                      {/* Footer Note */}
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1 }}
+                        className="text-center text-[11px] text-slate-500 flex items-center justify-center gap-2"
+                      >
+                        <Lock className="w-3 h-3" />
+                        <span>Análise 100% pública • Sem coleta de dados pessoais</span>
+                      </motion.p>
                     </div>
                   </div>
-
-                  {/* Actions */}
-                  <div className="space-y-3 pt-4">
-                    <button
-                      onClick={() => setShowResultsModal(false)}
-                      className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-medium text-sm transition-all shadow-lg shadow-teal-900/20 hover:shadow-teal-900/30"
-                    >
-                      Entendido
-                    </button>
-                    <button
-                      onClick={() => setShowResultsModal(false)}
-                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 font-medium text-sm transition-colors border border-slate-700/50 hover:border-slate-600/50"
-                    >
-                      Fechar
-                    </button>
-                  </div>
-
-                  {/* Footer Note */}
-                  <p className="text-center text-[11px] text-slate-500">
-                    Análise via Lighthouse • Sem coleta de dados pessoais
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
+                </motion.div>
+              </div>
+            </>
           )}
         </AnimatePresence>
       </div>
