@@ -91,8 +91,19 @@ export function getSupabaseAdmin() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+  // During build time, environment variables may not be available
+  // Throw error only at runtime when client is actually used
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('SUPABASE_SERVICE_ROLE_KEY não está configurado');
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('SUPABASE_SERVICE_ROLE_KEY não está configurado');
+    }
+    // During development/build, allow initialization to proceed
+    console.warn('⚠️ SUPABASE_SERVICE_ROLE_KEY not set - admin features will be disabled');
+    // Return a dummy client for build time
+    return createSupabaseClient<Database>(
+      supabaseUrl || 'https://placeholder.supabase.co',
+      supabaseServiceKey || 'placeholder-key'
+    );
   }
 
   return createSupabaseClient<Database>(supabaseUrl, supabaseServiceKey, {

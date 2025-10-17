@@ -74,9 +74,9 @@ const interviewTypes: InterviewType[] = [
 import { Code2, Briefcase, Users } from 'lucide-react';
 
 export default function ApplicationSchedulePage() {
-  const params = useParams<{ id: string }>();
+  const params = useParams();
   const router = useRouter();
-  const applicationId = params?.id || '';
+  const applicationId = typeof params?.id === 'string' ? params.id : '';
 
   const [loading, setLoading] = useState(true);
   const [application, setApplication] = useState<Application | null>(null);
@@ -100,7 +100,7 @@ export default function ApplicationSchedulePage() {
       // Mock data para desenvolvimento
       await new Promise(resolve => setTimeout(resolve, 1000));
       setApplication({
-        id: applicationId,
+        id: typeof applicationId === 'string' ? applicationId : '',
         company_name: 'TechCorp Inc.',
         role_title: 'Senior Full-Stack Developer',
         status: 'reviewing',
@@ -119,14 +119,14 @@ export default function ApplicationSchedulePage() {
     if (!selectedInterview) return;
 
     // Redirect para /agendamentos com query params
-    const params = new URLSearchParams({
+    const searchParams = new URLSearchParams({
       source: 'application',
-      applicationId,
+      applicationId: typeof applicationId === 'string' ? applicationId : '',
       type: selectedType,
       duration: selectedInterview.duration.toString()
     });
 
-    router.push(`/agendamentos?${params.toString()}`);
+    router.push(`/agendamentos?${searchParams.toString()}`);
   };
 
   if (loading) {

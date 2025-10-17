@@ -4,8 +4,14 @@ import { mercadoPagoClient } from './client';
 import { processPaymentConfirmation } from './orders';
 import { Payment } from 'mercadopago';
 
-// Cliente Supabase com privilégios admin (necessário para webhooks)
-const supabase = getSupabaseAdmin();
+// Lazy initialization of Supabase admin client to avoid build-time errors
+let supabaseInstance: ReturnType<typeof getSupabaseAdmin> | null = null;
+function getSupabase() {
+  if (!supabaseInstance) {
+    supabaseInstance = getSupabaseAdmin();
+  }
+  return supabaseInstance;
+}
 
 // Types
 interface MercadoPagoWebhookEvent {
@@ -48,7 +54,7 @@ export function validateWebhookSignature(
 // Check if webhook already processed
 export async function checkWebhookExists(requestId: string): Promise<boolean> {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from('webhook_events')
       .select('id')
       .eq('gateway_event_id', requestId)
@@ -89,7 +95,7 @@ export async function storeWebhookEvent(
     
     console.log('🔵 [storeWebhookEvent] Insert data:', JSON.stringify(insertData, null, 2));
     
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from('webhook_events')
       .insert(insertData)
       .select('id')
@@ -190,7 +196,7 @@ export async function markWebhookProcessed(
   error?: string
 ): Promise<void> {
   try {
-    const { error: updateError } = await supabase
+    const { error: updateError } = await getSupabase()
       .from('webhook_events')
       .update({
         processed: true,
