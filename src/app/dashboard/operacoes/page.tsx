@@ -44,7 +44,7 @@ export default async function OperacoesPage() {
           <CardContent>
             <div className="text-2xl font-bold">{projects.length}</div>
             <p className="text-xs text-muted-foreground">
-              {projects.filter(p => p.status === 'in_progress').length} em andamento
+              {projects.filter((p: any) => p.status === 'in_progress').length} em andamento
             </p>
           </CardContent>
         </Card>
@@ -61,7 +61,7 @@ export default async function OperacoesPage() {
           <CardContent>
             <div className="text-2xl font-bold">{tickets.length}</div>
             <p className="text-xs text-muted-foreground">
-              {tickets.filter(t => t.status === 'open').length} abertos
+              {tickets.filter((t: any) => t.status === 'open').length} abertos
             </p>
           </CardContent>
         </Card>
@@ -78,7 +78,7 @@ export default async function OperacoesPage() {
           <CardContent>
             <div className="text-2xl font-bold">{files.length}</div>
             <p className="text-xs text-muted-foreground">
-              {(files.reduce((sum, f) => sum + (f.size_bytes || 0), 0) / 1024 / 1024).toFixed(1)} MB
+              {(files.reduce((sum: number, f: any) => sum + (f.size_bytes || 0), 0) / 1024 / 1024).toFixed(1)} MB
             </p>
           </CardContent>
         </Card>
@@ -110,7 +110,7 @@ export default async function OperacoesPage() {
                 <EmptyState type="projects" />
               ) : (
                 <div className="space-y-2">
-                  {projects.map((project) => (
+                  {projects.map((project: any) => (
                     <div key={project.id} className="p-4 border rounded-lg">
                       <h3 className="font-semibold">{project.name}</h3>
                       <p className="text-sm text-muted-foreground">{project.description}</p>
@@ -132,7 +132,7 @@ export default async function OperacoesPage() {
                 <EmptyState type="tickets" />
               ) : (
                 <div className="space-y-2">
-                  {tickets.map((ticket) => (
+                  {tickets.map((ticket: any) => (
                     <div key={ticket.id} className="p-4 border rounded-lg">
                       <h3 className="font-semibold">{ticket.subject}</h3>
                       <p className="text-sm text-muted-foreground">{ticket.status}</p>
@@ -154,7 +154,7 @@ export default async function OperacoesPage() {
                 <EmptyState type="files" />
               ) : (
                 <div className="space-y-2">
-                  {files.map((file) => (
+                  {files.map((file: any) => (
                     <div key={file.id} className="p-4 border rounded-lg">
                       <h3 className="font-semibold">{file.file_name}</h3>
                       <p className="text-sm text-muted-foreground">

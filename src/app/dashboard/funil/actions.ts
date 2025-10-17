@@ -75,31 +75,28 @@ export async function getFunnelStats() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  type LeadStatus = Pick<Lead, 'status'>;
-  const result = (await supabase
+  const queryResult = await supabase
     .from('leads')
-    .select('status')) as { data: LeadStatus[] | null; error: any };
+    .select('status');
   
-  const { data: leads, error } = result;
+  const leads = queryResult.data || [];
 
-  if (error) throw error;
-
-  const stats = [
+  const statsData = [
     { stage: 'captacao', count: 0, value: 0, conversion_rate: 0, avg_time_in_stage: 5 },
     { stage: 'qualificacao', count: 0, value: 0, conversion_rate: 0, avg_time_in_stage: 7 },
     { stage: 'negociacao', count: 0, value: 0, conversion_rate: 0, avg_time_in_stage: 10 },
     { stage: 'fechamento', count: 0, value: 0, conversion_rate: 0, avg_time_in_stage: 3 },
-  ]
+  ];
 
-  (leads || []).forEach((lead: Pick<Lead, 'status'>) => {
+  leads.forEach((lead: any) => {
     const stage = mapStageFromStatus(lead.status)
-    const stageIndex = stats.findIndex(s => s.stage === stage)
+    const stageIndex = statsData.findIndex(s => s.stage === stage)
     if (stageIndex !== -1) {
-      stats[stageIndex].count++
+      statsData[stageIndex].count++
     }
   })
 
-  return stats
+  return statsData
 }
 
 // Helper functions
