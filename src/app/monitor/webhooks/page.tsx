@@ -1,14 +1,7 @@
 'use client';
 
-export const dynamic = 'force-dynamic'
-
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 
 interface WebhookEvent {
   id: string;
@@ -26,6 +19,9 @@ export default function WebhookMonitorPage() {
   const [webhooks, setWebhooks] = useState<WebhookEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  
+  // Criar cliente Supabase uma vez no componente
+  const supabase = createSupabaseBrowserClient();
 
   const fetchWebhooks = async () => {
     try {
