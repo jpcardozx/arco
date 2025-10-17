@@ -6,8 +6,16 @@ import { ptBR } from 'date-fns/locale'
 import { z } from 'zod'
 import type { ConsultoriaBooking, ConsultoriaType } from '@/types/agendamentos.types'
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY!)
+// Helper to get Resend client (lazy initialization)
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY not configured');
+  }
+  
+  return new Resend(apiKey);
+}
 
 // Validation schema
 const sendEmailSchema = z.object({
@@ -27,6 +35,7 @@ type BookingWithRelations = ConsultoriaBooking & {
 
 export async function POST(request: NextRequest) {
   try {
+    const resend = getResendClient();
     const supabase = await createClient()
     
     // Parse request body

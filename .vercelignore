@@ -1,0 +1,5 @@
+# Ignore MercadoPago files during build
+src/lib/payments/mercadopago/
+src/app/api/checkout/
+src/app/api/mercadopago/
+src/app/api/webhooks/mercadopago/

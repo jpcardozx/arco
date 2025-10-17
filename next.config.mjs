@@ -130,6 +130,14 @@ const nextConfig = {
       config.optimization.removeEmptyChunks = false;
       config.optimization.splitChunks = false;
     }
+
+    // Exclude MercadoPago files from build in production
+    if (!dev && isServer) {
+      config.externals = config.externals || [];
+      config.externals.push({
+        'mercadopago': 'commonjs mercadopago',
+      });
+    }
     
     return config;
   },
