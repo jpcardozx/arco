@@ -12,16 +12,53 @@ import { Database } from '@/types/database.types';
  * 
  * ❌ NUNCA use no client-side (páginas/componentes)
  */
-export const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
+let _supabaseAdmin: ReturnType<typeof createClient<Database>> | null = null;
+
+export const getSupabaseAdmin = () => {
+  if (_supabaseAdmin) return _supabaseAdmin;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  // During build time, environment variables may not be available
+  if (!supabaseUrl || !serviceRoleKey) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('SUPABASE_SERVICE_ROLE_KEY is not configured');
+    }
+    // During build, return a dummy client
+    console.warn('⚠️ Supabase admin client not available during build');
+    return createClient<Database>(
+      'https://placeholder.supabase.co',
+      'placeholder-service-key',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    );
   }
-);
+
+  _supabaseAdmin = createClient<Database>(
+    supabaseUrl,
+    serviceRoleKey,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+
+  return _supabaseAdmin;
+};
+
+// Keep backward compatibility
+export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient<Database>>, {
+  get(target, prop) {
+    return getSupabaseAdmin()[prop as keyof ReturnType<typeof createClient<Database>>];
+  }
+});
 
 /**
  * Supabase Client with Anon Key (respects RLS)
@@ -31,10 +68,36 @@ export const supabaseAdmin = createClient<Database>(
  * - Public data queries
  * - Authenticated user queries (com RLS)
  */
-export const supabaseClient = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+let _supabaseClient: ReturnType<typeof createClient<Database>> | null = null;
+
+export const getSupabaseClient = () => {
+  if (_supabaseClient) return _supabaseClient;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // During build time, environment variables may not be available
+  if (!supabaseUrl || !anonKey) {
+    if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+      throw new Error('Supabase credentials are not configured');
+    }
+    // During build, return a dummy client
+    return createClient<Database>(
+      'https://placeholder.supabase.co',
+      'placeholder-anon-key'
+    );
+  }
+
+  _supabaseClient = createClient<Database>(supabaseUrl, anonKey);
+  return _supabaseClient;
+};
+
+// Keep backward compatibility
+export const supabaseClient = new Proxy({} as ReturnType<typeof createClient<Database>>, {
+  get(target, prop) {
+    return getSupabaseClient()[prop as keyof ReturnType<typeof createClient<Database>>];
+  }
+});
 
 /**
  * Helper: Create subscription
@@ -46,7 +109,8 @@ export async function createSubscription(params: {
   gatewaySubscriptionId: string;
   status?: string;
 }) {
-  const { data, error } = await supabaseAdmin.rpc('upsert_subscription' as any, {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc('upsert_subscription' as any, {
     p_user_id: params.userId,
     p_plan_slug: params.planSlug,
     p_gateway: params.gateway,
@@ -68,7 +132,8 @@ export async function activateSubscription(
   subscriptionId: string,
   paymentId: string
 ) {
-  const { data, error } = await supabaseAdmin.rpc('activate_subscription' as any, {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc('activate_subscription' as any, {
     p_subscription_id: subscriptionId,
     p_payment_id: paymentId,
   });
@@ -87,7 +152,8 @@ export async function cancelSubscription(
   subscriptionId: string,
   cancelAtPeriodEnd: boolean = false
 ) {
-  const { data, error } = await supabaseAdmin.rpc('cancel_subscription' as any, {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc('cancel_subscription' as any, {
     p_subscription_id: subscriptionId,
     p_cancel_at_period_end: cancelAtPeriodEnd,
   });
@@ -108,7 +174,8 @@ export async function processWebhookEvent(params: {
   eventType: string;
   payload: any;
 }) {
-  const { data, error } = await supabaseAdmin.rpc('process_webhook_event' as any, {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc('process_webhook_event' as any, {
     p_gateway: params.gateway,
     p_gateway_event_id: params.gatewayEventId,
     p_event_type: params.eventType,
@@ -126,7 +193,8 @@ export async function processWebhookEvent(params: {
  * Helper: Get user active subscription
  */
 export async function getUserActiveSubscription(userId: string) {
-  const { data, error } = await supabaseAdmin.rpc(
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc(
     'get_user_active_subscription' as any,
     {
       p_user_id: userId,
@@ -149,7 +217,8 @@ export async function getUserPaymentHistory(
   userId: string,
   limit: number = 10
 ) {
-  const { data, error } = await supabaseAdmin.rpc('get_user_payment_history' as any, {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc('get_user_payment_history' as any, {
     p_user_id: userId,
     p_limit: limit,
   });
@@ -168,7 +237,8 @@ export async function calculateRevenueMetrics(
   startDate?: Date,
   endDate?: Date
 ) {
-  const { data, error } = await supabaseAdmin.rpc('calculate_revenue_metrics' as any, {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin.rpc('calculate_revenue_metrics' as any, {
     p_start_date: startDate?.toISOString() || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     p_end_date: endDate?.toISOString() || new Date().toISOString(),
   });
