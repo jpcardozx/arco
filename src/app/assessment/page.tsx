@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic'
+
 /**
  * ASSESSMENT PAGE - PROFESSIONAL S-TIER
  * Modular, clean, and organized

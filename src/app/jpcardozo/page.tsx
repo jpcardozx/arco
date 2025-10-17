@@ -23,20 +23,22 @@
 
 'use client';
 
-import dynamic from 'next/dynamic';
+export const dynamic = 'force-dynamic'
+
+import dynamicImport from 'next/dynamic';
 import { WhatsAppButton } from '@/components/primitives/WhatsAppButton';
 
 // Lazy load components (ssr: false)
-const HeroThreeScene = dynamic(() => import('@/components/portfolio/HeroThreeScene'), {
+const HeroThreeScene = dynamicImport(() => import('@/components/portfolio/HeroThreeScene'), {
   ssr: false,
   loading: () => <div className="w-full h-screen bg-slate-950" />
 });
 
-const ProcessMethodology = dynamic(() => import('@/components/portfolio/ProcessMethodology'));
-const ContactInformation = dynamic(() => import('@/components/portfolio/ContactInformation'));
-const TechnicalStack = dynamic(() => import('@/components/portfolio/TechnicalStack'));
-const ExpertiseMatrix = dynamic(() => import('@/components/portfolio/ExpertiseMatrix'));
-const FeaturedCaseStudy = dynamic(() => import('@/components/portfolio/FeaturedCaseStudy'));
+const ProcessMethodology = dynamicImport(() => import('@/components/portfolio/ProcessMethodology'));
+const ContactInformation = dynamicImport(() => import('@/components/portfolio/ContactInformation'));
+const TechnicalStack = dynamicImport(() => import('@/components/portfolio/TechnicalStack'));
+const ExpertiseMatrix = dynamicImport(() => import('@/components/portfolio/ExpertiseMatrix'));
+const FeaturedCaseStudy = dynamicImport(() => import('@/components/portfolio/FeaturedCaseStudy'));
 
 export default function PortfolioPage() {
   return (

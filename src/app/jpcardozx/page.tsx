@@ -18,16 +18,18 @@
 
 'use client';
 
-import dynamic from 'next/dynamic';
+export const dynamic = 'force-dynamic'
+
+import dynamicImport from 'next/dynamic';
 
 // Lazy load components (ssr: false)
-const HeroThreeScene = dynamic(() => import('@/components/portfolio/HeroThreeScene'), {
+const HeroThreeScene = dynamicImport(() => import('@/components/portfolio/HeroThreeScene'), {
   ssr: false,
   loading: () => <div className="w-full h-screen bg-slate-950" />
 });
 
-const ProcessMethodology = dynamic(() => import('@/components/portfolio/ProcessMethodology'));
-const ContactInformation = dynamic(() => import('@/components/portfolio/ContactInformation'));
+const ProcessMethodology = dynamicImport(() => import('@/components/portfolio/ProcessMethodology'));
+const ContactInformation = dynamicImport(() => import('@/components/portfolio/ContactInformation'));
 
 export default function PortfolioPage() {
   return (
