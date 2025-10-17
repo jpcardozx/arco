@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "gen:types": "supabase gen types typescript --linked > src/types/supabase.ts",
+    "gen:types:local": "supabase gen types typescript --local > src/types/supabase.ts"
+  }
+}

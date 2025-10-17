@@ -5,7 +5,7 @@
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 export async function createSupabaseServer() {
   const cookieStore = await cookies()
@@ -33,6 +33,9 @@ export async function createSupabaseServer() {
     }
   )
 }
+
+// Backward compatibility alias
+export const createClient = createSupabaseServer
 
 /**
  * Admin client for bypassing RLS

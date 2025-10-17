@@ -7,7 +7,7 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type AnalysisRequest = Database['public']['Tables']['analysis_requests']['Row']
 type DatabaseAnalysisResult = Database['public']['Tables']['analysis_results']['Row']
@@ -54,7 +54,7 @@ export async function getAnalyses() {
   if (!user) throw new Error('Unauthorized')
 
   type AnalysisWithResults = AnalysisRequest & {
-    analysis_results: AnalysisResult[]
+    analysis_results: DatabaseAnalysisResult[]
   }
 
   const { data, error } = await supabase
@@ -89,7 +89,7 @@ export async function getAnalysisById(id: string) {
   if (!user) throw new Error('Unauthorized')
 
   type AnalysisWithResults = AnalysisRequest & {
-    analysis_results: AnalysisResult[]
+    analysis_results: DatabaseAnalysisResult[]
   }
 
   const { data, error } = await supabase

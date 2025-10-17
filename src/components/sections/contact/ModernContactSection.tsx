@@ -240,35 +240,35 @@ export function ModernContactSection() {
   const contactMethods = useMemo(() => [
     {
       icon: Mail,
-      title: 'Email Corporativo',
+      title: 'Email Executivo',
       value: 'contato@arco.digital',
-      description: 'Resposta em até 2 horas úteis',
+      description: 'Resposta garantida em 2h úteis',
     },
     {
       icon: Phone,
       title: 'WhatsApp Business',
       value: '+55 (11) 99999-9999',
-      description: 'Atendimento imediato',
+      description: 'Canal direto com especialistas',
     },
     {
       icon: MessageCircle,
-      title: 'Chat 24/7',
-      value: 'Suporte Online',
-      description: 'Assistente sempre disponível',
+      title: 'Suporte Inteligente',
+      value: 'Assistente Online',
+      description: 'Disponível 24 horas por dia',
     },
     {
       icon: MapPin,
-      title: 'Localização',
+      title: 'Sede Operacional',
       value: 'São Paulo, SP',
-      description: 'Atendimento nacional',
+      description: 'Atuação em todo Brasil',
     },
   ], []);
 
   const stats = useMemo(() => [
-    { value: '350%', label: 'Crescimento médio', icon: TrendingUp, color: 'bg-gradient-to-br from-teal-500 to-teal-600', delay: 0.1 },
-    { value: '48h', label: 'Setup completo', icon: Zap, color: 'bg-gradient-to-br from-green-500 to-green-600', delay: 0.2 },
-    { value: '200+', label: 'Clientes ativos', icon: Building2, color: 'bg-gradient-to-br from-purple-500 to-purple-600', delay: 0.3 },
-    { value: '420%', label: 'ROI médio', icon: DollarSign, color: 'bg-gradient-to-br from-orange-500 to-orange-600', delay: 0.4 },
+    { value: '350%', label: 'Aumento em conversões', icon: TrendingUp, color: 'bg-gradient-to-br from-teal-500 to-teal-600', delay: 0.1 },
+    { value: '48h', label: 'Para começar', icon: Zap, color: 'bg-gradient-to-br from-green-500 to-green-600', delay: 0.2 },
+    { value: '200+', label: 'Empresas ativas', icon: Building2, color: 'bg-gradient-to-br from-purple-500 to-purple-600', delay: 0.3 },
+    { value: '4.2x', label: 'Retorno médio', icon: DollarSign, color: 'bg-gradient-to-br from-orange-500 to-orange-600', delay: 0.4 },
   ], []);
 
   const onSubmit = useCallback(async (data: ContactFormData) => {
@@ -347,17 +347,16 @@ export function ModernContactSection() {
           >
             <Badge className="border-transparent bg-gradient-to-r from-teal-500/20 to-orange-500/20 px-4 py-2 text-white backdrop-blur-sm">
               <Sparkles className="mr-2 h-4 w-4" />
-              Entre em contato
+              Fale com Especialistas
             </Badge>
             <h1 className="text-5xl font-bold leading-tight text-white lg:text-6xl">
-              Pronto para{' '}
+              Transforme leads em{' '}
               <span className="bg-gradient-to-r from-teal-400 via-teal-300 to-orange-400 bg-clip-text text-transparent">
-                350% mais leads
+                clientes reais
               </span>
-              ?
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/80">
-              Agende uma análise gratuita e descubra como transformar seu negócio local
+              Agende uma consultoria estratégica gratuita e receba um diagnóstico personalizado do potencial de crescimento do seu negócio
             </p>
           </motion.div>
 
@@ -384,28 +383,7 @@ export function ModernContactSection() {
                 ))}
               </div>
 
-              {/* Live Chat Indicator */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-                className="rounded-2xl border border-green-500/30 bg-gradient-to-br from-green-500/10 to-green-600/5 p-5 backdrop-blur-xl"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="relative flex h-12 w-12 items-center justify-center">
-                    <div className="absolute h-full w-full animate-ping rounded-full bg-green-400 opacity-30" />
-                    <div className="relative h-10 w-10 rounded-full bg-green-500 flex items-center justify-center">
-                      <CheckCircle2 className="h-5 w-5 text-white" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-bold text-white">Chat 24/7 Online</div>
-                    <div className="text-xs text-white/70">Assistente disponível agora</div>
-                  </div>
-                  <Zap className="h-5 w-5 text-green-400" />
-                </div>
-              </motion.div>
+
             </div>
 
             {/* RIGHT - Form */}
@@ -418,8 +396,8 @@ export function ModernContactSection() {
               <Card className="overflow-hidden border-white/10 bg-white/5 shadow-2xl backdrop-blur-2xl">
                 <CardContent className="p-8">
                   <div className="mb-6 space-y-2">
-                    <h2 className="text-2xl font-bold text-white">Análise Gratuita</h2>
-                    <p className="text-sm text-white/70">Preencha e receba uma consultoria personalizada</p>
+                    <h2 className="text-2xl font-bold text-white">Diagnóstico Estratégico</h2>
+                    <p className="text-sm text-white/70">Receba uma análise detalhada do potencial do seu negócio</p>
                   </div>
 
                   <Form {...form}>
@@ -450,7 +428,7 @@ export function ModernContactSection() {
                                   <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
                                   <Input
                                     {...field}
-                                    placeholder="Seu nome"
+                                    placeholder="Nome completo"
                                     onFocus={() => handleFocus('name')}
                                     onBlur={handleBlur}
                                     className={cn(
@@ -614,7 +592,7 @@ export function ModernContactSection() {
                                 <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-white/40" />
                                 <Textarea
                                   {...field}
-                                  placeholder="Conte sobre seu negócio..."
+                                  placeholder="Descreva seus principais objetivos e desafios atuais..."
                                   rows={3}
                                   onFocus={() => handleFocus('message')}
                                   onBlur={handleBlur}
@@ -641,11 +619,11 @@ export function ModernContactSection() {
                           {form.formState.isSubmitting ? (
                             <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Enviando...
+                              Processando...
                             </>
                           ) : (
                             <>
-                              Solicitar análise gratuita
+                              Solicitar diagnóstico gratuito
                               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </>
                           )}
@@ -654,7 +632,7 @@ export function ModernContactSection() {
                       </motion.div>
 
                       <p className="text-center text-xs text-white/50">
-                        🔒 Dados protegidos. Não compartilhamos com terceiros.
+                        🔒 Suas informações são 100% confidenciais e protegidas pela LGPD
                       </p>
                     </form>
                   </Form>

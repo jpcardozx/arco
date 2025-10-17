@@ -7,7 +7,7 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type CloudFile = Database['public']['Tables']['cloud_files']['Row']
 

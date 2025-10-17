@@ -92,7 +92,7 @@ function EnhancedChecklistInterface({
                     : `${minutes}:${secs.toString().padStart(2, '0')}`
   }
 
-  const filteredItems = checklist?.checklist_items.filter(item => {
+  const filteredItems = checklist?.checklist_items?.filter(item => {
     const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory
     const priorityMatch = selectedPriority === 'all' || item.priority === selectedPriority
     const searchMatch = searchQuery === '' || 
@@ -160,8 +160,8 @@ function EnhancedChecklistInterface({
   }
 
   const categories = CHECKLIST_CATEGORIES
-  const completedItems = checklist.checklist_items.filter(item => item.is_completed).length
-  const totalEstimatedTime = checklist.checklist_items.reduce((sum, item) => sum + (item.estimated_minutes || 0), 0)
+  const completedItems = checklist?.checklist_items?.filter(item => item.is_completed).length || 0
+  const totalEstimatedTime = checklist?.checklist_items?.reduce((sum, item) => sum + (item.estimated_minutes || 0), 0) || 0
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -269,7 +269,7 @@ function EnhancedChecklistInterface({
               />
               <p className="text-white/60 text-sm mt-2">Progresso Geral</p>
               <p className="text-white text-lg font-semibold">
-                {completedItems}/{checklist.checklist_items.length} itens
+                {completedItems}/{checklist?.checklist_items?.length || 0} itens
               </p>
             </div>
 

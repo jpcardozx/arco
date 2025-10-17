@@ -56,13 +56,16 @@ export async function middleware(req: NextRequest) {
   );
     
   // Prevent XSS attacks with Content-Security-Policy
+  // Note: 'unsafe-eval' is required for Next.js development mode
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://analytics.arco.com https://vercel.live",
+    `script-src 'self' 'unsafe-inline' ${isDevelopment ? "'unsafe-eval'" : ''} https://analytics.arco.com https://vercel.live`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https://*.arco.com blob:",
-    "connect-src 'self' https://api.arco.com https://analytics.arco.com",
+    "img-src 'self' data: https://*.arco.com https://images.unsplash.com blob:",
+    "connect-src 'self' https://api.arco.com https://analytics.arco.com wss://localhost:* ws://localhost:*",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",

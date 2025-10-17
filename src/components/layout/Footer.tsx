@@ -121,44 +121,38 @@ interface FooterLink {
 
 const footerNav = {
   services: {
-    title: "Soluções",
+    title: "Serviços",
     links: [
-      { label: "Desenvolvimento Web", href: "/servicos/desenvolvimento", badge: "Popular" },
-      { label: "E-commerce Completo", href: "/servicos/ecommerce" },
-      { label: "Performance & SEO", href: "/servicos/performance" },
-      { label: "Marketing Digital", href: "/servicos/marketing" },
-      { label: "Consultoria Técnica", href: "/servicos/consultoria" },
-      { label: "Suporte Dedicado", href: "/servicos/suporte" }
+      { label: "Consultoria Técnica", href: "#", badge: "Core" },
+      { label: "Auditoria de Performance", href: "#" },
+      { label: "Migração de Sistemas", href: "#" },
+      { label: "Otimização de Stack", href: "#" }
     ] as FooterLink[]
   },
   company: {
-    title: "Empresa",
+    title: "Institucional",
     links: [
-      { label: "Sobre a ARCO", href: "/sobre" },
-      { label: "Cases de Sucesso", href: "/cases", badge: "150+" },
-      { label: "Metodologia", href: "/metodologia" },
-      { label: "Blog & Insights", href: "/blog" },
-      { label: "Carreiras", href: "/carreiras" },
+      { label: "Portfolio", href: "/jpcardozo" },
+      { label: "Metodologia", href: "#" },
+      { label: "Casos de Uso", href: "#" },
       { label: "Contato", href: "/contato" }
     ] as FooterLink[]
   },
   resources: {
     title: "Recursos",
     links: [
-      { label: "Documentação", href: "/docs" },
-      { label: "API Reference", href: "/api" },
-      { label: "Guias & Tutoriais", href: "/guias" },
-      { label: "FAQ", href: "/faq" },
-      { label: "Status do Sistema", href: "/status", external: true }
+      { label: "Agendamentos", href: "/agendamentos" },
+      { label: "Análise de URL", href: "/mydomain" },
+      { label: "Documentação Técnica", href: "#" },
+      { label: "FAQ", href: "#" }
     ] as FooterLink[]
   },
   legal: {
-    title: "Legal & Compliance",
+    title: "Legal",
     links: [
-      { label: "Privacidade", href: "/privacidade" },
-      { label: "Termos de Uso", href: "/termos" },
-      { label: "LGPD Compliance", href: "/lgpd" },
-      { label: "Política de Cookies", href: "/cookies" }
+      { label: "Política de Privacidade", href: "#" },
+      { label: "Termos de Serviço", href: "#" },
+      { label: "Conformidade LGPD", href: "#" }
     ] as FooterLink[]
   }
 };
@@ -204,30 +198,30 @@ const reliabilityMetrics = [
   {
     icon: Shield,
     value: "99.9%",
-    label: "Uptime SLA",
-    subLabel: "Disponibilidade",
+    label: "Disponibilidade",
+    subLabel: "Uptime garantido",
     color: "teal"
   },
   {
     icon: Clock,
     value: "<2h",
-    label: "Response Time",
-    subLabel: "Suporte técnico",
-    color: "orange"
+    label: "Tempo de Resposta",
+    subLabel: "Atendimento técnico",
+    color: "blue"
   },
   {
     icon: Zap,
     value: "98+",
-    label: "Performance",
-    subLabel: "PageSpeed",
+    label: "Performance Score",
+    subLabel: "Core Web Vitals",
     color: "emerald"
   },
   {
-    icon: Lock,
-    value: "ISO",
-    label: "Segurança",
-    subLabel: "Certificado",
-    color: "amber"
+    icon: CheckCircle2,
+    value: "LGPD",
+    label: "Conformidade",
+    subLabel: "Dados protegidos",
+    color: "purple"
   }
 ];
 
@@ -236,14 +230,6 @@ const certifications = [
   {
     icon: Shield,
     label: "LGPD Compliant"
-  },
-  {
-    icon: Award,
-    label: "ISO 9001"
-  },
-  {
-    icon: CheckCircle2,
-    label: "Google Partner"
   }
 ];
 
@@ -258,7 +244,7 @@ const ContactEmail = () => {
     <motion.button
       onClick={(e) => {
         e.preventDefault();
-        copy('contato@arco.dev');
+        copy('arco@consultingarco.com');
       }}
       whileHover={reducedMotion ? {} : { scale: 1.05, y: -4 }}
       whileTap={reducedMotion ? {} : { scale: 0.98 }}
@@ -269,7 +255,7 @@ const ContactEmail = () => {
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-xs text-teal-400/80 mb-0.5 font-semibold uppercase tracking-wider">Email Principal</div>
-        <div className="text-sm font-bold truncate">contato@arco.dev</div>
+        <div className="text-sm font-bold truncate">arco@consultingarco.com</div>
       </div>
       <AnimatePresence mode="wait">
         {copied ? (
@@ -501,37 +487,60 @@ const MetricCard: React.FC<{
   );
 };
 
-// Component: Reliability Metrics Row
+// Component: Reliability Metrics Row - Profissionalizado
 const ReliabilityMetricsRow = () => {
   const reducedMotion = useReducedMotion();
   
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, { bg: string, text: string, glow: string }> = {
+      teal: { bg: 'bg-teal-500/10', text: 'text-teal-400', glow: 'group-hover:shadow-teal-500/20' },
+      blue: { bg: 'bg-blue-500/10', text: 'text-blue-400', glow: 'group-hover:shadow-blue-500/20' },
+      emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', glow: 'group-hover:shadow-emerald-500/20' },
+      purple: { bg: 'bg-purple-500/10', text: 'text-purple-400', glow: 'group-hover:shadow-purple-500/20' }
+    };
+    return colors[color] || colors.teal;
+  };
+  
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
       {reliabilityMetrics.map((metric, index) => {
         const Icon = metric.icon;
+        const colors = getColorClasses(metric.color);
+        
         return (
           <motion.div 
             key={metric.label}
-            className="flex items-center gap-2 sm:gap-3 group cursor-default p-3 rounded-lg hover:bg-white/5 transition-colors"
-            initial={reducedMotion ? {} : { opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            className={cn(
+              "relative group p-4 rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-default",
+              "bg-gradient-to-br from-white/5 to-transparent hover:from-white/10 shadow-lg",
+              colors.glow
+            )}
+            initial={reducedMotion ? {} : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: index * 0.08 }}
-            whileHover={reducedMotion ? {} : { scale: 1.03 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            whileHover={reducedMotion ? {} : { y: -4, scale: 1.02 }}
           >
-            <motion.div 
-              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-teal-500/10 transition-colors overflow-hidden flex-shrink-0"
-              whileHover={reducedMotion ? {} : { rotate: 360 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-            >
-              <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-teal-400 relative z-10" strokeWidth={2} />
-            </motion.div>
-            <div className="min-w-0">
-              <div className="text-white font-bold text-base sm:text-lg leading-none mb-1">
+            {/* Subtle gradient overlay on hover */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <motion.div 
+                className={cn("w-11 h-11 rounded-lg flex items-center justify-center mb-3 transition-all", colors.bg)}
+                whileHover={reducedMotion ? {} : { rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+              >
+                <Icon className={cn("w-5 h-5", colors.text)} strokeWidth={2.5} />
+              </motion.div>
+              
+              <div className="text-white font-black text-xl sm:text-2xl mb-1 tracking-tight">
                 {metric.value}
               </div>
-              <div className="text-white/60 text-xs leading-tight truncate">
+              <div className="text-white/80 font-semibold text-xs sm:text-sm mb-0.5">
                 {metric.label}
+              </div>
+              <div className="text-white/50 text-xs">
+                {metric.subLabel}
               </div>
             </div>
           </motion.div>
@@ -580,7 +589,7 @@ const PreFooterCTA = () => {
                 textShadow: '0 2px 20px rgba(0,0,0,0.3)'
               }}
             >
-              Pronto para Transformar Seu Negócio Digital?
+              Ainda precisa de ajuda?
             </h2>
             
             <p 
@@ -591,7 +600,7 @@ const PreFooterCTA = () => {
                 letterSpacing: '-0.015em'
               }}
             >
-              Receba uma análise técnica gratuita e descubra como otimizar performance, conversão e resultados.
+              Receba uma análise técnica gratuita e descubra como otimizar performance, conversão e resultado ou entre em contato com o suporte.
             </p>
 
             {/* CTA Buttons */}
@@ -601,7 +610,7 @@ const PreFooterCTA = () => {
                 className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white border-0 shadow-xl transition-all duration-300 hover:scale-105"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
-                Solicitar Análise Gratuita
+                Solicitar Análise
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               
@@ -613,26 +622,6 @@ const PreFooterCTA = () => {
               </a>
             </div>
 
-            {/* Impact Metrics Grid com Counter Animation */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-              {impactMetrics.map((metric, index) => {
-                const IconComponent = metric.icon;
-                const colorMap = {
-                  teal: 'bg-teal-500/20 text-teal-400',
-                  orange: 'bg-orange-500/20 text-orange-400',
-                  amber: 'bg-amber-500/20 text-amber-400',
-                  emerald: 'bg-emerald-500/20 text-emerald-400'
-                };
-                return (
-                  <MetricCard
-                    key={metric.label}
-                    metric={metric}
-                    colorClass={colorMap[metric.color as keyof typeof colorMap]}
-                    delay={index * 0.1}
-                  />
-                );
-              })}
-            </div>
           </motion.div>
         </div>
       </div>
@@ -805,7 +794,7 @@ export const Footer: React.FC<FooterProps> = ({
                 className="text-white/70 mb-8 sm:mb-10 leading-[1.8] text-[15px] font-light max-w-full sm:max-w-[36ch] lg:max-w-[280px]"
                 style={{ letterSpacing: '0.01em' }}
               >
-                Excelência em soluções digitais. Estratégia, execução e resultados mensuráveis para negócios que buscam crescimento sustentável.
+                Soluções digitais profissionais com foco em performance e resultados mensuráveis.
               </p>
 
               {/* Certifications - Refined with elegant animations */}
@@ -839,50 +828,12 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
               </div>
 
-              {/* Social Links - Elegant with neon effects */}
-              <div className="space-y-4">
-                <p className="text-white/40 text-[11px] uppercase tracking-[0.15em] font-semibold">Redes Sociais</p>
-                <div className="flex gap-2.5">
-                  <motion.a
-                    href="https://github.com/jpcardozx"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative w-10 h-10 rounded-lg bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-teal-400/50 transition-all duration-300 overflow-hidden"
-                    aria-label="GitHub"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {/* Animated glow */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 to-teal-500/0 group-hover:from-teal-500/20 group-hover:to-transparent transition-all duration-500" />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: '0 0 20px rgba(20,184,166,0.4)' }} />
-                    <Github className="w-[18px] h-[18px] relative z-10 transition-transform duration-300 group-hover:rotate-12" strokeWidth={2} />
-                  </motion.a>
-                  <motion.a
-                    href="https://linkedin.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative w-10 h-10 rounded-lg bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-teal-400/50 transition-all duration-300 overflow-hidden"
-                    aria-label="LinkedIn"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 to-teal-500/0 group-hover:from-teal-500/20 group-hover:to-transparent transition-all duration-500" />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: '0 0 20px rgba(20,184,166,0.4)' }} />
-                    <Linkedin className="w-[18px] h-[18px] relative z-10 transition-transform duration-300 group-hover:rotate-12" strokeWidth={2} />
-                  </motion.a>
-                  <motion.a
-                    href="https://twitter.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative w-10 h-10 rounded-lg bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-teal-400/50 transition-all duration-300 overflow-hidden"
-                    aria-label="Twitter"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 to-teal-500/0 group-hover:from-teal-500/20 group-hover:to-transparent transition-all duration-500" />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: '0 0 20px rgba(20,184,166,0.4)' }} />
-                    <Twitter className="w-[18px] h-[18px] relative z-10 transition-transform duration-300 group-hover:rotate-12" strokeWidth={2} />
-                  </motion.a>
+              {/* Chat Status - Discrete and elegant */}
+              <div className="space-y-3">
+                <p className="text-white/40 text-[11px] uppercase tracking-[0.15em] font-semibold">Suporte Direto</p>
+                <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                  <div className="w-2 h-2 rounded-full bg-amber-400/70 animate-pulse" />
+                  <span className="text-[13px] text-white/60 font-medium">Chat - Em implementação</span>
                 </div>
               </div>
             </div>
@@ -927,7 +878,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <ContactEmail />
                 
                 <motion.a 
-                  href="tel:+5511999999999"
+                  href="tel:+5521967277533"
                   whileHover={{ scale: 1.03, y: -2 }}
                   className="flex items-center gap-3 text-white/80 hover:text-teal-400 transition-all group p-3 sm:p-4 rounded-xl border border-white/10 hover:border-teal-400/30 hover:bg-teal-500/5"
                 >
@@ -936,7 +887,7 @@ export const Footer: React.FC<FooterProps> = ({
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs text-white/50 mb-0.5">Telefone</div>
-                    <div className="text-sm font-medium">(11) 99999-9999</div>
+                    <div className="text-sm font-medium">(21) 96727-7533</div>
                   </div>
                 </motion.a>
 
@@ -946,7 +897,7 @@ export const Footer: React.FC<FooterProps> = ({
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs text-white/50 mb-0.5">Localização</div>
-                    <div className="text-sm font-medium">São Paulo, SP</div>
+                    <div className="text-sm font-medium">Rio de Janeiro, RJ</div>
                   </div>
                 </div>
               </div>
@@ -965,27 +916,49 @@ export const Footer: React.FC<FooterProps> = ({
                   {section.title.toUpperCase()}
                 </h4>
                 <ul className="space-y-3.5">
-                  {section.links.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-white/70 hover:text-teal-400 transition-colors text-sm inline-flex items-center gap-2 group"
-                        {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      >
-                        <span className="relative">
-                          {link.label}
-                          <span className="absolute bottom-0 left-0 w-0 h-px bg-teal-400 group-hover:w-full transition-all duration-300" />
-                        </span>
-                        {link.badge && (
-                          <span className="px-2 py-0.5 text-xs font-semibold bg-teal-500/20 text-teal-300 rounded-full">
-                            {link.badge}
+                  {section.links.map((link, index) => (
+                    <motion.li
+                      key={`${key}-${link.label}-${index}`}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                    >
+                      {link.href === '#' ? (
+                        <button
+                          onClick={(e) => e.preventDefault()}
+                          className="text-white/60 hover:text-white/80 transition-colors text-sm inline-flex items-center gap-2 group cursor-default"
+                        >
+                          <span className="relative">
+                            {link.label}
                           </span>
-                        )}
-                        {link.external && (
-                          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                      </Link>
-                    </li>
+                          {link.badge && (
+                            <span className="px-2 py-0.5 text-xs font-semibold bg-teal-500/20 text-teal-300 rounded-full">
+                              {link.badge}
+                            </span>
+                          )}
+                        </button>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-white/70 hover:text-teal-400 transition-colors text-sm inline-flex items-center gap-2 group"
+                          {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        >
+                          <span className="relative">
+                            {link.label}
+                            <span className="absolute bottom-0 left-0 w-0 h-px bg-teal-400 group-hover:w-full transition-all duration-300" />
+                          </span>
+                          {link.badge && (
+                            <span className="px-2 py-0.5 text-xs font-semibold bg-teal-500/20 text-teal-300 rounded-full">
+                              {link.badge}
+                            </span>
+                          )}
+                          {link.external && (
+                            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          )}
+                        </Link>
+                      )}
+                    </motion.li>
                   ))}
                 </ul>
               </div>
@@ -1006,39 +979,48 @@ export const Footer: React.FC<FooterProps> = ({
                 
                 <div className="h-4 w-px bg-white/10 hidden sm:block" />
                 
-                {/* Developer Credit */}
-                <div className="flex items-center gap-2 text-xs text-white/40">
-                  <span>desenvolvido com</span>
-                  <span className="text-teal-400 animate-pulse">❤</span>
-                  <span>por</span>
-                  <a
-                    href="https://github.com/jpcardozx"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-teal-400/80 hover:text-teal-400 font-semibold transition-colors inline-flex items-center gap-1"
+                {/* Developer Credit com Framer Motion */}
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="flex items-center gap-2 text-xs"
+                >
+                  <span className="text-white/40">Desenvolvido por</span>
+                  <motion.a
+                    href="/jpcardozo"
+                    className="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-400/30 transition-all duration-300"
+                    whileHover={{ scale: 1.05, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    @jpcardozx
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
+                    <span className="text-teal-400 font-semibold">@jpcardozo</span>
+                    <motion.svg
+                      className="w-3 h-3 text-teal-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      initial={{ x: 0 }}
+                      whileHover={{ x: 2 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </motion.svg>
+                  </motion.a>
+                </motion.div>
               </div>
 
               <div className="flex flex-wrap justify-center gap-6 text-xs order-1 lg:order-2">
-                <Link href="/privacidade" className="text-white/50 hover:text-white/80 transition-colors font-medium">
+                <button onClick={(e) => e.preventDefault()} className="text-white/50 hover:text-white/80 transition-colors font-medium cursor-default">
                   Privacidade
-                </Link>
-                <Link href="/termos" className="text-white/50 hover:text-white/80 transition-colors font-medium">
+                </button>
+                <button onClick={(e) => e.preventDefault()} className="text-white/50 hover:text-white/80 transition-colors font-medium cursor-default">
                   Termos
-                </Link>
-                <Link href="/cookies" className="text-white/50 hover:text-white/80 transition-colors font-medium">
-                  Cookies
-                </Link>
-                <Link href="/lgpd" className="text-white/50 hover:text-white/80 transition-colors font-medium">
+                </button>
+                <button onClick={(e) => e.preventDefault()} className="text-white/50 hover:text-white/80 transition-colors font-medium cursor-default">
                   LGPD
-                </Link>
-                <Link href="/sitemap" className="text-white/50 hover:text-white/80 transition-colors font-medium">
-                  Sitemap
-                </Link>
+                </button>
               </div>
             </div>
           </div>

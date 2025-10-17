@@ -1,7 +1,7 @@
 // Unified Type System - Centralizada e Consistente
 // File: /src/types/unified.ts
 
-import { Database } from './supabase'
+import { Database } from './database.types'
 
 // ==========================================
 // PROBLEMA IDENTIFICADO E SOLUÇÃO
@@ -38,20 +38,20 @@ export type SupabaseUpdate<T extends keyof Database['public']['Tables']> =
 
 // Client Profile - Versão estendida para UI
 export interface ClientProfile extends SupabaseRow<'client_profiles'> {
-  // Campos calculados/virtuais para UI
-  display_name: string
-  contact_info: {
+  // Campos calculados/virtuais para UI (opcionais)
+  display_name?: string
+  contact_info?: {
     name: string
     email: string | null
     phone: string | null
   }
-  business_info: {
+  business_info?: {
     type: string | null
     industry: string | null
     size: string | null
     website: string | null
   }
-  project_summary: {
+  project_summary?: {
     total_projects: number
     budget_range: string | null
     satisfaction_score: number | null
@@ -60,32 +60,32 @@ export interface ClientProfile extends SupabaseRow<'client_profiles'> {
 
 // Interactive Checklist - Versão estendida com relacionamentos
 export interface InteractiveChecklist extends SupabaseRow<'interactive_checklists'> {
-  // Relacionamentos carregados
-  checklist_items: ChecklistItem[]
+  // Relacionamentos carregados (opcionais pois podem não vir do banco)
+  checklist_items?: ChecklistItem[]
   client_profile?: ClientProfile | null
-  
-  // Campos calculados
-  completion_stats: {
+
+  // Campos calculados (opcionais pois são computados na UI)
+  completion_stats?: {
     completed: number
     total: number
     percentage: number
   }
-  time_stats: {
+  time_stats?: {
     estimated_minutes: number
     actual_minutes: number | null
   }
-  category_distribution: Record<string, number>
-  priority_distribution: Record<string, number>
+  category_distribution?: Record<string, number>
+  priority_distribution?: Record<string, number>
 }
 
 // Checklist Item - Versão estendida
 export interface ChecklistItem extends SupabaseRow<'checklist_items'> {
-  // Relacionamentos
-  verifications: ChecklistVerification[]
-  
-  // Campos calculados/normalizados
-  status: 'pending' | 'completed' | 'verified' | 'failed'
-  time_info: {
+  // Relacionamentos (opcionais)
+  verifications?: ChecklistVerification[]
+
+  // Campos calculados/normalizados (opcionais)
+  status?: 'pending' | 'completed' | 'verified' | 'failed'
+  time_info?: {
     estimated: number | null
     actual: number | null
     created: string

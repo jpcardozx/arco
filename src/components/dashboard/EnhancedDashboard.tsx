@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
-import { Database } from '@/types/supabase'
+import { Database } from '@/types/database.types'
 import { PremiumButton, CTAButton } from '@/components/ui/premium-button'
 import { ProgressRing } from '@/components/ui/progress-ring'
 import { SmartLoader } from '@/components/ui/smart-loader'
@@ -372,9 +372,9 @@ export default function EnhancedDashboard() {
               <ProgressRing
                 progress={stats.completionRate}
                 size="md"
-                strokeWidth={3}
+                thickness={3}
                 color="green"
-                showLabel={false}
+                showValue={false}
               />
             </div>
             <h3 className="text-2xl font-bold text-white mb-1">
@@ -565,7 +565,7 @@ export default function EnhancedDashboard() {
                       <Building2 className="w-5 h-5 text-teal-400" />
                     </div>
                     <div>
-                      <p className="text-white font-medium">{client.contact_name || client.business_name || 'Cliente'}</p>
+                      <p className="text-white font-medium">{client.primary_contact_name || 'Cliente'}</p>
                       <p className="text-white/60 text-sm">{client.business_type}</p>
                     </div>
                   </div>

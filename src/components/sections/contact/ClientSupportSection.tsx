@@ -32,59 +32,59 @@ export function ClientSupportSection() {
   const communicationChannels = useMemo(() => [
     {
       icon: Phone,
-      title: 'Consulta Estratégica',
-      subtitle: 'Ligação de 30 minutos',
-      description: 'Análise aprofundada do seu cenário competitivo, objetivos de crescimento e viabilidade de ROI. Sem compromisso de continuidade.',
-      features: ['Diagnóstico completo', 'Projeções iniciais', 'Roadmap preliminar'],
-      action: 'Agendar consulta',
+      title: 'Consultoria Telefônica',
+      subtitle: 'Ligação estratégica de 30 min',
+      description: 'Conversa aprofundada sobre seu cenário atual, metas de crescimento e potencial de resultados. Análise personalizada do seu mercado e concorrência.',
+      features: ['Diagnóstico imediato', 'Análise de viabilidade', 'Plano de ação inicial'],
+      action: 'Agendar ligação',
       color: 'from-teal-500 to-teal-600',
       iconColor: 'text-teal-600',
       bgGlow: 'bg-teal-50',
       borderColor: 'border-teal-200',
       availability: 'Segunda a Sexta, 9h às 18h',
-      responseTime: 'Confirmação em 2h'
+      responseTime: 'Agendamento em 2h'
     },
     {
       icon: Video,
-      title: 'Diagnóstico Digital',
-      subtitle: 'Sessão online de 45 minutos',
-      description: 'Compartilhamento de tela para análise ao vivo das suas métricas atuais, identificação de oportunidades imediatas e gaps operacionais.',
-      features: ['Análise em tempo real', 'Relatório gravado', 'Action items'],
-      action: 'Solicitar diagnóstico',
+      title: 'Sessão de Diagnóstico',
+      subtitle: 'Videochamada de 45 minutos',
+      description: 'Análise em tempo real das suas métricas e operação atual. Compartilhamento de tela para identificar oportunidades imediatas e gaps críticos que estão limitando seu crescimento.',
+      features: ['Análise ao vivo', 'Gravação da sessão', 'Relatório detalhado'],
+      action: 'Agendar sessão',
       color: 'from-purple-500 to-purple-600',
       iconColor: 'text-purple-600',
       bgGlow: 'bg-purple-50',
       borderColor: 'border-purple-200',
       availability: 'Google Meet ou Zoom',
-      responseTime: 'Agendamento em até 4h'
+      responseTime: 'Disponível em 4h'
     },
     {
       icon: MessageCircle,
-      title: 'Atendimento Executivo',
-      subtitle: 'WhatsApp Business',
-      description: 'Canal direto com gestor de relacionamento para questões urgentes, esclarecimentos técnicos ou solicitações de proposta comercial.',
-      features: ['Resposta em 2h úteis', 'Sem automação', 'Follow-up estruturado'],
-      action: 'Iniciar atendimento',
+      title: 'WhatsApp Executivo',
+      subtitle: 'Atendimento personalizado',
+      description: 'Canal direto com especialista dedicado para dúvidas urgentes, esclarecimentos técnicos ou solicitação de proposta comercial. Atendimento 100% humano, sem bots.',
+      features: ['Resposta em 2h úteis', 'Atendimento humano', 'Acompanhamento contínuo'],
+      action: 'Iniciar conversa',
       color: 'from-green-500 to-green-600',
       iconColor: 'text-green-600',
       bgGlow: 'bg-green-50',
       borderColor: 'border-green-200',
       availability: 'Seg-Sex: 8h-19h | Sáb: 9h-13h',
-      responseTime: 'Resposta garantida em 2h'
+      responseTime: 'Resposta em até 2h'
     },
     {
       icon: Mail,
-      title: 'Briefing Detalhado',
-      subtitle: 'Comunicação estruturada',
-      description: 'Envio de documentação completa, dados operacionais, objetivos estratégicos e contexto de mercado para análise aprofundada.',
-      features: ['Análise documental', 'Proposta customizada', 'Prazo de resposta claro'],
-      action: 'Enviar briefing',
+      title: 'Proposta Personalizada',
+      subtitle: 'Por e-mail corporativo',
+      description: 'Envie informações detalhadas sobre seu negócio, objetivos e contexto de mercado. Nossa equipe fará uma análise aprofundada e retornará com uma proposta sob medida.',
+      features: ['Análise completa', 'Proposta customizada', 'SLA de resposta'],
+      action: 'Solicitar proposta',
       color: 'from-blue-500 to-blue-600',
       iconColor: 'text-blue-600',
       bgGlow: 'bg-blue-50',
       borderColor: 'border-blue-200',
       availability: 'Resposta em até 6h úteis',
-      responseTime: 'Análise em 24h'
+      responseTime: 'Proposta em 24h'
     }
   ], []);
 
@@ -94,25 +94,25 @@ export function ClientSupportSection() {
       icon: Clock,
       metric: '< 2h',
       label: 'Tempo de resposta',
-      detail: 'Em horário comercial'
+      detail: 'Garantido em horário comercial'
     },
     {
       icon: Shield,
       metric: '100%',
       label: 'Confidencialidade',
-      detail: 'NDA disponível'
+      detail: 'LGPD e NDA disponível'
     },
     {
       icon: CheckCircle2,
-      metric: '0',
-      label: 'Compromisso inicial',
-      detail: 'Consulta gratuita'
+      metric: 'R$ 0',
+      label: 'Diagnóstico inicial',
+      detail: 'Sem custos ou compromisso'
     },
     {
       icon: Calendar,
-      metric: '48h',
-      label: 'Proposta comercial',
-      detail: 'Após diagnóstico'
+      metric: '24-48h',
+      label: 'Entrega de proposta',
+      detail: 'Após primeira reunião'
     }
   ], []);
 
@@ -138,15 +138,15 @@ export function ClientSupportSection() {
           </Badge>
 
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 lg:text-5xl">
-            Escolha o formato de{' '}
+            Como deseja{' '}
             <span className="bg-gradient-to-r from-teal-600 to-teal-700 bg-clip-text text-transparent">
-              primeiro contato
+              iniciar o contato
             </span>
           </h2>
 
           <p className="text-xl leading-relaxed text-slate-600">
-            Disponibilizamos múltiplos canais de comunicação para adequação às suas preferências operacionais.
-            Todas as modalidades incluem análise preliminar sem compromisso de continuidade.
+            Oferecemos diferentes formatos de atendimento para melhor se adequar à sua rotina e preferências.
+            Todos incluem diagnóstico inicial sem compromisso.
           </p>
         </motion.div>
 
@@ -279,6 +279,20 @@ export function ClientSupportSection() {
             );
           })}
         </div>
+
+        {/* Chat Status - Discrete */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mb-12 flex justify-center"
+        >
+          <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 shadow-sm">
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-sm text-slate-600 font-semibold">Chat direto em tempo real - Em implementação</span>
+          </div>
+        </motion.div>
 
         {/* Service Commitments - Institutional metrics */}
         <motion.div

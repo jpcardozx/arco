@@ -1,20 +1,20 @@
 /**
  * ARCO Header Component
- * Layout header with navigation integration
+ * Layout header with premium navigation
  */
 
 'use client';
 
 import React from 'react';
-import { ProfessionalNavigation } from '../sections/ProfessionalNavigation';
+import { RefinedPremiumNavigation } from '../navigation/RefinedPremiumNavigation';
 
 interface HeaderProps {
-    variant?: 'default' | 'transparent' | 'solid';
+    variant?: 'default' | 'transparent' | 'solid' | 'hybrid';
     showNavigation?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-    variant = 'default',
+    variant = 'hybrid',
     showNavigation = true
 }) => {
     if (!showNavigation) {
@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
 
     return (
         <header className="relative">
-            <ProfessionalNavigation />
+            <RefinedPremiumNavigation />
         </header>
     );
 };

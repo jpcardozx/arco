@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ToastProvider } from '@/components/providers/toast-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -56,12 +57,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/logo-v2.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: 'any' }
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: '16x16', type: 'image/png' },
     ],
     apple: [
-      { url: '/icons/logo-v2-192.png', sizes: '192x192', type: 'image/png' }
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' }
     ],
+    shortcut: '/favicon.png',
   },
   manifest: '/manifest.json',
 };
@@ -73,11 +75,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" type="image/png" href="/favicon.png" />
+      </head>
       <body className="antialiased">
-        <QueryProvider>
-          {children}
-          <ToastProvider />
-        </QueryProvider>
+        <ErrorBoundary>
+          <QueryProvider>
+            {children}
+            <ToastProvider />
+          </QueryProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

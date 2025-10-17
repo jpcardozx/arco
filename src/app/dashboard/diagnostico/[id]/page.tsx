@@ -38,12 +38,13 @@ const getScoreBgColor = (score: number) => {
   return 'bg-red-100'
 }
 
-export default async function DiagnosticoReportPage({
-  params,
-}: {
-  params: { id: string }
-}) {
-  const { id } = params
+type PageProps = {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function DiagnosticoReportPage({ params }: PageProps) {
+  const { id } = await params
   
   // Fetch real data from Supabase
   let analysis

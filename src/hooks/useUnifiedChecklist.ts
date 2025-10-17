@@ -118,16 +118,16 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
 
   // Função para calcular estatísticas
   const calculateStats = (
-    checklist: InteractiveChecklist, 
+    checklist: InteractiveChecklist,
     verifications: SupabaseRow<'checklist_verifications'>[]
   ): ChecklistStats => {
-    const items = checklist.checklist_items
-    const totalItems = items.length
-    const completedItems = items.filter(item => item.is_completed).length
+    const items = checklist.checklist_items || []
+    const totalItems = items?.length || 0
+    const completedItems = items?.filter(item => item.is_completed).length || 0
 
     // Estatísticas por categoria
     const categories: Record<string, { completed: number; total: number; percentage: number }> = {}
-    items.forEach(item => {
+    items?.forEach(item => {
       const category = item.category || 'Sem Categoria'
       if (!categories[category]) {
         categories[category] = { completed: 0, total: 0, percentage: 0 }
@@ -146,7 +146,7 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
 
     // Estatísticas por prioridade
     const priorities: Record<string, number> = {}
-    items.forEach(item => {
+    items?.forEach(item => {
       const priority = item.priority || 'medium'
       priorities[priority] = (priorities[priority] || 0) + 1
     })
@@ -171,7 +171,7 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
     if (!checklist) return
 
     try {
-      const item = checklist.checklist_items.find(i => i.id === itemId)
+      const item = checklist.checklist_items?.find(i => i.id === itemId)
       if (!item) return
 
       const newCompletedStatus = !item.is_completed
@@ -196,12 +196,12 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
       // Atualizar estado local
       setChecklist(prev => {
         if (!prev) return prev
-        
-        const updatedItems = prev.checklist_items.map(i => 
-          i.id === itemId 
+
+        const updatedItems = prev.checklist_items?.map(i =>
+          i.id === itemId
             ? { ...i, is_completed: newCompletedStatus, completed_at: updateData.completed_at }
             : i
-        )
+        ) || []
 
         return DataAdapters.adaptInteractiveChecklist(
           prev,
@@ -213,11 +213,11 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
       // Recalcular stats
       if (checklist) {
         const updatedChecklist = { ...checklist }
-        updatedChecklist.checklist_items = updatedChecklist.checklist_items.map(i => 
-          i.id === itemId 
+        updatedChecklist.checklist_items = updatedChecklist.checklist_items?.map(i =>
+          i.id === itemId
             ? { ...i, is_completed: newCompletedStatus, completed_at: updateData.completed_at }
             : i
-        )
+        ) || []
         setStats(calculateStats(updatedChecklist, []))
       }
 
@@ -242,10 +242,10 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
       // Atualizar estado local
       setChecklist(prev => {
         if (!prev) return prev
-        
-        const updatedItems = prev.checklist_items.map(i => 
+
+        const updatedItems = prev.checklist_items?.map(i =>
           i.id === itemId ? { ...i, notes } : i
-        )
+        ) || []
 
         return {
           ...prev,
@@ -296,7 +296,7 @@ export function useUnifiedChecklist(checklistId: string): UseUnifiedChecklistRes
         created_at: checklist.created_at,
         completion_stats: checklist.completion_stats
       },
-      items: checklist.checklist_items.map(item => ({
+      items: checklist.checklist_items?.map(item => ({
         id: item.id,
         title: item.title,
         description: item.description,

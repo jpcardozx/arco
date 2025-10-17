@@ -7,6 +7,8 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import { ModernContactSection } from '@/components/sections/contact/ModernContactSection';
 import { ClientSupportSection } from '@/components/sections/contact/ClientSupportSection';
+import { ChatAnnouncementSection } from '@/components/sections/ChatAnnouncementSection';
+import { WhatsAppButton } from '@/components/primitives/WhatsAppButton';
 
 export default function ContactPage() {
     return (
@@ -16,6 +18,17 @@ export default function ContactPage() {
 
             {/* How to reach us - Channel options */}
             <ClientSupportSection />
+
+            {/* Chat Announcement - Before footer */}
+            <ChatAnnouncementSection />
+
+            {/* WhatsApp Button - Floating */}
+            <WhatsAppButton 
+                phoneNumber="21967277533"
+                message="Olá! Gostaria de entrar em contato."
+                variant="floating"
+                size="md"
+            />
         </MainLayout>
   );
 }

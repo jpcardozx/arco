@@ -24,7 +24,7 @@ import { Search, MoreVertical, ExternalLink, Trash2, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type AnalysisWithResults = Database['public']['Tables']['analysis_requests']['Row'] & {
   analysis_results: Database['public']['Tables']['analysis_results']['Row'][]

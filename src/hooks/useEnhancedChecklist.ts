@@ -5,7 +5,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Database } from '@/types/supabase'
+import { Database } from '@/types/database.types'
 import { RealtimeChannel } from '@supabase/supabase-js'
 
 type ChecklistItem = Database['public']['Tables']['checklist_items']['Row']

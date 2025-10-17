@@ -10,7 +10,7 @@ type AppRoutes =
   | '/diagnose'
   | '/solutions'
   | '/partners'
-  | '/partners/jpcardozx'
+  | '/partners/jpcardozo'
   | '/methodology'
   | '/privacy'
   | '/terms'

@@ -33,18 +33,18 @@ export interface InteractiveChecklist {
   user_id: string
   checklist_type: string
   title: string
-  description: string
+  description: string | null
   total_items: number
   completed_items: number
   progress_percentage: number
-  status: 'not_started' | 'in_progress' | 'completed'
+  status: string // Allow any status string from database
   data: Record<string, any>
   created_at: string
   updated_at: string
-  completed_at?: string
-  estimated_time_minutes: number
-  actual_time_minutes?: number
-  tags: string[]
+  completed_at?: string | null
+  estimated_time_minutes: number | null
+  actual_time_minutes?: number | null
+  tags: string[] | null
   items: ChecklistItem[]
 }
 
@@ -98,7 +98,12 @@ export function useRealtimeChecklist(checklistId: string) {
       // Combine data
       const fullChecklist: InteractiveChecklist = {
         ...checklistData,
-        items: itemsData || []
+        items: (itemsData || []) as ChecklistItem[],
+        tags: checklistData.tags || [],
+        estimated_time_minutes: checklistData.estimated_time_minutes || 0,
+        actual_time_minutes: checklistData.actual_time_minutes || null,
+        completed_at: checklistData.completed_at || null,
+        data: (checklistData.data as Record<string, any>) || {},
       }
 
       setChecklist(fullChecklist)
@@ -124,7 +129,7 @@ export function useRealtimeChecklist(checklistId: string) {
         completed_items: fullChecklist.completed_items,
         progress_percentage: fullChecklist.progress_percentage,
         estimated_time_remaining: itemsData?.filter(item => !item.is_completed)
-          .reduce((sum, item) => sum + item.estimated_minutes, 0) || 0,
+          .reduce((sum, item) => sum + (item.estimated_minutes || 0), 0) || 0,
         categories,
         priority_breakdown: priorityBreakdown,
         category_progress: categoryProgress
@@ -175,7 +180,7 @@ export function useRealtimeChecklist(checklistId: string) {
               if (!prev) return null
               
               const updatedItems = [...prev.items]
-              const itemIndex = updatedItems.findIndex(item => item.id === payload.new?.id || item.id === payload.old?.id)
+              const itemIndex = updatedItems.findIndex(item => item.id === (payload.new as any)?.id || item.id === (payload.old as any)?.id)
               
               if (payload.eventType === 'INSERT' && payload.new) {
                 updatedItems.push(payload.new as ChecklistItem)
@@ -228,8 +233,8 @@ export function useRealtimeChecklist(checklistId: string) {
 
       // Add completion tracking
       if (updates.is_completed !== undefined) {
-        updateData.completed_at = updates.is_completed ? new Date().toISOString() : null
-        updateData.completed_by = updates.is_completed ? (await supabase.auth.getUser()).data.user?.id : null
+        updateData.completed_at = updates.is_completed ? new Date().toISOString() : undefined
+        updateData.completed_by = updates.is_completed ? (await supabase.auth.getUser()).data.user?.id : undefined
       }
 
       const { error } = await supabase
@@ -297,9 +302,9 @@ export function useRealtimeChecklist(checklistId: string) {
         id: item.id,
         updates: {
           is_completed: false,
-          completed_at: null,
-          completed_by: null,
-          notes: null
+          completed_at: undefined,
+          completed_by: undefined,
+          notes: undefined
         } as Partial<ChecklistItem>
       }))
 
@@ -334,7 +339,7 @@ export function useRealtimeChecklist(checklistId: string) {
       stats,
       summary: {
         completion_percentage: stats.progress_percentage,
-        time_saved: checklist.estimated_time_minutes - stats.estimated_time_remaining,
+        time_saved: (checklist.estimated_time_minutes || 0) - stats.estimated_time_remaining,
         categories_completed: stats.category_progress.filter(cat => cat.progress === 100).length,
         high_priority_completed: checklist.items.filter(
           item => (item.priority === 'high' || item.priority === 'critical') && item.is_completed
@@ -437,7 +442,7 @@ export function useUserChecklists() {
 
       if (fetchError) throw fetchError
 
-      setChecklists(data || [])
+      setChecklists((data || []).map(cl => ({ ...cl, items: [] })) as InteractiveChecklist[])
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar checklists')

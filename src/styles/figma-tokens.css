@@ -4,36 +4,36 @@
  */
 
 :root {
-  /* Color Schemes */
-  --color-scheme-1-background: #ffffff;
-  --color-scheme-1-foreground: #f8f9fa;
-  --color-scheme-1-text: #1a1a1a;
-  --color-scheme-1-border: #e5e7eb;
-
-  --color-scheme-2-background: #ffffff;
-  --color-scheme-2-foreground: #f8f9fa;
-  --color-scheme-2-text: #1a1a1a;
-  --color-scheme-2-border: #e5e7eb;
-
-  --color-scheme-3-background: #f3f4f6;
-  --color-scheme-3-foreground: #ffffff;
-  --color-scheme-3-text: #1a1a1a;
-  --color-scheme-3-border: #d1d5db;
-
-  /* Primary Colors */
-  --color-manz: #fbbf24; /* Amarelo/Dourado do botão */
-  --color-neutral: #f5f5f5;
-  --color-neutral-darker: #6b7280;
-  --color-neutral-darkest: #111827;
+  /* ARCO Brand Colors - Unified System */
+  --color-primary-teal: #14b8a6;
+  --color-primary-orange: #f97316;
+  
+  /* Dark Mode Backgrounds - WCAG Compliant */
+  --color-background-primary: #020617;    /* slate-950 */
+  --color-background-secondary: #0f172a;  /* slate-900 */
+  --color-background-tertiary: #1e293b;   /* slate-800 */
+  
+  /* Text Colors - High Contrast */
+  --color-text-primary: #ffffff;          /* white - 21:1 contrast */
+  --color-text-secondary: #cbd5e1;        /* slate-300 - 7.1:1 contrast */
+  --color-text-tertiary: #94a3b8;         /* slate-400 - 4.6:1 contrast */
+  --color-text-disabled: #64748b;         /* slate-500 */
+  
+  /* Border Colors */
+  --color-border-subtle: rgba(203, 213, 225, 0.1);
+  --color-border-default: rgba(203, 213, 225, 0.2);
+  --color-border-strong: rgba(203, 213, 225, 0.3);
+  
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Legacy Support (deprecated) */
+  --color-manz: #f97316;
   --color-white: #ffffff;
-
-  /* Opacity Colors */
-  --opacity-neutral-darkest-5: rgba(17, 24, 39, 0.05);
-  --opacity-white-10: rgba(255, 255, 255, 0.1);
   --opacity-transparent: rgba(0, 0, 0, 0);
-
-  /* Secondary Schemes */
-  --schemes-secondary-container: #f3f4f6;
 }
 
 /* CSS Custom Properties para uso direto */

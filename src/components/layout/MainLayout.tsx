@@ -1,12 +1,12 @@
 /**
  * ARCO Main Layout
- * Core application layout with header and footer
+ * Core application layout with professional navigation
  */
 
 'use client';
 
 import React from 'react';
-import { PolishedGlassmorphicNavbar } from '../navigation/PolishedGlassmorphicNavbar';
+import { RefinedPremiumNavigation } from '../navigation/RefinedPremiumNavigation';
 import { Footer } from './Footer';
 import { ThemeProvider } from '../../design-system/core/theme';
 
@@ -14,7 +14,7 @@ interface MainLayoutProps {
     children: React.ReactNode;
     showHeader?: boolean;
     showFooter?: boolean;
-    headerVariant?: 'default' | 'transparent' | 'solid';
+    headerVariant?: 'default' | 'transparent' | 'solid' | 'hybrid';
     footerVariant?: 'default' | 'minimal';
     className?: string;
 }
@@ -23,7 +23,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     children,
     showHeader = true,
     showFooter = true,
-    headerVariant = 'default',
+    headerVariant = 'hybrid',
     footerVariant = 'default',
     className = ''
 }) => {
@@ -31,7 +31,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <ThemeProvider>
             <div className={`min-h-screen flex flex-col overflow-x-hidden prevent-overflow ${className}`}>
                 {showHeader && (
-                    <PolishedGlassmorphicNavbar />
+                    <RefinedPremiumNavigation />
                 )}
 
                 <main className="flex-1 w-full overflow-x-hidden">

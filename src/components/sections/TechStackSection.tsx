@@ -43,39 +43,39 @@ export function TechStackSection() {
       id: 'frontend',
       icon: Code2,
       category: 'Frontend de Performance',
-      tagline: 'Carrega rápido, converte mais',
+      tagline: 'Performance e otimização de carregamento',
       technical: 'Next.js 15 + React 19 + TypeScript',
-      businessValue: 'Cada segundo de carregamento importa. Sites rápidos aumentam conversão e reduzem abandono. Next.js garante performance superior através de renderização otimizada e código otimizado automaticamente.',
+      businessValue: 'Next.js oferece renderização otimizada e código otimizado automaticamente, garantindo carregamento rápido e experiência responsiva. TypeScript adiciona segurança de tipos para maior manutenibilidade.',
       benefits: [
-        'Carregamento inicial < 1.5s = menos abandono de visitantes',
-        'SEO otimizado nativamente = mais tráfego orgânico',
-        'TypeScript reduz bugs em 40% = menos retrabalho e custos'
+        'Carregamento otimizado com renderização server-side',
+        'SEO otimizado nativamente para melhor indexação',
+        'TypeScript para maior segurança de tipos e manutenibilidade'
       ]
     },
     {
       id: 'backend',
       icon: Database,
       category: 'Backend Escalável',
-      tagline: 'Cresce com seu negócio',
+      tagline: 'Infraestrutura escalável e segura',
       technical: 'Supabase (PostgreSQL + Auth + APIs)',
-      businessValue: 'Infraestrutura que escala automaticamente. Suporte desde 100 até 100.000 usuários sem mudanças na arquitetura. Row-Level Security garante isolamento total de dados entre clientes.',
+      businessValue: 'Infraestrutura que escala automaticamente conforme demanda. Row-Level Security garante isolamento de dados entre clientes. Arquitetura preparada para crescimento sustentável.',
       benefits: [
-        'Escalabilidade automática = sem custos surpresa com crescimento',
-        'Autenticação enterprise-grade = conformidade LGPD nativa',
-        'APIs prontas = reduz 60% do tempo de desenvolvimento'
+        'Escalabilidade automática conforme demanda',
+        'Autenticação enterprise-grade com conformidade LGPD',
+        'APIs RESTful prontas para integração rápida'
       ]
     },
     {
       id: 'infrastructure',
       icon: Layers,
       category: 'Infraestrutura Global',
-      tagline: 'Deploy em minutos, não semanas',
+      tagline: 'Deploy automatizado e monitoramento',
       technical: 'Vercel Edge Network + CDN Global',
-      businessValue: 'Deploy automático a cada atualização. Conteúdo servido da edge mais próxima do usuário. Zero downtime, zero configuração de servidores. Monitoramento e logs integrados.',
+      businessValue: 'Deploy automático a cada atualização. Conteúdo servido da edge mais próxima do usuário para melhor performance. Monitoramento e logs integrados.',
       benefits: [
-        'Zero downtime em atualizações = negócio sempre no ar',
-        'Edge computing = latência <100ms globalmente',
-        'Deploy em 2min = iteração rápida baseada em feedback'
+        'Deploy automático com zero-downtime strategies',
+        'Edge computing para distribuição global de conteúdo',
+        'CI/CD integrado para iterações contínuas'
       ]
     }
   ];
@@ -104,19 +104,18 @@ export function TechStackSection() {
           >
             <Badge className="mb-6 px-4 py-2 text-xs font-medium border-teal-700/50 bg-teal-900/30 text-teal-300 backdrop-blur-xl">
               <Sparkles className="w-3 h-3 mr-1.5 inline-block" />
-              Stack de Alta Performance
+              Tecnologias & Ferramentas
             </Badge>
             
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-              Tecnologia que{' '}
+              Ferramentas de{' '}
               <span className="bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">
-                acelera resultados
+                desenvolvimento
               </span>
             </h2>
             
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
-              Cada escolha técnica impacta diretamente conversão, escalabilidade e custo de manutenção. 
-              Conheça como nossa stack traduz-se em vantagem competitiva.
+              Ecossistema completo para construção de aplicações web robustas. Frontend, backend, infraestrutura e ferramentas de produtividade.
             </p>
           </motion.div>
         </div>

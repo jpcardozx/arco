@@ -7,7 +7,7 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import type { Database, TicketPriority, AnalysisStatus } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type Tables = Database['public']['Tables']
 type AnalysisRequest = Tables['analysis_requests']['Row']
@@ -315,7 +315,7 @@ export async function createTicket(data: { subject: string; description: string;
       client_id: user.id,
       subject: data.subject,
       description: data.subject,
-      priority: data.priority as TicketPriority,
+      priority: data.priority,
       status: 'open' as const,
     })
     .select()

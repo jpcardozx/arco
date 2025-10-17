@@ -1,5 +1,6 @@
 'use client'
 
+import { MainLayout } from '@/components/layout/MainLayout'
 import { useState, FormEvent } from 'react'
 import Link from 'next/link'
 import { resetPassword } from '@/lib/supabase/auth'
@@ -32,14 +33,15 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">ARCO</h1>
-          <p className="text-gray-400">Recuperar senha</p>
-        </div>
+    <MainLayout showHeader={true} showFooter={true}>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-2">ARCO</h1>
+            <p className="text-gray-400">Recuperar senha</p>
+          </div>
 
-        <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+          <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-2xl text-white">Esqueceu sua senha?</CardTitle>
             <CardDescription className="text-gray-400">
@@ -116,8 +118,9 @@ export default function ResetPasswordPage() {
               </Link>
             </CardContent>
           )}
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
+    </MainLayout>
   )
 }

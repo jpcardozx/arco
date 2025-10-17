@@ -20,7 +20,12 @@ import {
   FileSearch,
   ShieldCheck,
   MousePointerClick,
-  AlertCircle
+  AlertCircle,
+  Globe,
+  Zap,
+  Lock,
+  Eye,
+  X
 } from 'lucide-react';
 import { 
   getOrCreateSessionId, 
@@ -42,6 +47,8 @@ export function URLAnalyzerSection() {
   const [validationError, setValidationError] = useState('');
   const [captureError, setCaptureError] = useState('');
   const [sessionId, setSessionId] = useState('');
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [lastAnalyzedDomain, setLastAnalyzedDomain] = useState('');
 
   // Initialize session ID on mount
   useEffect(() => {
@@ -79,10 +86,11 @@ export function URLAnalyzerSection() {
     }
     
     const cleanDomain = value.replace(/^(https?:\/\/)?(www\.)?/, '');
-    const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/;
+    // Updated regex to accept .com.br, .co.uk, and other multi-part TLDs
+    const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*\.[a-zA-Z]{2,}$/;
     
     if (!domainRegex.test(cleanDomain)) {
-      setValidationError('Formato inválido');
+      setValidationError('Domínio inválido (ex: exemplo.com.br)');
       return false;
     }
     
@@ -104,13 +112,16 @@ export function URLAnalyzerSection() {
     e.preventDefault();
     if (!domain || !validateDomain(domain)) return;
     
+    // Prevent double submission
+    if (isAnalyzing) return;
+    
     setIsAnalyzing(true);
     setCaptureError('');
     
     const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, '');
     
     try {
-      // CRITICAL: Capture data BEFORE redirect
+      // Capture data via API
       const response = await fetch('/api/domain/capture', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -133,18 +144,19 @@ export function URLAnalyzerSection() {
         throw new Error(result.message || 'Falha ao capturar análise');
       }
 
-      // Success! Redirect with requestId
-      const requestId = result.data.requestId;
-      window.location.href = `/mydomain?domain=${encodeURIComponent(cleanDomain)}&requestId=${requestId}`;
+      // Show results modal instead of redirecting
+      setLastAnalyzedDomain(cleanDomain);
+      
+      // Small delay to ensure UI updates
+      setTimeout(() => {
+        setShowResultsModal(true);
+        setIsAnalyzing(false);
+      }, 300);
       
     } catch (error) {
       console.error('[URLAnalyzer] Capture error:', error);
-      setCaptureError('Erro ao processar. Tentando novamente...');
-      
-      // Fallback: Still redirect to /mydomain even if capture fails
-      setTimeout(() => {
-        window.location.href = `/mydomain?domain=${encodeURIComponent(cleanDomain)}`;
-      }, 1500);
+      setCaptureError('Erro ao processar. Por favor, tente novamente.');
+      setIsAnalyzing(false);
     }
   };
 
@@ -374,6 +386,129 @@ export function URLAnalyzerSection() {
             </div>
           </div>
         </motion.div>
+
+        {/* Results Modal - Elegant Beta Version */}
+        <AnimatePresence>
+          {showResultsModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              onClick={() => setShowResultsModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="relative w-full max-w-md bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Accent border glow */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-teal-500/5 to-transparent pointer-events-none" />
+
+                {/* Header */}
+                <div className="relative z-10 px-6 py-5 border-b border-slate-700/50 flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="w-5 h-5 text-teal-400" />
+                      <h3 className="text-lg font-bold text-white">Análise Iniciada</h3>
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30">
+                      <Zap className="w-3 h-3 text-amber-400" />
+                      <span className="text-xs font-medium text-amber-300">Versão Beta</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowResultsModal(false)}
+                    className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5 text-slate-400" />
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 px-6 py-6 space-y-6">
+                  {/* Domain Display */}
+                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                    <p className="text-xs text-slate-400 uppercase tracking-wider mb-2">Domínio Analisado</p>
+                    <p className="text-lg font-semibold text-white font-mono break-all">{lastAnalyzedDomain}</p>
+                  </div>
+
+                  {/* Analysis Metrics Grid */}
+                  <div>
+                    <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-3">Dados Coletados</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Activity className="w-4 h-4 text-teal-400" />
+                          <span className="text-xs font-medium text-slate-300">Performance</span>
+                        </div>
+                        <p className="text-xs text-slate-500">Core Web Vitals</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <FileSearch className="w-4 h-4 text-cyan-400" />
+                          <span className="text-xs font-medium text-slate-300">SEO</span>
+                        </div>
+                        <p className="text-xs text-slate-500">Meta Tags, Schema</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Lock className="w-4 h-4 text-emerald-400" />
+                          <span className="text-xs font-medium text-slate-300">Segurança</span>
+                        </div>
+                        <p className="text-xs text-slate-500">HTTPS, Headers</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/30 hover:border-teal-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Eye className="w-4 h-4 text-violet-400" />
+                          <span className="text-xs font-medium text-slate-300">UX</span>
+                        </div>
+                        <p className="text-xs text-slate-500">Acessibilidade</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Info Box */}
+                  <div className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                    <div className="flex gap-3">
+                      <AlertCircle className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs font-medium text-blue-300 mb-1">Recurso em Desenvolvimento</p>
+                        <p className="text-xs text-blue-200/70 leading-relaxed">
+                          Relatório completo em breve. Por enquanto, dados básicos de auditoria pública.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="space-y-3 pt-4">
+                    <button
+                      onClick={() => setShowResultsModal(false)}
+                      className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-medium text-sm transition-all shadow-lg shadow-teal-900/20 hover:shadow-teal-900/30"
+                    >
+                      Entendido
+                    </button>
+                    <button
+                      onClick={() => setShowResultsModal(false)}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 font-medium text-sm transition-colors border border-slate-700/50 hover:border-slate-600/50"
+                    >
+                      Fechar
+                    </button>
+                  </div>
+
+                  {/* Footer Note */}
+                  <p className="text-center text-[11px] text-slate-500">
+                    Análise via Lighthouse • Sem coleta de dados pessoais
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

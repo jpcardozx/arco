@@ -60,20 +60,20 @@ export function ExecutionShowcase() {
   const qualityPillars = [
     {
       icon: Layers,
-      label: 'Desenvolvimento Full-Stack',
-      description: 'Arquiteturas robustas e escaláveis com as tecnologias mais recentes.',
+      label: 'Arquitetura Escalável',
+      description: 'Next.js 15 + Supabase. Arquitetura preparada para crescimento.',
       color: 'blue',
     },
     {
       icon: ShieldCheck,
-      label: 'Segurança e Confiabilidade',
-      description: 'Implementação de práticas de segurança de ponta para proteger seus dados.',
+      label: 'Segurança Enterprise',
+      description: 'RLS nativo, autenticação JWT e recursos de conformidade LGPD.',
       color: 'purple',
     },
     {
       icon: BarChart3,
-      label: 'Analytics e Otimização',
-      description: 'Dashboards intuitivos para monitoramento de performance e insights de conversão.',
+      label: 'Performance Tracking',
+      description: 'Dashboards com métricas de conversão, CPA e ROAS para acompanhamento.',
       color: 'green',
     },
   ];
@@ -108,16 +108,16 @@ export function ExecutionShowcase() {
             className="space-y-10"
           >
             <div className="space-y-4">
-              <Badge className="bg-blue-600/10 border-blue-600/30 text-blue-300 py-1 px-3">
+              <Badge className="bg-blue-600/10 border-blue-600/30 text-blue-300 py-1.5 px-4">
                 <Sparkles className="w-4 h-4 mr-2" />
-                Nosso Padrão de Entrega
+                Casos de Implementação
               </Badge>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white">
-                Execução Técnica de Alto Nível
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                Aplicações em produção
               </h1>
-              <h2 className="text-lg sm:text-xl text-slate-400 leading-relaxed">
-                Demonstramos nossa capacidade através de implementações que integram design, performance e estratégia de negócio. Cada projeto é um case de excelência.
-              </h2>
+              <p className="text-lg sm:text-xl text-slate-400 leading-relaxed">
+                Sistemas funcionais com métricas reais de performance. Documentação técnica e processos de deployment incluídos.
+              </p>
             </div>
 
             {/* Quality Pillars */}

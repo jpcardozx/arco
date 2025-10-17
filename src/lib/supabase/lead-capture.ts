@@ -9,7 +9,7 @@
  */
 
 import { createSupabaseBrowserClient } from './client'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type Lead = Database['public']['Tables']['leads']['Insert']
 

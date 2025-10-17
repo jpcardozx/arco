@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Search, Zap, Shield, TrendingUp, Globe } from 'lucide-react'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type Playbook = Database['public']['Tables']['playbooks']['Row']
 

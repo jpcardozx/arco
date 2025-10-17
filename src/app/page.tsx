@@ -2,12 +2,10 @@ import { MainLayout } from '../components/layout/MainLayout';
 import { PremiumHeroSection } from '../components/sections/PremiumHeroSection';
 import { URLAnalyzerSection } from '../components/sections/URLAnalyzerSection';
 import { TransitionBridge } from '../components/sections/TransitionBridge';
-import { UnifiedValueProposition } from '../components/sections/UnifiedValueProposition';
-import { OptimizedClientStories } from '../components/sections/OptimizedClientStories';
 import { ExecutionShowcase } from '../components/sections/ExecutionShowcase';
 import { TechStackSection } from '../components/sections/TechStackSection';
-import { StrategicVelocitySection } from '../components/sections/StrategicVelocity';
-import { FigmaFinalCTA } from '../components/sections';
+import { ConsultoriaHighlightSection } from '../components/sections/ConsultoriaHighlightSection';
+import { ChatAnnouncementSection } from '../components/sections/ChatAnnouncementSection';
 
 /**
  * HOMEPAGE - Hero premium original + funil otimizado + storytelling
@@ -19,17 +17,13 @@ export default function HomePage() {
             {/* Hero Premium com macOS window */}
             <PremiumHeroSection
                 badge={{
-                    text: "Analise de Performance"
+                    text: "Consultoria Técnica & Performance"
                 }}
-                title="Prestadores de Serviços Locais: +350% em Leads Qualificados"
-                subtitle="Sistema completo de captação web + tráfego qualificado em 48h. Metodologia comprovada em 200+ empresas com ROI médio de 420%."
+                title="Arquitetura e Otimização de Aplicações Web"
+                subtitle="Desenvolvimento full-stack, migração de sistemas legados e implementação de design systems escaláveis. Especialização em Next.js, React, TypeScript e PostgreSQL com foco em Core Web Vitals e experiência de usuário."
                 primaryCta={{
-                    text: "Descobrir Meu Potencial",
-                    href: "#roi-calculator"
-                }}
-                secondaryCta={{
-                    text: "Ver Casos de Sucesso",
-                    href: "#cases"
+                    text: "Ver Portfolio",
+                    href: "/jpcardozo"
                 }}
                 showParticles={true}
                 variant="premium"
@@ -38,32 +32,23 @@ export default function HomePage() {
             {/* URL Analyzer - Lead magnet com redirect para /mydomain */}
             <URLAnalyzerSection />
 
-            {/* Transition: Analyzer → Value Prop */}
+            {/* Transition: Analyzer → Cases */}
             <TransitionBridge
-                statement="Nossa abordagem integra estratégia, tecnologia e execução"
-                variant="minimal"
-            />
-
-            {/* Value Proposition */}
-            <UnifiedValueProposition />
-
-            {/* Transition: Value Prop → Cases */}
-            <TransitionBridge
-                statement="Resultados de implementações anteriores"
+                statement="Aplicações práticas em operações comerciais diversificadas"
                 variant="minimal"
             />
 
             {/* Execution Showcase - Technical excellence demonstration */}
             <ExecutionShowcase />
 
-            {/* Tech Stack - Infrastructure showcase */}
+            {/* Tech Stack - Modern stack presentation */}
             <TechStackSection />
 
-            {/* Strategic Velocity Framework - Productized packages + retainer ladder */}
-            <StrategicVelocitySection />
+            {/* Consultoria Highlight - Link to booking system */}
+            <ConsultoriaHighlightSection />
 
-            {/* Final CTA */}
-            <FigmaFinalCTA />
+            {/* Chat Announcement - Before footer */}
+            <ChatAnnouncementSection />
         </MainLayout>
     );
 }

@@ -9,15 +9,14 @@ import {
   Menu,
   Users,
   ArrowRight,
-  Phone,
   X,
   BookOpen,
-  ShoppingBag,
   Sparkles,
   Star,
   Zap,
   ClipboardCheck,
-  MessageSquare
+  MessageSquare,
+  ChevronDown
 } from 'lucide-react';
 import { cn } from '@/design-system/tokens';
 
@@ -70,29 +69,35 @@ const ArcoLogo = ({ className, isScrolled }: { className?: string; isScrolled?: 
 );
 
 // Professional Navigation Button - NO DUPLICATIONS
-const NavButton = ({ 
-  href, 
-  children, 
-  icon: Icon, 
-  variant = "ghost", 
+const NavButton = ({
+  href,
+  children,
+  icon: Icon,
+  variant = "ghost",
   isActive = false,
-  badge
+  badge,
+  onClick
 }: {
-  href: string;
+  href?: string;
   children: React.ReactNode;
   icon?: React.ComponentType<{ className?: string }>;
   variant?: "ghost" | "cta";
   isActive?: boolean;
   badge?: string;
-}) => (
-  <Link 
-    href={href} 
+  onClick?: () => void;
+}) => {
+  const Wrapper = href ? Link : 'div';
+
+  return (
+  <Wrapper
+    href={href as string}
+    onClick={onClick}
     className={cn(
       "group relative inline-flex items-center gap-2 px-4 py-2 text-sm font-bold",
       "transition-all duration-300 ease-out rounded-xl overflow-hidden",
       "focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50",
       "hover:scale-[1.02] active:scale-[0.98]",
-      variant === "cta" 
+      variant === "cta"
         ? "text-white"
         : cn(
             "text-slate-700 hover:text-slate-900",
@@ -102,7 +107,7 @@ const NavButton = ({
     style={{
       background: variant === "cta"
         ? 'linear-gradient(135deg, #3b82f6 0%, #4f46e5 50%, #6366f1 100%)'
-        : isActive 
+        : isActive
           ? 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.65) 100%)'
           : 'linear-gradient(135deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.20) 100%)',
       backdropFilter: variant === "cta" ? 'none' : 'blur(24px) saturate(150%)',
@@ -117,7 +122,7 @@ const NavButton = ({
     aria-current={isActive ? "page" : undefined}
   >
     {/* Hover glow layer */}
-    <div 
+    <div
       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
       style={{
         background: variant === "cta"
@@ -125,19 +130,19 @@ const NavButton = ({
           : 'radial-gradient(circle at center, rgba(20,184,166,0.12) 0%, rgba(13,148,136,0.08) 50%, transparent 100%)'
       }}
     />
-    
+
     {/* Shimmer effect */}
-    <motion.div 
+    <motion.div
       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
       initial={{ x: '-100%' }}
       whileHover={{ x: '200%' }}
       transition={{ duration: 1, ease: 'easeInOut' }}
     />
-    
+
     {Icon && (
       <Icon className="w-4 h-4 transition-all duration-300 relative z-10 group-hover:scale-110" />
     )}
-    
+
     <span className="relative z-10 flex items-center gap-1.5">
       {children}
       {badge && (
@@ -146,7 +151,7 @@ const NavButton = ({
         </span>
       )}
     </span>
-    
+
     {/* Active indicator */}
     {isActive && variant === "ghost" && (
       <motion.div
@@ -156,16 +161,20 @@ const NavButton = ({
         transition={{ duration: 0.3, ease: 'easeOut' }}
       />
     )}
-    
+
     {/* Hover indicator for non-active */}
     {!isActive && variant === "ghost" && (
       <div className="absolute bottom-0.5 left-1/2 h-0.5 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full w-0 group-hover:w-8 -translate-x-1/2 transition-all duration-300" />
     )}
-  </Link>
-);
+  </Wrapper>
+)};
 
 // Enhanced Mobile Menu Item - Advanced Animations
-const MobileNavItem = ({ item, index, onClose }: {
+const MobileNavItem = ({
+  item,
+  index,
+  onClose
+}: {
   item: {
     title: string;
     href: string;
@@ -180,8 +189,8 @@ const MobileNavItem = ({ item, index, onClose }: {
   <motion.div
     initial={{ opacity: 0, x: -40, scale: 0.95 }}
     animate={{ opacity: 1, x: 0, scale: 1 }}
-    transition={{ 
-      duration: 0.5, 
+    transition={{
+      duration: 0.5,
       delay: 0.05 + index * 0.08,
       ease: [0.16, 1, 0.3, 1]
     }}
@@ -197,22 +206,22 @@ const MobileNavItem = ({ item, index, onClose }: {
         item.featured && "bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200"
       )}
       style={{
-        background: item.featured 
-          ? undefined 
+        background: item.featured
+          ? undefined
           : 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%)',
         backdropFilter: !item.featured ? 'blur(20px)' : undefined
       }}
     >
       {/* Enhanced glow for featured */}
       {item.featured && (
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-2xl"
           initial={{ opacity: 0 }}
           whileHover={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         />
       )}
-      
+
       {/* Shimmer effect */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
@@ -220,8 +229,8 @@ const MobileNavItem = ({ item, index, onClose }: {
         whileHover={{ x: '200%' }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       />
-      
-      <motion.div 
+
+      <motion.div
         className={cn(
           "flex items-center justify-center w-12 h-12 rounded-xl shadow-lg relative z-10",
           item.featured
@@ -233,12 +242,12 @@ const MobileNavItem = ({ item, index, onClose }: {
       >
         <item.icon className="w-5 h-5 text-white drop-shadow-sm" />
       </motion.div>
-      
+
       <div className="flex-1 relative z-10">
         <div className="flex items-center gap-2">
           <span className="font-bold text-slate-900">{item.title}</span>
           {item.badge && (
-            <motion.span 
+            <motion.span
               className="px-2 py-0.5 text-xs font-black bg-blue-500 text-white rounded-full"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -258,7 +267,7 @@ const MobileNavItem = ({ item, index, onClose }: {
         </div>
         <div className="text-sm text-slate-600 mt-0.5 font-medium">{item.description}</div>
       </div>
-      
+
       <motion.div
         className="relative z-10"
         initial={{ x: 0 }}
@@ -271,9 +280,29 @@ const MobileNavItem = ({ item, index, onClose }: {
   </motion.div>
 );
 
+const DropdownMenu = ({ items }: { items: { title: string; href: string }[] }) => (
+  <motion.div
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    className="absolute top-full mt-2 w-48 bg-white/80 backdrop-blur-md rounded-xl shadow-lg border border-white/50"
+  >
+    {items.map((item) => (
+      <Link
+        key={item.href}
+        href={item.href}
+        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100/50"
+      >
+        {item.title}
+      </Link>
+    ))}
+  </motion.div>
+);
+
 export const EnhancedNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeItem, setActiveItem] = useState('/');
 
   useEffect(() => {
@@ -288,30 +317,38 @@ export const EnhancedNavigation = () => {
   // Navigation items
   const navigationItems = [
     {
+      title: 'Desenvolvedor',
+      href: '/jpcardozx',
+      icon: BookOpen,
+      description: 'Conheça o desenvolvedor por trás do projeto'
+    },
+    {
+      title: 'Agendamentos',
+      href: '/agendamentos',
+      icon: Users,
+      description: 'Agende uma consultoria'
+    },
+    {
+      title: 'Quiz',
+      href: '/quiz',
+      icon: Zap,
+      description: 'Faça o quiz e descubra a solução ideal para você'
+    }
+  ];
+
+  const dropdownItems = [
+    {
       title: 'Serviços',
       href: '/services',
-      icon: ShoppingBag,
-      description: 'Soluções sob medida',
-      featured: true
     },
     {
-      title: 'Portfolio',
-      href: '/portfolio',
-      icon: BookOpen,
-      description: 'Cases reais de crescimento'
-    },
-    {
-      title: 'Sobre',
-      href: '/about',
-      icon: Users,
-      description: 'Conheça nossa expertise'
+      title: 'Metodologia',
+      href: '/metodologia',
     },
     {
       title: 'Contato',
       href: '/contact',
-      icon: Phone,
-      description: 'Fale conosco'
-    }
+    },
   ];
 
   const mobileItems = [
@@ -351,7 +388,7 @@ export const EnhancedNavigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="flex items-center justify-between gap-4"
-          animate={{ 
+          animate={{
             height: isScrolled ? 56 : 96,
             paddingTop: isScrolled ? 3 : 24,
             paddingBottom: isScrolled ? 3 : 24
@@ -359,8 +396,8 @@ export const EnhancedNavigation = () => {
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Logo - Ultra compacta no scroll */}
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 rounded-xl transition-all duration-200"
           >
             <ArcoLogo isScrolled={isScrolled} />
@@ -372,7 +409,7 @@ export const EnhancedNavigation = () => {
             role="navigation"
             aria-label="Main navigation"
           >
-            <motion.div 
+            <motion.div
               className="flex items-center rounded-2xl relative"
               animate={{
                 gap: isScrolled ? 8 : 12,
@@ -400,11 +437,22 @@ export const EnhancedNavigation = () => {
                   {item.title}
                 </NavButton>
               ))}
+              <div
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseLeave={() => setIsDropdownOpen(false)}
+              >
+                <NavButton
+                  icon={ChevronDown}
+                >
+                  Soluções
+                </NavButton>
+                {isDropdownOpen && <DropdownMenu items={dropdownItems} />}
+              </div>
             </motion.div>
           </nav>
 
           {/* Right Side - CTAs Premium */}
-          <motion.div 
+          <motion.div
             className={cn(
               "hidden lg:flex items-center flex-shrink-0 transition-all duration-300",
               isScrolled ? "gap-3" : "gap-4"
@@ -462,16 +510,16 @@ export const EnhancedNavigation = () => {
                 )}
               </Link>
             </motion.div>
-            
+
             {/* Primary CTA - Refined Gradient */}
-            <motion.div 
+            <motion.div
               className="relative"
               whileHover={{ scale: 1.02, y: -1.5 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Enhanced multi-layer glow */}
-              <motion.div 
+              <motion.div
                 className="absolute -inset-1.5 rounded-xl"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileHover={{ opacity: 1, scale: 1 }}
@@ -481,7 +529,7 @@ export const EnhancedNavigation = () => {
                   filter: 'blur(16px)'
                 }}
               />
-              <motion.div 
+              <motion.div
                 className="absolute -inset-2 rounded-xl"
                 initial={{ opacity: 0 }}
                 whileHover={{ opacity: 1 }}
@@ -512,7 +560,7 @@ export const EnhancedNavigation = () => {
                   transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
                 />
                 {/* Dual radial glows */}
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 rounded-xl"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
@@ -521,7 +569,7 @@ export const EnhancedNavigation = () => {
                     background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.22) 0%, transparent 50%)'
                   }}
                 />
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 rounded-xl"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
@@ -570,7 +618,7 @@ export const EnhancedNavigation = () => {
                 <span className="relative z-10 tracking-[-0.01em]">Falar com Consultor</span>
               </Link>
             </motion.div>
-            
+
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <motion.button
@@ -594,7 +642,7 @@ export const EnhancedNavigation = () => {
                   </motion.div>
                 </motion.button>
               </SheetTrigger>
-              
+
               <SheetContent
                 side="right"
                 className="w-full sm:w-80 border-l border-white/20 p-0"
@@ -604,7 +652,7 @@ export const EnhancedNavigation = () => {
                   WebkitBackdropFilter: 'blur(48px) saturate(200%)'
                 }}
               >
-                <motion.div 
+                <motion.div
                   className="flex flex-col h-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -644,7 +692,7 @@ export const EnhancedNavigation = () => {
                   </nav>
 
                   {/* Bottom CTA */}
-                  <motion.div 
+                  <motion.div
                     className="p-6 border-t border-slate-200/60"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -671,7 +719,7 @@ export const EnhancedNavigation = () => {
                           transition={{ duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
                         />
                         {/* Multi-layer radial glows */}
-                        <motion.div 
+                        <motion.div
                           className="absolute inset-0 rounded-xl"
                           initial={{ opacity: 0 }}
                           whileHover={{ opacity: 1 }}
@@ -680,7 +728,7 @@ export const EnhancedNavigation = () => {
                             background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.22) 0%, transparent 50%)'
                           }}
                         />
-                        <motion.div 
+                        <motion.div
                           className="absolute inset-0 rounded-xl"
                           initial={{ opacity: 0 }}
                           whileHover={{ opacity: 1 }}

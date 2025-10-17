@@ -28,8 +28,9 @@ import {
   AlertCircle,
   Clock,
   Lightbulb,
-  Rocket,
   Layers,
+  LineChart,
+  Rocket,
   type LucideIcon
 } from 'lucide-react';
 import { cn, designTokens } from '@/design-system/tokens';
@@ -134,10 +135,10 @@ const PainPointMirror = () => {
   const [insightLevel, setInsightLevel] = useState(0);
 
   const painPoints = [
-    { id: 'traffic', label: 'Tráfego que não converte', icon: TrendingUp },
-    { id: 'cost', label: 'CAC muito alto', icon: Calculator },
-    { id: 'quality', label: 'Leads desqualificados', icon: Users },
-    { id: 'time', label: 'Ciclo de venda longo', icon: Activity },
+    { id: 'traffic', label: 'Taxa de conversão abaixo do benchmark', icon: TrendingUp },
+    { id: 'cost', label: 'Custo de aquisição elevado', icon: Calculator },
+    { id: 'quality', label: 'Qualificação insuficiente de leads', icon: Users },
+    { id: 'time', label: 'Ciclo de vendas estendido', icon: Activity },
   ];
 
   const togglePain = (painId: string) => {
@@ -155,8 +156,8 @@ const PainPointMirror = () => {
   };
 
   const insights = [
-    'Sintomas indicam desalinhamento tráfego × oferta',
-    'O problema não é falta de volume, é estratégia de qualificação',
+    'Indicadores sugerem desalinhamento entre fonte de tráfego e proposta de valor',
+    'Análise aponta para necessidade de revisão na estratégia de qualificação',
   ];
 
   return (
@@ -167,7 +168,7 @@ const PainPointMirror = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="text-xs text-white/50 mb-3">
-        Reconhece algum desses sintomas?
+        Desafios operacionais comuns em empresas de serviços:
       </div>
 
       <div className="space-y-2">
@@ -257,7 +258,7 @@ const PainPointMirror = () => {
           transition={{ delay: 0.3 }}
           className="text-center text-xs text-white/50 italic pt-2"
         >
-          Você não está sozinho. Resolvemos isso diariamente.
+          Desafios frequentes em operações similares. Abordagem sistemática disponível.
         </motion.div>
       )}
     </motion.div>
@@ -275,38 +276,38 @@ const ScenarioMapper = () => {
 
   const scenarios = {
     blocked: {
-      label: 'Funil Travado',
-      color: 'text-red-400',
-      bgColor: 'bg-red-500/10',
-      borderColor: 'border-red-500/30',
+      label: 'Descoberta',
+      color: 'text-slate-400',
+      bgColor: 'bg-slate-500/10',
+      borderColor: 'border-slate-500/30',
       icon: Activity,
-      description: 'Tráfego existe, conversão é baixa',
-      timeline: '0-3 meses diagnóstico'
+      description: 'Levantamento de requisitos, análise de métricas existentes e identificação de pontos críticos',
+      timeline: 'Fase inicial: 1-2 semanas'
     },
     progress: {
-      label: 'Em Otimização',
-      color: 'text-yellow-400',
-      bgColor: 'bg-yellow-500/10',
-      borderColor: 'border-yellow-500/30',
+      label: 'Implementação',
+      color: 'text-teal-400',
+      bgColor: 'bg-teal-500/10',
+      borderColor: 'border-teal-500/30',
       icon: TrendingUp,
-      description: 'Ajustes estratégicos rodando',
-      timeline: '3-6 meses consolidação'
+      description: 'Desenvolvimento de soluções, refatoração de código e otimização de performance',
+      timeline: 'Desenvolvimento: variável'
     },
     scaling: {
-      label: 'Pronto p/ Escalar',
-      color: 'text-emerald-400',
-      bgColor: 'bg-emerald-500/10',
-      borderColor: 'border-emerald-500/30',
+      label: 'Otimização',
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-500/30',
       icon: Zap,
-      description: 'Funil validado, hora de acelerar',
-      timeline: '6+ meses crescimento'
+      description: 'Monitoramento de métricas, ajustes finos e documentação de processos',
+      timeline: 'Pós-implementação'
     }
   };
 
   return (
     <motion.div className="space-y-3">
       <div className="text-xs text-white/50 mb-2.5">
-        Onde seu negócio está agora?
+        Fases do processo:
       </div>
 
       <div className="space-y-2">
@@ -385,8 +386,8 @@ const ScenarioMapper = () => {
         transition={{ delay: 0.5 }}
         className="pt-2.5 border-t border-white/10"
       >
-        <p className="text-xs text-white/50 italic leading-relaxed">
-          Sem atalhos. Cada etapa exige trabalho estratégico.
+        <p className="text-xs text-white/50 leading-relaxed">
+          Processo iterativo adaptado ao contexto específico de cada projeto.
         </p>
       </motion.div>
     </motion.div>
@@ -407,28 +408,28 @@ const FrameworkVisual = () => {
       id: 1, 
       label: 'Diagnóstico', 
       icon: Target,
-      description: 'Identificar gargalos reais',
-      duration: '1-2 sem'
+      description: 'Identificação de gargalos operacionais através de análise quantitativa',
+      duration: '1-2 semanas'
     },
     { 
       id: 2, 
-      label: 'Estratégia', 
+      label: 'Planejamento', 
       icon: BarChart3,
-      description: 'Plano específico p/ seu caso',
-      duration: '2-4 sem'
+      description: 'Desenvolvimento de plano de ação contextualizado',
+      duration: '2-4 semanas'
     },
     { 
       id: 3, 
-      label: 'Execução', 
+      label: 'Implementação', 
       icon: Zap,
-      description: 'Mudanças progressivas',
-      duration: '4-8 sem'
+      description: 'Execução gradual de ajustes estruturais',
+      duration: '4-8 semanas'
     },
     { 
       id: 4, 
-      label: 'Otimização', 
+      label: 'Monitoramento', 
       icon: RefreshCw,
-      description: 'Iteração baseada em dados',
+      description: 'Iteração baseada em métricas e resultados mensuráveis',
       duration: 'Contínuo'
     },
   ];
@@ -443,7 +444,7 @@ const FrameworkVisual = () => {
   return (
     <motion.div className="space-y-3">
       <div className="text-xs text-white/50 mb-2.5">
-        Nossa metodologia (processo, não mágica):
+        Metodologia estruturada (processo sistemático):
       </div>
 
       <div className="space-y-1.5">
@@ -549,10 +550,10 @@ const FrameworkVisual = () => {
         >
           <div className="flex items-center gap-2 mb-1">
             <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-            <span className="text-xs text-purple-400 font-semibold">Próximo Passo</span>
+            <span className="text-xs text-purple-400 font-semibold">Aplicação Contextual</span>
           </div>
           <p className="text-xs text-white/70 leading-relaxed">
-            Vamos adaptar isso ao SEU contexto?
+            Metodologia adaptável às especificidades operacionais de cada caso.
           </p>
         </motion.div>
       )}
@@ -759,7 +760,7 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
 
   return (
     <section
-      className={currentStyle.className}
+      className="relative w-full min-h-screen flex items-center overflow-hidden"
       style={{
         background: currentStyle.background,
         backgroundAttachment: 'fixed'
@@ -793,75 +794,70 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
           }}
         />
 
-        {/* Multi-layer teal & orange accents */}
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 15%, rgba(20, 184, 166, 0.15) 0%, transparent 35%),
-              radial-gradient(circle at 80% 85%, rgba(251, 146, 60, 0.12) 0%, transparent 35%),
-              radial-gradient(circle at 40% 70%, rgba(20, 184, 166, 0.08) 0%, transparent 30%),
-              radial-gradient(circle at 65% 30%, rgba(251, 146, 60, 0.08) 0%, transparent 30%)
-            `
-          }}
-        />
-
-        {/* Animated aurora - teal & orange alternating - OPTIMIZED */}
+        {/* Subtle teal accent - professional and minimal */}
         <div
           className="absolute inset-0 opacity-12"
           style={{
             background: `
-              radial-gradient(ellipse at 30% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 45%),
-              radial-gradient(ellipse at 70% 80%, rgba(251, 146, 60, 0.12) 0%, transparent 45%)
+              radial-gradient(circle at 20% 15%, rgba(20, 184, 166, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 80% 85%, rgba(20, 184, 166, 0.05) 0%, transparent 40%)
+            `
+          }}
+        />
+
+        {/* Subtle gradient overlay - depth without distraction */}
+        <div
+          className="absolute inset-0 opacity-8"
+          style={{
+            background: `
+              radial-gradient(ellipse at 30% 20%, rgba(20, 184, 166, 0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(100, 116, 139, 0.04) 0%, transparent 50%)
             `,
             mixBlendMode: 'screen'
           }}
         />
 
-        {/* Interactive mouse spotlight - teal */}
+        {/* Interactive mouse spotlight - very subtle */}
         <motion.div
-          className="absolute inset-0 opacity-25"
+          className="absolute inset-0 opacity-15"
           style={{
-            background: `radial-gradient(700px circle at ${mousePosition.x * 8 + 50}% ${mousePosition.y * 8 + 50}%, rgba(20, 184, 166, 0.18) 0%, transparent 65%)`,
+            background: `radial-gradient(700px circle at ${mousePosition.x * 8 + 50}% ${mousePosition.y * 8 + 50}%, rgba(20, 184, 166, 0.10) 0%, transparent 65%)`,
             transition: 'background 0.3s ease-out'
           }}
         />
 
-        {/* Geometric grid pattern - subtle */}
+        {/* Geometric grid pattern - very subtle */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(20, 184, 166, 0.15) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(20, 184, 166, 0.15) 1px, transparent 1px)
+              linear-gradient(rgba(100, 116, 139, 0.10) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(100, 116, 139, 0.10) 1px, transparent 1px)
             `,
             backgroundSize: '100px 100px'
           }}
         />
 
-        {/* Dotted pattern accent - teal & orange */}
+        {/* Minimal dotted pattern accent */}
         <div
-          className="absolute inset-0 opacity-[0.08]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 30% 30%, rgba(20, 184, 166, 0.30) 1.5px, transparent 1.5px),
-              radial-gradient(circle at 70% 70%, rgba(251, 146, 60, 0.25) 1.5px, transparent 1.5px)
+              radial-gradient(circle at 25% 25%, rgba(20, 184, 166, 0.15) 1px, transparent 1px)
             `,
-            backgroundSize: '80px 80px, 120px 120px'
+            backgroundSize: '80px 80px'
           }}
         />
 
-        {/* Depth gradient overlay with teal/orange zones */}
+        {/* Clean depth gradient overlay */}
         <div
-          className="absolute inset-0 opacity-40"
+          className="absolute inset-0 opacity-30"
           style={{
             background: `linear-gradient(180deg,
-              rgba(20, 184, 166, 0.03) 0%,
-              transparent 20%,
-              rgba(251, 146, 60, 0.02) 40%,
-              transparent 60%,
-              rgba(20, 184, 166, 0.02) 80%,
-              transparent 100%)`
+              rgba(20, 184, 166, 0.02) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(0, 0, 0, 0.05) 100%)`
           }}
         />
 
@@ -884,16 +880,16 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
       )}
 
       {/* Split Layout - Left Content + Right macOS Window */}
-      <div className="relative z-20 w-full">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-7xl flex items-center min-h-screen">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center w-full py-16 lg:py-20">
+      <div className="relative z-20 w-full h-full">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 max-w-7xl h-full flex items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center w-full py-16 sm:py-20 lg:py-0 min-h-[calc(100vh-4rem)] lg:min-h-screen">
 
             {/* Left Side - Content */}
             <motion.article
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              className="space-y-6 sm:space-y-8 max-w-2xl lg:max-w-none"
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+              className="space-y-5 sm:space-y-6 lg:space-y-7 max-w-2xl lg:max-w-none"
               aria-label="Conteúdo principal do hero"
             >
               {/* Executive Status Badge */}
@@ -903,49 +899,19 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
                 </div>
               )}
 
-              {/* Hero Title - Appropriately Sized */}
+              {/* Hero Title - Clean and Professional */}
               <motion.h1
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                className="font-display font-bold text-white leading-[1.1] lg:leading-tight"
+                transition={{ delay: 0.2, duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+                className="font-display font-bold text-white leading-[1.1] sm:leading-[1.15] tracking-tight"
                 style={{
-                  fontSize: 'clamp(2rem, 4.5vw + 0.5rem, 3.75rem)',
-                  letterSpacing: '-0.01em',
-                  textShadow: '0 10px 20px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3)'
+                  fontSize: 'clamp(1.875rem, 4vw + 0.5rem, 3.5rem)',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <motion.span
-                  className="block"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  Advogados, Corretores, Consultores:
-                </motion.span>
-                <motion.span
-                  className="block"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4, duration: 0.7 }}
-                >
-                  <span
-                    className="bg-gradient-to-r from-orange-400 via-teal-400 to-emerald-500 bg-clip-text text-transparent inline-block relative font-extrabold"
-                    style={{
-                      filter: 'drop-shadow(0 0 30px rgba(251, 146, 60, 0.5)) drop-shadow(0 0 20px rgba(20, 184, 166, 0.5)) drop-shadow(0 0 10px rgba(52, 211, 153, 0.4))'
-                    }}
-                  >
-                    De 2-3 para 25-40 Leads/Mês
-                  </span>
-                </motion.span>
-                <motion.span
-                  className="block"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5, duration: 0.6 }}
-                >
-                  em 48 Horas
-                </motion.span>
+                {title}
               </motion.h1>
 
               {/* Enhanced Subtitle */}
@@ -953,91 +919,88 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-                className="space-y-4 max-w-xl"
+                className="space-y-4 sm:space-y-5 max-w-xl"
               >
-                <p className="text-base sm:text-lg lg:text-xl text-white font-medium leading-relaxed">
-                  Sistema completo de <span className="text-teal-300 font-bold">captação web + tráfego qualificado</span> em 48h.
-                  Metodologia comprovada em <strong className="text-white font-bold">200+ empresas</strong> com ROI médio de <strong className="text-teal-400 font-extrabold">420%</strong>.
+                <p className="text-sm sm:text-base lg:text-lg text-white/85 font-normal leading-[1.6] sm:leading-[1.7]">
+                  {subtitle}
                 </p>
 
-                <div className="flex flex-wrap gap-2 sm:gap-3" role="list" aria-label="Diferenciais ARCO">
-                  {['48h Implementação', 'ROI 420%', '200+ Clientes', '7 Dias p/ Leads'].map((skill, index) => (
-                    <motion.span
-                      key={skill}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.8 + (index * 0.08), duration: 0.4, type: "spring", stiffness: 200 }}
-                      whileHover={{ scale: 1.08, y: -3, backgroundColor: 'rgba(255,255,255,0.18)' }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm text-white/80 border border-white/20 hover:border-white/40 hover:text-white/95 transition-all duration-200 cursor-default select-none"
-                      role="listitem"
-                      tabIndex={0}
-                    >
-                      {skill}
-                    </motion.span>
-                  ))}
+                <div className="flex flex-wrap gap-2 max-w-xl" role="list" aria-label="Diferenciais Técnicos">
+                  {[
+                    { label: 'Requisitos', icon: Target, color: 'text-blue-400', description: 'Análise técnica' },
+                    { label: 'Métricas', icon: BarChart3, color: 'text-teal-400', description: 'Dados reais' },
+                    { label: 'Deploy', icon: Layers, color: 'text-purple-400', description: 'Incremental' },
+                    { label: 'Monitor', icon: LineChart, color: 'text-emerald-400', description: 'Contínuo' }
+                  ].map((item, index) => {
+                    const Icon = item.icon;
+                    return (
+                      <motion.div
+                        key={item.label}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + (index * 0.08), duration: 0.4, type: "spring", stiffness: 200 }}
+                        whileHover={{ scale: 1.03, y: -1 }}
+                        className="group relative inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:border-white/20 hover:bg-white/8 transition-all duration-300 cursor-default select-none"
+                        role="listitem"
+                        title={item.description}
+                      >
+                        <Icon className={`w-3.5 h-3.5 ${item.color} flex-shrink-0`} strokeWidth={2.5} />
+                        <span className="text-xs font-medium text-white/90 whitespace-nowrap">{item.label}</span>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </motion.div>
 
-              {/* Premium CTA Buttons - Horizontal Left Aligned */}
+              {/* Premium CTA Buttons - Improved spacing and hierarchy */}
               <nav aria-label="Ações principais">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9, duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="flex flex-col items-start gap-3 mt-8"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mt-10"
                 >
                 {primaryCta && (
                   <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className="relative group"
+                    className="relative group w-full sm:w-auto"
                   >
                     <Button
                       size="lg"
-                      className="relative w-full sm:w-auto px-8 sm:px-10 py-5 sm:py-6 text-base sm:text-lg font-bold text-white border-0 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 group-hover:shadow-3xl focus-visible:shadow-4xl focus-visible:shadow-teal-500/50 focus:outline-none"
+                      className="relative w-full sm:w-auto px-8 py-4 text-base font-semibold text-white border-0 rounded-xl overflow-hidden shadow-lg transition-all duration-300 group-hover:shadow-xl focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus:outline-none"
                       style={{
                         background: `linear-gradient(135deg, ${designTokens.colors.teal[500]} 0%, ${designTokens.colors.teal[600]} 100%)`,
-                        boxShadow: `0 20px 50px rgba(20, 184, 166, 0.4), 0 10px 25px rgba(13, 148, 136, 0.3), inset 0 1px 0 rgba(255,255,255,0.25)`,
-                        border: '1px solid rgba(20, 184, 166, 0.3)'
+                        boxShadow: `0 10px 30px rgba(20, 184, 166, 0.25), inset 0 1px 0 rgba(255,255,255,0.15)`,
+                        border: '1px solid rgba(20, 184, 166, 0.2)'
                       }}
                       onClick={primaryCta.onClick}
-                      aria-label={`${primaryCta.text} - Iniciar seu projeto com ARCO`}
+                      aria-label={`${primaryCta.text}`}
                     >
                       <motion.span 
-                        className="relative z-10 flex items-center justify-center gap-3"
-                        whileHover={{ x: 4 }}
+                        className="relative z-10 flex items-center justify-center gap-2.5"
+                        whileHover={{ x: 2 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                       >
-                        <span className="text-white drop-shadow-md whitespace-nowrap tracking-tight">{primaryCta.text}</span>
-                        <ArrowRight className="w-5 h-5 text-white drop-shadow-md" aria-hidden="true" />
+                        <span className="text-white whitespace-nowrap">{primaryCta.text}</span>
+                        <ArrowRight className="w-4 h-4 text-white" aria-hidden="true" />
                       </motion.span>
 
-                      {/* Shimmer effect */}
+                      {/* Subtle shimmer */}
                       <motion.div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500"
                         style={{
-                          background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)`,
+                          background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)`,
                           backgroundSize: '200% 100%'
                         }}
                         animate={{
                           backgroundPosition: ['-200% 0', '200% 0'],
                         }}
                         transition={{
-                          duration: 1.2,
+                          duration: 1.5,
                           ease: "easeInOut",
                           repeat: Infinity,
-                        }}
-                      />
-
-                      {/* Glow effect */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
-                        style={{
-                          background: `radial-gradient(circle, ${designTokens.colors.teal[400]}60 0%, ${designTokens.colors.teal[500]}30 40%, transparent 70%)`,
-                          filter: 'blur(24px)',
-                          transform: 'scale(1.3)'
                         }}
                       />
                     </Button>
@@ -1046,42 +1009,136 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
 
                 {secondaryCta && (
                   <motion.div
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className="relative group"
+                    className="relative group w-full sm:w-auto"
                   >
                     <Button
                       variant="outline"
                       size="lg"
-                      className="relative w-full sm:w-auto px-8 sm:px-10 py-5 sm:py-6 text-base sm:text-lg font-semibold text-white rounded-2xl overflow-hidden transition-all duration-300 backdrop-blur-sm hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                      className="relative w-full sm:w-auto px-8 py-4 text-base font-medium text-white rounded-xl overflow-hidden transition-all duration-300 backdrop-blur-sm hover:bg-white/8 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                       style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1.5px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.1)'
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.08)'
                       }}
                       onClick={secondaryCta.onClick}
-                      aria-label={`${secondaryCta.text} - Ver nossos projetos e cases de sucesso`}
+                      aria-label={secondaryCta.text}
                     >
                       <motion.span 
-                        className="relative z-10 flex items-center justify-center gap-3"
-                        whileHover={{ x: 2 }}
+                        className="relative z-10 flex items-center justify-center gap-2.5"
+                        whileHover={{ x: 1 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                       >
-                        <Play className="w-5 h-5 text-white/90 drop-shadow-sm" aria-hidden="true" />
-                        <span className="drop-shadow-sm whitespace-nowrap tracking-tight">{secondaryCta.text}</span>
+                        <Play className="w-4 h-4 text-white/80" aria-hidden="true" />
+                        <span className="whitespace-nowrap">{secondaryCta.text}</span>
                       </motion.span>
                       
-                      {/* Simple professional hover */}
+                      {/* Subtle hover effect */}
                       <motion.div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
                         style={{
-                          background: 'rgba(255, 255, 255, 0.12)'
+                          background: 'rgba(255, 255, 255, 0.06)'
                         }}
                       />
                     </Button>
                   </motion.div>
                 )}
+                </motion.div>
+
+                {/* Technical Attribution - Premium Signature Block */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.4, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-12 pt-8"
+                  style={{
+                    borderTop: '1px solid rgba(255,255,255,0.04)'
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-6">
+                    {/* Technical Signature */}
+                    <div className="flex-1">
+                      <motion.a
+                        href="/jpcardozx"
+                        className="group inline-flex items-baseline gap-3"
+                        whileHover={{ x: 2 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      >
+                        <div className="flex items-baseline gap-2">
+                          <span 
+                            className="text-[13px] font-medium tracking-wide"
+                            style={{
+                              background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%)',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              backgroundClip: 'text',
+                            }}
+                          >
+                            Ideação e Desenvolvimento
+                          </span>
+                          <span className="text-[11px] font-mono text-white/30">
+                            por
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span 
+                            className="text-sm font-bold tracking-tight group-hover:tracking-normal transition-all duration-300 relative"
+                            style={{
+                              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              backgroundClip: 'text',
+                            }}
+                          >
+                            Pedro Cardozo
+                            {/* Underline animation on hover */}
+                            <span 
+                              className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 group-hover:w-full transition-all duration-300"
+                            />
+                          </span>
+                          <motion.div
+                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            animate={{ x: [0, 2, 0] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            <ArrowRight 
+                              className="w-4 h-4"
+                              style={{ color: '#14b8a6' }}
+                            />
+                          </motion.div>
+                        </div>
+                      </motion.a>
+                      
+                      {/* Tech Stack Indicators */}
+                      <div className="flex items-center gap-2 mt-3">
+                        <div 
+                          className="h-px w-6"
+                          style={{
+                            background: 'linear-gradient(90deg, rgba(20,184,166,0.4) 0%, transparent 100%)'
+                          }}
+                        />
+                        <div className="flex items-center gap-1.5">
+                          {['Next.js', 'React', 'TypeScript', 'Node.js'].map((tech, i) => (
+                            <span
+                              key={tech}
+                              className="text-[10px] font-mono text-white/40 tracking-wider"
+                              style={{
+                                opacity: 1 - (i * 0.15)
+                              }}
+                            >
+                              {tech}
+                            </span>
+                          )).reduce((prev, curr, i) => [
+                            prev,
+                            <span key={`sep-${i}`} className="text-white/20 text-[10px]">·</span>,
+                            curr
+                          ] as any)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               </nav>
             </motion.article>
@@ -1123,39 +1180,39 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
                   </div>
                 </AnimatedWindow>
 
-                {/* Foreground Window - Pain Recognition */}
+                {/* Foreground Window - Diagnostic Focus */}
                 <AnimatedWindow
-                  title="Diagnóstico de Sintomas - Sua Realidade"
+                  title="Análise & Diagnóstico"
                   className="relative w-full"
                   zIndex={0}
                   delay={0.6}
                 >
                   <div className="space-y-4">
-                    {/* Context Header - Empathy First */}
+                    {/* Context Header - Professional Approach */}
                     <div className="flex items-center justify-between pb-3 border-b border-white/10">
                       <div className="flex items-center gap-2">
-                        <Target className="w-4 h-4 text-orange-300" />
-                        <h3 className="text-white font-bold text-sm">Identificação de Gargalos</h3>
+                        <Target className="w-4 h-4 text-teal-400" />
+                        <h3 className="text-white font-bold text-sm">Diagnóstico Técnico</h3>
                       </div>
-                      <div className="flex items-center gap-1.5 px-2 py-1 bg-orange-500/10 rounded-full">
-                        <Activity className="w-3.5 h-3.5 text-orange-300" />
-                        <span className="text-orange-300 text-xs font-medium">Gratuito</span>
+                      <div className="flex items-center gap-1.5 px-2 py-1 bg-teal-500/10 rounded-full border border-teal-500/30">
+                        <Activity className="w-3.5 h-3.5 text-teal-400" />
+                        <span className="text-teal-400 text-xs font-medium">Consultoria</span>
                       </div>
                     </div>
 
-                    {/* Realistic Stats Context */}
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="bg-white/5 p-2 rounded-lg text-center">
-                        <div className="text-white/70 font-black text-lg">87%</div>
-                        <div className="text-white/50 text-[9px]">Têm funil travado</div>
+                    {/* Key Focus Areas */}
+                    <div className="space-y-2.5">
+                      <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/5 hover:bg-white/8 transition-colors">
+                        <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                        <span className="text-white/70 text-xs">Análise de métricas existentes</span>
                       </div>
-                      <div className="bg-white/5 p-2 rounded-lg text-center">
-                        <div className="text-white/70 font-black text-lg">3-6m</div>
-                        <div className="text-white/50 text-[9px]">P/ reverter</div>
+                      <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/5 hover:bg-white/8 transition-colors">
+                        <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                        <span className="text-white/70 text-xs">Identificação de gargalos técnicos</span>
                       </div>
-                      <div className="bg-white/5 p-2 rounded-lg text-center">
-                        <div className="text-emerald-400 font-black text-lg">100%</div>
-                        <div className="text-white/50 text-[9px]">Resolúvel</div>
+                      <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white/5 hover:bg-white/8 transition-colors">
+                        <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                        <span className="text-white/70 text-xs">Plano de ação estruturado</span>
                       </div>
                     </div>
 
@@ -1166,20 +1223,21 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
               </div>
             </motion.div>
 
-            {/* Mobile Stats Preview - Shown only on mobile */}
+            {/* Mobile Specialization Preview - Shown only on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1, duration: 0.7 }}
-              className="lg:hidden grid grid-cols-2 gap-4 mt-8"
+              className="lg:hidden space-y-3 mt-8"
             >
-              <div className="bg-gradient-to-br from-teal-500/20 to-teal-600/10 p-4 rounded-xl border border-teal-400/30">
-                <div className="text-2xl font-black text-teal-300">98%</div>
-                <div className="text-xs text-white/80">Performance Score</div>
-              </div>
-              <div className="bg-gradient-to-br from-orange-500/25 to-orange-600/15 p-4 rounded-xl border border-orange-400/40">
-                <div className="text-2xl font-black text-orange-300">+340%</div>
-                <div className="text-xs text-white/80">Tráfego Orgânico</div>
+              <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-4 rounded-xl border border-slate-700/50 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-2">
+                  <Zap className="w-5 h-5 text-teal-400" />
+                  <span className="text-sm font-semibold text-white">Especialização Core</span>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Otimização de performance, arquitetura escalável e experiência de usuário em aplicações web modernas.
+                </p>
               </div>
             </motion.div>
           </div>

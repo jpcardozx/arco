@@ -114,7 +114,7 @@ export default function CloudPage() {
                 name: file.name,
                 type: 'file' as const,
                 size: file.size,
-                mimeType: file.mime_type,
+                mimeType: file.mime_type || undefined,
                 createdAt: file.created_at || new Date().toISOString(),
                 modifiedAt: file.updated_at || file.created_at || new Date().toISOString(),
                 owner: 'Você',

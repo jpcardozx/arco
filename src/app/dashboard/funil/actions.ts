@@ -7,7 +7,7 @@
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 type Lead = Database['public']['Tables']['leads']['Row']
 

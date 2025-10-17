@@ -67,7 +67,7 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
       id: 'leads',
       label: 'Leads Gerados',
       value: String(metrics.leads_generated || 0),
-      change: metrics.leads_change ? `${metrics.leads_change > 0 ? '+' : ''}${metrics.leads_change.toFixed(1)}%` : '+0%',
+      change: '+0%', // leads_change field doesn't exist in ClientMetrics - TODO: add to backend
       icon: Users,
       color: 'text-blue-500',
       bgColor: 'bg-blue-500/10',
@@ -83,21 +83,23 @@ export function ClientDashboard({ userName = 'Cliente' }: ClientDashboardProps) 
       bgColor: 'bg-emerald-500/10',
       description: `Taxa: ${metrics.conversion_rate?.toFixed(1) || 0}%`
     },
-    {
-      id: 'roi',
-      label: 'ROI',
-      value: metrics.roi ? `${metrics.roi.toFixed(0)}%` : '0%',
-      change: metrics.roi_change ? `${metrics.roi_change > 0 ? '+' : ''}${metrics.roi_change.toFixed(1)}%` : '+0%',
-      icon: TrendingUp,
-      color: 'text-teal-500',
-      bgColor: 'bg-teal-500/10',
-      description: 'Retorno sobre investimento'
-    },
+    // ROI metrics commented out - fields don't exist in ClientMetrics
+    // TODO: Add roi and roi_change to backend schema
+    // {
+    //   id: 'roi',
+    //   label: 'ROI',
+    //   value: metrics.roi ? `${metrics.roi.toFixed(0)}%` : '0%',
+    //   change: metrics.roi_change ? `${metrics.roi_change > 0 ? '+' : ''}${metrics.roi_change.toFixed(1)}%` : '+0%',
+    //   icon: TrendingUp,
+    //   color: 'text-teal-500',
+    //   bgColor: 'bg-teal-500/10',
+    //   description: 'Retorno sobre investimento'
+    // },
     {
       id: 'views',
       label: 'Visualizações',
       value: metrics.page_views ? `${(metrics.page_views / 1000).toFixed(1)}k` : '0',
-      change: metrics.views_change ? `${metrics.views_change > 0 ? '+' : ''}${metrics.views_change.toFixed(1)}%` : '+0%',
+      change: '+0%', // views_change field doesn't exist in ClientMetrics - TODO: add to backend
       icon: Eye,
       color: 'text-orange-500',
       bgColor: 'bg-orange-500/10',

@@ -1,5 +1,6 @@
 'use client'
 
+import { MainLayout } from '@/components/layout/MainLayout'
 import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -39,14 +40,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">ARCO</h1>
-          <p className="text-gray-400">Dashboard de Clientes</p>
-        </div>
+    <MainLayout showHeader={true} showFooter={true}>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-2">ARCO</h1>
+            <p className="text-gray-400">Dashboard de Clientes</p>
+          </div>
 
-        <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+          <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-2xl text-white">Login</CardTitle>
             <CardDescription className="text-gray-400">
@@ -125,15 +127,16 @@ export default function LoginPage() {
           </form>
         </Card>
 
-        {/* Development credentials */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="mt-4 p-4 bg-blue-900/20 border border-blue-700 rounded-lg">
-            <p className="text-xs text-blue-300 font-medium mb-2">🔧 Credenciais de Teste:</p>
-            <p className="text-xs text-blue-400">Email: dev@arco.com</p>
-            <p className="text-xs text-blue-400">Senha: arco123456</p>
-          </div>
-        )}
+          {/* Development credentials */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-4 p-4 bg-blue-900/20 border border-blue-700 rounded-lg">
+              <p className="text-xs text-blue-300 font-medium mb-2">🔧 Credenciais de Teste:</p>
+              <p className="text-xs text-blue-400">Email: dev@arco.com</p>
+              <p className="text-xs text-blue-400">Senha: arco123456</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </MainLayout>
   )
 }

@@ -4,7 +4,7 @@
  */
 
 import { createSupabaseBrowserClient } from '@/lib/supabase/client'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 export interface CloudFile {
   id: string

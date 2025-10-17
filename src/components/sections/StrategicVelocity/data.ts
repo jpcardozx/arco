@@ -21,21 +21,27 @@ import {
 export const leadProblems = [
   {
     icon: Clock,
-    title: 'Ciclos longos',
-    stat: 'Fricção',
-    description: 'Processos de venda extensos criam oportunidade para desistência. O cliente pode encontrar alternativas mais ágeis.'
+    title: 'Ciclos Longos de Vendas',
+    stat: '50% de abandono',
+    description: 'Processos de venda extensos criam fricção. Cada etapa é uma oportunidade para o cliente desistir ou buscar alternativas mais ágeis.',
+    impact: 'Quanto mais longo o processo, maior a taxa de desistência. Clientes perdem contexto, encontram alternativas, ou simplesmente deixam de priorizar.',
+    consequence: 'O lead hoje pode ser lead perdido em 2-3 semanas sem validação tangível de progresso.'
   },
   {
     icon: DollarSign,
-    title: 'Incerteza de investimento',
-    stat: 'Barreira',
-    description: 'Orçamentos sem escopo definido geram insegurança. Clientes tendem a imaginar cenários desfavoráveis.'
+    title: 'Investimento sem Escopo Claro',
+    stat: '73% não seguem adiante',
+    description: 'Orçamentos flutuantes ou sem detalhamento geram insegurança. Clientes imaginam cenários desfavoráveis na ausência de especificação clara.',
+    impact: 'Sem escopo definido, cliente não consegue avaliar ROI potencial. O investimento parece arriscado e indefinido.',
+    consequence: 'A indecisão se transforma em rejeição. Clientes buscam fornecedores com propostas mais claras.'
   },
   {
     icon: AlertCircle,
-    title: 'Falta de validação prévia',
-    stat: 'Risco',
-    description: 'Investimentos significativos sem demonstração anterior de resultados dificultam a decisão de compra.'
+    title: 'Falta de Prova Tangível',
+    stat: '68% exigem validação',
+    description: 'Investimentos significativos sem demonstração anterior de qualidade ou resultados dificultam fundamentalmente a decisão de compra.',
+    impact: 'Cliente não consegue diferenciar entre fornecedores baseado em promessas. Todas parecem iguais até haver evidência concreta.',
+    consequence: 'Decisão recua ou é cancelada. Sem prova de trabalho, a confiança não é construída.'
   }
 ];
 

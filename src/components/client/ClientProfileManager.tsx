@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
-import { Database } from '@/types/supabase'
+import { Database, TablesInsert, TablesUpdate } from '@/lib/supabase/database.types'
 import { PremiumButton, CTAButton } from '@/components/ui/premium-button'
 import { SmartLoader } from '@/components/ui/smart-loader'
 import { 
@@ -124,6 +124,9 @@ export default function ClientProfileManager({
   const loadProfile = async () => {
     try {
       setLoading(true)
+      if (!profileId) {
+        throw new Error('Profile ID is required')
+      }
       const { data, error } = await supabase
         .from('client_profiles')
         .select('*')
@@ -164,27 +167,58 @@ export default function ClientProfileManager({
       setSaving(true)
       setError(null)
 
+      // Clean formData to only include valid client_profiles fields
+      const validData: TablesInsert<'client_profiles'> = {
+        client_id: formData.client_id || profileId || '',
+        business_type: formData.business_type || null,
+        industry: formData.industry || null,
+        company_size: formData.company_size || null,
+        annual_revenue: formData.annual_revenue || null,
+        budget_range: formData.budget_range || null,
+        primary_contact_name: formData.primary_contact_name || null,
+        primary_contact_email: formData.primary_contact_email || null,
+        primary_contact_phone: formData.primary_contact_phone || null,
+        preferred_communication: formData.preferred_communication || null,
+        timezone: formData.timezone || null,
+        current_website: formData.current_website || null,
+        platform: formData.platform || null,
+        has_analytics: formData.has_analytics || null,
+        design_style: formData.design_style || null,
+        brand_colors: formData.brand_colors || null,
+        primary_goals: formData.primary_goals || null,
+        pain_points: formData.pain_points || null,
+        tags: formData.tags || null,
+        notes: formData.notes || null,
+        satisfaction_score: formData.satisfaction_score || null,
+        total_projects: formData.total_projects || null,
+        custom_data: formData.custom_data || null,
+      }
+
       if (currentMode === 'create') {
         const { data, error } = await supabase
           .from('client_profiles')
-          .insert([formData])
+          .insert([validData])
           .select()
           .single()
 
         if (error) throw error
-        
+
         setProfile(data)
         onSave?.(data)
       } else {
+        if (!profileId) {
+          throw new Error('Profile ID is required for update')
+        }
+
         const { data, error } = await supabase
           .from('client_profiles')
-          .update(formData)
+          .update(validData as TablesUpdate<'client_profiles'>)
           .eq('id', profileId)
           .select()
           .single()
 
         if (error) throw error
-        
+
         setProfile(data)
         onSave?.(data)
       }
@@ -212,11 +246,11 @@ export default function ClientProfileManager({
       const { data, error } = await supabase
         .from('client_interactions')
         .insert([{
-          client_profile_id: profileId,
+          client_id: profileId || '',
           interaction_type: type,
           description,
           metadata: {}
-        }])
+        }] as TablesInsert<'client_interactions'>[])
 
       if (error) throw error
       loadInteractions()
@@ -323,24 +357,11 @@ export default function ClientProfileManager({
         {/* Status and Priority */}
         {!isEditing && profile && (
           <div className="flex items-center gap-4">
-            <div className={`
-              px-3 py-1 rounded-lg text-sm font-medium border
-              ${profile.status === 'active' 
-                ? 'text-green-400 bg-green-500/10 border-green-500/30'
-                : 'text-gray-400 bg-gray-500/10 border-gray-500/30'
-              }
-            `}>
-              {profile.status === 'active' ? 'Ativo' : 'Inativo'}
+            <div className="px-3 py-1 rounded-lg text-sm font-medium border text-green-400 bg-green-500/10 border-green-500/30">
+              Ativo
             </div>
-            
-            {profile.priority_level && (
-              <div className={`
-                px-3 py-1 rounded-lg text-sm font-medium border
-                ${priorities.find(p => p.value === profile.priority_level)?.color}
-              `}>
-                Prioridade {priorities.find(p => p.value === profile.priority_level)?.label}
-              </div>
-            )}
+
+            {/* Priority level removed - field doesn't exist in client_profiles */}
           </div>
         )}
       </div>
@@ -377,7 +398,7 @@ export default function ClientProfileManager({
                     placeholder="Nome da empresa ou cliente"
                   />
                 ) : (
-                  <p className="text-white text-lg">{displayData?.name || 'Não informado'}</p>
+                  <p className="text-white text-lg">{displayData?.primary_contact_name || 'Não informado'}</p>
                 )}
               </div>
 
@@ -605,7 +626,7 @@ export default function ClientProfileManager({
                 <div className="flex items-center justify-between">
                   <span className="text-white/70">Cliente desde</span>
                   <span className="text-white">
-                    {new Date(profile.created_at).toLocaleDateString()}
+                    {profile.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}
                   </span>
                 </div>
                 
@@ -619,7 +640,7 @@ export default function ClientProfileManager({
                 <div className="flex items-center justify-between">
                   <span className="text-white/70">Última atividade</span>
                   <span className="text-white">
-                    {interactions[0] 
+                    {interactions[0]?.created_at
                       ? new Date(interactions[0].created_at).toLocaleDateString()
                       : 'Nunca'
                     }
@@ -651,7 +672,7 @@ export default function ClientProfileManager({
                         {interaction.description}
                       </p>
                       <p className="text-white/50 text-xs mt-1">
-                        {new Date(interaction.created_at).toLocaleDateString()}
+                        {interaction.created_at ? new Date(interaction.created_at).toLocaleDateString() : ''}
                       </p>
                     </div>
                   </div>

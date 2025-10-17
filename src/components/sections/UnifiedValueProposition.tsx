@@ -114,70 +114,49 @@ export const UnifiedValueProposition: React.FC = () => {
       <Container size="xl" className="relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
-          {/* Header Section (Asymmetrical) */}
-          <div className="lg:col-span-5 space-y-6">
-            <motion.h2 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+          {/* Header Section (Full Width) */}
+          <div className="lg:col-span-12 text-center max-w-4xl mx-auto space-y-6 mb-8">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true }}
               className="text-4xl md:text-5xl font-bold text-white leading-tight"
             >
-              Resultados Reais, Parceria Transparente.
+              Metodologia transparente,{' '}
+              <span className="text-teal-400">resultados mensuráveis</span>
             </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true }}
               className="text-lg text-slate-300 leading-relaxed"
             >
-              Nossa metodologia <span className="text-teal-400 font-semibold">alinha seus objetivos aos nossos</span>. Entregamos um sistema de captação de clientes de alta performance, e seu sucesso contínuo é a nossa maior métrica.
+              Não vendemos promessas. Implementamos sistemas de captação com performance verificável e acompanhamento em tempo real.
             </motion.p>
-          </div>
-
-          {/* ROI Stat Card (Overlapping) */}
-          <div className="lg:col-span-7 relative h-full flex items-center justify-center">
-            <StatCard 
-              value="420%" 
-              label="ROI Médio Comprovado" 
-              icon={TrendingUp} 
-              className="lg:absolute lg:-right-12 lg:w-72 z-10" 
-              colorClass={{ bg: 'bg-teal-100', text: 'text-teal-700' }}
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="hidden lg:block w-full h-80 bg-white/40 backdrop-blur-sm rounded-3xl shadow-xl p-6"
-            >
-              <div className="w-full h-full border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center">
-                <p className="text-slate-400">Visualização de Dados Futura</p>
-              </div>
-            </motion.div>
           </div>
         </div>
 
         <div className="mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Benefit Cards */}
-          <BenefitCard 
-            title="Do Kick-off a Leads em 48 Horas" 
-            description="Implementamos seu funil de captação e iniciamos suas campanhas em tempo recorde, para que você veja resultados imediatos."
+          <BenefitCard
+            title="Implementação Rápida"
+            description="Setup completo em 48h. Landing page, tracking e primeiras campanhas rodando. Zero enrolação."
             icon={Zap}
-            colorClass={{ bg: 'bg-orange-100', text: 'text-orange-700' }}
+            colorClass={{ bg: 'bg-orange-500/10', text: 'text-orange-400' }}
           />
-          <BenefitCard 
-            title="Metodologia Focada em Conversão" 
-            description="Cada etapa do nosso processo é otimizada para uma única coisa: transformar visitantes em clientes qualificados para o seu negócio."
+          <BenefitCard
+            title="Otimização Contínua"
+            description="Testes A/B semanais, ajustes de copy e bid optimization. Conversão aumenta mês a mês."
             icon={Target}
-            colorClass={{ bg: 'bg-blue-100', text: 'text-blue-700' }}
+            colorClass={{ bg: 'bg-blue-500/10', text: 'text-blue-400' }}
           />
-          <BenefitCard 
-            title="Parceria Baseada em Performance" 
-            description="Seu sucesso é nosso sucesso. Nosso modelo é estruturado para que cresçamos juntos, com total transparência nos resultados."
+          <BenefitCard
+            title="Transparência Total"
+            description="Dashboard com métricas reais: CPA, ROAS e taxa de conversão. Sem números maquiados."
             icon={ShieldCheck}
-            colorClass={{ bg: 'bg-purple-100', text: 'text-purple-700' }}
+            colorClass={{ bg: 'bg-purple-500/10', text: 'text-purple-400' }}
           />
         </div>
 
@@ -194,14 +173,18 @@ export const UnifiedValueProposition: React.FC = () => {
             <div className="absolute -top-20 -right-20 w-60 h-60 bg-orange-500/20 rounded-full filter blur-3xl"/>
             
             <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl font-bold text-white">Descubra o Potencial de Receita Escondido em sua Operação.</h3>
-              <p className="text-lg text-slate-300 max-w-2xl mx-auto mt-4 mb-8">Nossa análise gratuita revela o impacto financeiro da performance do seu site e traça um plano de ação claro para otimização.</p>
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Descubra onde está perdendo leads
+              </h3>
+              <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
+                Análise gratuita identifica gargalos de conversão e calcula quanto cada melhoria pode gerar em receita.
+              </p>
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 py-7 px-8 text-lg font-bold shadow-xl hover:shadow-2xl hover:shadow-teal-500/50 hover:scale-105 transition-all duration-300 group"
+                className="bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all group"
                 onClick={() => document.getElementById('roi-calculator')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
               >
-                Calcular Meu Potencial de ROI
+                Calcular Potencial de ROI
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>

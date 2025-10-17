@@ -7,7 +7,7 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database.types'
 
 // ============================================
 // TABELAS - ROW TYPES (leitura)
@@ -77,10 +77,6 @@ export interface UseCurrentUserReturn {
   isAuthenticated: boolean
   updateUser: (updates: Partial<User>) => Promise<void>
   signOut: () => Promise<void>
-}
-
-export interface useUpdateLead {
-  (leadId: string, data: Partial<Lead>): Promise<void>
 }
 
 // ============================================

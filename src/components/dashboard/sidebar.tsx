@@ -4,31 +4,31 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
-import {
-  LayoutDashboard,
+import { usePathname } from 'next/navigation'
+import { 
+  ChevronLeft, 
+  Sparkles,
   LineChart,
+  Target,
+  CheckSquare,
+  LayoutDashboard,
   Activity,
-  TrendingUp,
-  FolderKanban,
-  MessageSquare,
-  FileText,
-  CreditCard,
-  Users,
-  Plug,
-  Settings,
-  ChevronLeft,
   Zap,
   Shield,
   Globe,
+  TrendingUp,
   BarChart3,
-  Target,
-  Sparkles,
-  CheckSquare,
+  FolderKanban,
+  CreditCard,
+  Users,
+  Plug,
+  FileText,
+  MessageSquare,
+  Settings
 } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { TierBadge } from './tier-badge'
+import { SidebarNavigation } from './sidebar-navigation'
+import { useEffect } from 'react'
 
 interface SidebarProps {
   tier: 'free' | 'paid' | 'admin'
@@ -208,13 +208,6 @@ export function Sidebar({ tier, collapsed, onToggle }: SidebarProps) {
           <ChevronLeft className={cn('h-4 w-4 transition-transform', collapsed && 'rotate-180')} />
         </Button>
       </div>
-
-      {/* Tier Badge */}
-      {!collapsed && (
-        <div className="border-b p-4">
-          <TierBadge tier={tier} />
-        </div>
-      )}
 
       {/* Navigation */}
       <ScrollArea className="flex-1 px-3 py-4">
