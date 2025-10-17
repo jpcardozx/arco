@@ -29,22 +29,33 @@ let browserClient: ReturnType<typeof createBrowserClient<Database>> | null = nul
  * const { data } = await supabase.from('webhook_events').select('*')
  */
 export function createSupabaseBrowserClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // During build time, environment variables may not be available
+  // Return placeholder client that won't be used during static generation
+  if (!supabaseUrl || !supabaseAnonKey) {
+    if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+      // Only throw in production when actually running in browser
+      throw new Error('Supabase environment variables are not configured');
+    }
+    // During build/SSR, return a dummy client
+    return createSupabaseClient<Database>(
+      'https://placeholder.supabase.co',
+      'placeholder-anon-key'
+    );
+  }
+
   if (typeof window === 'undefined') {
     // SSR fallback
-    return createSupabaseClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    );
+    return createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey);
   }
 
   if (browserClient) {
     return browserClient;
   }
 
-  browserClient = createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-  );
+  browserClient = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
 
   return browserClient;
 }
@@ -66,8 +77,16 @@ export function createSupabaseServerClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  // During build time, environment variables may not be available
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Variáveis de ambiente Supabase não configuradas');
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('⚠️ Supabase environment variables not configured');
+    }
+    // Return a dummy client for build time that won't actually be used
+    return createSupabaseClient<Database>(
+      'https://placeholder.supabase.co',
+      'placeholder-anon-key'
+    );
   }
 
   return createSupabaseClient<Database>(supabaseUrl, supabaseKey);
