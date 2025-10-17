@@ -4,11 +4,14 @@ jobs:
   validate-tailwind:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
-      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
-      NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: placeholder-mp-key
-      MERCADOPAGO_ACCESS_TOKEN: placeholder-mp-token
+      # Placeholder environment variables for build-time only
+      # Using .invalid TLD to ensure no accidental connections
+      NEXT_PUBLIC_SUPABASE_URL: https://ci-build-placeholder.invalid
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-build-placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder-service-key
+      NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ci-build-placeholder-mp-key
+      MERCADOPAGO_ACCESS_TOKEN: ci-build-placeholder-mp-token
+      # Skip Puppeteer download for faster builds (not used in build process)
       PUPPETEER_SKIP_DOWNLOAD: true
     steps:
       - uses: actions/checkout@v3
