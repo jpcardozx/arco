@@ -38,17 +38,7 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
   // Validação de role - SEGURANÇA CRÍTICA
   const { user, loading: userLoading } = useCurrentUser()
   
-  // Se não é admin, retorna null e deixa MainDashboard fazer o roteamento
-  // Evita redirect loop
-  if (!userLoading && user?.role !== 'admin') {
-    return (
-      <div className="min-h-[600px] flex items-center justify-center">
-        <p className="text-slate-400">Acesso não autorizado</p>
-      </div>
-    )
-  }
-
-  // Fetch dados reais
+  // Fetch dados reais - MUST call hooks unconditionally before any returns
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useAdminStats()
   const { data: conversion, isLoading: conversionLoading } = useConversionMetrics()
   const { data: revenue, isLoading: revenueLoading } = useMonthlyRevenue()
@@ -116,6 +106,16 @@ export function AdminDashboard({ userName = 'Administrador' }: AdminDashboardPro
       toast.error('Erro ao atualizar dashboard')
     }
   }, [refetchStats])
+
+  // Se não é admin, retorna null e deixa MainDashboard fazer o roteamento
+  // Evita redirect loop - check AFTER all hooks are called
+  if (!userLoading && user?.role !== 'admin') {
+    return (
+      <div className="min-h-[600px] flex items-center justify-center">
+        <p className="text-slate-400">Acesso não autorizado</p>
+      </div>
+    )
+  }
 
   if (isLoading) {
     return <DashboardSkeleton />

@@ -52,11 +52,11 @@ async function validateTailwindSetup() {
   const checks = [
     {
       name: 'PostCSS Config Exists',
-      test: () => fs.existsSync('postcss.config.js'),
+      test: () => fs.existsSync('postcss.config.js') || fs.existsSync('postcss.config.cjs') || fs.existsSync('postcss.config.mjs'),
     },
     {
       name: 'Tailwind Config Exists',
-      test: () => fs.existsSync('tailwind.config.js') || fs.existsSync('tailwind.config.ts'),
+      test: () => fs.existsSync('tailwind.config.js') || fs.existsSync('tailwind.config.ts') || fs.existsSync('tailwind.config.mjs') || fs.existsSync('tailwind.config.cjs'),
     },
     {
       name: 'CSS Files Contain Tailwind Directives',
@@ -70,9 +70,13 @@ async function validateTailwindSetup() {
         for (const cssPath of possiblePaths) {
           if (fs.existsSync(cssPath)) {
             const content = fs.readFileSync(cssPath, 'utf8');
-            return content.includes('@tailwind base') && 
+            // Check for either Tailwind v3 directives or v4 import
+            const hasV3Directives = content.includes('@tailwind base') && 
                   content.includes('@tailwind components') && 
                   content.includes('@tailwind utilities');
+            const hasV4Import = content.includes('@import "tailwindcss"') || 
+                  content.includes("@import 'tailwindcss'");
+            return hasV3Directives || hasV4Import;
           }
         }
         return false;
@@ -82,9 +86,18 @@ async function validateTailwindSetup() {
       name: 'Tailwind Config Has Valid Content Paths',
       test: () => {
         try {
-          if (!fs.existsSync('tailwind.config.js')) return false;
+          const configFiles = ['tailwind.config.js', 'tailwind.config.mjs', 'tailwind.config.cjs', 'tailwind.config.ts'];
+          let configContent = '';
           
-          const configContent = fs.readFileSync('tailwind.config.js', 'utf8');
+          for (const configFile of configFiles) {
+            if (fs.existsSync(configFile)) {
+              configContent = fs.readFileSync(configFile, 'utf8');
+              break;
+            }
+          }
+          
+          if (!configContent) return false;
+          
           // Simple check for content array in config
           return configContent.includes('content:') && 
                  configContent.includes('./src');
@@ -122,9 +135,11 @@ async function validateTailwindSetup() {
             ...packageJson.devDependencies 
           };
           
-          return allDeps.tailwindcss !== undefined && 
-                 allDeps.postcss !== undefined && 
-                 allDeps.autoprefixer !== undefined;
+          // Check for Tailwind v4 OR v3 dependencies
+          const hasTailwind = allDeps.tailwindcss !== undefined;
+          const hasPostCSS = allDeps.postcss !== undefined || allDeps['@tailwindcss/postcss'] !== undefined;
+          
+          return hasTailwind && hasPostCSS;
         } catch (error) {
           return false;
         }
