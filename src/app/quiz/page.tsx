@@ -6,6 +6,9 @@ export const metadata = {
   description: 'Avalie a maturidade digital do seu negócio em 5 minutos e receba recomendações personalizadas.',
 }
 
+// Force dynamic rendering to avoid build-time Supabase client initialization
+export const dynamic = 'force-dynamic'
+
 export default function QuizPage() {
   return (
     <MainLayout showHeader={true} showFooter={true}>
