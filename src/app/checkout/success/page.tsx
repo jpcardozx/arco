@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic'
+
 import { StatusScreenBrick } from '@/components/payment/StatusScreenBrick';
 import { MercadoPagoProvider } from '@/providers/MercadoPagoProvider';
 import { MainLayout } from '@/components/layout/MainLayout';

@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import React, { useState, useEffect, useRef } from 'react'
 import WhatsAppStatus from './components/WhatsAppStatus'
 import Tabs from './components/Tabs'

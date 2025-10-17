@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import confetti from 'canvas-confetti'
