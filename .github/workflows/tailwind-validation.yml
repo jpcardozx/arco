@@ -3,6 +3,13 @@ on: [push, pull_request]
 jobs:
   validate-tailwind:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
+      NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: placeholder-mp-key
+      MERCADOPAGO_ACCESS_TOKEN: placeholder-mp-token
+      PUPPETEER_SKIP_DOWNLOAD: true
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
