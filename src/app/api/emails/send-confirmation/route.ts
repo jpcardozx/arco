@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         )
       `)
       .eq('id', bookingId)
-      .single<BookingWithRelations>()
+      .single() as { data: BookingWithRelations | null; error: any }
 
     if (bookingError || !booking) {
       return NextResponse.json(

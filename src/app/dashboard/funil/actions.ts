@@ -17,14 +17,14 @@ export async function getFunnelLeads() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from('leads')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false })) as { data: Lead[] | null; error: any }
 
   if (error) throw error
   
-  return (data || []).map(lead => ({
+  return (data || []).map((lead: Lead) => ({
     id: lead.id,
     name: lead.full_name || 'Sem nome',
     email: lead.email,
@@ -75,11 +75,14 @@ export async function getFunnelStats() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data: leads, error } = await supabase
+  type LeadStatus = Pick<Lead, 'status'>;
+  const result = (await supabase
     .from('leads')
-    .select('status')
+    .select('status')) as { data: LeadStatus[] | null; error: any };
+  
+  const { data: leads, error } = result;
 
-  if (error) throw error
+  if (error) throw error;
 
   const stats = [
     { stage: 'captacao', count: 0, value: 0, conversion_rate: 0, avg_time_in_stage: 5 },
@@ -88,7 +91,7 @@ export async function getFunnelStats() {
     { stage: 'fechamento', count: 0, value: 0, conversion_rate: 0, avg_time_in_stage: 3 },
   ]
 
-  leads.forEach(lead => {
+  (leads || []).forEach((lead: Pick<Lead, 'status'>) => {
     const stage = mapStageFromStatus(lead.status)
     const stageIndex = stats.findIndex(s => s.stage === stage)
     if (stageIndex !== -1) {

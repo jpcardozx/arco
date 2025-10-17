@@ -34,7 +34,7 @@ export async function getCurrentUser() {
     .from('user_profiles')
     .select('*')
     .eq('id', user.id)
-    .single<UserProfile>()
+    .single() as { data: UserProfile | null; error: any }
 
   if (profileError || !profile) {
     return null
@@ -113,7 +113,7 @@ export async function createAnalysisRequest(url: string) {
       status: 'pending' as const,
     })
     .select()
-    .single<AnalysisRequest>()
+    .single() as { data: AnalysisRequest | null; error: any }
 
   if (error) throw error
   
@@ -319,7 +319,7 @@ export async function createTicket(data: { subject: string; description: string;
       status: 'open' as const,
     })
     .select()
-    .single<SupportTicket>()
+    .single() as { data: SupportTicket | null; error: any }
 
   if (error) throw error
   
@@ -378,7 +378,7 @@ export async function deleteFile(fileId: string) {
     .select('file_path')
     .eq('id', fileId)
     .eq('uploaded_by', user.id)
-    .single<Pick<StorageItem, 'file_path'>>()
+    .single() as { data: Pick<StorageItem, 'file_path'> | null; error: any }
 
   if (fetchError || !file) throw new Error('File not found')
 
@@ -406,8 +406,7 @@ export async function getStorageQuota() {
   const { data: files } = await supabase
     .from('storage_items')
     .select('size_bytes')
-    .eq('client_id', user.id)
-    .returns<Pick<StorageItem, 'size_bytes'>[]>()
+    .eq('client_id', user.id) as { data: Pick<StorageItem, 'size_bytes'>[] | null; error: any }
 
   const usedBytes = files?.reduce((sum, f) => sum + (f.size_bytes || 0), 0) || 0
   const usedMB = usedBytes / (1024 * 1024)

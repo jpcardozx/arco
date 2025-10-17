@@ -18,11 +18,10 @@ export async function getWhatsAppContacts() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from('whatsapp_contacts')
     .select('*')
-    .order('updated_at', { ascending: false })
-    .returns<WhatsAppContact[]>()
+    .order('updated_at', { ascending: false })) as { data: WhatsAppContact[] | null; error: any }
 
   if (error) throw error
 
@@ -47,12 +46,11 @@ export async function getWhatsAppMessages(contactId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from('whatsapp_messages')
     .select('*')
     .eq('contact_id', contactId)
-    .order('created_at', { ascending: true })
-    .returns<WhatsAppMessage[]>()
+    .order('created_at', { ascending: true })) as { data: WhatsAppMessage[] | null; error: any }
 
   if (error) throw error
 

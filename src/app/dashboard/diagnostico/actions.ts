@@ -57,14 +57,13 @@ export async function getAnalyses() {
     analysis_results: DatabaseAnalysisResult[]
   }
 
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from('analysis_requests')
     .select(`
       *,
       analysis_results (*)
     `)
-    .order('created_at', { ascending: false })
-    .returns<AnalysisWithResults[]>()
+    .order('created_at', { ascending: false })) as { data: AnalysisWithResults[] | null; error: any }
 
   if (error) throw error
 
@@ -99,9 +98,9 @@ export async function getAnalysisById(id: string) {
       analysis_results (*)
     `)
     .eq('id', id)
-    .single<AnalysisWithResults>()
+    .single() as { data: AnalysisWithResults | null; error: any }
 
-  if (error) throw error
+  if (error || !data) throw error
 
   return {
     id: data.id,
@@ -140,9 +139,9 @@ export async function createAnalysis(url: string) {
       status: 'pending' as const,
     })
     .select()
-    .single<AnalysisRequest>()
+    .single() as { data: AnalysisRequest | null; error: any }
 
-  if (error) throw error
+  if (error || !data) throw error
 
   revalidatePath('/dashboard/diagnostico')
 
