@@ -1,4 +1,4 @@
-import { mercadoPagoClient } from './client';
+import { mercadoPagoClient, MP_CONFIG } from './client';
 import { createClient } from '@supabase/supabase-js';
 import { randomUUID } from 'crypto';
 import { Preference, Payment } from 'mercadopago';
@@ -38,6 +38,11 @@ export async function createOrder(params: CreateOrderParams): Promise<OrderRespo
   const { userId, planId, amount, currency = 'BRL', description } = params;
   
   try {
+    // Check if MercadoPago is configured
+    if (!MP_CONFIG.enabled || !mercadoPagoClient) {
+      throw new Error('MercadoPago not configured');
+    }
+
     // Generate external reference
     const externalReference = randomUUID();
     
@@ -127,6 +132,11 @@ export async function createOrder(params: CreateOrderParams): Promise<OrderRespo
 // Get payment details
 export async function getPayment(paymentId: string) {
   try {
+    // Check if MercadoPago is configured
+    if (!MP_CONFIG.enabled || !mercadoPagoClient) {
+      throw new Error('MercadoPago not configured');
+    }
+
     const payment = new Payment(mercadoPagoClient);
     const response = await payment.get({ id: paymentId });
     return response;
