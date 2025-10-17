@@ -3,11 +3,17 @@ import { createClient } from '@supabase/supabase-js';
 import { randomUUID } from 'crypto';
 import { Preference, Payment } from 'mercadopago';
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Helper to get Supabase client (lazy initialization)
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url || !key) {
+    throw new Error('Supabase configuration missing');
+  }
+  
+  return createClient(url, key);
+}
 
 // Types
 interface CreateOrderParams {
@@ -42,6 +48,8 @@ export async function createOrder(params: CreateOrderParams): Promise<OrderRespo
     if (!MP_CONFIG.enabled || !mercadoPagoClient) {
       throw new Error('MercadoPago not configured');
     }
+
+    const supabase = getSupabaseClient();
 
     // Generate external reference
     const externalReference = randomUUID();
@@ -149,6 +157,7 @@ export async function getPayment(paymentId: string) {
 // Process payment confirmation (called by webhook)
 export async function processPaymentConfirmation(paymentId: string): Promise<void> {
   try {
+    const supabase = getSupabaseClient();
     const payment = await getPayment(paymentId);
     
     // Update transaction in database
@@ -179,6 +188,7 @@ export async function processPaymentConfirmation(paymentId: string): Promise<voi
 // Activate subscription after successful payment
 async function activateSubscription(payment: any): Promise<void> {
   try {
+    const supabase = getSupabaseClient();
     const metadata = payment.metadata || {};
     const userId = metadata.user_id;
     const planId = metadata.plan_id;

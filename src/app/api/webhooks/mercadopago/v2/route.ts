@@ -3,11 +3,17 @@ import { createClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
 import crypto from 'crypto';
 
-// Supabase service role client (bypass RLS)
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Helper to get Supabase client (lazy initialization)
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url || !key) {
+    throw new Error('Supabase configuration missing');
+  }
+  
+  return createClient(url, key);
+}
 
 /**
  * Valida signature do webhook Mercado Pago
@@ -58,6 +64,8 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
   
   try {
+    const supabase = getSupabaseClient();
+    
     // 1. Extract headers
     const signature = request.headers.get('x-signature');
     const requestId = request.headers.get('x-request-id');

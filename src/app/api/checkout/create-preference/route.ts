@@ -5,11 +5,17 @@ import { logger } from '@/lib/logger';
 import { createClient } from '@supabase/supabase-js';
 import { createPreferenceLimiter, getClientIp, checkRateLimit } from '@/lib/rate-limiting/checkout-limiter';
 
-// Supabase service role client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Helper to get Supabase client (lazy initialization)
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url || !key) {
+    throw new Error('Supabase configuration missing');
+  }
+  
+  return createClient(url, key);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,6 +60,8 @@ export async function POST(request: NextRequest) {
       logger.warn('Missing planId for create-preference', { userId });
       return NextResponse.json({ error: 'PlanId obrigatório' }, { status: 400 });
     }
+
+    const supabase = getSupabaseClient();
 
     // Buscar plano do banco de dados
     const { data: plan, error: planError } = await supabase
