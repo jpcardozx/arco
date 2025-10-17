@@ -1,24 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { createSupabaseBrowserClient, type Tables } from '@/lib/supabase/client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-interface WebhookEvent {
-  id: string;
-  gateway: string;
-  gateway_event_id: string;
-  event_type: string;
-  processed: boolean;
-  payload: any;
-  received_at: string;
-  processed_at: string | null;
-  processing_error: string | null;
+// Initialize client lazily to avoid build-time errors
+let supabase: ReturnType<typeof createSupabaseBrowserClient> | null = null;
+function getSupabase() {
+  if (!supabase) {
+    supabase = createSupabaseBrowserClient();
+  }
+  return supabase;
 }
+
+// Use the correct type from the database
+type WebhookEvent = Tables<'webhook_events'>;
 
 export default function WebhookMonitorPage() {
   const [webhooks, setWebhooks] = useState<WebhookEvent[]>([]);
@@ -27,7 +22,7 @@ export default function WebhookMonitorPage() {
 
   const fetchWebhooks = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from('webhook_events')
         .select('*')
         .order('received_at', { ascending: false })
@@ -53,7 +48,7 @@ export default function WebhookMonitorPage() {
 
   // Real-time subscription
   useEffect(() => {
-    const channel = supabase
+    const channel = getSupabase()
       .channel('webhook_events')
       .on(
         'postgres_changes',
@@ -74,11 +69,12 @@ export default function WebhookMonitorPage() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      getSupabase().removeChannel(channel);
     };
   }, []);
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
@@ -90,7 +86,7 @@ export default function WebhookMonitorPage() {
     }).format(date);
   };
 
-  const getStatusColor = (processed: boolean) => {
+  const getStatusColor = (processed: boolean | null) => {
     return processed
       ? 'bg-green-500/20 text-green-400 border-green-500/30'
       : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
@@ -167,7 +163,7 @@ export default function WebhookMonitorPage() {
             <div className="px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/20">
               <div className="text-sm text-red-400">Erros</div>
               <div className="text-2xl font-bold text-red-400">
-                {webhooks.filter((w) => w.processing_error).length}
+                {webhooks.filter((w) => w.error_message).length}
               </div>
             </div>
           </div>
@@ -225,10 +221,10 @@ export default function WebhookMonitorPage() {
                     </div>
 
                     {/* Error */}
-                    {webhook.processing_error && (
+                    {webhook.error_message && (
                       <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
                         <div className="text-sm text-red-400">
-                          ❌ Erro: {webhook.processing_error}
+                          ❌ Erro: {webhook.error_message}
                         </div>
                       </div>
                     )}
