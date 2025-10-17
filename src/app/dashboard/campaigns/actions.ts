@@ -18,11 +18,10 @@ export async function getCampaigns() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from('campaigns')
     .select('*')
-    .order('created_at', { ascending: false })
-    .returns<Campaign[]>()
+    .order('created_at', { ascending: false })) as { data: Campaign[] | null; error: any }
 
   if (error) throw error
   
@@ -50,13 +49,12 @@ export async function getCampaignMetrics(campaignId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from('campaign_metrics')
     .select('*')
     .eq('campaign_id', campaignId)
     .order('date', { ascending: false })
-    .limit(30)
-    .returns<CampaignMetric[]>()
+    .limit(30)) as { data: CampaignMetric[] | null; error: any }
 
   if (error) throw error
   
@@ -82,7 +80,7 @@ export async function createCampaign(campaignData: any) {
     .from('user_profiles')
     .select('id')
     .eq('id', user.id)
-    .single<{ id: string }>()
+    .single() as { data: { id: string } | null; error: any }
 
   const { data, error } = await supabase
     .from('campaigns')
@@ -97,7 +95,7 @@ export async function createCampaign(campaignData: any) {
       end_date: campaignData.end_date,
     })
     .select()
-    .single<Campaign>()
+    .single() as { data: Campaign | null; error: any }
 
   if (error) throw error
   

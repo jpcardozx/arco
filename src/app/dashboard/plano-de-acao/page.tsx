@@ -26,7 +26,7 @@ export default async function PlanoDeAcaoPage() {
         <CardContent>
           <div className="text-2xl font-bold">{playbooks.length}</div>
           <p className="text-xs text-muted-foreground">
-            {playbooks.filter(p => p.is_published).length} publicados
+            {playbooks.filter((p: any) => p.is_published).length} publicados
           </p>
         </CardContent>
       </Card>

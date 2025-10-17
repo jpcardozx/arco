@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       .from('discount_codes')
       .select('*')
       .eq('code', normalizedCode)
-      .single<DiscountCode>()
+      .single() as { data: DiscountCode | null; error: any }
 
     if (discountError || !discount) {
       return NextResponse.json(
@@ -281,7 +281,7 @@ export async function PUT(request: NextRequest) {
         created_by: user.id
       } as Database['public']['Tables']['discount_codes']['Insert'])
       .select()
-      .single<DiscountCode>()
+      .single() as { data: DiscountCode | null; error: any }
 
     if (error) {
       // Check for duplicate code

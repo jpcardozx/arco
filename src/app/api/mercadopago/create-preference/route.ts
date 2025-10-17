@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       `)
       .eq('id', validatedData.bookingId)
       .eq('user_id', user.id)
-      .single<BookingWithRelations>()
+      .single() as { data: BookingWithRelations | null; error: any }
 
     if (bookingError || !booking) {
       return NextResponse.json(

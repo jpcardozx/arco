@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       .select('*')
       .eq('id', validatedData.consultoriaTypeId)
       .eq('is_active', true)
-      .single<ConsultoriaType>()
+      .single() as { data: ConsultoriaType | null; error: any }
 
     if (consultoriaError || !consultoria) {
       return NextResponse.json(
@@ -100,9 +100,9 @@ export async function POST(request: NextRequest) {
         status: 'completed' as Database['public']['Enums']['qualification_status_enum']
       })
       .select()
-      .single<QualificationResponse>()
+      .single() as { data: QualificationResponse | null; error: any }
 
-    if (qualError) {
+    if (qualError || !qualificationResponse) {
       console.error('Error creating qualification response:', qualError)
       return NextResponse.json(
         { error: 'Failed to save qualification data' },
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
         .select('*')
         .eq('code', validatedData.discountCode.toUpperCase())
         .eq('is_active', true)
-        .single<DiscountCode>()
+        .single() as { data: DiscountCode | null; error: any }
 
       if (!discountError && discount) {
         // Validate discount
@@ -189,9 +189,9 @@ export async function POST(request: NextRequest) {
           slug
         )
       `)
-      .single<ConsultoriaBooking & { consultoria_types: ConsultoriaType }>()
+      .single() as { data: (ConsultoriaBooking & { consultoria_types: ConsultoriaType }) | null; error: any }
 
-    if (bookingError) {
+    if (bookingError || !booking) {
       console.error('Error creating booking:', bookingError)
       return NextResponse.json(
         { error: 'Failed to create booking' },

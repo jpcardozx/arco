@@ -162,4 +162,5 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export const runtime = 'edge';
+// Note: Removed edge runtime as Supabase client uses Node.js APIs not available in Edge Runtime
+// export const runtime = 'edge';
