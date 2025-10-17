@@ -3,7 +3,6 @@ import { PlaybooksList } from '@/components/dashboard/playbooks-list'
 import { EmptyState } from '@/components/dashboard/empty-states'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export const dynamic = 'force-dynamic'
 
 export default async function PlanoDeAcaoPage() {
   const playbooks = await getPlaybooks()

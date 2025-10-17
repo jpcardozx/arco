@@ -29,22 +29,34 @@ let browserClient: ReturnType<typeof createBrowserClient<Database>> | null = nul
  * const { data } = await supabase.from('webhook_events').select('*')
  */
 export function createSupabaseBrowserClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Durante o build, retorna um mock se as variáveis não estiverem disponíveis
+  if (!supabaseUrl || !supabaseKey) {
+    if (typeof window === 'undefined') {
+      // SSR/Build time: retorna um mock seguro
+      console.warn('[Supabase] Variáveis de ambiente não disponíveis durante o build. Usando mock.');
+      return createSupabaseClient<Database>(
+        'https://placeholder.supabase.co',
+        'placeholder-anon-key'
+      );
+    }
+    throw new Error(
+      'NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY devem estar definidas'
+    );
+  }
+
   if (typeof window === 'undefined') {
     // SSR fallback
-    return createSupabaseClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    );
+    return createSupabaseClient<Database>(supabaseUrl, supabaseKey);
   }
 
   if (browserClient) {
     return browserClient;
   }
 
-  browserClient = createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-  );
+  browserClient = createBrowserClient<Database>(supabaseUrl, supabaseKey);
 
   return browserClient;
 }

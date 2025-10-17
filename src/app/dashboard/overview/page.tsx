@@ -8,7 +8,6 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-export const dynamic = 'force-dynamic'
 
 const getScoreColor = (score: number) => {
   if (score >= 90) return 'text-green-600'

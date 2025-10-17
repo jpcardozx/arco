@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FolderKanban, MessageSquare, FileUp } from 'lucide-react'
 
-export const dynamic = 'force-dynamic'
 
 export default async function OperacoesPage() {
   const [user, projects, tickets, files] = await Promise.all([

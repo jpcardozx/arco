@@ -3,7 +3,6 @@ import { TierGate } from '@/components/dashboard/tier-gate'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Activity, Zap, Clock } from 'lucide-react'
 
-export const dynamic = 'force-dynamic'
 
 export default async function SaudePage() {
   const user = await getCurrentUser()
