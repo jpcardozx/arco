@@ -5,11 +5,32 @@
 
 import { Resend } from 'resend'
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY is required')
+// Helper to get Resend client (lazy initialization)
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  
+  if (!apiKey) {
+    console.warn('⚠️ RESEND_API_KEY not set - email features will be disabled');
+    return null;
+  }
+  
+  return new Resend(apiKey);
 }
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy initialized client
+let resendInstance: Resend | null = null;
+
+export const resend = new Proxy({} as Resend, {
+  get(target, prop) {
+    if (!resendInstance) {
+      resendInstance = getResendClient();
+    }
+    if (!resendInstance) {
+      throw new Error('Resend client not configured');
+    }
+    return (resendInstance as any)[prop];
+  }
+});
 
 // ============================================
 // EMAIL TEMPLATES

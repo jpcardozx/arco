@@ -14,8 +14,16 @@ import {
   internalErrorResponse
 } from '@/lib/api/api-response'
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Helper to get Resend client (lazy initialization)
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY not configured');
+  }
+  
+  return new Resend(apiKey);
+}
 
 const leadMagnetSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
@@ -26,6 +34,7 @@ const leadMagnetSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const resend = getResendClient();
     const body = await request.json()
 
     // Validate input
