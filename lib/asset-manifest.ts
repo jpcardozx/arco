@@ -6,10 +6,10 @@
 
 // ============= ÍCONES =============
 export const ICONS = {
+  // Core 4 Services
   hairSalon: {
     id: 'hair-salon',
-    src: '/landing/icons/hair-salon.png',
-    srcSvg: '/landing/icons/hair-salon.svg',
+    src: '/landing/icons/hair-salon.svg',
     label: 'Hair Salon',
     emoji: '✂️',
     color: 'cyan' as const,
@@ -17,8 +17,7 @@ export const ICONS = {
   },
   manicure: {
     id: 'manicure',
-    src: '/landing/icons/manicure.png',
-    srcSvg: '/landing/icons/manicure.svg',
+    src: '/landing/icons/manicure.svg',
     label: 'Manicure',
     emoji: '💅',
     color: 'pink' as const,
@@ -26,8 +25,7 @@ export const ICONS = {
   },
   nailCare: {
     id: 'nail-care',
-    src: '/landing/icons/nail-care.png',
-    srcSvg: '/landing/icons/nail-care.svg',
+    src: '/landing/icons/nail-care.svg',
     label: 'Nail Care',
     emoji: '✨',
     color: 'amber' as const,
@@ -35,12 +33,77 @@ export const ICONS = {
   },
   beautySpa: {
     id: 'beauty-spa',
-    src: '/landing/icons/beauty-spa.png',
-    srcSvg: '/landing/icons/beauty-spa.svg',
+    src: '/landing/icons/beauty-spa.svg',
     label: 'Beauty & Spa',
     emoji: '🧴',
     color: 'purple' as const,
     alt: 'Beauty and Spa Service Icon',
+  },
+
+  // Additional 8 Services
+  hairColor: {
+    id: 'hair-color',
+    src: '/landing/icons/hair-color.svg',
+    label: 'Hair Color',
+    emoji: '🎨',
+    color: 'pink' as const,
+    alt: 'Hair Color Service Icon',
+  },
+  spaTreatment: {
+    id: 'spa-treatment',
+    src: '/landing/icons/spa-treatment.svg',
+    label: 'Spa Treatment',
+    emoji: '🧖',
+    color: 'purple' as const,
+    alt: 'Spa Treatment Icon',
+  },
+  facialCare: {
+    id: 'facial-care',
+    src: '/landing/icons/facial-care.svg',
+    label: 'Facial Care',
+    emoji: '💆',
+    color: 'rose' as const,
+    alt: 'Facial Care Icon',
+  },
+  waxing: {
+    id: 'waxing',
+    src: '/landing/icons/waxing.svg',
+    label: 'Waxing',
+    emoji: '✨',
+    color: 'orange' as const,
+    alt: 'Waxing Service Icon',
+  },
+  massage: {
+    id: 'massage',
+    src: '/landing/icons/massage.svg',
+    label: 'Massage',
+    emoji: '💆‍♀️',
+    color: 'cyan' as const,
+    alt: 'Massage Service Icon',
+  },
+  eyelashExtension: {
+    id: 'eyelash-extension',
+    src: '/landing/icons/eyelash-extension.svg',
+    label: 'Eyelash Extension',
+    emoji: '👁️',
+    color: 'amber' as const,
+    alt: 'Eyelash Extension Icon',
+  },
+  makeupArtist: {
+    id: 'makeup-artist',
+    src: '/landing/icons/makeup-artist.svg',
+    label: 'Makeup Artist',
+    emoji: '💄',
+    color: 'pink' as const,
+    alt: 'Makeup Artist Icon',
+  },
+  hairExtension: {
+    id: 'hair-extension',
+    src: '/landing/icons/hair-extension.svg',
+    label: 'Hair Extension',
+    emoji: '💇',
+    color: 'purple' as const,
+    alt: 'Hair Extension Icon',
   },
 } as const
 
@@ -73,7 +136,7 @@ export const IMAGES = {
     },
   },
 
-  // Imagens otimizadas para hero/testimonials/team (a adicionar)
+  // Imagens otimizadas para hero/testimonials/team/products
   optimized: {
     heroSalon: {
       id: 'hero-salon',
@@ -107,6 +170,28 @@ export const IMAGES = {
       section: 'team',
       emoji: '👥',
       description: 'Professional beauty team in salon environment',
+    },
+    beautyProducts: {
+      id: 'beauty-products',
+      srcWebp: '/landing/images/beauty-products.webp',
+      srcJpg: '/landing/images/beauty-products.jpg',
+      alt: 'Premium Beauty Products',
+      width: 2560,
+      height: 1700,
+      section: 'products',
+      emoji: '🧴',
+      description: 'Luxury beauty and wellness products showcase',
+    },
+    spaBackground: {
+      id: 'spa-background',
+      srcWebp: '/landing/images/spa-background.webp',
+      srcJpg: '/landing/images/spa-background.jpg',
+      alt: 'Spa and Wellness Background',
+      width: 2560,
+      height: 1700,
+      section: 'background',
+      emoji: '✨',
+      description: 'Elegant spa and wellness environment',
     },
   },
 } as const
