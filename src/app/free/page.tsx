@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function FreePage() {
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       {/* Hero Section - Above the fold (FunnelProgress removido - composição limpa) */}
       <LeadMagnetHero />
 

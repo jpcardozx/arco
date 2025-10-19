@@ -111,7 +111,7 @@ export default function HeroThreeScene() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full min-h-screen flex items-center overflow-hidden bg-slate-950">
+    <section ref={sectionRef} className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 pt-0">
       {/* Efeito de spotlight do mouse */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
@@ -135,32 +135,31 @@ export default function HeroThreeScene() {
       </div>
 
       {/* Conteúdo sobreposto */}
-      <motion.div 
-        style={{ y, opacity }}
-        className="relative z-10 w-full flex items-center justify-center py-20 sm:py-24 lg:py-0"
+      <motion.div
+        style={{ opacity }}
+        className="relative z-10 w-full flex items-center justify-center"
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-            className="space-y-6 sm:space-y-8"
+            className="space-y-4 sm:space-y-6 lg:space-y-8"
           >
             {/* Title factual */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight leading-[1.1]">
-              Arquitetura e performance<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>para produtos escaláveis
+              Desenvolvimento Web com ênfase em UI/UX e gestão de mídia para consolidação e expansão de PMEs no digital
             </h1>
 
             {/* Subtitle específico */}
-            <p className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-3xl leading-relaxed">
-              Especializado em <span className="text-teal-400 font-medium">otimização de Core Web Vitals</span>, 
+            <p className="text-sm sm:text-base lg:text-md text-slate-400 max-w-3xl leading-relaxed">
+              Experiência em <span className="text-teal-300 font-medium">otimização de Core Web Vitals</span>, 
               migração de monolitos para microserviços, e implementação de design systems escaláveis. 
               Stack: <span className="text-white font-medium">Next.js 15, React 19, TypeScript, .NET Core, PostgreSQL</span>.
             </p>
 
             {/* Stack técnica com ícones open source */}
-            <div className="flex flex-wrap gap-2 pt-4 sm:pt-6 max-w-4xl">
+            <div className="flex flex-wrap gap-2 pt-2 sm:pt-4 lg:pt-6 max-w-4xl">
               {[
                 { name: 'Next.js', Icon: SiNextdotjs, color: 'text-white', bg: 'rgba(0,0,0,0.6)' },
                 { name: 'React', Icon: SiReact, color: 'text-cyan-400', bg: 'rgba(6,182,212,0.1)' },

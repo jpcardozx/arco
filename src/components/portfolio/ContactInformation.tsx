@@ -56,7 +56,7 @@ const socialMethods: ContactMethod[] = [
 
 export default function ContactInformation() {
   return (
-    <section className="relative py-24 sm:py-32 lg:py-40 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(20,184,166,0.1)_0%,transparent_50%)]" />
       

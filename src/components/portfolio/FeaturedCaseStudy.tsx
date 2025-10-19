@@ -18,7 +18,7 @@ export default function FeaturedCaseStudy() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <section className="relative py-32 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-950 to-slate-950" />
 
@@ -71,12 +71,12 @@ export default function FeaturedCaseStudy() {
               <div className="flex items-start justify-between gap-6">
                 <div className="flex items-start gap-6 flex-1">
                   {/* Logo */}
-                  <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg p-2">
+                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg p-2">
                     <Image
                       src="/ipeLogo.png"
                       alt="Imobiliária Ipê"
-                      width={64}
-                      height={64}
+                      width={48}
+                      height={48}
                       className="object-contain"
                     />
                   </div>

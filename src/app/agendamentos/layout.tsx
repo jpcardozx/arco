@@ -16,9 +16,7 @@ export default function AgendamentosLayout({
 }) {
   return (
     <MainLayout
-      showHeader={true}
       showFooter={true}
-      headerVariant="solid"
       footerVariant="default"
     >
       {children}

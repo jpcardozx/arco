@@ -109,7 +109,7 @@ const milestones = [
 
 export default function OngoingEducation() {
   return (
-    <section className="relative py-24 sm:py-32 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Three.js Background */}
       <div className="absolute inset-0 opacity-30">
         <Canvas

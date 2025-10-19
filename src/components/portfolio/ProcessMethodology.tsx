@@ -328,13 +328,13 @@ function ProcessStepCard({ step, index }: { step: ProcessStep; index: number }) 
 
 export default function ProcessMethodology() {
   return (
-    <section className="relative py-32 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Three.js Background */}
       <div className="absolute inset-0 opacity-20">
         <Canvas
-          camera={{ position: [0, 0, 6], fov: 50 }}
-          gl={{ antialias: true, alpha: true }}
-          dpr={[1, 2]}
+          camera={{ position: [0, 0, 8], fov: 75 }}
+          gl={{ antialias: false, alpha: true }}
+          dpr={[1, 1.5]}
         >
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={0.8} color="#14b8a6" />

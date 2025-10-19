@@ -104,7 +104,7 @@ const FloatingChat = () => {
       className="fixed bottom-6 right-6 z-50 group"
       aria-label="Chat 24h"
     >
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-teal-500 to-teal-600 shadow-2xl transition-shadow hover:shadow-teal-500/50">
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-pink-600 shadow-2xl transition-shadow hover:shadow-rose-500/50">
         <MessageCircle className="h-7 w-7 text-white" />
 
         {isOnline && (
@@ -151,23 +151,18 @@ const StatCard = ({ value, label, icon: Icon, color, delay = 0 }: {
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className="group relative"
     >
-      <Card className="relative overflow-hidden border-white/10 bg-white/5 backdrop-blur-xl transition-all hover:border-white/20 hover:bg-white/10">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <motion.div
-              whileHover={{ rotate: 360, scale: 1.1 }}
-              transition={{ duration: 0.6 }}
-              className={cn("rounded-2xl p-3", color)}
-            >
-              <Icon className="h-6 w-6 text-white" />
-            </motion.div>
+      <Card className="relative overflow-hidden border-white/10 bg-white/5 backdrop-blur-sm">
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3">
+            <div className={cn("rounded-lg p-2", color)}>
+              <Icon className="h-4 w-4 text-white" />
+            </div>
             <div className="flex-1">
-              <div className="text-3xl font-black text-white">{value}</div>
-              <div className="text-sm text-white/70">{label}</div>
+              <div className="text-lg font-bold text-white">{value}</div>
+              <div className="text-xs text-white/60">{label}</div>
             </div>
           </div>
         </CardContent>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       </Card>
     </motion.div>
   );
@@ -194,19 +189,15 @@ const ContactMethod = ({ icon: Icon, title, value, description, delay = 0 }: {
       whileHover={{ x: 8 }}
       className="group cursor-pointer"
     >
-      <Card className="relative overflow-hidden border-white/10 bg-white/5 backdrop-blur-xl transition-all hover:border-white/20 hover:bg-white/10 hover:shadow-xl">
-        <CardContent className="p-5">
-          <div className="flex items-start gap-4">
-            <motion.div
-              animate={{ rotate: isHovered ? 360 : 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex-shrink-0 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 p-3"
-            >
-              <Icon className="h-5 w-5 text-white" />
-            </motion.div>
-            <div className="flex-1 space-y-1">
-              <h4 className="text-sm font-bold text-white">{title}</h4>
-              <p className="text-sm font-medium text-white/90">{value}</p>
+      <Card className="border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 p-2">
+              <Icon className="h-4 w-4 text-white" />
+            </div>
+            <div className="flex-1 space-y-0.5">
+              <h4 className="text-sm font-semibold text-white">{title}</h4>
+              <p className="text-sm text-white/90">{value}</p>
               <p className="text-xs text-white/60">{description}</p>
             </div>
           </div>
@@ -240,35 +231,36 @@ export function ModernContactSection() {
   const contactMethods = useMemo(() => [
     {
       icon: Mail,
-      title: 'Email Executivo',
+      title: 'Email',
       value: 'contato@arco.digital',
-      description: 'Resposta garantida em 2h úteis',
+      description: 'Respondemos em horário comercial',
     },
     {
       icon: Phone,
-      title: 'WhatsApp Business',
-      value: '+55 (11) 99999-9999',
-      description: 'Canal direto com especialistas',
+      title: 'WhatsApp',
+      value: '+55 (21) 96727-7533',
+      description: 'Envie uma mensagem',
     },
     {
       icon: MessageCircle,
-      title: 'Suporte Inteligente',
-      value: 'Assistente Online',
-      description: 'Disponível 24 horas por dia',
+      title: 'Chat',
+      value: 'Online',
+      description: 'Disponível no site',
     },
     {
       icon: MapPin,
-      title: 'Sede Operacional',
-      value: 'São Paulo, SP',
-      description: 'Atuação em todo Brasil',
+      title: 'Localização',
+      value: 'Rio de Janeiro, RJ',
+      description: 'Atendimento remoto',
     },
   ], []);
 
+  // Stats - sem promessas exageradas
   const stats = useMemo(() => [
-    { value: '350%', label: 'Aumento em conversões', icon: TrendingUp, color: 'bg-gradient-to-br from-teal-500 to-teal-600', delay: 0.1 },
-    { value: '48h', label: 'Para começar', icon: Zap, color: 'bg-gradient-to-br from-green-500 to-green-600', delay: 0.2 },
-    { value: '200+', label: 'Empresas ativas', icon: Building2, color: 'bg-gradient-to-br from-purple-500 to-purple-600', delay: 0.3 },
-    { value: '4.2x', label: 'Retorno médio', icon: DollarSign, color: 'bg-gradient-to-br from-orange-500 to-orange-600', delay: 0.4 },
+    { value: '2-3d', label: 'Prazo de resposta inicial', icon: Zap, color: 'bg-gradient-to-br from-cyan-500 to-blue-600', delay: 0.1 },
+    { value: 'Full-stack', label: 'React, Next.js, PostgreSQL', icon: Building2, color: 'bg-gradient-to-br from-purple-500 to-purple-600', delay: 0.2 },
+    { value: 'Tráfego', label: 'Google Ads, Meta Ads', icon: TrendingUp, color: 'bg-gradient-to-br from-fuchsia-500 to-pink-600', delay: 0.3 },
+    { value: 'Performance', label: 'Core Web Vitals, Analytics', icon: MessageCircle, color: 'bg-gradient-to-br from-violet-500 to-purple-600', delay: 0.4 },
   ], []);
 
   const onSubmit = useCallback(async (data: ContactFormData) => {
@@ -307,7 +299,7 @@ export function ModernContactSection() {
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute left-[10%] top-[20%] h-[600px] w-[600px] rounded-full bg-teal-500/20 blur-3xl"
+          className="absolute left-[10%] top-[20%] h-[600px] w-[600px] rounded-full bg-rose-500/20 blur-3xl"
         />
         <motion.div
           animate={{ scale: [1.2, 1, 1.2], opacity: [0.12, 0.22, 0.12] }}
@@ -316,7 +308,7 @@ export function ModernContactSection() {
         />
         <motion.div
           style={{ x: mousePosition.x * 2, y: mousePosition.y * 2 }}
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-500/10 blur-3xl"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-pink-500/10 blur-3xl"
         />
         <div
           className="absolute inset-0 opacity-[0.03]"
@@ -345,18 +337,14 @@ export function ModernContactSection() {
             transition={{ duration: 0.8 }}
             className="mx-auto max-w-3xl space-y-6 text-center"
           >
-            <Badge className="border-transparent bg-gradient-to-r from-teal-500/20 to-orange-500/20 px-4 py-2 text-white backdrop-blur-sm">
-              <Sparkles className="mr-2 h-4 w-4" />
-              Fale com Especialistas
+            <Badge className="border-transparent bg-gradient-to-r from-rose-500/20 to-orange-500/20 px-3 py-1.5 text-sm text-white backdrop-blur-sm">
+              Desenvolvimento + Tráfego
             </Badge>
-            <h1 className="text-5xl font-bold leading-tight text-white lg:text-6xl">
-              Transforme leads em{' '}
-              <span className="bg-gradient-to-r from-teal-400 via-teal-300 to-orange-400 bg-clip-text text-transparent">
-                clientes reais
-              </span>
+            <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
+              Entre em contato
             </h1>
-            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/80">
-              Agende uma consultoria estratégica gratuita e receba um diagnóstico personalizado do potencial de crescimento do seu negócio
+            <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/80">
+              Desenvolvimento de aplicações web e gestão de campanhas de tráfego pago. Preencha o formulário ou use um dos canais ao lado.
             </p>
           </motion.div>
 
@@ -396,8 +384,8 @@ export function ModernContactSection() {
               <Card className="overflow-hidden border-white/10 bg-white/5 shadow-2xl backdrop-blur-2xl">
                 <CardContent className="p-8">
                   <div className="mb-6 space-y-2">
-                    <h2 className="text-2xl font-bold text-white">Diagnóstico Estratégico</h2>
-                    <p className="text-sm text-white/70">Receba uma análise detalhada do potencial do seu negócio</p>
+                    <h2 className="text-xl font-bold text-white">Formulário de contato</h2>
+                    <p className="text-sm text-white/70">Preencha os campos abaixo e retornaremos em breve</p>
                   </div>
 
                   <Form {...form}>
@@ -433,8 +421,8 @@ export function ModernContactSection() {
                                     onBlur={handleBlur}
                                     className={cn(
                                       "h-11 border-white/10 bg-white/5 pl-10 text-white placeholder:text-white/40 backdrop-blur-sm transition-all",
-                                      "focus:border-teal-400/50 focus:bg-white/10 focus:ring-2 focus:ring-teal-400/20",
-                                      focusedField === 'name' && "shadow-lg shadow-teal-500/10"
+                                      "focus:border-rose-400/50 focus:bg-white/10 focus:ring-2 focus:ring-rose-400/20",
+                                      focusedField === 'name' && "shadow-lg shadow-rose-500/10"
                                     )}
                                   />
                                 </div>
@@ -461,8 +449,8 @@ export function ModernContactSection() {
                                     onBlur={handleBlur}
                                     className={cn(
                                       "h-11 border-white/10 bg-white/5 pl-10 text-white placeholder:text-white/40 backdrop-blur-sm transition-all",
-                                      "focus:border-teal-400/50 focus:bg-white/10 focus:ring-2 focus:ring-teal-400/20",
-                                      focusedField === 'email' && "shadow-lg shadow-teal-500/10"
+                                      "focus:border-rose-400/50 focus:bg-white/10 focus:ring-2 focus:ring-rose-400/20",
+                                      focusedField === 'email' && "shadow-lg shadow-rose-500/10"
                                     )}
                                   />
                                 </div>
@@ -490,8 +478,8 @@ export function ModernContactSection() {
                                     onBlur={handleBlur}
                                     className={cn(
                                       "h-11 border-white/10 bg-white/5 pl-10 text-white placeholder:text-white/40 backdrop-blur-sm transition-all",
-                                      "focus:border-teal-400/50 focus:bg-white/10 focus:ring-2 focus:ring-teal-400/20",
-                                      focusedField === 'phone' && "shadow-lg shadow-teal-500/10"
+                                      "focus:border-rose-400/50 focus:bg-white/10 focus:ring-2 focus:ring-rose-400/20",
+                                      focusedField === 'phone' && "shadow-lg shadow-rose-500/10"
                                     )}
                                   />
                                 </div>
@@ -517,8 +505,8 @@ export function ModernContactSection() {
                                     onBlur={handleBlur}
                                     className={cn(
                                       "h-11 border-white/10 bg-white/5 pl-10 text-white placeholder:text-white/40 backdrop-blur-sm transition-all",
-                                      "focus:border-teal-400/50 focus:bg-white/10 focus:ring-2 focus:ring-teal-400/20",
-                                      focusedField === 'company' && "shadow-lg shadow-teal-500/10"
+                                      "focus:border-rose-400/50 focus:bg-white/10 focus:ring-2 focus:ring-rose-400/20",
+                                      focusedField === 'company' && "shadow-lg shadow-rose-500/10"
                                     )}
                                   />
                                 </div>
@@ -538,7 +526,7 @@ export function ModernContactSection() {
                               <FormLabel className="text-xs font-medium text-white/90">Segmento *</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                  <SelectTrigger className="h-11 border-white/10 bg-white/5 text-white backdrop-blur-sm focus:border-teal-400/50 focus:ring-2 focus:ring-teal-400/20">
+                                  <SelectTrigger className="h-11 border-white/10 bg-white/5 text-white backdrop-blur-sm focus:border-rose-400/50 focus:ring-2 focus:ring-rose-400/20">
                                     <SelectValue placeholder="Selecione" />
                                   </SelectTrigger>
                                 </FormControl>
@@ -563,7 +551,7 @@ export function ModernContactSection() {
                               <FormLabel className="text-xs font-medium text-white/90">Orçamento mensal</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                  <SelectTrigger className="h-11 border-white/10 bg-white/5 text-white backdrop-blur-sm focus:border-teal-400/50 focus:ring-2 focus:ring-teal-400/20">
+                                  <SelectTrigger className="h-11 border-white/10 bg-white/5 text-white backdrop-blur-sm focus:border-rose-400/50 focus:ring-2 focus:ring-rose-400/20">
                                     <SelectValue placeholder="Selecione" />
                                   </SelectTrigger>
                                 </FormControl>
@@ -598,8 +586,8 @@ export function ModernContactSection() {
                                   onBlur={handleBlur}
                                   className={cn(
                                     "resize-none border-white/10 bg-white/5 pl-10 pt-3 text-white placeholder:text-white/40 backdrop-blur-sm transition-all",
-                                    "focus:border-teal-400/50 focus:bg-white/10 focus:ring-2 focus:ring-teal-400/20",
-                                    focusedField === 'message' && "shadow-lg shadow-teal-500/10"
+                                    "focus:border-rose-400/50 focus:bg-white/10 focus:ring-2 focus:ring-rose-400/20",
+                                    focusedField === 'message' && "shadow-lg shadow-rose-500/10"
                                   )}
                                 />
                               </div>
@@ -614,17 +602,17 @@ export function ModernContactSection() {
                           type="submit"
                           size="lg"
                           disabled={form.formState.isSubmitting}
-                          className="group relative h-12 w-full overflow-hidden bg-gradient-to-r from-teal-500 to-teal-600 text-sm font-bold text-white shadow-xl transition-all hover:shadow-2xl hover:shadow-teal-500/50 disabled:opacity-50"
+                          className="group relative h-12 w-full overflow-hidden bg-gradient-to-r from-rose-500 to-pink-600 text-sm font-bold text-white shadow-xl transition-all hover:shadow-2xl hover:shadow-rose-500/50 disabled:opacity-50"
                         >
                           {form.formState.isSubmitting ? (
                             <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Processando...
+                              Enviando...
                             </>
                           ) : (
                             <>
-                              Solicitar diagnóstico gratuito
-                              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                              Enviar mensagem
+                              <Send className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </>
                           )}
                           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />

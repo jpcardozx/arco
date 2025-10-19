@@ -17,7 +17,6 @@ export { EnhancedROICalculator } from './EnhancedROICalculator';
 export { AboutSection } from './AboutSection';
 export { MethodologySection } from './MethodologySection';
 export { FeaturesSection } from './FeaturesSection';
-export { FooterSection } from './FooterSection';
 
 // === FIGMA SECTIONS (STRONGER VERSIONS) ===
 export { FigmaHero, FigmaPillars, FigmaVelocity, FigmaTestimonials, FigmaResources, FigmaFinalCTA, SectionDivider } from './figma';

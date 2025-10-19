@@ -157,7 +157,7 @@ export default function TechnicalStack() {
   const [openCategory, setOpenCategory] = useState<string | null>('frontend');
 
   return (
-    <section className="relative py-24 sm:py-32 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(20,184,166,0.08)_0%,transparent_50%)]" />
       

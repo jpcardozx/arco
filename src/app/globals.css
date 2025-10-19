@@ -51,22 +51,75 @@
   --arco-warning: #f59e0b;
   --arco-error: #ef4444;
   --arco-info: #3b82f6;
+}
 
+/* ========================================
+   LIGHT THEME (DEFAULT)
+   ======================================== */
+:root,
+[data-theme="light"] {
+  /* Background System */
+  --bg-primary: #ffffff;
+  --bg-secondary: var(--arco-slate-50);
+  --bg-tertiary: var(--arco-slate-100);
+  --bg-elevated: #ffffff;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+  
+  /* Text System - WCAG AAA */
+  --text-primary: var(--arco-slate-900);
+  --text-secondary: var(--arco-slate-600);
+  --text-tertiary: var(--arco-slate-500);
+  --text-disabled: var(--arco-slate-400);
+  --text-inverse: #ffffff;
+
+  /* Border System */
+  --border-subtle: var(--arco-slate-200);
+  --border-default: var(--arco-slate-300);
+  --border-strong: var(--arco-slate-400);
+  
+  /* Interactive States */
+  --surface-hover: var(--arco-slate-100);
+  --surface-active: var(--arco-slate-200);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* ========================================
+   DARK THEME
+   ======================================== */
+[data-theme="dark"] {
   /* Background System */
   --bg-primary: var(--arco-slate-950);
   --bg-secondary: var(--arco-slate-900);
   --bg-tertiary: var(--arco-slate-800);
+  --bg-elevated: var(--arco-slate-900);
+  --bg-overlay: rgba(0, 0, 0, 0.7);
   
   /* Text System - WCAG AAA */
-  --text-primary: #ffffff;      /* Contrast 21:1 */
-  --text-secondary: var(--arco-slate-300);  /* Contrast 7.1:1 */
-  --text-tertiary: var(--arco-slate-400);   /* Contrast 4.6:1 */
+  --text-primary: #ffffff;
+  --text-secondary: var(--arco-slate-300);
+  --text-tertiary: var(--arco-slate-400);
   --text-disabled: var(--arco-slate-500);
+  --text-inverse: var(--arco-slate-900);
 
   /* Border System */
-  --border-subtle: rgba(203, 213, 225, 0.1);
-  --border-default: rgba(203, 213, 225, 0.2);
-  --border-strong: rgba(203, 213, 225, 0.3);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  
+  /* Interactive States */
+  --surface-hover: rgba(255, 255, 255, 0.05);
+  --surface-active: rgba(255, 255, 255, 0.1);
+  
+  /* Shadows - Elevated for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
 }
 
 /* ========================================
@@ -76,6 +129,17 @@
 html {
   scroll-behavior: smooth;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* Smooth theme transitions */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 body {
@@ -330,6 +394,20 @@ body {
   50% {
     box-shadow: 0 0 40px theme('colors.blue.600 / 0.6');
   }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient 4s ease infinite;
 }
 
 /* ========================================

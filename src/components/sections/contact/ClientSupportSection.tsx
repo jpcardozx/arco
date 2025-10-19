@@ -28,91 +28,91 @@ export function ClientSupportSection() {
   const [hoveredChannel, setHoveredChannel] = useState<number | null>(null);
   const [selectedChannel, setSelectedChannel] = useState<number | null>(null);
 
-  // Communication channels - institutional tone
+  // Communication channels - sem prepotências
   const communicationChannels = useMemo(() => [
     {
       icon: Phone,
-      title: 'Consultoria Telefônica',
-      subtitle: 'Ligação estratégica de 30 min',
-      description: 'Conversa aprofundada sobre seu cenário atual, metas de crescimento e potencial de resultados. Análise personalizada do seu mercado e concorrência.',
-      features: ['Diagnóstico imediato', 'Análise de viabilidade', 'Plano de ação inicial'],
-      action: 'Agendar ligação',
-      color: 'from-teal-500 to-teal-600',
-      iconColor: 'text-teal-600',
-      bgGlow: 'bg-teal-50',
-      borderColor: 'border-teal-200',
+      title: 'Telefone',
+      subtitle: 'Ligação direta',
+      description: 'Entre em contato por telefone para tirar dúvidas sobre projetos, prazos e orçamentos.',
+      features: ['Horário comercial', 'Sem agendamento', 'Retorno no mesmo dia'],
+      action: 'Ligar',
+      color: 'from-rose-500 to-rose-600',
+      iconColor: 'text-rose-600',
+      bgGlow: 'bg-rose-50',
+      borderColor: 'border-rose-200',
       availability: 'Segunda a Sexta, 9h às 18h',
-      responseTime: 'Agendamento em 2h'
-    },
-    {
-      icon: Video,
-      title: 'Sessão de Diagnóstico',
-      subtitle: 'Videochamada de 45 minutos',
-      description: 'Análise em tempo real das suas métricas e operação atual. Compartilhamento de tela para identificar oportunidades imediatas e gaps críticos que estão limitando seu crescimento.',
-      features: ['Análise ao vivo', 'Gravação da sessão', 'Relatório detalhado'],
-      action: 'Agendar sessão',
-      color: 'from-purple-500 to-purple-600',
-      iconColor: 'text-purple-600',
-      bgGlow: 'bg-purple-50',
-      borderColor: 'border-purple-200',
-      availability: 'Google Meet ou Zoom',
-      responseTime: 'Disponível em 4h'
+      responseTime: 'Retorno em 1 dia útil'
     },
     {
       icon: MessageCircle,
-      title: 'WhatsApp Executivo',
-      subtitle: 'Atendimento personalizado',
-      description: 'Canal direto com especialista dedicado para dúvidas urgentes, esclarecimentos técnicos ou solicitação de proposta comercial. Atendimento 100% humano, sem bots.',
-      features: ['Resposta em 2h úteis', 'Atendimento humano', 'Acompanhamento contínuo'],
-      action: 'Iniciar conversa',
-      color: 'from-green-500 to-green-600',
-      iconColor: 'text-green-600',
-      bgGlow: 'bg-green-50',
-      borderColor: 'border-green-200',
-      availability: 'Seg-Sex: 8h-19h | Sáb: 9h-13h',
-      responseTime: 'Resposta em até 2h'
+      title: 'WhatsApp',
+      subtitle: 'Mensagem direta',
+      description: 'Envie uma mensagem para tirar dúvidas rápidas ou solicitar informações sobre serviços.',
+      features: ['Sem bots', 'Horário comercial', 'Respostas diretas'],
+      action: 'Enviar mensagem',
+      color: 'from-pink-500 to-pink-600',
+      iconColor: 'text-pink-600',
+      bgGlow: 'bg-pink-50',
+      borderColor: 'border-pink-200',
+      availability: 'Seg-Sex: 9h-18h',
+      responseTime: 'Retorno em 1 dia útil'
     },
     {
       icon: Mail,
-      title: 'Proposta Personalizada',
-      subtitle: 'Por e-mail corporativo',
-      description: 'Envie informações detalhadas sobre seu negócio, objetivos e contexto de mercado. Nossa equipe fará uma análise aprofundada e retornará com uma proposta sob medida.',
-      features: ['Análise completa', 'Proposta customizada', 'SLA de resposta'],
-      action: 'Solicitar proposta',
-      color: 'from-blue-500 to-blue-600',
-      iconColor: 'text-blue-600',
-      bgGlow: 'bg-blue-50',
-      borderColor: 'border-blue-200',
-      availability: 'Resposta em até 6h úteis',
-      responseTime: 'Proposta em 24h'
+      title: 'Email',
+      subtitle: 'Contato formal',
+      description: 'Envie detalhes do seu projeto por email. Útil para anexar documentos ou informações extensas.',
+      features: ['Formal', 'Anexos permitidos', 'Histórico por escrito'],
+      action: 'Enviar email',
+      color: 'from-orange-500 to-orange-600',
+      iconColor: 'text-orange-600',
+      bgGlow: 'bg-orange-50',
+      borderColor: 'border-orange-200',
+      availability: 'Respondemos em até 2 dias úteis',
+      responseTime: 'Até 2 dias úteis'
+    },
+    {
+      icon: Video,
+      title: 'Videochamada',
+      subtitle: 'Reunião online',
+      description: 'Agende uma videochamada para discutir projetos com mais detalhes ou fazer demonstrações.',
+      features: ['Google Meet', 'Agendamento prévio', '30-45 minutos'],
+      action: 'Agendar reunião',
+      color: 'from-amber-500 to-amber-600',
+      iconColor: 'text-amber-600',
+      bgGlow: 'bg-amber-50',
+      borderColor: 'border-amber-200',
+      availability: 'Segunda a Sexta, horário a combinar',
+      responseTime: 'Agendamento em 2 dias úteis'
     }
   ], []);
 
-  // Service guarantees - institutional
+  // Service info - neutral
   const serviceCommitments = useMemo(() => [
     {
       icon: Clock,
-      metric: '< 2h',
-      label: 'Tempo de resposta',
-      detail: 'Garantido em horário comercial'
+      metric: '1-2d',
+      label: 'Prazo de resposta',
+      detail: 'Em horário comercial'
     },
     {
       icon: Shield,
-      metric: '100%',
-      label: 'Confidencialidade',
-      detail: 'LGPD e NDA disponível'
+      metric: 'LGPD',
+      label: 'Privacidade',
+      detail: 'NDA disponível se necessário'
     },
     {
       icon: CheckCircle2,
-      metric: 'R$ 0',
-      label: 'Diagnóstico inicial',
-      detail: 'Sem custos ou compromisso'
+      metric: 'Gratuito',
+      label: 'Primeira conversa',
+      detail: 'Sem compromisso'
     },
     {
       icon: Calendar,
-      metric: '24-48h',
-      label: 'Entrega de proposta',
-      detail: 'Após primeira reunião'
+      metric: '2-3d',
+      label: 'Proposta',
+      detail: 'Após alinhamento inicial'
     }
   ], []);
 
@@ -134,19 +134,18 @@ export function ClientSupportSection() {
           className="mx-auto mb-20 max-w-3xl text-center"
         >
           <Badge className="mb-6 border-slate-300 bg-white px-4 py-2 text-slate-700 shadow-sm">
-            Canais de Atendimento
+            Formas de contato
           </Badge>
 
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 lg:text-5xl">
-            Como deseja{' '}
-            <span className="bg-gradient-to-r from-teal-600 to-teal-700 bg-clip-text text-transparent">
-              iniciar o contato
+            Escolha o{' '}
+            <span className="bg-gradient-to-r from-rose-600 to-pink-700 bg-clip-text text-transparent">
+              canal de contato
             </span>
           </h2>
 
           <p className="text-xl leading-relaxed text-slate-600">
-            Oferecemos diferentes formatos de atendimento para melhor se adequar à sua rotina e preferências.
-            Todos incluem diagnóstico inicial sem compromisso.
+            Você pode entrar em contato por telefone, WhatsApp, email ou videochamada.
           </p>
         </motion.div>
 
@@ -290,7 +289,7 @@ export function ClientSupportSection() {
         >
           <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 shadow-sm">
             <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-sm text-slate-600 font-semibold">Chat direto em tempo real - Em implementação</span>
+            <span className="text-sm text-slate-600 font-semibold">Chat ao vivo - Em breve</span>
           </div>
         </motion.div>
 
@@ -301,13 +300,13 @@ export function ClientSupportSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="overflow-hidden border-2 border-slate-200 bg-white shadow-xl">
-            <CardContent className="p-10">
-              <h3 className="mb-8 text-center text-2xl font-bold text-slate-900">
-                Compromissos de Atendimento
+          <Card className="overflow-hidden border-2 border-slate-200 bg-white shadow-lg">
+            <CardContent className="p-6">
+              <h3 className="mb-6 text-center text-xl font-bold text-slate-900">
+                Informações do atendimento
               </h3>
 
-              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {serviceCommitments.map((commitment, index) => {
                   const Icon = commitment.icon;
 
@@ -320,15 +319,15 @@ export function ClientSupportSection() {
                       transition={{ delay: index * 0.1 }}
                       className="text-center"
                     >
-                      <div className="mb-4 flex justify-center">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 shadow-lg">
-                          <Icon className="h-7 w-7 text-white" />
+                      <div className="mb-3 flex justify-center">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-rose-600 shadow-md">
+                          <Icon className="h-5 w-5 text-white" />
                         </div>
                       </div>
-                      <div className="mb-2 text-3xl font-black text-teal-600">
+                      <div className="mb-2 text-xl font-bold text-rose-600">
                         {commitment.metric}
                       </div>
-                      <div className="mb-1 text-sm font-bold text-slate-900">
+                      <div className="mb-1 text-sm font-semibold text-slate-900">
                         {commitment.label}
                       </div>
                       <div className="text-xs text-slate-500">

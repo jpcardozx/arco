@@ -116,7 +116,7 @@ const colorClasses = {
 
 export default function AvailabilityRates() {
   return (
-    <section className="relative py-24 sm:py-32 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(249,115,22,0.08)_0%,transparent_50%)]" />
       

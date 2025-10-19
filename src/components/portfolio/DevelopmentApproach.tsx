@@ -214,7 +214,7 @@ export default function DevelopmentApproach() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 sm:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
+      className="relative py-20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
     >
       {/* Code Matrix Three.js Background */}
       <div className="absolute inset-0 opacity-30">

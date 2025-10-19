@@ -7,10 +7,30 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -96,6 +116,8 @@ export type Database = {
         Row: {
           arco_index: number | null
           created_at: string
+          deleted_at: string | null
+          deleted_by: string | null
           error_message: string | null
           id: string
           status: string
@@ -105,6 +127,8 @@ export type Database = {
         Insert: {
           arco_index?: number | null
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           error_message?: string | null
           id?: string
           status?: string
@@ -114,6 +138,8 @@ export type Database = {
         Update: {
           arco_index?: number | null
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           error_message?: string | null
           id?: string
           status?: string
@@ -255,6 +281,13 @@ export type Database = {
             foreignKeyName: "analytics_data_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analytics_data_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -262,7 +295,7 @@ export type Database = {
       }
       analytics_events: {
         Row: {
-          created_at: string | null
+          created_at: string
           event_data: Json | null
           event_type: string
           id: string
@@ -274,7 +307,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           event_data?: Json | null
           event_type: string
           id?: string
@@ -286,7 +319,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           event_data?: Json | null
           event_type?: string
           id?: string
@@ -513,6 +546,20 @@ export type Database = {
             foreignKeyName: "campaign_metrics_campaign_id_fkey"
             columns: ["campaign_id"]
             isOneToOne: false
+            referencedRelation: "active_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_metrics_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "campaign_metrics_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
             referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
@@ -532,57 +579,277 @@ export type Database = {
           },
         ]
       }
+      campaign_views: {
+        Row: {
+          browser: string | null
+          campaign_id: string
+          campaign_slug: string
+          city: string | null
+          converted: boolean | null
+          country_code: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          ip_address: unknown | null
+          lead_id: string | null
+          os: string | null
+          page_url: string
+          referrer: string | null
+          scroll_depth: number | null
+          session_id: string
+          time_on_page: number | null
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          visitor_id: string | null
+        }
+        Insert: {
+          browser?: string | null
+          campaign_id: string
+          campaign_slug: string
+          city?: string | null
+          converted?: boolean | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          lead_id?: string | null
+          os?: string | null
+          page_url: string
+          referrer?: string | null
+          scroll_depth?: number | null
+          session_id: string
+          time_on_page?: number | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string | null
+        }
+        Update: {
+          browser?: string | null
+          campaign_id?: string
+          campaign_slug?: string
+          city?: string | null
+          converted?: boolean | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          lead_id?: string | null
+          os?: string | null
+          page_url?: string
+          referrer?: string | null
+          scroll_depth?: number | null
+          session_id?: string
+          time_on_page?: number | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_views_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "active_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "campaign_views_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "active_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_leads_detailed"
+            referencedColumns: ["lead_id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
+          ab_test_enabled: boolean | null
           budget_daily: number | null
           budget_total: number | null
           client_id: string
           created_at: string
+          created_by: string | null
+          crm_integration_enabled: boolean | null
+          crm_provider: string | null
+          cta_button_color: string | null
+          cta_secondary_text: string | null
+          cta_text: string | null
+          daily_budget: number | null
           deleted_at: string | null
           deleted_by: string | null
+          description: string | null
+          email_subject: string | null
+          email_template_id: string | null
           end_date: string | null
           external_campaign_id: string | null
+          favicon_url: string | null
+          hero_description: string | null
+          hero_image_url: string | null
+          hero_subtitle: string | null
+          hero_title: string | null
           id: string
+          is_active: boolean | null
+          lead_magnet_description: string | null
+          lead_magnet_file_url: string | null
+          lead_magnet_title: string | null
+          lead_magnet_type: string | null
+          meta_description: string | null
+          meta_keywords: string[] | null
+          meta_title: string | null
           name: string
+          og_image_url: string | null
+          owner_id: string | null
           platform: string
           project_id: string | null
+          slug: string | null
           start_date: string | null
           status: string
+          thank_you_page_url: string | null
+          total_leads: number | null
+          total_views: number | null
           updated_at: string
+          variant: string | null
+          webhook_url: string | null
         }
         Insert: {
+          ab_test_enabled?: boolean | null
           budget_daily?: number | null
           budget_total?: number | null
           client_id: string
           created_at?: string
+          created_by?: string | null
+          crm_integration_enabled?: boolean | null
+          crm_provider?: string | null
+          cta_button_color?: string | null
+          cta_secondary_text?: string | null
+          cta_text?: string | null
+          daily_budget?: number | null
           deleted_at?: string | null
           deleted_by?: string | null
+          description?: string | null
+          email_subject?: string | null
+          email_template_id?: string | null
           end_date?: string | null
           external_campaign_id?: string | null
+          favicon_url?: string | null
+          hero_description?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
           id?: string
+          is_active?: boolean | null
+          lead_magnet_description?: string | null
+          lead_magnet_file_url?: string | null
+          lead_magnet_title?: string | null
+          lead_magnet_type?: string | null
+          meta_description?: string | null
+          meta_keywords?: string[] | null
+          meta_title?: string | null
           name: string
+          og_image_url?: string | null
+          owner_id?: string | null
           platform: string
           project_id?: string | null
+          slug?: string | null
           start_date?: string | null
           status?: string
+          thank_you_page_url?: string | null
+          total_leads?: number | null
+          total_views?: number | null
           updated_at?: string
+          variant?: string | null
+          webhook_url?: string | null
         }
         Update: {
+          ab_test_enabled?: boolean | null
           budget_daily?: number | null
           budget_total?: number | null
           client_id?: string
           created_at?: string
+          created_by?: string | null
+          crm_integration_enabled?: boolean | null
+          crm_provider?: string | null
+          cta_button_color?: string | null
+          cta_secondary_text?: string | null
+          cta_text?: string | null
+          daily_budget?: number | null
           deleted_at?: string | null
           deleted_by?: string | null
+          description?: string | null
+          email_subject?: string | null
+          email_template_id?: string | null
           end_date?: string | null
           external_campaign_id?: string | null
+          favicon_url?: string | null
+          hero_description?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
           id?: string
+          is_active?: boolean | null
+          lead_magnet_description?: string | null
+          lead_magnet_file_url?: string | null
+          lead_magnet_title?: string | null
+          lead_magnet_type?: string | null
+          meta_description?: string | null
+          meta_keywords?: string[] | null
+          meta_title?: string | null
           name?: string
+          og_image_url?: string | null
+          owner_id?: string | null
           platform?: string
           project_id?: string | null
+          slug?: string | null
           start_date?: string | null
           status?: string
+          thank_you_page_url?: string | null
+          total_leads?: number | null
+          total_views?: number | null
           updated_at?: string
+          variant?: string | null
+          webhook_url?: string | null
         }
         Relationships: [
           {
@@ -597,6 +864,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "user_profiles_decrypted"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
             referencedColumns: ["id"]
           },
           {
@@ -790,6 +1064,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "quiz_leads_detailed"
             referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "checklist_relationships_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "checklist_relationships_project_id_fkey"
@@ -1368,7 +1649,6 @@ export type Database = {
           end_time: string
           id: string
           is_active: boolean | null
-          max_bookings_per_slot: number | null
           start_time: string
           updated_at: string | null
           valid_from: string | null
@@ -1381,7 +1661,6 @@ export type Database = {
           end_time: string
           id?: string
           is_active?: boolean | null
-          max_bookings_per_slot?: number | null
           start_time: string
           updated_at?: string | null
           valid_from?: string | null
@@ -1394,7 +1673,6 @@ export type Database = {
           end_time?: string
           id?: string
           is_active?: boolean | null
-          max_bookings_per_slot?: number | null
           start_time?: string
           updated_at?: string | null
           valid_from?: string | null
@@ -1424,6 +1702,8 @@ export type Database = {
           consultant_notes: string | null
           consultoria_type_id: string
           created_at: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           discount_amount_cents: number | null
           discount_code: string | null
           duration_minutes: number
@@ -1468,6 +1748,8 @@ export type Database = {
           consultant_notes?: string | null
           consultoria_type_id: string
           created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           discount_amount_cents?: number | null
           discount_code?: string | null
           duration_minutes: number
@@ -1512,6 +1794,8 @@ export type Database = {
           consultant_notes?: string | null
           consultoria_type_id?: string
           created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           discount_amount_cents?: number | null
           discount_code?: string | null
           duration_minutes?: number
@@ -1624,7 +1908,6 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           current_uses: number | null
-          description: string | null
           discount_type: string
           discount_value: number
           id: string
@@ -1641,7 +1924,6 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           current_uses?: number | null
-          description?: string | null
           discount_type: string
           discount_value: number
           id?: string
@@ -1658,7 +1940,6 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           current_uses?: number | null
-          description?: string | null
           discount_type?: string
           discount_value?: number
           id?: string
@@ -1727,6 +2008,13 @@ export type Database = {
           ssl_valid?: boolean | null
         }
         Relationships: [
+          {
+            foreignKeyName: "domain_monitoring_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "domain_monitoring_project_id_fkey"
             columns: ["project_id"]
@@ -2307,67 +2595,115 @@ export type Database = {
           analysis_id: string | null
           assigned_to: string | null
           budget: number | null
+          campaign_slug: string | null
           company_name: string | null
+          consent_marketing: boolean | null
+          consent_terms: boolean | null
           conversion_probability: number | null
           created_at: string
+          created_by: string | null
+          crm_id: string | null
           deleted_at: string | null
           deleted_by: string | null
           email: string
           full_name: string | null
           id: string
+          ip_address: unknown | null
+          landing_page_url: string | null
+          lead_score: number | null
           metadata: Json | null
           notes: string | null
           phone: string | null
           priority: string | null
+          referrer: string | null
           score: number | null
+          sent_to_crm: boolean | null
           source: string | null
           status: string
           updated_at: string
+          user_agent: string | null
           user_id: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           analysis_id?: string | null
           assigned_to?: string | null
           budget?: number | null
+          campaign_slug?: string | null
           company_name?: string | null
+          consent_marketing?: boolean | null
+          consent_terms?: boolean | null
           conversion_probability?: number | null
           created_at?: string
+          created_by?: string | null
+          crm_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           email: string
           full_name?: string | null
           id?: string
+          ip_address?: unknown | null
+          landing_page_url?: string | null
+          lead_score?: number | null
           metadata?: Json | null
           notes?: string | null
           phone?: string | null
           priority?: string | null
+          referrer?: string | null
           score?: number | null
+          sent_to_crm?: boolean | null
           source?: string | null
           status?: string
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           analysis_id?: string | null
           assigned_to?: string | null
           budget?: number | null
+          campaign_slug?: string | null
           company_name?: string | null
+          consent_marketing?: boolean | null
+          consent_terms?: boolean | null
           conversion_probability?: number | null
           created_at?: string
+          created_by?: string | null
+          crm_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           email?: string
           full_name?: string | null
           id?: string
+          ip_address?: unknown | null
+          landing_page_url?: string | null
+          lead_score?: number | null
           metadata?: Json | null
           notes?: string | null
           phone?: string | null
           priority?: string | null
+          referrer?: string | null
           score?: number | null
+          sent_to_crm?: boolean | null
           source?: string | null
           status?: string
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: [
           {
@@ -2625,6 +2961,13 @@ export type Database = {
             foreignKeyName: "performance_metrics_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "performance_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -2827,6 +3170,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "project_milestones_project_id_fkey"
             columns: ["project_id"]
@@ -3307,6 +3657,13 @@ export type Database = {
             foreignKeyName: "storage_items_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "storage_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -3502,6 +3859,8 @@ export type Database = {
           assigned_to: string | null
           client_id: string
           created_at: string
+          deleted_at: string | null
+          deleted_by: string | null
           description: string
           id: string
           priority: string
@@ -3514,6 +3873,8 @@ export type Database = {
           assigned_to?: string | null
           client_id: string
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           description: string
           id?: string
           priority?: string
@@ -3526,6 +3887,8 @@ export type Database = {
           assigned_to?: string | null
           client_id?: string
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string
           id?: string
           priority?: string
@@ -3561,6 +3924,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "user_profiles_decrypted"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
             referencedColumns: ["id"]
           },
           {
@@ -3646,6 +4016,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
             referencedColumns: ["id"]
           },
           {
@@ -3830,6 +4207,13 @@ export type Database = {
             foreignKeyName: "transactions_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -3871,6 +4255,13 @@ export type Database = {
             foreignKeyName: "uptime_checks_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "uptime_checks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -3881,14 +4272,12 @@ export type Database = {
           avatar_url: string | null
           company_name: string | null
           created_at: string
-          email: string | null
           full_name: string | null
           id: string
           monthly_analysis_count: number | null
           monthly_support_tickets: number | null
           phone: string | null
           phone_encrypted: string | null
-          role: string | null
           storage_used_mb: number | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -3903,14 +4292,12 @@ export type Database = {
           avatar_url?: string | null
           company_name?: string | null
           created_at?: string
-          email?: string | null
           full_name?: string | null
           id: string
           monthly_analysis_count?: number | null
           monthly_support_tickets?: number | null
           phone?: string | null
           phone_encrypted?: string | null
-          role?: string | null
           storage_used_mb?: number | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -3925,14 +4312,12 @@ export type Database = {
           avatar_url?: string | null
           company_name?: string | null
           created_at?: string
-          email?: string | null
           full_name?: string | null
           id?: string
           monthly_analysis_count?: number | null
           monthly_support_tickets?: number | null
           phone?: string | null
           phone_encrypted?: string | null
-          role?: string | null
           storage_used_mb?: number | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -3942,6 +4327,33 @@ export type Database = {
           tier?: string
           updated_at?: string
           user_type?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string | null
+          id: string
+          onboarding_progress: Json | null
+          preferences: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          onboarding_progress?: Json | null
+          preferences?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          onboarding_progress?: Json | null
+          preferences?: Json | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -4122,6 +4534,89 @@ export type Database = {
       }
     }
     Views: {
+      active_campaigns: {
+        Row: {
+          budget_daily: number | null
+          budget_total: number | null
+          client_id: string | null
+          created_at: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          end_date: string | null
+          external_campaign_id: string | null
+          id: string | null
+          name: string | null
+          platform: string | null
+          project_id: string | null
+          start_date: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          budget_daily?: number | null
+          budget_total?: number | null
+          client_id?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          end_date?: string | null
+          external_campaign_id?: string | null
+          id?: string | null
+          name?: string | null
+          platform?: string | null
+          project_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          budget_daily?: number | null
+          budget_total?: number | null
+          client_id?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          end_date?: string | null
+          external_campaign_id?: string | null
+          id?: string | null
+          name?: string | null
+          platform?: string | null
+          project_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles_decrypted"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       active_clients: {
         Row: {
           address: string | null
@@ -4300,6 +4795,72 @@ export type Database = {
           },
         ]
       }
+      active_projects: {
+        Row: {
+          actual_delivery: string | null
+          client_id: string | null
+          completion_percent: number | null
+          created_at: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          description: string | null
+          domain: string | null
+          estimated_delivery: string | null
+          id: string | null
+          name: string | null
+          start_date: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_delivery?: string | null
+          client_id?: string | null
+          completion_percent?: number | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          domain?: string | null
+          estimated_delivery?: string | null
+          id?: string | null
+          name?: string | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_delivery?: string | null
+          client_id?: string | null
+          completion_percent?: number | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          domain?: string | null
+          estimated_delivery?: string | null
+          id?: string | null
+          name?: string | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles_decrypted"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       active_quiz_results: {
         Row: {
           client_id: string | null
@@ -4425,6 +4986,43 @@ export type Database = {
             referencedColumns: ["lead_id"]
           },
         ]
+      }
+      campaign_analytics: {
+        Row: {
+          avg_scroll_depth: number | null
+          avg_time_on_page: number | null
+          campaign_id: string | null
+          campaign_name: string | null
+          campaign_slug: string | null
+          conversion_rate: number | null
+          conversions: number | null
+          desktop_views: number | null
+          direct_views: number | null
+          facebook_views: number | null
+          first_view: string | null
+          google_views: number | null
+          instagram_views: number | null
+          is_active: boolean | null
+          last_view: string | null
+          linkedin_views: number | null
+          mobile_views: number | null
+          tablet_views: number | null
+          total_views: number | null
+          unique_sessions: number | null
+          unique_visitors: number | null
+        }
+        Relationships: []
+      }
+      deleted_items_audit: {
+        Row: {
+          deleted_at: string | null
+          deleted_by: string | null
+          deleted_by_email: string | null
+          id: string | null
+          item_data: Json | null
+          table_name: string | null
+        }
+        Relationships: []
       }
       quiz_conversion_funnel: {
         Row: {
@@ -4568,10 +5166,6 @@ export type Database = {
         Args: { p_payment_id: string; p_subscription_id: string }
         Returns: boolean
       }
-      archive_old_analyses: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
       calculate_mrr: {
         Args: Record<PropertyKey, never>
         Returns: number
@@ -4616,16 +5210,12 @@ export type Database = {
         Args: { days_to_keep?: number }
         Returns: number
       }
-      cleanup_old_audit_logs_v2: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
       cleanup_old_webhook_events: {
         Args: Record<PropertyKey, never>
         Returns: number
       }
       column_exists: {
-        Args: { p_column_name: string; p_table_name: string }
+        Args: { column_name: string; table_name: string }
         Returns: boolean
       }
       convert_quiz_lead_to_client: {
@@ -4884,6 +5474,13 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      permanent_delete_old_items: {
+        Args: { p_days_threshold?: number }
+        Returns: {
+          deleted_count: number
+          table_name: string
+        }[]
+      }
       process_webhook_event: {
         Args: {
           p_event_type: string
@@ -4893,9 +5490,9 @@ export type Database = {
         }
         Returns: Json
       }
-      reset_monthly_limits: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
+      restore_deleted: {
+        Args: { p_record_id: string; p_table_name: string }
+        Returns: boolean
       }
       seed_default_financial_categories: {
         Args: { p_user_id: string }
@@ -4910,7 +5507,7 @@ export type Database = {
         Returns: boolean
       }
       table_exists: {
-        Args: { p_table_name: string }
+        Args: { table_name: string }
         Returns: boolean
       }
       trigger_domain_check: {
@@ -5092,6 +5689,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       booking_status_enum: [
@@ -5125,3 +5725,4 @@ export const Constants = {
     },
   },
 } as const
+

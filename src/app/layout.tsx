@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { ToastProvider } from '@/components/providers/toast-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
+import { ThemeProvider, ThemeScript } from '@/components/providers/theme-provider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { UnifiedNavigation } from '@/design-system/navigation';
+import { Footer } from '@/components/layout/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -74,17 +77,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <ThemeScript />
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
-      <body className="antialiased">
-        <ErrorBoundary>
-          <QueryProvider>
-            {children}
-            <ToastProvider />
-          </QueryProvider>
-        </ErrorBoundary>
+      <body className="antialiased" suppressHydrationWarning>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <QueryProvider>
+              <UnifiedNavigation variant="corporate" theme="auto" showParticles={true} />
+              <main className="min-h-screen">
+                {children}
+              </main>
+              <Footer variant="default" showPreFooter={true} />
+              <ToastProvider />
+            </QueryProvider>
+          </ErrorBoundary>
+        </ThemeProvider>
       </body>
     </html>
   );

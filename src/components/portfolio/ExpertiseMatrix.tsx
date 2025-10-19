@@ -269,7 +269,7 @@ function ExpertiseCard({ area, index }: { area: ExpertiseArea; index: number }) 
 
 export default function ExpertiseMatrix() {
   return (
-    <section className="relative py-32 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Three.js Particle Field Background */}
       <div className="absolute inset-0 opacity-15">
         <Canvas

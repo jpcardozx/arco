@@ -141,7 +141,7 @@ const colorClasses = {
 
 export default function CertificationsShowcase() {
   return (
-    <section className="relative py-20 sm:py-28 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
       {/* Sophisticated Three.js Background */}
       <div className="absolute inset-0 opacity-35">
         <Canvas

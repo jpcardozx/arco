@@ -217,7 +217,7 @@ function ErrorContent() {
 
 export default function ErrorPage() {
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       <Suspense
         fallback={
           <div className="min-h-screen flex items-center justify-center">

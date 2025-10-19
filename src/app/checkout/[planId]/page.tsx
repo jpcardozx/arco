@@ -120,7 +120,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       <MercadoPagoProvider>
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 py-12 px-4">
           <div className="container mx-auto max-w-7xl">

@@ -1,0 +1,72 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  },
+  "memory": {
+    "enabled": true,
+    "storageType": "filesystem",
+    "storagePath": "./mcp/memory-store",
+    "retroactiveIndexing": {
+      "enabled": true,
+      "sources": [
+        {
+          "type": "markdown",
+          "paths": [
+            "./docs/COPY_CONTENT_STANDARDS.md",
+            "./docs/COPY_QUICK_REFERENCE.md",
+            "./docs/COPY_STANDARDS_SUMMARY.md",
+            "./docs/LANDING_PAGE_DARK_MODE_COMPLETE.md",
+            "./docs/DESIGN_TOKENS_SYSTEM.md",
+            "./docs/**/*.md"
+          ],
+          "metadata": {
+            "category": "documentation",
+            "indexed_at": "2025-10-19T00:00:00Z"
+          }
+        },
+        {
+          "type": "code",
+          "paths": [
+            "./src/components/landing/sections/HowItWorksSection.tsx",
+            "./src/components/landing/sections/HeroSection.tsx",
+            "./src/components/landing/sections/ProofSection.tsx",
+            "./src/components/landing/sections/PricingSection.tsx",
+            "./src/components/landing/sections/CaptureSection.tsx",
+            "./src/components/landing/sections/FAQSection.tsx"
+          ],
+          "metadata": {
+            "category": "landing-sections",
+            "status": "dark-mode-complete",
+            "indexed_at": "2025-10-19T00:00:00Z"
+          }
+        },
+        {
+          "type": "context",
+          "paths": [
+            "./docs/ARCHITECTURE.md",
+            "./docs/BACKEND_ARCHITECTURE_COMPLETE_2025.md",
+            "./docs/AGENDAMENTOS_SYSTEM_COMPLETE.md"
+          ],
+          "metadata": {
+            "category": "system-architecture",
+            "indexed_at": "2025-10-19T00:00:00Z"
+          }
+        }
+      ],
+      "indexingRules": {
+        "extractPatterns": true,
+        "extractDecisions": true,
+        "extractConversations": true,
+        "trackEvolution": true
+      }
+    },
+    "queryOptimization": {
+      "semanticSearch": true,
+      "temporalContext": true,
+      "relatedDocuments": true
+    }
+  }
+}

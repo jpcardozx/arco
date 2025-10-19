@@ -99,7 +99,7 @@ const colorClasses = {
 
 export default function PerformanceMetrics() {
   return (
-    <section className="relative py-24 sm:py-32 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(249,115,22,0.08)_0%,transparent_50%)]" />
       

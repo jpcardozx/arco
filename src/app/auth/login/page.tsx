@@ -42,7 +42,7 @@ export default function LoginPage() {
   }
 
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

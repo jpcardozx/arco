@@ -137,7 +137,7 @@ export default function LoginPage() {
   };
 
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center py-16 px-4">
         {/* Background - login.png (black premium) */}
         <div className="absolute inset-0">

@@ -23,10 +23,9 @@
 
 'use client';
 
-export const dynamic = 'force-dynamic'
-
 import dynamicImport from 'next/dynamic';
 import { WhatsAppButton } from '@/components/primitives/WhatsAppButton';
+import { SectionParallax } from '@/components/portfolio/SectionParallax';
 
 // Lazy load components (ssr: false)
 const HeroThreeScene = dynamicImport(() => import('@/components/portfolio/HeroThreeScene'), {
@@ -44,34 +43,59 @@ export default function PortfolioPage() {
   return (
     <div className="relative bg-slate-950 overflow-hidden">
       {/* Seção 1: Hero Integrado (1.5x) - Hero + Expertise + Métricas ✅ */}
-      <div id="hero">
+      <div id="hero" className='mt-[-120px]'>
         <HeroThreeScene />
       </div>
 
       {/* Seção 2: Hard Skills + Stack (1x) - Expertise Matrix + Technical Stack */}
-      <div id="skills">
+      <SectionParallax
+        id="skills"
+        backgroundColor="bg-slate-900"
+        showParticles={true}
+        delay={0.1}
+      >
         <ExpertiseMatrix />
-      </div>
+      </SectionParallax>
 
       {/* Seção 3: Technical Stack (0.75x) - Ferramentas e tecnologias detalhadas */}
-      <div id="stack">
+      <SectionParallax
+        id="stack"
+        backgroundColor="bg-slate-950"
+        showParticles={true}
+        delay={0.2}
+      >
         <TechnicalStack />
-      </div>
+      </SectionParallax>
 
       {/* Seção 4: Case Study (1x) - IPE Imóveis projeto detalhado */}
-      <div id="case-study">
+      <SectionParallax
+        id="case-study"
+        backgroundColor="bg-slate-900"
+        showParticles={true}
+        delay={0.1}
+      >
         <FeaturedCaseStudy />
-      </div>
+      </SectionParallax>
 
       {/* Seção 5: Process + Approach (1x) - Delivery + Metodologia */}
-      <div id="process">
+      <SectionParallax
+        id="process"
+        backgroundColor="bg-slate-950"
+        showParticles={true}
+        delay={0.2}
+      >
         <ProcessMethodology />
-      </div>
+      </SectionParallax>
 
       {/* Seção 6: Contact + Certifications (0.5x) - Form + Badges (ÚLTIMA) */}
-      <div id="contact">
+      <SectionParallax
+        id="contact"
+        backgroundColor="bg-slate-900"
+        showParticles={false}
+        delay={0.1}
+      >
         <ContactInformation />
-      </div>
+      </SectionParallax>
 
       {/* WhatsApp Button - Personal Number */}
       <WhatsAppButton 

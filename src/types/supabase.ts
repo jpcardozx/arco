@@ -293,6 +293,45 @@ export type Database = {
           },
         ]
       }
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           key: string
@@ -514,6 +553,13 @@ export type Database = {
             foreignKeyName: "campaign_metrics_campaign_id_fkey"
             columns: ["campaign_id"]
             isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "campaign_metrics_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
             referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
@@ -533,57 +579,277 @@ export type Database = {
           },
         ]
       }
+      campaign_views: {
+        Row: {
+          browser: string | null
+          campaign_id: string
+          campaign_slug: string
+          city: string | null
+          converted: boolean | null
+          country_code: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          ip_address: unknown | null
+          lead_id: string | null
+          os: string | null
+          page_url: string
+          referrer: string | null
+          scroll_depth: number | null
+          session_id: string
+          time_on_page: number | null
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          visitor_id: string | null
+        }
+        Insert: {
+          browser?: string | null
+          campaign_id: string
+          campaign_slug: string
+          city?: string | null
+          converted?: boolean | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          lead_id?: string | null
+          os?: string | null
+          page_url: string
+          referrer?: string | null
+          scroll_depth?: number | null
+          session_id: string
+          time_on_page?: number | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string | null
+        }
+        Update: {
+          browser?: string | null
+          campaign_id?: string
+          campaign_slug?: string
+          city?: string | null
+          converted?: boolean | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          lead_id?: string | null
+          os?: string | null
+          page_url?: string
+          referrer?: string | null
+          scroll_depth?: number | null
+          session_id?: string
+          time_on_page?: number | null
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_views_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "active_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "campaign_views_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "active_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_views_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_leads_detailed"
+            referencedColumns: ["lead_id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
+          ab_test_enabled: boolean | null
           budget_daily: number | null
           budget_total: number | null
           client_id: string
           created_at: string
+          created_by: string | null
+          crm_integration_enabled: boolean | null
+          crm_provider: string | null
+          cta_button_color: string | null
+          cta_secondary_text: string | null
+          cta_text: string | null
+          daily_budget: number | null
           deleted_at: string | null
           deleted_by: string | null
+          description: string | null
+          email_subject: string | null
+          email_template_id: string | null
           end_date: string | null
           external_campaign_id: string | null
+          favicon_url: string | null
+          hero_description: string | null
+          hero_image_url: string | null
+          hero_subtitle: string | null
+          hero_title: string | null
           id: string
+          is_active: boolean | null
+          lead_magnet_description: string | null
+          lead_magnet_file_url: string | null
+          lead_magnet_title: string | null
+          lead_magnet_type: string | null
+          meta_description: string | null
+          meta_keywords: string[] | null
+          meta_title: string | null
           name: string
+          og_image_url: string | null
+          owner_id: string | null
           platform: string
           project_id: string | null
+          slug: string | null
           start_date: string | null
           status: string
+          thank_you_page_url: string | null
+          total_leads: number | null
+          total_views: number | null
           updated_at: string
+          variant: string | null
+          webhook_url: string | null
         }
         Insert: {
+          ab_test_enabled?: boolean | null
           budget_daily?: number | null
           budget_total?: number | null
           client_id: string
           created_at?: string
+          created_by?: string | null
+          crm_integration_enabled?: boolean | null
+          crm_provider?: string | null
+          cta_button_color?: string | null
+          cta_secondary_text?: string | null
+          cta_text?: string | null
+          daily_budget?: number | null
           deleted_at?: string | null
           deleted_by?: string | null
+          description?: string | null
+          email_subject?: string | null
+          email_template_id?: string | null
           end_date?: string | null
           external_campaign_id?: string | null
+          favicon_url?: string | null
+          hero_description?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
           id?: string
+          is_active?: boolean | null
+          lead_magnet_description?: string | null
+          lead_magnet_file_url?: string | null
+          lead_magnet_title?: string | null
+          lead_magnet_type?: string | null
+          meta_description?: string | null
+          meta_keywords?: string[] | null
+          meta_title?: string | null
           name: string
+          og_image_url?: string | null
+          owner_id?: string | null
           platform: string
           project_id?: string | null
+          slug?: string | null
           start_date?: string | null
           status?: string
+          thank_you_page_url?: string | null
+          total_leads?: number | null
+          total_views?: number | null
           updated_at?: string
+          variant?: string | null
+          webhook_url?: string | null
         }
         Update: {
+          ab_test_enabled?: boolean | null
           budget_daily?: number | null
           budget_total?: number | null
           client_id?: string
           created_at?: string
+          created_by?: string | null
+          crm_integration_enabled?: boolean | null
+          crm_provider?: string | null
+          cta_button_color?: string | null
+          cta_secondary_text?: string | null
+          cta_text?: string | null
+          daily_budget?: number | null
           deleted_at?: string | null
           deleted_by?: string | null
+          description?: string | null
+          email_subject?: string | null
+          email_template_id?: string | null
           end_date?: string | null
           external_campaign_id?: string | null
+          favicon_url?: string | null
+          hero_description?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
           id?: string
+          is_active?: boolean | null
+          lead_magnet_description?: string | null
+          lead_magnet_file_url?: string | null
+          lead_magnet_title?: string | null
+          lead_magnet_type?: string | null
+          meta_description?: string | null
+          meta_keywords?: string[] | null
+          meta_title?: string | null
           name?: string
+          og_image_url?: string | null
+          owner_id?: string | null
           platform?: string
           project_id?: string | null
+          slug?: string | null
           start_date?: string | null
           status?: string
+          thank_you_page_url?: string | null
+          total_leads?: number | null
+          total_views?: number | null
           updated_at?: string
+          variant?: string | null
+          webhook_url?: string | null
         }
         Relationships: [
           {
@@ -2329,67 +2595,115 @@ export type Database = {
           analysis_id: string | null
           assigned_to: string | null
           budget: number | null
+          campaign_slug: string | null
           company_name: string | null
+          consent_marketing: boolean | null
+          consent_terms: boolean | null
           conversion_probability: number | null
           created_at: string
+          created_by: string | null
+          crm_id: string | null
           deleted_at: string | null
           deleted_by: string | null
           email: string
           full_name: string | null
           id: string
+          ip_address: unknown | null
+          landing_page_url: string | null
+          lead_score: number | null
           metadata: Json | null
           notes: string | null
           phone: string | null
           priority: string | null
+          referrer: string | null
           score: number | null
+          sent_to_crm: boolean | null
           source: string | null
           status: string
           updated_at: string
+          user_agent: string | null
           user_id: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           analysis_id?: string | null
           assigned_to?: string | null
           budget?: number | null
+          campaign_slug?: string | null
           company_name?: string | null
+          consent_marketing?: boolean | null
+          consent_terms?: boolean | null
           conversion_probability?: number | null
           created_at?: string
+          created_by?: string | null
+          crm_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           email: string
           full_name?: string | null
           id?: string
+          ip_address?: unknown | null
+          landing_page_url?: string | null
+          lead_score?: number | null
           metadata?: Json | null
           notes?: string | null
           phone?: string | null
           priority?: string | null
+          referrer?: string | null
           score?: number | null
+          sent_to_crm?: boolean | null
           source?: string | null
           status?: string
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           analysis_id?: string | null
           assigned_to?: string | null
           budget?: number | null
+          campaign_slug?: string | null
           company_name?: string | null
+          consent_marketing?: boolean | null
+          consent_terms?: boolean | null
           conversion_probability?: number | null
           created_at?: string
+          created_by?: string | null
+          crm_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           email?: string
           full_name?: string | null
           id?: string
+          ip_address?: unknown | null
+          landing_page_url?: string | null
+          lead_score?: number | null
           metadata?: Json | null
           notes?: string | null
           phone?: string | null
           priority?: string | null
+          referrer?: string | null
           score?: number | null
+          sent_to_crm?: boolean | null
           source?: string | null
           status?: string
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: [
           {
@@ -4016,6 +4330,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_settings: {
+        Row: {
+          created_at: string | null
+          id: string
+          onboarding_progress: Json | null
+          preferences: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          onboarding_progress?: Json | null
+          preferences?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          onboarding_progress?: Json | null
+          preferences?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       webhook_events: {
         Row: {
           created_at: string | null
@@ -4645,6 +4986,32 @@ export type Database = {
             referencedColumns: ["lead_id"]
           },
         ]
+      }
+      campaign_analytics: {
+        Row: {
+          avg_scroll_depth: number | null
+          avg_time_on_page: number | null
+          campaign_id: string | null
+          campaign_name: string | null
+          campaign_slug: string | null
+          conversion_rate: number | null
+          conversions: number | null
+          desktop_views: number | null
+          direct_views: number | null
+          facebook_views: number | null
+          first_view: string | null
+          google_views: number | null
+          instagram_views: number | null
+          is_active: boolean | null
+          last_view: string | null
+          linkedin_views: number | null
+          mobile_views: number | null
+          tablet_views: number | null
+          total_views: number | null
+          unique_sessions: number | null
+          unique_visitors: number | null
+        }
+        Relationships: []
       }
       deleted_items_audit: {
         Row: {

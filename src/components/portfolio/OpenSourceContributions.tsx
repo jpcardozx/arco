@@ -92,7 +92,7 @@ export default function OpenSourceContributions() {
   const [activeTab, setActiveTab] = useState<Tab>('projects');
 
   return (
-    <section className="relative py-24 sm:py-32 bg-gradient-to-b from-slate-950 to-slate-900 overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-slate-950 to-slate-900 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06)_0%,transparent_60%)]" />
       

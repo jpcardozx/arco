@@ -109,7 +109,7 @@ export default function SignupPage() {
   }
 
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center py-16 px-4">
         {/* Background */}
         <div className="absolute inset-0">

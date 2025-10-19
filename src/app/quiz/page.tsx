@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic'
 
 export default function QuizPage() {
   return (
-    <MainLayout showHeader={true} showFooter={true}>
+    <MainLayout  showFooter={true}>
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
         <div className="container mx-auto px-4 py-12 md:py-20">
           <QuizInteractive />

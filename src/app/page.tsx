@@ -1,4 +1,3 @@
-import { MainLayout } from '../components/layout/MainLayout';
 import { PremiumHeroSection } from '../components/sections/PremiumHeroSection';
 import { URLAnalyzerSection } from '../components/sections/URLAnalyzerSection';
 import { TransitionBridge } from '../components/sections/TransitionBridge';
@@ -9,11 +8,12 @@ import { ChatAnnouncementSection } from '../components/sections/ChatAnnouncement
 
 /**
  * HOMEPAGE - Hero premium original + funil otimizado + storytelling
+ * Navbar e Footer são renderizados no layout global
  */
 
 export default function HomePage() {
     return (
-        <MainLayout>
+        <>
             {/* Hero Premium com macOS window */}
             <PremiumHeroSection
                 badge={{
@@ -49,6 +49,6 @@ export default function HomePage() {
 
             {/* Chat Announcement - Before footer */}
             <ChatAnnouncementSection />
-        </MainLayout>
+        </>
     );
 }
