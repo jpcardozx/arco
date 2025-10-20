@@ -15,44 +15,34 @@ interface FAQSectionProps {
 
 const faqs = [
   {
-    icon: Zap,
-    question: 'Preciso saber de tecnologia para usar?',
-    answer: 'Não! A plataforma é 100% visual e intuitiva. Além disso, nossa equipe configura tudo para você nos primeiros 3 dias. Você só precisa aprovar e começar a atender.',
+    icon: DollarSign,
+    question: 'Quanto custa aparecer no Google?',
+    answer: 'O custo depende da sua localização e concorrência. Em São Paulo, é entre R$ 2-4 por clique. Em cidades menores, R$ 0,50-1,50. Você controla tudo: defina um orçamento mensal e só paga quando alguém clica no seu anúncio. Não há custo oculto.',
   },
   {
     icon: Clock,
-    question: 'Quanto tempo leva para começar a receber clientes?',
-    answer: 'Em média, os primeiros agendamentos aparecem entre 48-72 horas após ativar os anúncios. No plano Professional, incluímos R$ 500 em créditos de anúncios para você começar mais rápido.',
-  },
-  {
-    icon: Calendar,
-    question: 'E se eu já tenho agenda no papel ou outro sistema?',
-    answer: 'Sem problema! Você pode continuar usando seu sistema atual e usar o ARCO apenas para clientes novos vindos dos anúncios. Com o tempo, a maioria migra 100% porque é muito mais prático.',
-  },
-  {
-    icon: DollarSign,
-    question: 'Como funciona o pagamento garantido?',
-    answer: 'O cliente paga PIX ou cartão no momento do agendamento. Você recebe 95% do valor (5% é taxa de processamento) 2 dias depois. Se o cliente não aparecer, ele não recebe reembolso - você já foi pago.',
-  },
-  {
-    icon: Shield,
-    question: 'Posso cancelar a qualquer momento?',
-    answer: 'Sim! Não tem contrato de fidelidade. Você pode cancelar quando quiser e só paga até o final do mês corrente. Mas temos certeza que você não vai querer cancelar quando ver os resultados 😊',
-  },
-  {
-    icon: TrendingUp,
-    question: 'Vocês também criam minha página no Instagram?',
-    answer: 'Não criamos conteúdo orgânico, mas podemos indicar parceiros especializados. Nosso foco é 100% em tráfego pago (anúncios que geram agendamentos e vendas imediatas).',
-  },
-  {
-    icon: TrendingUp,
-    question: 'Como vocês medem o resultado?',
-    answer: 'Mostramos tudo no dashboard: quantos cliques nos anúncios, quantos agendamentos, taxa de conversão, valor investido vs. faturamento. Transparência total, sem "achismos".',
+    question: 'Em quanto tempo vejo meu primeiro agendamento?',
+    answer: 'Os primeiros cliques nos anúncios chegam em 2-6 horas após aprovação. Os primeiros agendamentos costumam aparecer entre 48-72 horas. No mês 1, a média é 8-12 clientes novos. No mês 2+, cresce conforme o algoritmo aprende.',
   },
   {
     icon: MessageCircle,
-    question: 'WhatsApp tem custo adicional?',
-    answer: 'As mensagens de confirmação e lembrete têm custo mínimo (cerca de R$ 0,15 cada). Esse valor já está incluído nos planos Professional e Enterprise. No Starter, você paga separado conforme uso.',
+    question: 'Como funciona a cobrança?',
+    answer: 'Você paga um setup único (R$ 897 com desconto de lançamento). Depois, escolhe um plano: Essencial (só setup), Crescimento (R$ 497/mês + anúncio), ou Escala (R$ 997/mês + anúncio). O orçamento de anúncios você controla (começa de R$ 450/mês). Sem contrato de fidelidade.',
+  },
+  {
+    icon: Calendar,
+    question: 'E se meu salão tem poucos horários disponíveis?',
+    answer: 'Sem problema! Você pode aumentar sua agenda com mais profissionais ou expandir serviços. Se preferir manter pequeno, oferecemos na 1ª página do Google a opção de "Agendar consulta" em vez de marcar horário direto. Você aprova cada agendamento antes.',
+  },
+  {
+    icon: Shield,
+    question: 'Posso parar se não gostar?',
+    answer: 'Sim! Sem contrato de fidelidade. Você cancela quando quiser e só paga até o final do mês. Mas temos certeza que não vai querer depois de ver resultados. A maioria dos salões fica entre 12-24 meses porque o ROI é claro.',
+  },
+  {
+    icon: Zap,
+    question: 'Como funciona o WhatsApp automático?',
+    answer: 'Quando o cliente agenda na sua página, recebe confirmação automática por WhatsApp (horário, local, instruções). 24h antes, novo lembrete. Custo mínimo (R$ 0,15 por mensagem, já incluído em Crescimento/Escala). Se não confirmar, você sabe que pode oferecer o horário a outro cliente.',
   },
 ];
 
