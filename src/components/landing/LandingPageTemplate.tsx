@@ -12,10 +12,12 @@ import { HeroSection } from './sections/HeroSection';
 
 // Bridges & Core sections - Eager load for good flow
 import { TransitionBridge } from './TransitionBridge';
+import { IntentCheckpoint } from './IntentCheckpoint';
 import { ValuePropositionSection } from './sections/ValuePropositionSection';
 import { ComparisonSection } from './sections/ComparisonSection';
 import { ProcessBreakdownSection } from './sections/ProcessBreakdownSection';
 import { ImplementationGuideSection } from './sections/ImplementationGuideSection';
+import { PoliciesSection } from './sections/PoliciesSection';
 
 // Below the fold: Lazy load progressively
 const IntentSelectorSection = dynamic<{ campaign: Campaign }>(
@@ -100,6 +102,9 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
         <IntentSelectorSection campaign={campaign} />
       </Suspense>
 
+      {/* 5.5. Intent Checkpoint - Qualification gate (NEW) */}
+      <IntentCheckpoint campaign={campaign} />
+
       {/* Bridge 3: After IntentSelector */}
       <TransitionBridge
         campaign={campaign}
@@ -136,7 +141,12 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
 
       <SectionDivider variant="wave" />
 
-      {/* 8. Pricing - Decisão de investimento - LAZY */}
+      {/* 8. FAQ - Objection handling PRE-PRICING (MOVED) */}
+      <Suspense fallback={<SectionSkeleton />}>
+        <FAQSection campaign={campaign} />
+      </Suspense>
+
+      {/* 9. Pricing - Decisão de investimento - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
         <PricingSection campaign={campaign} />
       </Suspense>
@@ -149,17 +159,15 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
         variant="icon"
       />
 
-      {/* 9. Capture Form - Primary CTA - LAZY */}
+      {/* 10. Capture Form - Primary CTA - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
         <CaptureSection campaign={campaign} />
       </Suspense>
 
       <SectionDivider variant="fade" />
 
-      {/* 10. FAQ - Lowest priority - LAZY */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <FAQSection campaign={campaign} />
-      </Suspense>
+      {/* 11. Policies & Guarantees - Trust consolidation (NEW) */}
+      <PoliciesSection campaign={campaign} />
     </main>
   );
 }
