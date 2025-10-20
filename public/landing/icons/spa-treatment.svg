@@ -1,1 +1,5 @@
-Forbidden
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/>
+  <circle cx="12" cy="12" r="3"/>
+  <path d="M12 6v2M12 16v2M6 12h2M16 12h2"/>
+</svg>
