@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import type { Tables } from '@/types/supabase';
-import { motion } from 'framer-motion';
-import { Calendar, Sparkles, Users, TrendingUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Calendar, Sparkles, Users, TrendingUp, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useCampaignColors } from '@/hooks/useCampaignColors';
 
 type Campaign = Tables<'campaigns'>;
 
@@ -81,146 +82,176 @@ const colorMap = {
 };
 
 export function IntentSelectorSection({ campaign }: IntentSelectorSectionProps) {
+  const colors = useCampaignColors(campaign);
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
 
   return (
-    <div className="container mx-auto px-4">
-      <motion.div
-        className="text-center max-w-3xl mx-auto mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-900">
-          Qual sua <span className="text-rose-600">maior dor</span> agora?
-        </h2>
-        <p className="text-lg text-slate-600">
-          A gente ajusta tudo pro seu problema específico
-        </p>
-      </motion.div>
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950">
+      {/* Texture */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:64px_64px]" />
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        {intents.map((intent, idx) => {
-          const Icon = intent.icon;
-          const colors = colorMap[intent.color as keyof typeof colorMap];
-          const isSelected = selectedIntent === intent.id;
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-28">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+              Qual é sua maior dor agora?
+            </h2>
+            <p className="text-lg text-slate-400">
+              Nós customizamos tudo pro seu desafio específico
+            </p>
+          </motion.div>
 
-          return (
-            <motion.button
-              key={intent.id}
-              className={`
-                relative p-6 rounded-2xl border-2 transition-all duration-300
-                ${isSelected 
-                  ? `${colors.bg} ${colors.border} shadow-xl scale-105` 
-                  : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg'
-                }
-              `}
-              onClick={() => setSelectedIntent(intent.id)}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center mb-4 mx-auto`}>
-                <Icon className={`w-6 h-6 ${colors.icon}`} />
-              </div>
+          {/* Intent Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {intents.map((intent, idx) => {
+              const Icon = intent.icon;
+              const isSelected = selectedIntent === intent.id;
 
-              <h3 className={`font-bold text-lg mb-2 ${isSelected ? colors.text : 'text-slate-900'}`}>
-                {intent.title}
-              </h3>
-
-              <p className="text-sm text-slate-600">
-                {intent.description}
-              </p>
-
-              {isSelected && (
-                <motion.div
-                  className="absolute top-3 right-3"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+              return (
+                <motion.button
+                  key={intent.id}
+                  className="text-left"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  onClick={() => setSelectedIntent(intent.id)}
                 >
-                  <div className={`w-6 h-6 rounded-full ${colors.bg} ${colors.border} border-2 flex items-center justify-center`}>
-                    <svg className={`w-4 h-4 ${colors.icon}`} fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </motion.div>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
-
-      {selectedIntent && (
-        <motion.div
-          className="mt-12 max-w-3xl mx-auto"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          {(() => {
-            const intent = intents.find(i => i.id === selectedIntent);
-            if (!intent) return null;
-
-            const colors = colorMap[intent.color as keyof typeof colorMap];
-
-            return (
-              <div className={`p-8 rounded-2xl ${colors.bg} border-2 ${colors.border}`}>
-                <h3 className={`text-2xl font-bold mb-6 ${colors.text}`}>
-                  Como resolvemos: {intent.title}
-                </h3>
-
-                {/* Bullets específicos */}
-                <ul className="space-y-3 mb-6">
-                  {intent.bullets.map((bullet, idx) => (
-                    <motion.li
-                      key={idx}
-                      className="flex items-start gap-3"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                    >
-                      <div className={`w-6 h-6 rounded-full ${colors.bg} ${colors.border} border-2 flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                        <svg className={`w-4 h-4 ${colors.icon}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
+                  <div
+                    className="p-6 rounded-xl border transition-all cursor-pointer h-full"
+                    style={{
+                      borderColor: isSelected ? colors.primary.solid : 'rgb(71, 85, 105, 0.5)',
+                      backgroundColor: isSelected
+                        ? `${colors.primary.solid}08`
+                        : 'rgba(30, 41, 59, 0.3)',
+                    }}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div
+                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{
+                          backgroundColor: `${colors.primary.solid}15`,
+                          border: `1px solid ${colors.primary.solid}40`,
+                        }}
+                      >
+                        <Icon className="w-5 h-5" style={{ color: colors.primary.solid }} />
                       </div>
-                      <span className="text-slate-700">{bullet}</span>
-                    </motion.li>
-                  ))}
-                </ul>
+                      {isSelected && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 500 }}
+                        >
+                          <CheckCircle2 className="w-5 h-5" style={{ color: colors.primary.solid }} />
+                        </motion.div>
+                      )}
+                    </div>
 
-                {/* Microprova */}
-                <div className="p-4 bg-white/60 rounded-lg mb-6">
-                  <div className="text-sm font-semibold text-slate-600 mb-1">Caso real:</div>
-                  <div className={`font-medium ${colors.text}`}>{intent.proof}</div>
-                </div>
+                    <h3 className="text-base font-semibold text-white mb-2">
+                      {intent.title}
+                    </h3>
+                    <p className="text-sm text-slate-400">
+                      {intent.description}
+                    </p>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
 
-                {/* CTA customizado */}
-                <button
-                  className={`w-full px-6 py-3 rounded-xl font-bold text-white ${colors.button} transition-all duration-200 shadow-lg hover:shadow-xl`}
-                  onClick={() => {
-                    // GA4 tracking
-                    if (typeof window !== 'undefined' && window.gtag) {
-                      window.gtag('event', 'intent_cta_click', {
-                        intent_type: intent.id,
-                        cta_text: intent.cta
-                      });
-                    }
-                    document.getElementById('capture')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  {intent.cta}
-                </button>
-              </div>
-            );
-          })()}
-        </motion.div>
-      )}
-    </div>
+          {/* Expanded Content */}
+          <AnimatePresence>
+            {selectedIntent && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                {(() => {
+                  const intent = intents.find(i => i.id === selectedIntent);
+                  if (!intent) return null;
+
+                  return (
+                    <div
+                      className="p-8 rounded-xl border space-y-6"
+                      style={{
+                        borderColor: `${colors.primary.solid}40`,
+                        backgroundColor: `${colors.primary.solid}04`,
+                      }}
+                    >
+                      <div>
+                        <h3 className="text-xl font-semibold text-white mb-4">
+                          Como resolvemos: {intent.title}
+                        </h3>
+
+                        {/* Bullets */}
+                        <ul className="space-y-3">
+                          {intent.bullets.map((bullet, idx) => (
+                            <motion.li
+                              key={idx}
+                              className="flex items-start gap-3"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.05 }}
+                            >
+                              <div
+                                className="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                                style={{ backgroundColor: colors.primary.solid }}
+                              />
+                              <span className="text-sm text-slate-300">{bullet}</span>
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Proof Point */}
+                      <div
+                        className="p-4 rounded-lg border"
+                        style={{
+                          backgroundColor: `${colors.primary.solid}08`,
+                          borderColor: `${colors.primary.solid}20`,
+                        }}
+                      >
+                        <p className="text-xs font-semibold text-slate-400 mb-2">Caso real:</p>
+                        <p className="text-sm text-slate-200 font-medium">{intent.proof}</p>
+                      </div>
+
+                      {/* CTA */}
+                      <button
+                        className="w-full px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2"
+                        style={{
+                          backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid || colors.primary.solid} 100%)`,
+                          boxShadow: `0 10px 40px -10px ${colors.primary.solid}40`,
+                        }}
+                        onClick={() => {
+                          if (typeof window !== 'undefined' && window.gtag) {
+                            window.gtag('event', 'intent_cta_click', {
+                              intent_type: intent.id,
+                              cta_text: intent.cta
+                            });
+                          }
+                          document.getElementById('capture')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        {intent.cta}
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  );
+                })()}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
   );
 }

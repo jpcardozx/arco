@@ -3,20 +3,23 @@
 import type { Tables } from '@/types/supabase';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import { ArrowDown, AlertCircle, TrendingUp, Calendar, GitBranch, Zap } from 'lucide-react';
 import SectionContainer from '@/components/animation/SectionContainer';
 import SectionDivider from '@/components/animation/SectionDivider';
 
 // Hero: Eager load (above the fold, critical for LCP)
 import { HeroSection } from './sections/HeroSection';
 
+// Bridges & Core sections - Eager load for good flow
+import { TransitionBridge } from './TransitionBridge';
+import { ValuePropositionSection } from './sections/ValuePropositionSection';
+import { ComparisonSection } from './sections/ComparisonSection';
+import { ProcessBreakdownSection } from './sections/ProcessBreakdownSection';
+import { ImplementationGuideSection } from './sections/ImplementationGuideSection';
+
 // Below the fold: Lazy load progressively
 const IntentSelectorSection = dynamic<{ campaign: Campaign }>(
   () => import('./sections/IntentSelectorSection').then(mod => ({ default: mod.IntentSelectorSection })),
-  { ssr: false, loading: () => <SectionSkeleton /> }
-);
-
-const HowItWorksSection = dynamic<{ campaign: Campaign }>(
-  () => import('./sections/HowItWorksSection').then(mod => ({ default: mod.HowItWorksSection })),
   { ssr: false, loading: () => <SectionSkeleton /> }
 );
 
@@ -60,38 +63,100 @@ interface LandingPageTemplateProps {
 export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
   return (
     <main className="min-h-screen">
-      {/* Seção 1: Hero - EAGER (Above the fold, critical for LCP) - FULL WIDTH SEM CONTAINER */}
+      {/* 1. Hero - EAGER (Above the fold, critical for LCP) */}
       <HeroSection campaign={campaign} />
 
       <SectionDivider variant="wave" />
 
-      {/* Seção 2: How It Works - LAZY (Educação do prospect) */}
+      {/* 2. Value Proposition - Solution intro */}
+      <ValuePropositionSection campaign={campaign} />
+
+      <SectionDivider variant="fade" />
+
+      {/* 3. Comparison - Before/after visual */}
+      <ComparisonSection campaign={campaign} />
+
+      {/* Bridge 1: After Comparison */}
+      <TransitionBridge
+        campaign={campaign}
+        text="Entenda cada passo do processo"
+        icon={ArrowDown}
+        variant="icon"
+      />
+
+      {/* 4. Process Breakdown - Detailed 5 steps */}
+      <ProcessBreakdownSection campaign={campaign} />
+
+      {/* Bridge 2: After ProcessBreakdown */}
+      <TransitionBridge
+        campaign={campaign}
+        text="Qual é sua maior dor?"
+        icon={AlertCircle}
+        variant="icon"
+      />
+
+      {/* 5. Intent Selector - User chooses pain - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
-        <HowItWorksSection campaign={campaign} />
+        <IntentSelectorSection campaign={campaign} />
       </Suspense>
 
-      <SectionDivider variant="wave" />
+      {/* Bridge 3: After IntentSelector */}
+      <TransitionBridge
+        campaign={campaign}
+        text="Veja como outros salões fizeram a mesma jornada"
+        icon={TrendingUp}
+        variant="icon"
+      />
 
-      {/* Seção 3: Proof - LAZY (Social proof com dados reais) */}
+      <SectionDivider variant="fade" />
+
+      {/* 6. Proof - Social proof com dados reais - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
         <ProofSection campaign={campaign} />
       </Suspense>
 
-      <SectionDivider variant="fade" />
+      {/* Bridge 4: After Proof */}
+      <TransitionBridge
+        campaign={campaign}
+        text="Isto é realista. Veja seu calendário chegar a 90 dias"
+        icon={Calendar}
+        variant="icon"
+      />
 
-      {/* Seção 4: Pricing - LAZY (Decisão de investimento) */}
+      {/* 7. Implementation Guide - 90-day timeline */}
+      <ImplementationGuideSection campaign={campaign} />
+
+      {/* Bridge 5: After ImplementationGuide */}
+      <TransitionBridge
+        campaign={campaign}
+        text="Escolha o plano que combina com seu ritmo"
+        icon={GitBranch}
+        variant="icon"
+      />
+
+      <SectionDivider variant="wave" />
+
+      {/* 8. Pricing - Decisão de investimento - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
         <PricingSection campaign={campaign} />
       </Suspense>
 
-      {/* Seção 5: Capture Form - LAZY (Primary CTA) - FULL WIDTH DARK MODE */}
+      {/* Bridge 6: After Pricing */}
+      <TransitionBridge
+        campaign={campaign}
+        text="Pronto? Deixe seu contato. Te ligaremos em até 2h."
+        icon={Zap}
+        variant="icon"
+      />
+
+      {/* 9. Capture Form - Primary CTA - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
         <CaptureSection campaign={campaign} />
       </Suspense>
 
       <SectionDivider variant="fade" />
 
-      {/* Seção 6: FAQ - LAZY (Lowest priority) - FULL WIDTH DARK MODE */}
+      {/* 10. FAQ - Lowest priority - LAZY */}
       <Suspense fallback={<SectionSkeleton />}>
         <FAQSection campaign={campaign} />
       </Suspense>

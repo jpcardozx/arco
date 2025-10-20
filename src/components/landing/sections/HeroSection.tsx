@@ -5,7 +5,7 @@ import type { Tables } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle2, ChevronDown, Sparkles, Target, Zap, Shield, TrendingUp } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronDown, Sparkles, Target, Zap, Shield, TrendingUp, AlertCircle } from 'lucide-react';
 import { useCampaignColors, useGradientStyle } from '@/hooks/useCampaignColors';
 
 type Campaign = Tables<'campaigns'>;
@@ -100,7 +100,70 @@ export function HeroSection({ campaign }: HeroSectionProps) {
             transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="w-full max-w-3xl mx-auto space-y-2.5"
           >
-            {/* Collapsible 1: O que você ganha */}
+            {/* Collapsible 1: Seus Desafios (Pain Points) */}
+            <Collapsible
+              open={openSection === 'pain'}
+              onOpenChange={() => setOpenSection(openSection === 'pain' ? null : 'pain')}
+            >
+              <CollapsibleTrigger className="w-full group">
+                <div className="flex items-center justify-between w-full px-5 py-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br"
+                      style={{
+                        backgroundImage: `linear-gradient(135deg, ${colors.primary.solid}20 0%, ${colors.secondary.solid}20 100%)`,
+                        border: `1px solid ${colors.primary.solid}30`
+                      }}
+                    >
+                      <AlertCircle className="w-4 h-4" style={{ color: colors.primary.solid }} />
+                    </div>
+                    <span className="text-base font-semibold text-white text-left">
+                      Reconheço seus desafios
+                    </span>
+                  </div>
+                  <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-300 ${openSection === 'pain' ? 'rotate-180' : ''}`} />
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <AnimatePresence>
+                  {openSection === 'pain' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="px-5 py-4 bg-white/[0.02] border border-white/[0.08] border-t-0 rounded-b-xl"
+                    >
+                      <div className="space-y-3 text-left">
+                        <div className="flex items-start gap-2.5">
+                          <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: colors.primary.solid }} />
+                          <div>
+                            <p className="text-sm font-medium text-white">Acordar sem saber se vai encher</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Muitos dias com agenda vazia. Resultado: faturamento imprevisível.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: colors.primary.solid }} />
+                          <div>
+                            <p className="text-sm font-medium text-white">Cliente marca e some (28% de falta)</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Responde sim no WhatsApp, mas não aparece. Seu horário virou perda de renda.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: colors.primary.solid }} />
+                          <div>
+                            <p className="text-sm font-medium text-white">Seu concorrente aparece no Google antes</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Você não sabe como aparecer nas buscas. Cliente acha quem está otimizado.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* Collapsible 2: O que você realmente ganha */}
             <Collapsible
               open={openSection === 'value'}
               onOpenChange={() => setOpenSection(openSection === 'value' ? null : 'value')}
@@ -108,7 +171,7 @@ export function HeroSection({ campaign }: HeroSectionProps) {
               <CollapsibleTrigger className="w-full group">
                 <div className="flex items-center justify-between w-full px-5 py-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
                   <div className="flex items-center gap-3">
-                    <div 
+                    <div
                       className="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br"
                       style={{
                         backgroundImage: `linear-gradient(135deg, ${colors.primary.solid}20 0%, ${colors.secondary.solid}20 100%)`,
@@ -138,22 +201,22 @@ export function HeroSection({ campaign }: HeroSectionProps) {
                         <div className="flex items-start gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400/80 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-sm font-medium text-white">Agenda sempre cheia</p>
-                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Cliente encontra você no Google, agenda direto. Sem ficar respondendo WhatsApp o dia todo.</p>
+                            <p className="text-sm font-medium text-white">Agenda sempre cheia (8→18+ clientes/mês)</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Cliente encontra você no Google, agenda direto. Exemplo real: Carol (Santo André) saiu de 8 para 18 agendamentos/mês.</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400/80 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-sm font-medium text-white">Confirmação automática</p>
-                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Sistema lembra o cliente 24h antes. Reduz falta em 73%.</p>
+                            <p className="text-sm font-medium text-white">Reduz falta de 28% para 9%</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Sistema confirma cliente 24h antes. Marina viu taxa de falta cair drasticamente.</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400/80 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-sm font-medium text-white">Previsibilidade financeira</p>
-                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Você sabe quanto vai faturar na semana que vem. Não é mais surpresa.</p>
+                            <p className="text-sm font-medium text-white">Aparece no Google em 18 dias</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Sistema posiciona seu anúncio automaticamente. Lapa Salon ficou na 1ª página em 18 dias.</p>
                           </div>
                         </div>
                       </div>
@@ -163,7 +226,7 @@ export function HeroSection({ campaign }: HeroSectionProps) {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Collapsible 2: Como funciona */}
+            {/* Collapsible 3: Como funciona */}
             <Collapsible
               open={openSection === 'how'}
               onOpenChange={() => setOpenSection(openSection === 'how' ? null : 'how')}
@@ -217,7 +280,7 @@ export function HeroSection({ campaign }: HeroSectionProps) {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Collapsible 3: Garantias */}
+            {/* Collapsible 4: Por que confiar */}
             <Collapsible
               open={openSection === 'guarantee'}
               onOpenChange={() => setOpenSection(openSection === 'guarantee' ? null : 'guarantee')}
