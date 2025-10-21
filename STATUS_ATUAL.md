@@ -101,7 +101,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJ...[production key]"
    ```bash
    curl -X POST 'https://vkclegvrqprevcdgosan.supabase.co/functions/v1/meta-conversions-webhook' \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA' \
+     -H 'Authorization: Bearer YOUR_SUPABASE_ANON_KEY_HERE' \
      -d '{
        "event_name": "Lead",
        "user_data": {"email": "test@example.com", "phone": "+5511999999999"},

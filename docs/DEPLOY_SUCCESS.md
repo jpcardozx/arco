@@ -93,7 +93,7 @@ curl -X POST 'https://vkclegvrqprevcdgosan.supabase.co/functions/v1/meta-convers
 ```bash
 # Testar se token está funcionando
 curl -X GET "https://graph.facebook.com/v21.0/1574079363975678" \
-  -H "Authorization: Bearer EAALqEBN5Xe8BPtrFT1xDoa1xUAAIKyQ1vF4EJz4inLuBAFkC0HtLZCBK5qHxj5wJQ0THQYOjJ6CxOvwwa3Eu8QZCIhmGb8XCWps8GYWImF7UX8XU14zl8nZAnZBoyDfURQA9tpfBpc4wl4hnzBrDEtKz23ImP4rFZBGpQEYTnNLWWo7Qi9HpGr3Ns3PbTWKN69AZDZD"
+  -H "Authorization: Bearer YOUR_META_ACCESS_TOKEN_HERE"
 
 # Resposta esperada:
 # {"id":"1574079363975678","name":"Nome do Dataset"}
