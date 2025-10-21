@@ -38,7 +38,7 @@ const intents = [
       'Lembrete 24h antes (cliente não esquece)',
       'Opção de pedir sinal pra proteger horário'
     ],
-    proof: 'Studio em Pinheiros: faltas caíram de 28% pra 9%',
+    proof: 'Studio em Pinheiros: faltas reduziram drasticamente',
     cta: 'Quero menos falta'
   },
   {
@@ -118,21 +118,63 @@ export function IntentSelectorSection({ campaign }: IntentSelectorSectionProps) 
                 <motion.button
                   key={intent.id}
                   className="text-left"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
-                  onClick={() => setSelectedIntent(intent.id)}
+                  transition={{
+                    duration: 0.5,
+                    delay: idx * 0.12,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                  whileHover={{
+                    scale: 1.03,
+                    y: -4,
+                    transition: { duration: 0.2, ease: "easeOut" }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setSelectedIntent(intent.id);
+                    // Track intent selection
+                    if (typeof window !== 'undefined' && window.gtag) {
+                      window.gtag('event', 'intent_selected', {
+                        intent_type: intent.id,
+                        intent_title: intent.title
+                      });
+                    }
+                  }}
                 >
-                  <div
-                    className="p-6 rounded-xl border transition-all cursor-pointer h-full"
+                  <motion.div
+                    className="p-6 rounded-xl border transition-all cursor-pointer h-full relative overflow-hidden"
                     style={{
                       borderColor: isSelected ? colors.primary.solid : 'rgb(71, 85, 105, 0.5)',
                       backgroundColor: isSelected
                         ? `${colors.primary.solid}08`
                         : 'rgba(30, 41, 59, 0.3)',
                     }}
+                    animate={{
+                      borderWidth: isSelected ? '2px' : '1px',
+                      boxShadow: isSelected
+                        ? `0 8px 32px -8px ${colors.primary.solid}40`
+                        : '0 0 0 transparent'
+                    }}
+                    transition={{ duration: 0.3 }}
                   >
+                    {/* Glow effect when selected */}
+                    {isSelected && (
+                      <motion.div
+                        className="absolute inset-0 rounded-xl pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: [0, 0.5, 0] }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                        style={{
+                          background: `radial-gradient(circle at 50% 0%, ${colors.primary.solid}20, transparent 70%)`
+                        }}
+                      />
+                    )}
                     <div className="flex items-start justify-between mb-3">
                       <div
                         className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -154,13 +196,13 @@ export function IntentSelectorSection({ campaign }: IntentSelectorSectionProps) 
                       )}
                     </div>
 
-                    <h3 className="text-base font-semibold text-white mb-2">
+                    <h3 className="text-base font-semibold text-white mb-2 relative z-10">
                       {intent.title}
                     </h3>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-slate-400 relative z-10">
                       {intent.description}
                     </p>
-                  </div>
+                  </motion.div>
                 </motion.button>
               );
             })}
@@ -224,13 +266,15 @@ export function IntentSelectorSection({ campaign }: IntentSelectorSectionProps) 
                         <p className="text-sm text-slate-200 font-medium">{intent.proof}</p>
                       </div>
 
-                      {/* CTA */}
-                      <button
-                        className="w-full px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2"
+                      {/* CTA with enhanced animations */}
+                      <motion.button
+                        className="group relative w-full px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden"
                         style={{
                           backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid || colors.primary.solid} 100%)`,
                           boxShadow: `0 10px 40px -10px ${colors.primary.solid}40`,
                         }}
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => {
                           if (typeof window !== 'undefined' && window.gtag) {
                             window.gtag('event', 'intent_cta_click', {
@@ -241,9 +285,16 @@ export function IntentSelectorSection({ campaign }: IntentSelectorSectionProps) 
                           document.getElementById('capture')?.scrollIntoView({ behavior: 'smooth' });
                         }}
                       >
-                        {intent.cta}
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
+                        {/* Shine effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                          initial={{ x: '-100%' }}
+                          whileHover={{ x: '100%' }}
+                          transition={{ duration: 0.6, ease: "easeInOut" }}
+                        />
+                        <span className="relative z-10">{intent.cta}</span>
+                        <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                      </motion.button>
                     </div>
                   );
                 })()}

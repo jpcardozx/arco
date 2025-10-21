@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ToastProvider } from '@/components/providers/toast-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider, ThemeScript } from '@/components/providers/theme-provider';
+import { MetaPixelProvider } from '@/providers/MetaPixelProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { UnifiedNavigation } from '@/design-system/navigation';
 import { Footer } from '@/components/layout/Footer';
@@ -83,18 +84,20 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body className="antialiased" suppressHydrationWarning>
-        <ThemeProvider>
-          <ErrorBoundary>
-            <QueryProvider>
-              <UnifiedNavigation variant="corporate" theme="auto" showParticles={true} />
-              <main className="min-h-screen">
-                {children}
-              </main>
-              <Footer variant="default" showPreFooter={true} />
-              <ToastProvider />
-            </QueryProvider>
-          </ErrorBoundary>
-        </ThemeProvider>
+        <MetaPixelProvider>
+          <ThemeProvider>
+            <ErrorBoundary>
+              <QueryProvider>
+                <UnifiedNavigation variant="corporate" theme="auto" showParticles={true} />
+                <main className="min-h-screen">
+                  {children}
+                </main>
+                <Footer variant="default" showPreFooter={true} />
+                <ToastProvider />
+              </QueryProvider>
+            </ErrorBoundary>
+          </ThemeProvider>
+        </MetaPixelProvider>
       </body>
     </html>
   );

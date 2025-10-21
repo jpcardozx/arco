@@ -43,6 +43,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "bundle:analyze": "pnpm build && npx bundle-analyzer .next/static/chunks/*.js",
+    "images:optimize": "node scripts/image-optimizer.cjs",
     "postinstall": "echo '✅ Dependencies installed. Run: pnpm test to verify system'"
   },
   "dependencies": {
@@ -50,6 +51,7 @@
     "@google-analytics/data": "^4.12.1",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.2.2",
+    "@lottiefiles/react-lottie-player": "^3.6.0",
     "@modelcontextprotocol/sdk": "^1.13.1",
     "@prisma/client": "^6.10.1",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -112,6 +114,7 @@
     "next-themes": "^0.4.6",
     "node": "^24.9.0",
     "papaparse": "^5.5.3",
+    "phosphor-react": "^1.4.1",
     "prisma": "^6.10.1",
     "react": "^19.1.0",
     "react-chartjs-2": "^5.3.0",
@@ -128,6 +131,7 @@
     "react-virtualized-auto-sizer": "^1.0.26",
     "react-window": "^1.8.11",
     "recharts": "^3.2.1",
+    "simple-icons": "^15.17.0",
     "sonner": "^2.0.7",
     "swr": "^2.3.3",
     "tailwind-merge": "^3.3.1",

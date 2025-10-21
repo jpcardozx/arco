@@ -110,7 +110,9 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
             <span 
               className="bg-gradient-to-r bg-clip-text text-transparent"
               style={{ 
-                backgroundImage: `linear-gradient(to right, ${colors.primary.solid}, ${colors.secondary.solid})`
+                backgroundImage: `linear-gradient(to right, 
+                  color-mix(in srgb, ${colors.primary.solid} 70%, white), 
+                  color-mix(in srgb, ${colors.secondary.solid} 60%, white))`
               }}
             >
               hoje mesmo

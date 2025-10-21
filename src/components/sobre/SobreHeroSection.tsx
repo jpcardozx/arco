@@ -11,7 +11,7 @@
 import React, { Suspense, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import { Sparkles, ArrowDown } from 'lucide-react';
+import { Sparkles, ArrowDown, ShieldCheck } from 'lucide-react';
 
 const ThreeBackground = dynamic(() => import('./ThreeBackground'), {
   ssr: false,
@@ -70,9 +70,9 @@ export function SobreHeroSection() {
             whileHover={{ scale: 1.05, borderColor: 'rgba(255,255,255,0.3)' }}
             transition={{ duration: 0.2 }}
           >
-            <Sparkles className="w-4 h-4 text-teal-400" />
+            <ShieldCheck className="w-4 h-4 text-teal-400" />
             <span className="text-sm font-medium text-slate-200 dark:text-white">
-              Arquitetura & Performance
+              Metodologia Segura
             </span>
           </motion.div>
         </motion.div>
@@ -84,12 +84,11 @@ export function SobreHeroSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{ y: yTitle, scale, opacity }}
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-            Desenvolvimento e otimização{' '}
-            <br className="hidden md:block" />
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight max-w-4xl mx-auto">
+            Desenvolvimento de{' '}
             <span className="bg-gradient-to-r from-teal-400 via-teal-300 to-orange-400 bg-clip-text text-transparent animate-gradient">
-              de aplicações web
-            </span>
+              aplicações web para
+            </span> aquisição de clientes.
           </h1>
         </motion.div>
 
@@ -101,48 +100,10 @@ export function SobreHeroSection() {
           style={{ y: ySubtitle, opacity }}
         >
           <p className="text-xl md:text-2xl text-slate-300 dark:text-slate-200 mb-12 leading-relaxed max-w-3xl mx-auto">
-            Arquitetura escalável, performance otimizada e migração de sistemas legados.
+            Construímos estruturas digitais com ênfase em arquitetura escalável, performance otimizada e migração de sistemas legados.
             <br className="hidden md:block" />
-            Especialização em Next.js, React, TypeScript e PostgreSQL.
+            Experiência em Next.js, React, TypeScript e PostgreSQL.
           </p>
-        </motion.div>
-
-        {/* Stats - Slowest layer (stays longer) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          style={{ y: yStats }}
-        >
-          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12 border-t border-white/10 dark:border-white/20">
-            {[
-              { value: '8+', label: 'Anos', delay: 0 },
-              { value: '40+', label: 'Projetos', delay: 0.1 },
-              { value: '98+', label: 'Performance', delay: 0.2 },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: 0.4 + stat.delay,
-                  type: "spring",
-                  stiffness: 200
-                }}
-                whileHover={{ scale: 1.1, y: -8 }}
-                className="relative group cursor-default"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-teal-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative">
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-slate-400 dark:text-slate-300">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </div>
 
@@ -160,7 +121,7 @@ export function SobreHeroSection() {
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           <span className="text-xs text-slate-400 dark:text-slate-300 uppercase tracking-wider">
-            Scroll
+            Conheça nossa abordagem
           </span>
           <ArrowDown className="w-5 h-5 text-slate-400 dark:text-slate-300" />
         </motion.div>

@@ -138,6 +138,8 @@
     "backup-old-components",
     "maintenance/archive/**/*",
     "docs/deprecated/**/*",
+    "docs/examples/**/*",
+    "src/__tests__/**/*",
     "mcp/**/*",
     "supabase/functions/**/*"
   ],

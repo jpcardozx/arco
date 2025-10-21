@@ -10,38 +10,27 @@ import SectionDivider from '@/components/animation/SectionDivider';
 // Hero: Eager load (above the fold, critical for LCP)
 import { HeroSection } from './sections/HeroSection';
 
-// Bridges & Core sections - Eager load for good flow
+// Core sections - Eager load
 import { TransitionBridge } from './TransitionBridge';
 import { IntentCheckpoint } from './IntentCheckpoint';
-import { ValuePropositionSection } from './sections/ValuePropositionSection';
-import { ComparisonSection } from './sections/ComparisonSection';
-import { ProcessBreakdownSection } from './sections/ProcessBreakdownSection';
+import { SystemOverviewSection } from './sections/SystemOverviewSection'; // NOVO - Fusão de SolutionArchitecture + MarketContext
+import { HowItWorksSection } from './sections/HowItWorksSection';
 import { ImplementationGuideSection } from './sections/ImplementationGuideSection';
 import { PoliciesSection } from './sections/PoliciesSection';
 
 // Below the fold: Lazy load progressively
-const IntentSelectorSection = dynamic<{ campaign: Campaign }>(
-  () => import('./sections/IntentSelectorSection').then(mod => ({ default: mod.IntentSelectorSection })),
-  { ssr: false, loading: () => <SectionSkeleton /> }
-);
-
 const ProofSection = dynamic<{ campaign: Campaign }>(
   () => import('./sections/ProofSection').then(mod => ({ default: mod.ProofSection })),
   { ssr: false, loading: () => <SectionSkeleton /> }
 );
 
-const PricingSection = dynamic<{ campaign: Campaign }>(
-  () => import('./sections/PricingSection').then(mod => ({ default: mod.PricingSection })),
+const ValueInvestmentSection = dynamic<{ campaign: Campaign }>(
+  () => import('./sections/ValueInvestmentSection').then(mod => ({ default: mod.ValueInvestmentSection })),
   { ssr: false, loading: () => <SectionSkeleton /> }
 );
 
 const CaptureSection = dynamic<{ campaign: Campaign }>(
   () => import('./sections/CaptureSection').then(mod => ({ default: mod.CaptureSection })),
-  { ssr: false, loading: () => <SectionSkeleton /> }
-);
-
-const FAQSection = dynamic<{ campaign: Campaign }>(
-  () => import('./sections/FAQSection').then(mod => ({ default: mod.FAQSection })),
   { ssr: false, loading: () => <SectionSkeleton /> }
 );
 
@@ -65,108 +54,63 @@ interface LandingPageTemplateProps {
 export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
   return (
     <main className="min-h-screen">
-      {/* 1. Hero - EAGER (Above the fold, critical for LCP) */}
+      {/* 1. Hero */}
       <HeroSection campaign={campaign} />
 
       <SectionDivider variant="wave" />
 
-      {/* 2. Value Proposition - Solution intro */}
-      <ValuePropositionSection campaign={campaign} />
+      {/* 2. System Overview - Pilares integrados + Before/After */}
+      <SystemOverviewSection campaign={campaign} />
 
       <SectionDivider variant="fade" />
 
-      {/* 3. Comparison - Before/after visual */}
-      <ComparisonSection campaign={campaign} />
+      {/* 3. How It Works - Processo detalhado com timeline */}
+      <HowItWorksSection campaign={campaign} />
 
-      {/* Bridge 1: After Comparison */}
       <TransitionBridge
         campaign={campaign}
-        text="Entenda cada passo do processo"
-        icon={ArrowDown}
-        variant="icon"
-      />
-
-      {/* 4. Process Breakdown - Detailed 5 steps */}
-      <ProcessBreakdownSection campaign={campaign} />
-
-      {/* Bridge 2: After ProcessBreakdown */}
-      <TransitionBridge
-        campaign={campaign}
-        text="Qual é sua maior dor?"
-        icon={AlertCircle}
-        variant="icon"
-      />
-
-      {/* 5. Intent Selector - User chooses pain - LAZY */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <IntentSelectorSection campaign={campaign} />
-      </Suspense>
-
-      {/* 5.5. Intent Checkpoint - Qualification gate (NEW) */}
-      <IntentCheckpoint campaign={campaign} />
-
-      {/* Bridge 3: After IntentSelector */}
-      <TransitionBridge
-        campaign={campaign}
-        text="Veja como outros salões fizeram a mesma jornada"
+        text="Veja quem já validou este sistema"
         icon={TrendingUp}
         variant="icon"
       />
 
-      <SectionDivider variant="fade" />
-
-      {/* 6. Proof - Social proof com dados reais - LAZY */}
+      {/* 4. Proof - Social proof + Carousel + Gallery */}
       <Suspense fallback={<SectionSkeleton />}>
         <ProofSection campaign={campaign} />
       </Suspense>
 
-      {/* Bridge 4: After Proof */}
       <TransitionBridge
         campaign={campaign}
-        text="Isto é realista. Veja seu calendário chegar a 90 dias"
+        text="Entenda a jornada de implementação"
         icon={Calendar}
         variant="icon"
       />
 
-      {/* 7. Implementation Guide - 90-day timeline */}
+      {/* 5. Implementation Guide - Timeline 90 dias */}
       <ImplementationGuideSection campaign={campaign} />
-
-      {/* Bridge 5: After ImplementationGuide */}
-      <TransitionBridge
-        campaign={campaign}
-        text="Escolha o plano que combina com seu ritmo"
-        icon={GitBranch}
-        variant="icon"
-      />
 
       <SectionDivider variant="wave" />
 
-      {/* 8. FAQ - Objection handling PRE-PRICING (MOVED) */}
+      {/* 6. Value Investment - Pricing transparente */}
       <Suspense fallback={<SectionSkeleton />}>
-        <FAQSection campaign={campaign} />
+        <ValueInvestmentSection campaign={campaign} />
       </Suspense>
 
-      {/* 9. Pricing - Decisão de investimento - LAZY */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <PricingSection campaign={campaign} />
-      </Suspense>
-
-      {/* Bridge 6: After Pricing */}
       <TransitionBridge
         campaign={campaign}
-        text="Pronto? Deixe seu contato. Te ligaremos em até 2h."
+        text="Pronto? Agende uma análise gratuita"
         icon={Zap}
         variant="icon"
       />
 
-      {/* 10. Capture Form - Primary CTA - LAZY */}
+      {/* 7. Capture Form - CTA Principal */}
       <Suspense fallback={<SectionSkeleton />}>
         <CaptureSection campaign={campaign} />
       </Suspense>
 
       <SectionDivider variant="fade" />
 
-      {/* 11. Policies & Guarantees - Trust consolidation (NEW) */}
+      {/* 8. Policies & Guarantees */}
       <PoliciesSection campaign={campaign} />
     </main>
   );

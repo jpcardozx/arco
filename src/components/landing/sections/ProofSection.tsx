@@ -1,9 +1,27 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import type { Tables } from '@/types/supabase';
-import { motion } from 'framer-motion';
-import { BarChart3, TrendingUp, DollarSign, Star, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { OptimizedImage } from '@/components/ui/optimized-image';
+import { landingImages } from '@/lib/landing-images';
+import { 
+  BarChart3, 
+  TrendingUp, 
+  TrendingDown,
+  AlertTriangle,
+  CheckCircle2, 
+  ArrowRight,
+  Shield,
+  Target,
+  Calendar,
+  Users,
+  Zap,
+  Award,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+} from 'lucide-react';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
 
 type Campaign = Tables<'campaigns'>;
@@ -12,405 +30,723 @@ interface ProofSectionProps {
   campaign: Campaign;
 }
 
-// Distribuição honesta de resultados (23 salões, jan-mar 2025)
-const distribution = [
-  { range: '0-5 clientes novas', percentage: 17, intensity: 0.3 },
-  { range: '6-18 clientes novas', percentage: 52, intensity: 0.6 },
-  { range: '19-35 clientes novas', percentage: 22, intensity: 0.85 },
-  { range: '36+ clientes novas', percentage: 9, intensity: 1.0 },
+/**
+ * Proof Section - REDESIGNED v2
+ * 
+ * Credibilidade através de transparência radical
+ * Linguagem do ICP (dono de salão, não startup)
+ * Redução de fricção: expectativas realistas, não promessas infladas
+ * Design único com paleta diferenciada
+ */
+
+// Distribuição REAL e transparente (grupo de salões recentes)
+const resultsDistribution = [
+  {
+    tier: 'Excepcional',
+    range: 'Alta captação consistente',
+    percentage: 'Minoria',
+    accentColor: '#10b981', // Green
+    icon: Award,
+    context: 'Perfil ideal: investimento sustentado, região densa, posicionamento premium, capacidade operacional livre.',
+    reality: 'Não é mágica — é alinhamento de múltiplos fatores: orçamento + mercado + execução.',
+  },
+  {
+    tier: 'Objetivo alcançado',
+    range: 'Captação previsível mensal',
+    percentage: 'Maioria',
+    accentColor: '#3b82f6', // Blue
+    icon: Target,
+    context: 'Configuração sólida: investimento adequado, mercado responsivo, automação funcionando, posicionamento claro.',
+    reality: 'Resultado esperado para quem segue o sistema. Torna-se previsível após fase de calibragem.',
+  },
+  {
+    tier: 'Em desenvolvimento',
+    range: 'Início gradual',
+    percentage: 'Comum',
+    accentColor: '#f59e0b', // Amber
+    icon: TrendingUp,
+    context: 'Fase inicial: ainda calibrando algoritmos, testando mensagens, ou mercado competitivo demandando ajustes.',
+    reality: 'Crescimento progressivo. Parcela significativa evolui para tier superior após consolidação.',
+  },
+  {
+    tier: 'Abaixo do esperado',
+    range: 'Resultados limitados',
+    percentage: 'Minoria',
+    accentColor: '#ef4444', // Red
+    icon: AlertTriangle,
+    context: 'Limitantes estruturais: restrição orçamentária severa, mercado saturado/pouco denso, ou modelo de negócio incompatível.',
+    reality: 'Honestidade: sem condições mínimas, sistema não compensa. Melhor focar em outras estratégias.',
+  },
 ];
 
-// Casos reais com progressão e ROI explícito
-const realCases = [
+// Métricas agregadas (não casos individuais fictícios)
+const aggregatedMetrics = [
   {
-    id: 'carol',
-    name: 'Carol',
-    business: 'Studio Carol Nails',
-    location: 'Moema, SP',
-    focus: 'Crescimento de agenda',
-    progression: [
-      { month: 'Mês 1', bookings: 8, growth: null },
-      { month: 'Mês 2', bookings: 14, growth: '+75%' },
-      { month: 'Mês 3', bookings: 18, growth: '+29%' },
-    ],
-    roi: {
-      investment: 897,
-      revenue: 1440,
-      profit: 543,
-    },
-    testimonial: "Achei caro no começo. Mas no segundo mês já paguei tudo só com as clientes novas que vieram do anúncio. Hoje acordo com WhatsApp cheio de confirmação automática.",
+    id: 'acquisition-cost',
+    label: 'Custo de aquisição',
+    value: 'Competitivo',
+    icon: Users,
+    accentColor: '#3b82f6',
+    detail: 'Varia conforme região (capital vs interior), tipo de serviço e competição local. Contexto importa mais que número absoluto.',
+    benchmark: 'Viável quando ticket de serviço justifica investimento. Precisa haver margem saudável.',
   },
   {
-    id: 'marina',
-    name: 'Marina',
-    business: 'Studio Marina Beauty',
-    location: 'Pinheiros, SP',
-    focus: 'Redução de falta',
-    metric: 'Taxa de falta',
-    before: '28%',
-    after: '9%',
-    improvement: '-68%',
-    detail: 'Com confirmação automática, clientes confirmam presença',
-    testimonial: "O sistema de lembrete faz toda a diferença. Antes era todo dia uma cliente desaparecendo. Agora meu faturamento é previsível.",
+    id: 'time-to-breakeven',
+    label: 'Tempo até retorno',
+    value: 'Gradual',
+    icon: Calendar,
+    accentColor: '#8b5cf6',
+    detail: 'Início: calibragem com poucos resultados. Meio: aceleração. Consolidação: previsibilidade.',
+    benchmark: 'Padrão esperado: melhora progressiva nas primeiras semanas. Estagnação demanda revisão.',
   },
   {
-    id: 'lapa',
-    name: 'Lapa Salon',
-    business: 'Salão Lapa Salon',
-    location: 'Lapa, SP',
-    focus: 'Visibilidade no Google',
-    metric: 'Posição Google',
-    before: 'Página 3+',
-    after: '1ª página',
-    timeline: '18 dias',
-    detail: 'Otimização + anúncio posicionaram no topo',
-    testimonial: "Meus clientes agora me acham quando procuram 'salão perto de mim'. Antes meu concorrente aparecia primeiro.",
+    id: 'no-show-reduction',
+    label: 'Redução de faltas',
+    value: 'Significativa',
+    icon: CheckCircle2,
+    accentColor: '#10b981',
+    detail: 'Confirmação automatizada + lembretes reduzem drasticamente ausências. Impacto direto em faturamento previsível.',
+    benchmark: 'Menos desperdício de horário = mais capacidade produtiva sem custo adicional.',
+  },
+  {
+    id: 'time-savings',
+    label: 'Tempo economizado',
+    value: 'Substancial',
+    icon: Zap,
+    accentColor: '#f59e0b',
+    detail: 'Agendamento automático + confirmações eliminam trabalho manual repetitivo (WhatsApp, telefone, ida/volta).',
+    benchmark: 'Horas recuperadas podem ser reinvestidas em atendimento ou gestão estratégica.',
+  },
+];
+
+// Carousel de imagens
+const carouselImages = [
+  {
+    id: 1,
+    title: 'Interior Moderno',
+    description: 'Design contemporâneo que impressiona',
+    ...landingImages.interiors.modern2,
+  },
+  {
+    id: 2,
+    title: 'Serviço Profissional',
+    description: 'Atendimento de alta qualidade',
+    ...landingImages.services.hair1,
+  },
+  {
+    id: 3,
+    title: 'Técnicas Avançadas',
+    description: 'Expertise que gera resultados',
+    ...landingImages.services.styling,
+  },
+  {
+    id: 4,
+    title: 'Atmosfera Premium',
+    description: 'Ambiente que transmite valor',
+    ...landingImages.atmosphere.ambient,
   },
 ];
 
 export function ProofSection({ campaign }: ProofSectionProps) {
   const colors = useCampaignColors(campaign);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  // S-TIER PARALLAX: 3-layer depth for Proof section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    restDelta: 0.0005
+  });
+
+  const yBackground = useTransform(smoothProgress, [0, 1], ['0%', '20%']);
+  const yContent = useTransform(smoothProgress, [0, 1], ['0%', '7%']);
+  const yCarousel = useTransform(smoothProgress, [0, 1], ['0%', '3%']);
+
+  // Carousel controls
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentSlide((prev) => {
+      const next = prev + newDirection;
+      if (next < 0) return carouselImages.length - 1;
+      if (next >= carouselImages.length) return 0;
+      return next;
+    });
+  };
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      {/* Subtle Texture */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:48px_48px]" />
-      
-      {/* Gradient Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute top-[15%] right-[20%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.06]"
-          style={{ backgroundColor: colors.primary.solid }}
-        />
-        <div 
-          className="absolute bottom-[20%] left-[15%] w-[400px] h-[400px] rounded-full blur-[100px] opacity-[0.05]"
-          style={{ backgroundColor: colors.secondary.solid }}
+    <section 
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900"
+    >
+      {/* Unique Diagonal Pattern (não repete grade anterior) */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0" 
+          style={{
+            backgroundImage: `repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 35px,
+              rgba(255, 255, 255, 0.02) 35px,
+              rgba(255, 255, 255, 0.02) 70px
+            )`
+          }}
         />
       </div>
+      
+      {/* PARALLAX LAYER 1: Background gradient orbs (deepest) */}
+      <motion.div
+        style={{ y: yBackground }}
+        className="absolute inset-0 will-change-transform"
+      >
+        <div className="absolute top-1/4 left-1/5 w-[550px] h-[550px] bg-gradient-to-br from-emerald-500/10 via-teal-500/6 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/6 w-[480px] h-[480px] bg-gradient-to-br from-violet-500/8 via-purple-500/5 to-transparent rounded-full blur-3xl" />
+      </motion.div>
 
-      {/* Content */}
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-32">
+      {/* PARALLAX LAYER 2: Main content */}
+      <motion.div 
+        style={{ y: yContent }}
+        className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-20 sm:py-24 md:py-28 lg:py-36 will-change-transform"
+      >
         <div className="max-w-6xl mx-auto">
           
-          {/* Header */}
+          {/* Header Section */}
           <motion.div
-            className="text-center max-w-4xl mx-auto mb-12 md:mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] text-white mb-4">
-              O que aconteceu com{' '}
-              <span 
-                className="bg-clip-text text-transparent bg-gradient-to-r"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid} 100%)`
-                }}
-              >
-                23 salões que testaram
-              </span>{' '}
-              (bom e ruim)
+            {/* Badge */}
+            <motion.div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 backdrop-blur-md border"
+              style={{
+                backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                borderColor: 'rgba(16, 185, 129, 0.25)',
+              }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span className="text-sm font-semibold text-emerald-300 tracking-wide">
+                Transparência Radical
+              </span>
+            </motion.div>
+
+            {/* Title */}
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Validado em{' '}
+              <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent">
+                23 Salões
+              </span>
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-slate-400 leading-relaxed">
-              Janeiro a março 2025 • Metade conseguiu 12 clientes novas/mês ou mais
+
+            {/* Subtitle com contexto */}
+            <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-4">
+              Piloto realizado entre janeiro e março de 2025 revelou padrões consistentes de crescimento.
+            </p>
+            
+            <p className="text-base text-slate-400 max-w-2xl mx-auto">
+              Análise completa da distribuição de performance — incluindo limitantes identificados e variáveis críticas de sucesso.
             </p>
           </motion.div>
 
-          {/* Distribution Chart */}
-          <motion.div 
-            className="max-w-4xl mx-auto mb-12 md:mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="rounded-2xl p-6 sm:p-8 shadow-lg border" style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              borderColor: 'rgba(255, 255, 255, 0.08)'
-            }}>
-              <div className="flex items-center gap-3 mb-6 sm:mb-8">
-                <div 
-                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+          {/* Results Distribution Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-20">
+            {resultsDistribution.map((tier, idx) => {
+              const Icon = tier.icon;
+              
+              return (
+                <motion.div
+                  key={tier.tier}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative rounded-2xl border-2 p-8 backdrop-blur-sm overflow-hidden"
                   style={{
-                    backgroundImage: `linear-gradient(135deg, ${colors.primary.solid}20 0%, ${colors.secondary.solid}20 100%)`,
-                    border: `1px solid ${colors.primary.solid}30`
+                    borderColor: `${tier.accentColor}40`,
+                    backgroundColor: 'rgba(15, 23, 42, 0.7)',
                   }}
                 >
-                  <BarChart3 className="w-5 h-5" style={{ color: colors.primary.solid }} />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">
-                  Como se distribuiu (nem todo mundo teve o mesmo resultado)
-                </h3>
-              </div>
+                  {/* Background gradient */}
+                  <div 
+                    className="absolute inset-0 opacity-5"
+                    style={{
+                      background: `linear-gradient(135deg, ${tier.accentColor}, transparent)`
+                    }}
+                  />
 
-              <div className="space-y-3 sm:space-y-4">
-                {distribution.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                      <div className="w-full sm:w-48 text-sm font-medium text-slate-300">
-                        {item.range}
-                      </div>
-                      <div className="flex-1 h-12 relative rounded-lg overflow-hidden" style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.05)'
-                      }}>
-                        <motion.div
-                          className="h-full flex items-center justify-end px-4"
+                  {/* Glassmorphism */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent pointer-events-none" />
+
+                  <div className="relative z-10">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-start gap-4">
+                        <div 
+                          className="w-14 h-14 rounded-2xl flex items-center justify-center backdrop-blur-sm"
                           style={{
-                            backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid} 100%)`,
-                            opacity: item.intensity
+                            backgroundColor: `${tier.accentColor}20`,
+                            border: `2px solid ${tier.accentColor}50`,
                           }}
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${item.percentage}%` }}
-                          viewport={{ once: true, amount: 0.3 }}
-                          transition={{ delay: idx * 0.1 + 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         >
-                          <span className="text-white font-bold text-base sm:text-lg">
-                            {item.percentage}%
-                          </span>
-                        </motion.div>
+                          <Icon className="w-7 h-7" style={{ color: tier.accentColor }} />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h3 
+                            className="text-lg font-black uppercase tracking-wide mb-1"
+                            style={{ color: tier.accentColor }}
+                          >
+                            {tier.tier}
+                          </h3>
+                          <p className="text-sm text-white font-bold">
+                            {tier.range}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Percentage Badge */}
+                      <div 
+                        className="px-4 py-2 rounded-xl text-center backdrop-blur-md border-2"
+                        style={{
+                          backgroundColor: `${tier.accentColor}15`,
+                          borderColor: `${tier.accentColor}40`,
+                        }}
+                      >
+                        <div 
+                          className="text-2xl font-black"
+                          style={{ color: tier.accentColor }}
+                        >
+                          {tier.percentage}
+                        </div>
+                        <div className="text-xs text-slate-400 font-medium mt-1">
+                          {tier.range}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Context */}
+                    <div className="space-y-3 mb-4">
+                      <div 
+                        className="p-4 rounded-xl border-l-4"
+                        style={{
+                          backgroundColor: `${tier.accentColor}08`,
+                          borderLeftColor: tier.accentColor,
+                        }}
+                      >
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
+                          Perfil Típico
+                        </p>
+                        <p className="text-sm text-slate-200 leading-relaxed">
+                          {tier.context}
+                        </p>
+                      </div>
+
+                      <div className="flex items-start gap-2 p-3 rounded-lg"
+                        style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}
+                      >
+                        <CheckCircle2 
+                          className="w-4 h-4 flex-shrink-0 mt-0.5" 
+                          style={{ color: tier.accentColor }} 
+                        />
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                          <strong style={{ color: tier.accentColor }}>Realidade:</strong> {tier.reality}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Aggregated Metrics (não casos fictícios) */}
+          <div className="mb-20">
+            <motion.div
+              className="text-center mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h3 className="text-3xl font-bold text-white mb-3">
+                Métricas Agregadas dos 23 Salões
+              </h3>
+              <p className="text-slate-400">
+                Dados consolidados — faixa de variação baseada em contexto operacional
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {aggregatedMetrics.map((metric, idx) => {
+                const Icon = metric.icon;
+                
+                return (
+                  <motion.div
+                    key={metric.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative rounded-2xl border-2 p-8 backdrop-blur-sm"
+                    style={{
+                      borderColor: `${metric.accentColor}30`,
+                      backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                    }}
+                  >
+                    {/* Glassmorphism */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent pointer-events-none rounded-2xl" />
+
+                    <div className="relative z-10">
+                      {/* Header */}
+                      <div className="flex items-start gap-4 mb-6">
+                        <div 
+                          className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                          style={{
+                            backgroundColor: `${metric.accentColor}18`,
+                            border: `2px solid ${metric.accentColor}40`,
+                          }}
+                        >
+                          <Icon className="w-7 h-7" style={{ color: metric.accentColor }} />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
+                            {metric.label}
+                          </p>
+                          <p 
+                            className="text-3xl font-black"
+                            style={{ color: metric.accentColor }}
+                          >
+                            {metric.value}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Detail */}
+                      <div className="space-y-3">
+                        <div 
+                          className="p-4 rounded-xl border-l-4"
+                          style={{
+                            backgroundColor: `${metric.accentColor}06`,
+                            borderLeftColor: metric.accentColor,
+                          }}
+                        >
+                          <p className="text-sm text-slate-200 leading-relaxed">
+                            {metric.detail}
+                          </p>
+                        </div>
+
+                        <div className="flex items-start gap-2 p-3 rounded-lg"
+                          style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}
+                        >
+                          <BarChart3 
+                            className="w-4 h-4 flex-shrink-0 mt-0.5" 
+                            style={{ color: metric.accentColor }} 
+                          />
+                          <p className="text-xs text-slate-400 leading-relaxed">
+                            <strong style={{ color: metric.accentColor }}>Benchmark:</strong> {metric.benchmark}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
-                ))}
-              </div>
-
-              <motion.div 
-                className="mt-6 p-4 rounded-lg border-l-4"
-                style={{ 
-                  backgroundColor: `${colors.primary.solid}10`,
-                  borderColor: colors.primary.solid
-                }}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="flex items-start gap-2.5">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: colors.primary.solid }} />
-                  <div>
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      <span className="font-semibold text-white">Por que 17% tiveram poucas clientes?</span><br/>
-                      Investiram menos de R$ 450/mês em anúncio (não dá pra competir), ou ticket médio muito baixo (menos de R$ 50), ou ficam em lugar com pouca gente.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Real Cases Grid */}
-          <div className="max-w-6xl mx-auto">
-            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-8 text-center">3 Salões, 3 desafios diferentes</h3>
-
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Carol - ROI */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div
-                  className="rounded-2xl p-6 sm:p-8 border-2 h-full"
-                  style={{
-                    background: `linear-gradient(135deg, ${colors.primary.solid}08 0%, ${colors.secondary.solid}08 100%)`,
-                    borderColor: `${colors.primary.solid}30`
-                  }}
-                >
-                  {/* Header */}
-                  <div className="flex items-start gap-4 mb-6">
-                    <div
-                      className="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg flex-shrink-0"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid} 100%)`
-                      }}
-                    >
-                      C
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-bold text-lg text-white">{realCases[0].name}</div>
-                      <div className="text-sm text-slate-400">{realCases[0].focus}</div>
-                    </div>
-                  </div>
-
-                  {/* Progression */}
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2.5 mb-4">
-                      <TrendingUp className="w-4 h-4" style={{ color: colors.primary.solid }} />
-                      <h4 className="font-semibold text-sm text-white">Crescimento (3 meses)</h4>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2">
-                      {realCases[0]?.progression?.map((month, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: 0.3 + i * 0.08 }}
-                          viewport={{ once: true }}
-                          className="rounded-lg p-3 border text-center"
-                          style={{
-                            borderColor: `${colors.primary.solid}30`,
-                            backgroundColor: 'rgba(255, 255, 255, 0.02)'
-                          }}
-                        >
-                          <div className="text-xl font-bold" style={{ color: colors.primary.solid }}>
-                            {month.bookings}
-                          </div>
-                          <div className="text-xs text-slate-400">{month.month}</div>
-                          {month.growth && (
-                            <div className="text-xs text-green-400 font-bold mt-1">{month.growth}</div>
-                          )}
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* ROI */}
-                  {realCases[0]?.roi && (
-                    <motion.div
-                      className="rounded-lg p-4 border space-y-2 text-sm"
-                      style={{
-                        borderColor: `${colors.primary.solid}30`,
-                        backgroundColor: 'rgba(255, 255, 255, 0.02)'
-                      }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.7 }}
-                    >
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Investido</span>
-                        <span className="font-bold text-red-400">- R$ {realCases[0].roi.investment}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Faturado</span>
-                        <span className="font-bold text-emerald-400">+ R$ {realCases[0].roi.revenue}</span>
-                      </div>
-                      <div className="pt-2 border-t border-slate-700 flex justify-between">
-                        <span className="font-bold text-white">Lucro</span>
-                        <span className="text-lg font-bold text-emerald-400">R$ {realCases[0].roi.profit}</span>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* Testimonial */}
-                  <motion.div
-                    className="mt-4 pt-4 border-t border-slate-700"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.9 }}
-                  >
-                    <p className="text-sm text-slate-300 italic mb-3">"{realCases[0].testimonial}"</p>
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <Star key={s} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Marina & Lapa - Metrics */}
-              <div className="space-y-6">
-                {/* Marina */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-2xl p-6 border-2"
-                  style={{
-                    background: `linear-gradient(135deg, ${colors.primary.solid}08 0%, ${colors.secondary.solid}08 100%)`,
-                    borderColor: `${colors.primary.solid}30`
-                  }}
-                >
-                  <div className="flex items-start gap-3 mb-4">
-                    <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid} 100%)`
-                      }}
-                    >
-                      M
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-bold text-base text-white">{realCases[1].name}</div>
-                      <div className="text-xs text-slate-400">{realCases[1].focus}</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-slate-400">{realCases[1].metric}:</span>
-                      <div className="flex-1 flex items-center gap-2">
-                        <span className="text-sm line-through text-slate-500">{realCases[1].before}</span>
-                        <ArrowRight className="w-3 h-3 text-slate-400" />
-                        <span className="font-bold text-emerald-400">{realCases[1].after}</span>
-                        <span className="text-xs text-emerald-400 font-semibold">{realCases[1].improvement}</span>
-                      </div>
-                    </div>
-                    <p className="text-xs text-slate-400">{realCases[1].detail}</p>
-                    <p className="text-sm text-slate-300 italic pt-2 border-t border-slate-700">"{realCases[1].testimonial}"</p>
-                  </div>
-                </motion.div>
-
-                {/* Lapa */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-2xl p-6 border-2"
-                  style={{
-                    background: `linear-gradient(135deg, ${colors.primary.solid}08 0%, ${colors.secondary.solid}08 100%)`,
-                    borderColor: `${colors.primary.solid}30`
-                  }}
-                >
-                  <div className="flex items-start gap-3 mb-4">
-                    <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid} 100%)`
-                      }}
-                    >
-                      L
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-bold text-base text-white">{realCases[2].name}</div>
-                      <div className="text-xs text-slate-400">{realCases[2].focus}</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-slate-400">{realCases[2].metric}:</span>
-                      <div className="flex-1 flex items-center gap-2">
-                        <span className="text-sm line-through text-slate-500">{realCases[2].before}</span>
-                        <ArrowRight className="w-3 h-3 text-slate-400" />
-                        <span className="font-bold text-emerald-400">{realCases[2].after}</span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      <span className="font-semibold text-white">{realCases[2].timeline}</span> para chegar ao topo
-                    </div>
-                    <p className="text-xs text-slate-400">{realCases[2].detail}</p>
-                    <p className="text-sm text-slate-300 italic pt-2 border-t border-slate-700">"{realCases[2].testimonial}"</p>
-                  </div>
-                </motion.div>
-              </div>
+                );
+              })}
             </div>
           </div>
 
+          {/* Showcase Carousel */}
+          <motion.div
+            className="mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="text-center mb-10">
+              <motion.div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur-sm mb-6"
+                style={{
+                  backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                  borderColor: 'rgba(139, 92, 246, 0.3)',
+                }}
+              >
+                <Sparkles className="w-4 h-4 text-purple-400" />
+                <span className="text-sm font-medium text-purple-300">Inspire-se</span>
+              </motion.div>
+              <h3 className="text-3xl font-bold text-white mb-3">
+                Padrão de{' '}
+                <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+                  Excelência
+                </span>
+              </h3>
+              <p className="text-slate-400">
+                Salões que investiram em presença digital e infraestrutura moderna
+              </p>
+            </div>
+
+            {/* Carousel Container */}
+            <div className="relative max-w-5xl mx-auto">
+              <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.div
+                    key={currentSlide}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: 'spring', stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.2 },
+                    }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragEnd={(e, { offset, velocity }) => {
+                      const swipe = swipePower(offset.x, velocity.x);
+                      if (swipe < -swipeConfidenceThreshold) {
+                        paginate(1);
+                      } else if (swipe > swipeConfidenceThreshold) {
+                        paginate(-1);
+                      }
+                    }}
+                    className="absolute inset-0"
+                  >
+                    <OptimizedImage
+                      src={carouselImages[currentSlide].webp}
+                      alt={carouselImages[currentSlide].alt}
+                      width={1000}
+                      height={600}
+                      className="w-full h-full object-cover"
+                      placeholderType="salonInterior"
+                    />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                    
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <h4 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                          {carouselImages[currentSlide].title}
+                        </h4>
+                        <p className="text-base text-slate-300">
+                          {carouselImages[currentSlide].description}
+                        </p>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Navigation Buttons */}
+                <button
+                  onClick={() => paginate(-1)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 z-20"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={() => paginate(1)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 z-20"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-5 h-5 text-white" />
+                </button>
+              </div>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center gap-2 mt-6">
+                {carouselImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setDirection(idx > currentSlide ? 1 : -1);
+                      setCurrentSlide(idx);
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      idx === currentSlide
+                        ? 'w-8 bg-purple-400'
+                        : 'w-2 bg-slate-600 hover:bg-slate-500'
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Visual Examples Gallery */}
+          <motion.div
+            className="mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="text-center mb-10">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                Ambientes de Referência
+              </h3>
+              <p className="text-base text-slate-400 max-w-2xl mx-auto">
+                Exemplos de salões que investiram em presença digital moderna
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: 'Ferramentas Profissionais',
+                  description: 'Equipamentos de ponta para resultados superiores',
+                  type: 'products' as const,
+                  ...landingImages.products.tools,
+                },
+                {
+                  title: 'Design Moderno',
+                  description: 'Ambientes que atraem e retêm clientes',
+                  type: 'salonInterior' as const,
+                  ...landingImages.interiors.modern1,
+                },
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  className="relative rounded-2xl overflow-hidden border-2 border-emerald-400/20 hover:border-emerald-400/40 transition-all duration-300 group"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  whileHover={{ y: -4 }}
+                >
+                  <div className="aspect-[4/3] relative">
+                    <OptimizedImage
+                      src={item.webp}
+                      alt={item.alt}
+                      placeholderType={item.type}
+                      className="w-full h-full"
+                      objectFit="cover"
+                    />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  <div className="p-6 bg-slate-900/90 backdrop-blur-sm">
+                    <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
+                    <p className="text-sm text-slate-400">{item.description}</p>
+                  </div>
+
+                  {/* Badge de exemplo */}
+                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 backdrop-blur-sm">
+                    <span className="text-xs font-medium text-emerald-300">Referência</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <p className="text-xs text-slate-500 text-center mt-6">
+              * Imagens ilustrativas de ambientes de referência. Não representam clientes específicos do ARCO.
+            </p>
+          </motion.div>
+
+          {/* Bottom Credibility Statement */}
+          <motion.div
+            className="p-10 rounded-2xl bg-gradient-to-br from-slate-800/60 via-slate-900/50 to-slate-950/60 border-2 border-slate-700/40 backdrop-blur-xl shadow-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
+              <div className="flex-shrink-0">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/25 to-teal-500/20 border-2 border-emerald-400/40 flex items-center justify-center backdrop-blur-sm">
+                  <Shield className="w-7 h-7 text-emerald-300" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <p className="text-base font-black text-white mb-3 uppercase tracking-wide">
+                  Por Que Mostramos Os Dados Ruins Também?
+                </p>
+                <p className="text-base text-slate-200 leading-relaxed mb-4">
+                  Porque credibilidade vem de <strong className="text-white">transparência, não cherry-picking</strong>. 
+                  Se todos tivessem resultados excepcionais, você desconfiaria — e com razão. O sistema funciona 
+                  <strong className="text-emerald-400"> quando há condições mínimas</strong>: orçamento adequado (R$450+), 
+                  ticket compatível (R$70+), localização com demanda, e tempo para calibragem (8-12 semanas).
+                </p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Não vendemos milagre. Vendemos sistema previsível com expectativas realistas. 
+                  Se você não tem as condições mínimas agora, melhor aguardar do que frustrar ambos os lados.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <motion.a
+              href="#capture"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg font-medium text-slate-100 backdrop-blur-md border transition-all duration-300"
+              style={{
+                backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                borderColor: 'rgba(16, 185, 129, 0.3)',
+              }}
+              whileHover={{ 
+                backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                borderColor: 'rgba(16, 185, 129, 0.5)',
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="text-sm">Analisar meu cenário</span>
+              <ArrowRight className="w-4 h-4 text-emerald-400" />
+            </motion.a>
+          </motion.div>
+
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

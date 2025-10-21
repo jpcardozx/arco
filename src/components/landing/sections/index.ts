@@ -5,4 +5,4 @@ export { HowItWorksSection } from './HowItWorksSection';
 export { ProofSection } from './ProofSection';
 export { PricingSection } from './PricingSection';
 export { CaptureSection } from './CaptureSection';
-export { FAQSection } from './FAQSection';
+// export { FAQSection } from './FAQSection'; // Removido temporariamente

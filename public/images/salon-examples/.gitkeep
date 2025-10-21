@@ -1,0 +1,24 @@
+# Salon Example Images
+
+Este diretório contém imagens de exemplo para compor o design da landing page.
+
+## Processamento Recomendado
+
+1. **Formato:** WebP (fallback JPG)
+2. **Compressão:** 80-85% quality
+3. **Dimensões:**
+   - Hero/Full-width: 1920x1080 → WebP ~150-200KB
+   - Cards/Grid: 800x600 → WebP ~50-80KB
+   - Thumbnails: 400x300 → WebP ~20-30KB
+
+4. **Lazy Loading:** Todas as imagens fora do viewport inicial
+
+## Ferramentas de Conversão
+
+```bash
+# Converter para WebP com cwebp
+cwebp -q 85 input.jpg -o output.webp
+
+# Ou com sharp (Node.js)
+npx sharp input.jpg -o output.webp --webp-quality 85
+```

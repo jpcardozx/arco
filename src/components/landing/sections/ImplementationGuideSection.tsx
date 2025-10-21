@@ -1,15 +1,21 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import type { Tables } from '@/types/supabase'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { OptimizedImage } from '@/components/ui/optimized-image'
 import {
   ChevronDown,
-  Clock,
   AlertCircle,
-  TrendingUp,
   CheckCircle2,
-  Zap,
+  Target,
+  Settings,
+  BarChart3,
+  Sparkles,
+  Rocket,
+  Gauge,
+  Package,
+  ArrowRight,
 } from 'lucide-react'
 import { useCampaignColors } from '@/hooks/useCampaignColors'
 
@@ -20,254 +26,542 @@ interface ImplementationGuideSectionProps {
 }
 
 /**
- * Implementation Guide Section
+ * Implementation Guide Section - REDESIGNED v2
  *
- * O que acontece nos primeiros 90 dias
- * Com collapsibles para cada fase
- * Posição: Após ProofSection, antes de Pricing
+ * Sistema de milestones e entregáveis (não dates rígidas)
+ * Design premium com glassmorphism + paleta harmoniosa
+ * Timeline visual elegante com Framer Motion
+ * Linguagem didática e flexível (projetos negociáveis)
  */
 
 export function ImplementationGuideSection({ campaign }: ImplementationGuideSectionProps) {
   const colors = useCampaignColors(campaign);
-  const [expandedPhase, setExpandedPhase] = useState<string | null>('phase-1');
+  const [expandedPhase, setExpandedPhase] = useState<string | null>('milestone-1');
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const phases = [
-    {
-      id: 'phase-1',
-      timeline: 'Semana 1-2',
-      title: 'Setup & Aprovação',
-      icon: Clock,
-      headline: 'Preparamos tudo para você',
-      tasks: [
-        { task: 'Kickoff call', description: 'Você explica seu salão, serviços, horários, valores. Esclarecemos dúvidas.' },
-        { task: 'Criar landing page', description: 'Nós desenvolvemos sua página otimizada com seus serviços, fotos, valores e horários.' },
-        { task: 'Integrar calendário', description: 'Conectamos seu calendário/agenda (Google Calendar, Zendesk, etc) com a página de agendamento.' },
-        { task: 'Configurar anúncios', description: 'Se você escolheu plano Crescimento, nós configuramos Google Ads + Meta Ads com públicos segmentados.' },
-        { task: 'Testar tudo', description: 'Você testa: agendar na página, receber confirmação WhatsApp, ver dados no dashboard.' },
-        { task: 'Anúncios no ar', description: 'Campanha aprovada pelo Google e Meta. Primeiros clientes começam a vir.' },
-      ],
-      expectation: 'Quando termina: Seu sistema tá pronto. Cliente começa a agendar na página (e não mais pelo WhatsApp).',
-      warning: 'Isto toma 7-10 dias. Se você demorar responder emails/calls, pode atrasar.',
-    },
-    {
-      id: 'phase-2',
-      timeline: 'Semana 3-6 (Mês 1)',
-      title: 'Aprendizado (Learning Phase)',
-      icon: AlertCircle,
-      headline: 'Google e Meta estão testando públicos',
-      tasks: [
-        { task: 'Anúncios gastando orçamento', description: 'Os algoritmos estão em fase "aprendizado", testando diferentes públicos, horários, criativos.' },
-        { task: 'Primeiros clientes chegando', description: 'Você já tá recebendo agendamentos. Provavelmente: 4-8 clientes novos no mês 1 (conservador).' },
-        { task: 'Qualidade importante agora', description: 'Cada cliente que vem é "feedback" pro algoritmo. Atendimento excelente = cliente satisfeito = melhor feedback = anúncio mais barato.' },
-        { task: 'Dashboard pra acompanhar', description: 'Você consegue ver em tempo real: quantos cliques, quantos agendamentos, custo por cliente (CAC).' },
-        { task: 'Primeiras otimizações', description: 'Se você tá no Crescimento/Escala, nós ajustamos público, horários de exibição, criativo dos anúncios.' },
-      ],
-      expectation: 'Meta Mês 1: 8-12 agendamentos novos (depende de orçamento, qualidade do atendimento, concorrência local).',
-      warning: 'Não desista agora. Mês 1 é sempre o mais conservador. Mês 2-3 melhoram quando o algoritmo aprende.',
-    },
-    {
-      id: 'phase-3',
-      timeline: 'Semana 7-12 (Mês 2-3)',
-      title: 'Otimização (Optimization Phase)',
-      icon: TrendingUp,
-      headline: 'Algoritmo entendeu melhor o que funciona',
-      tasks: [
-        { task: 'Resultados melhorando', description: 'Com histórico de dados (qual público converte melhor, qual horário, qual criativo), Google/Meta refinam entrega.' },
-        { task: 'Custo por clique caindo', description: 'Quanto mais histórico, mais confiança. Confiança = CPC (custo por clique) cai. Mesmo orçamento = mais clientes.' },
-        { task: 'Seu atendimento melhora', description: 'Você aprendeu a lidar com mais clientes, conhece sua capacidade, consegue ser mais eficiente.' },
-        { task: 'ROI positivo esperado', description: 'Se tudo certo: Mês 2: +40-60% vs. Mês 1. Mês 3: +20-30% vs. Mês 2 (crescimento continua, mas desacelera).' },
-        { task: 'Feedback do cliente', description: 'Você já tem clientes que repetiram, deixaram review, recomendaram. Mais social proof = anúncios mais baratos.' },
-      ],
-      expectation: 'Meta Mês 3: 16-22 agendamentos novos (depende de como foi Mês 1-2 + ajustes que fizemos).',
-      warning: 'Se resultados forem ruins Mês 1-2, pode ser: 1) Orçamento muito baixo, 2) Qualidade do atendimento, 3) Preço muito alto, 4) Localização ruim. Vamos revisar juntos.',
-    },
-    {
-      id: 'phase-4',
-      timeline: 'Depois (Mês 4+)',
-      title: 'Escala (Scaling Phase)',
-      icon: Zap,
-      headline: 'Você sabe o que funciona',
-      tasks: [
-        { task: 'Aumentar orçamento', description: 'Se tá dando certo, aumenta orçamento de R$750 para R$1.200+. Mesmo CPC = mais clientes.' },
-        { task: 'Testar novos públicos', description: 'Agora sabemos qual público converte. Podemos testar públicos similares (lookalike) ou geograficamente próximos.' },
-        { task: 'Adicionar serviços', description: 'Se manicure tá lotada, criamos segunda landing page só pra depilação/cabelo com anúncio separado.' },
-        { task: 'Remarketing', description: 'Cliente que visitou mas não agendou? Retargetamos com anúncio: "Voltou a pensar em nós? Clique aqui pra agendar".' },
-        { task: 'Preço pode subir', description: 'Com demanda alta e agenda cheia, você pode aumentar preços. Menos volume, mas melhor margem.' },
-      ],
-      expectation: 'Cenário ideal Mês 6+: 25-35 agendamentos/mês, agenda sempre cheia, você virando pessoas embora por falta de horário.',
-      warning: 'Nunca pare de acompanhar qualidade. Crescimento rápido + atendimento ruim = reviews ruins = anúncios caros novamente.',
-    },
-  ];
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
 
-  const expectations = [
-    { icon: CheckCircle2, label: 'Mês 1', value: '8-12 clientes', detail: '(Learning phase - algoritmo tá testando)' },
-    { icon: TrendingUp, label: 'Mês 2', value: '+40-60%', detail: 'vs. Mês 1' },
-    { icon: TrendingUp, label: 'Mês 3', value: '+20-30%', detail: 'vs. Mês 2' },
-    { icon: Zap, label: 'Mês 6+', value: '25-35+', detail: 'agendamentos/mês (escalando)' },
+  const yOrb1 = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
+  const yOrb2 = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.9]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+  const milestones = [
+    {
+      id: 'milestone-1',
+      order: 1,
+      title: 'Alicerce',
+      subtitle: 'Estruturação Técnica',
+      icon: Settings,
+      accentColor: '#3b82f6', // Blue
+      gradient: 'from-blue-500/20 via-cyan-500/10 to-transparent',
+      description: 'Construção da infraestrutura digital e alinhamento estratégico inicial.',
+      
+      deliverables: [
+        {
+          label: 'Landing page otimizada',
+          detail: 'Página mobile-first com formulário integrado, estrutura semântica SEO e carregamento rápido.',
+          impact: 'Base para conversão. Página lenta ou confusa desperdiça grande parte do orçamento de anúncios.'
+        },
+        {
+          label: 'Integrações ativas',
+          detail: 'Conexão com calendário (Google/Calendly), automações WhatsApp, confirmações instantâneas e lembretes pré-agendamento.',
+          impact: 'Reduz trabalho manual e melhora experiência. Confirmação rápida aumenta confiança do cliente.'
+        },
+        {
+          label: 'Campanhas configuradas',
+          detail: 'Google Ads (Search Local) e Meta Ads com segmentação geográfica, comportamental e por intenção de compra.',
+          impact: 'Segmentação precisa economiza orçamento. Aparecer para quem não converte é desperdício.'
+        },
+        {
+          label: 'Sistema testado end-to-end',
+          detail: 'Simulação completa: busca → clique → agendamento → confirmação. Verificação de erros, velocidade e responsividade.',
+          impact: 'Um erro no fluxo pode custar dezenas de clientes. Testar antes de investir é obrigatório.'
+        },
+      ],
+
+      keyInsight: 'Este milestone estabelece fundações técnicas. Foco é garantir que cada componente funcione antes de gastar orçamento em tráfego.',
+      timeline: 'Duração flexível',
+      timelineNote: 'Depende da velocidade de resposta em alinhamentos, disponibilidade de materiais (fotos, logo, preços) e complexidade das integrações.',
+    },
+    {
+      id: 'milestone-2',
+      order: 2,
+      title: 'Calibragem',
+      subtitle: 'Aprendizado de Algoritmos',
+      icon: Gauge,
+      accentColor: '#8b5cf6', // Purple
+      gradient: 'from-purple-500/20 via-pink-500/10 to-transparent',
+      description: 'Fase de learning dos algoritmos (Google, Meta) para identificar padrões de conversão.',
+
+      deliverables: [
+        {
+          label: 'Histórico de dados inicial',
+          detail: 'Plataformas coletam informações: qual público responde melhor, quais horários geram mais conversões, quais criativos performam.',
+          impact: 'Sem histórico, algoritmos "chutam". Com dados, entregam anúncios com precisão cirúrgica.'
+        },
+        {
+          label: 'Primeiras conversões validadas',
+          detail: 'Clientes começam a agendar. Volume conservador enquanto sistemas calibram entrega e aprendem comportamento do público.',
+          impact: 'Qualidade da experiência retroalimenta o algoritmo. Cliente satisfeito = custo menor nas próximas campanhas.'
+        },
+        {
+          label: 'Dashboard de métricas ativo',
+          detail: 'Monitoramento de CTR (taxa de clique), CPC (custo/clique), taxa de conversão e qualidade dos leads.',
+          impact: 'Métricas revelam gargalos: anúncio fraco? Página confusa? Preço alto? Cada problema tem correção específica.'
+        },
+        {
+          label: 'Ajustes iterativos implementados',
+          detail: 'Com base nos dados, refinamos segmentação, ajustamos lances, testamos variações de copy e criativos.',
+          impact: 'Otimização contínua é o diferencial. Pequenos ajustes geram impacto composto ao longo do tempo.'
+        },
+      ],
+
+      keyInsight: 'Expectativa realista: resultados moderados. É como plantar — você investe em raízes (dados), não colhe frutos ainda. Paciência estratégica é crucial.',
+      timeline: 'Normalmente 3-5 semanas',
+      timelineNote: 'Algoritmos exigem volume mínimo de conversões para sair da fase de aprendizado. Orçamento muito baixo prolonga este período.',
+    },
+    {
+      id: 'milestone-3',
+      order: 3,
+      title: 'Otimização',
+      subtitle: 'Performance Estabilizada',
+      icon: BarChart3,
+      accentColor: '#10b981', // Green
+      gradient: 'from-green-500/20 via-emerald-500/10 to-transparent',
+      description: 'Algoritmos refinados com histórico suficiente. Entrega inteligente e econômica.',
+
+      deliverables: [
+        {
+          label: 'Redução de CAC',
+          detail: 'Com mais dados, algoritmos preveem melhor quem vai converter. Mesmo orçamento gera mais leads qualificados.',
+          impact: 'Eficiência cresce exponencialmente com histórico. Mês 3 performa melhor que mês 1 com mesmo investimento.'
+        },
+        {
+          label: 'Aprendizados consolidados',
+          detail: 'Identificação clara: quais serviços têm mais demanda, horários de pico, mensagens que ressoam, perfil de cliente ideal.',
+          impact: 'Conhecimento estratégico permite decisões informadas: onde alocar orçamento, quais serviços promover, quando ajustar preços.'
+        },
+        {
+          label: 'Testes avançados rodando',
+          detail: 'Com baseline estabelecido, testamos: públicos lookalike, novos criativos, páginas A/B, ofertas sazonais.',
+          impact: 'Nunca pare de testar. Mercado muda, algoritmos evoluem. Teste contínuo mantém vantagem competitiva.'
+        },
+        {
+          label: 'Sistema de retenção ativo',
+          detail: 'Análise de quantos clientes retornam, deixam avaliações, recomendam. Feedback orgânico reduz dependência de anúncios.',
+          impact: 'Cliente satisfeito é ativo de longo prazo. Uma cliente que retorna 4x/ano vale mais que 4 clientes únicos.'
+        },
+      ],
+
+      keyInsight: 'Neste ponto: sistema maduro. Você tem visibilidade de ROI, conhece CAC (custo de aquisição), consegue prever crescimento com confiança.',
+      timeline: 'A partir da semana 7-12',
+      timelineNote: 'Se resultados não melhoraram até aqui, revisão profunda é necessária: posicionamento, preço, qualidade ou limitação de mercado.',
+    },
+    {
+      id: 'milestone-4',
+      order: 4,
+      title: 'Escalabilidade',
+      subtitle: 'Expansão Baseada em Dados',
+      icon: Rocket,
+      accentColor: '#f59e0b', // Amber
+      gradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
+      description: 'Sistema validado e ROI comprovado. Foco em crescimento planejado e diversificação.',
+
+      deliverables: [
+        {
+          label: 'Aumento de investimento estratégico',
+          detail: 'Se ROI for positivo e sustentável, alocação de mais orçamento em canais validados. Crescimento proporcional aos resultados.',
+          impact: 'Escalar cedo demais queima capital. Escalar tarde demais perde mercado. Timing certo vem dos dados.'
+        },
+        {
+          label: 'Diversificação de canais',
+          detail: 'Teste de novos canais (YouTube Ads, remarketing display, parcerias) mantendo controle de CAC por canal.',
+          impact: 'Dependência de um único canal é risco. Diversificação protege contra mudanças de algoritmo ou concorrência.'
+        },
+        {
+          label: 'Segmentação avançada',
+          detail: 'Campanhas específicas por serviço, faixa de preço ou nicho (ex: noivas, executivas, público 50+).',
+          impact: 'Mensagem genérica converte menos. "Manicure para noivas" tem CPC menor que "manicure".'
+        },
+        {
+          label: 'Otimização de margem',
+          detail: 'Com demanda consistente, avaliação de ajustes de preço, pacotes premium ou redução de serviços de baixa margem.',
+          impact: 'Crescimento não é só volume. Às vezes atender menos clientes com ticket maior gera mais lucro e menos estresse.'
+        },
+      ],
+
+      keyInsight: 'Cenário ideal: demanda previsível, operação eficiente, decisões baseadas em métricas. Você gerencia demanda, não espera telefone tocar.',
+      timeline: 'Mês 4 em diante (contínuo)',
+      timelineNote: 'Crescimento acelerado exige capacidade operacional. Agenda lotada sem estrutura gera atendimento ruim e erosão de marca.',
+    },
   ];
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950">
-      {/* Texture */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:64px_64px]" />
+    <section 
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+    >
+      {/* Animated Grid Texture */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:48px_48px] opacity-40" />
 
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-28">
-        <div className="max-w-5xl mx-auto">
+      {/* Gradient Orbs with Parallax */}
+      <motion.div
+        style={{ y: yOrb1 }}
+        className="absolute top-1/3 right-1/5 w-[500px] h-[500px] bg-gradient-to-br from-blue-500/15 via-cyan-500/10 to-transparent rounded-full blur-3xl"
+      />
+      <motion.div
+        style={{ y: yOrb2 }}
+        className="absolute bottom-1/4 left-1/6 w-[450px] h-[450px] bg-gradient-to-br from-purple-500/12 via-pink-500/8 to-transparent rounded-full blur-3xl"
+      />
 
-          {/* Header */}
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-20 sm:py-24 md:py-28 lg:py-36">
+        <div className="max-w-6xl mx-auto">
+
+          {/* Header Section */}
           <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-              Os primeiros 90 dias
+            {/* Badge */}
+            <motion.div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 backdrop-blur-md border"
+              style={{
+                backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                borderColor: 'rgba(59, 130, 246, 0.25)',
+              }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <Package className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold text-blue-300 tracking-wide">
+                Processo de Implementação
+              </span>
+            </motion.div>
+
+            {/* Title */}
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Sistema em Quatro{' '}
+              <span className="bg-gradient-to-r from-blue-300 via-purple-200 to-pink-300 bg-clip-text text-transparent">
+                Milestones
+              </span>
             </h2>
-            <p className="text-lg text-slate-400">
-              O que esperar, fase por fase
+
+            {/* Subtitle */}
+            <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+              Estruturação flexível baseada em <strong className="text-white">entregáveis</strong>, não datas rígidas.
+              Cada milestone consolida aprendizados e prepara o próximo estágio.
             </p>
           </motion.div>
 
-          {/* Expectations Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-            {expectations.map((exp, idx) => {
-              const Icon = exp.icon;
+          {/* Visual Timeline */}
+          <motion.div
+            className="mb-24 px-4"
+            style={{ scale, opacity }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="relative max-w-4xl mx-auto">
+              {/* Horizontal Line */}
+              <div className="absolute top-8 left-0 right-0 h-1 rounded-full" 
+                style={{
+                  background: 'linear-gradient(to right, rgba(59, 130, 246, 0.3) 0%, rgba(139, 92, 246, 0.3) 33%, rgba(16, 185, 129, 0.3) 66%, rgba(245, 158, 11, 0.3) 100%)'
+                }}
+              />
+              
+              {/* Milestone Dots */}
+              <div className="relative flex justify-between items-start">
+                {milestones.map((milestone, idx) => {
+                  const Icon = milestone.icon;
+                  return (
+                    <motion.div
+                      key={milestone.id}
+                      className="flex flex-col items-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: idx * 0.15 }}
+                    >
+                      {/* Icon Circle */}
+                      <motion.div
+                        className="relative w-16 h-16 rounded-full flex items-center justify-center backdrop-blur-md mb-4 cursor-pointer"
+                        style={{
+                          backgroundColor: `${milestone.accentColor}20`,
+                          border: `2px solid ${milestone.accentColor}`,
+                        }}
+                        whileHover={{ scale: 1.15, rotate: 10 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        onClick={() => setExpandedPhase(milestone.id)}
+                      >
+                        <Icon className="w-7 h-7" style={{ color: milestone.accentColor }} />
+                        
+                        {/* Glow Effect */}
+                        <div
+                          className="absolute inset-0 rounded-full opacity-40 blur-xl"
+                          style={{ backgroundColor: milestone.accentColor }}
+                        />
+                      </motion.div>
+
+                      {/* Label */}
+                      <div className="text-center space-y-1">
+                        <p 
+                          className="text-sm font-bold"
+                          style={{ color: milestone.accentColor }}
+                        >
+                          {milestone.order}
+                        </p>
+                        <p className="text-xs font-semibold text-white">
+                          {milestone.title}
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Milestone Cards */}
+          <div className="space-y-8">
+            {milestones.map((milestone, idx) => {
+              const Icon = milestone.icon;
+              const isExpanded = expandedPhase === milestone.id;
+
               return (
                 <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
+                  key={milestone.id}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
-                  className="p-4 rounded-lg bg-slate-800/40 border border-slate-700/50 text-center"
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <Icon className="w-5 h-5 mx-auto mb-2" style={{ color: colors.primary.solid }} />
-                  <p className="text-xs font-semibold text-slate-400 mb-1">{exp.label}</p>
-                  <p className="text-lg font-bold text-white">{exp.value}</p>
-                  <p className="text-xs text-slate-500 mt-1">{exp.detail}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Phases Accordion */}
-          <div className="space-y-4">
-            {phases.map((phase, idx) => {
-              const Icon = phase.icon;
-              const isExpanded = expandedPhase === phase.id;
-
-              return (
-                <motion.div
-                  key={phase.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
-                >
+                  {/* Card Header */}
                   <button
-                    onClick={() => setExpandedPhase(isExpanded ? null : phase.id)}
-                    className="w-full text-left"
+                    onClick={() => setExpandedPhase(isExpanded ? null : milestone.id)}
+                    className="w-full text-left group"
                   >
                     <div
-                      className="p-6 rounded-lg border transition-all cursor-pointer"
+                      className={`relative p-8 rounded-2xl border-2 transition-all duration-500 cursor-pointer overflow-hidden ${
+                        isExpanded ? 'shadow-2xl' : 'shadow-lg hover:shadow-xl'
+                      }`}
                       style={{
-                        borderColor: isExpanded ? colors.primary.solid : 'rgb(71, 85, 105, 0.5)',
+                        borderColor: isExpanded ? milestone.accentColor : 'rgba(71, 85, 105, 0.4)',
                         backgroundColor: isExpanded
-                          ? `${colors.primary.solid}08`
-                          : 'rgba(30, 41, 59, 0.3)',
+                          ? 'rgba(15, 23, 42, 0.85)'
+                          : 'rgba(15, 23, 42, 0.6)',
                       }}
                     >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div
-                            className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
+                      {/* Background Gradient */}
+                      <div 
+                        className={`absolute inset-0 bg-gradient-to-br ${milestone.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} 
+                      />
+                      
+                      {/* Glassmorphism Layer */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] via-white/[0.02] to-transparent pointer-events-none" />
+                      
+                      {/* Glow when expanded */}
+                      {isExpanded && (
+                        <motion.div
+                          className="absolute inset-0 pointer-events-none"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 0.25 }}
+                          exit={{ opacity: 0 }}
+                          style={{
+                            background: `radial-gradient(ellipse at top, ${milestone.accentColor}, transparent 60%)`
+                          }}
+                        />
+                      )}
+
+                      <div className="relative z-10 flex items-start justify-between gap-6">
+                        <div className="flex items-start gap-6 flex-1">
+                          {/* Icon Container */}
+                          <motion.div
+                            className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center backdrop-blur-sm relative"
                             style={{
-                              backgroundColor: `${colors.primary.solid}20`,
-                              borderColor: `${colors.primary.solid}40`,
-                              border: '1px solid',
+                              backgroundColor: `${milestone.accentColor}18`,
+                              border: `2px solid ${milestone.accentColor}60`,
                             }}
+                            whileHover={{ scale: 1.08, rotate: 5 }}
+                            whileTap={{ scale: 0.95 }}
+                            transition={{ duration: 0.3, type: 'spring', stiffness: 300 }}
                           >
-                            <Icon className="w-5 h-5" style={{ color: colors.primary.solid }} />
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-slate-400 mb-1">{phase.timeline}</p>
-                            <h3 className="text-lg font-bold text-white mb-1">{phase.title}</h3>
-                            <p className="text-sm text-slate-400">{phase.headline}</p>
+                            <Icon className="w-8 h-8" style={{ color: milestone.accentColor }} />
+                            
+                            {/* Order Badge */}
+                            <div
+                              className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow-lg"
+                              style={{
+                                backgroundColor: milestone.accentColor,
+                                color: '#0f172a',
+                              }}
+                            >
+                              {milestone.order}
+                            </div>
+                          </motion.div>
+
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            {/* Title */}
+                            <h3 className="text-2xl font-black text-white mb-1.5 leading-tight tracking-tight">
+                              {milestone.title}
+                            </h3>
+                            
+                            {/* Subtitle */}
+                            <p 
+                              className="text-sm font-bold mb-3 tracking-wide uppercase"
+                              style={{ color: milestone.accentColor }}
+                            >
+                              {milestone.subtitle}
+                            </p>
+                            
+                            {/* Description */}
+                            <p className="text-base text-slate-300 leading-relaxed">
+                              {milestone.description}
+                            </p>
                           </div>
                         </div>
+
+                        {/* Chevron */}
                         <motion.div
                           animate={{ rotate: isExpanded ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
+                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                          className="flex-shrink-0 mt-2"
                         >
                           <ChevronDown
-                            className="w-5 h-5 flex-shrink-0"
-                            style={{ color: colors.primary.solid }}
+                            className="w-7 h-7 opacity-70"
+                            style={{ color: milestone.accentColor }}
                           />
                         </motion.div>
                       </div>
                     </div>
                   </button>
 
-                  {/* Expanded Content */}
+                  {/* Expanded Deliverables */}
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                       >
                         <div
-                          className="mt-0 p-6 rounded-b-lg border border-t-0 space-y-6"
+                          className="mt-3 p-10 rounded-2xl border-2 backdrop-blur-lg space-y-10"
                           style={{
-                            borderColor: `${colors.primary.solid}40`,
-                            backgroundColor: `${colors.primary.solid}04`,
+                            borderColor: `${milestone.accentColor}40`,
+                            backgroundColor: `rgba(15, 23, 42, 0.75)`,
+                            boxShadow: `0 0 40px ${milestone.accentColor}15`
                           }}
                         >
-                          {/* Tasks */}
+                          {/* Key Insight Box */}
+                          <div 
+                            className="p-6 rounded-xl border-l-4"
+                            style={{
+                              backgroundColor: `${milestone.accentColor}08`,
+                              borderLeftColor: milestone.accentColor,
+                            }}
+                          >
+                            <p className="text-sm font-semibold text-slate-200 leading-relaxed italic">
+                              💡 {milestone.keyInsight}
+                            </p>
+                          </div>
+
+                          {/* Deliverables */}
                           <div>
-                            <h4 className="text-sm font-semibold text-white mb-4">Tarefas / O que acontece:</h4>
-                            <div className="space-y-3">
-                              {phase.tasks.map((item, idx) => (
+                            <h4 className="text-base font-black text-white mb-8 flex items-center gap-3 uppercase tracking-wide">
+                              <div 
+                                className="w-2 h-8 rounded-full" 
+                                style={{ backgroundColor: milestone.accentColor }} 
+                              />
+                              Entregáveis Deste Milestone
+                            </h4>
+                            
+                            <div className="grid grid-cols-1 gap-8">
+                              {milestone.deliverables.map((deliverable, idx) => (
                                 <motion.div
                                   key={idx}
-                                  initial={{ opacity: 0, x: -10 }}
+                                  initial={{ opacity: 0, x: -20 }}
                                   animate={{ opacity: 1, x: 0 }}
-                                  transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                  className="flex gap-3"
+                                  transition={{ duration: 0.4, delay: idx * 0.1 }}
+                                  className="group/deliverable"
                                 >
-                                  <div
-                                    className="w-2 h-2 rounded-full flex-shrink-0 mt-2"
-                                    style={{ backgroundColor: colors.primary.solid }}
-                                  />
-                                  <div>
-                                    <p className="text-sm font-semibold text-white">{item.task}</p>
-                                    <p className="text-xs text-slate-400 mt-1">{item.description}</p>
+                                  <div className="flex gap-5">
+                                    {/* Number Badge */}
+                                    <div
+                                      className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-base font-black shadow-md"
+                                      style={{
+                                        backgroundColor: `${milestone.accentColor}25`,
+                                        color: milestone.accentColor,
+                                        border: `2px solid ${milestone.accentColor}40`
+                                      }}
+                                    >
+                                      {idx + 1}
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex-1 space-y-3">
+                                      {/* Label */}
+                                      <h5 className="text-base font-bold text-white leading-snug">
+                                        {deliverable.label}
+                                      </h5>
+                                      
+                                      {/* Detail */}
+                                      <p className="text-sm text-slate-300 leading-relaxed">
+                                        {deliverable.detail}
+                                      </p>
+                                      
+                                      {/* Impact */}
+                                      <div
+                                        className="pl-4 border-l-3"
+                                        style={{ borderLeftColor: `${milestone.accentColor}50`, borderLeftWidth: '3px' }}
+                                      >
+                                        <p className="text-xs text-slate-400 leading-relaxed">
+                                          <span 
+                                            className="font-bold uppercase tracking-wider text-xs" 
+                                            style={{ color: milestone.accentColor }}
+                                          >
+                                            Por que importa:
+                                          </span>{' '}
+                                          {deliverable.impact}
+                                        </p>
+                                      </div>
+                                    </div>
                                   </div>
                                 </motion.div>
                               ))}
                             </div>
                           </div>
 
-                          {/* Expectation & Warning */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-700/30">
-                            <div className="flex gap-3">
-                              <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: colors.primary.solid }} />
+                          {/* Timeline Note */}
+                          {milestone.timelineNote && (
+                            <div className="flex gap-4 p-6 rounded-xl border"
+                              style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                                borderColor: 'rgba(148, 163, 184, 0.2)',
+                              }}
+                            >
+                              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-amber-400" />
                               <div>
-                                <p className="text-xs font-semibold text-slate-400 mb-1">Expectativa realista:</p>
-                                <p className="text-sm text-slate-300">{phase.expectation}</p>
+                                <p className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">
+                                  Consideração de Timeline
+                                </p>
+                                <p className="text-sm text-slate-300 leading-relaxed">
+                                  {milestone.timelineNote}
+                                </p>
                               </div>
                             </div>
-                            <div className="flex gap-3">
-                              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-orange-400" />
-                              <div>
-                                <p className="text-xs font-semibold text-slate-400 mb-1">Atenção:</p>
-                                <p className="text-sm text-slate-300">{phase.warning}</p>
-                              </div>
-                            </div>
-                          </div>
+                          )}
                         </div>
                       </motion.div>
                     )}
@@ -277,17 +571,31 @@ export function ImplementationGuideSection({ campaign }: ImplementationGuideSect
             })}
           </div>
 
-          {/* Bottom CTA */}
+          {/* Bottom Strategic Note */}
           <motion.div
-            className="mt-12 p-6 rounded-lg bg-slate-800/30 border border-slate-700/50 text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="mt-20 p-10 rounded-2xl bg-gradient-to-br from-slate-800/60 via-slate-900/50 to-slate-950/60 border-2 border-slate-700/40 backdrop-blur-xl shadow-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
           >
-            <p className="text-sm text-slate-400">
-              <span className="font-semibold text-white">Está preparado?</span> Esses são números reais baseados em 23 salões. Seu resultado depende de: orçamento, qualidade do atendimento, preços competitivos e estar preparado pra crescimento.
-            </p>
+            <div className="flex gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/25 to-pink-500/20 border-2 border-purple-400/40 flex items-center justify-center backdrop-blur-sm">
+                  <Sparkles className="w-7 h-7 text-purple-300" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <p className="text-base font-black text-white mb-3 uppercase tracking-wide">
+                  Observação Final sobre Implementação
+                </p>
+                <p className="text-base text-slate-200 leading-relaxed">
+                  Este sistema não é rigidamente sequencial — milestones se sobrepõem e adaptam conforme necessário. 
+                  <strong className="text-white"> O objetivo não é seguir datas, mas atingir entregáveis com qualidade.</strong> Cada projeto é negociável 
+                  baseado em contexto, orçamento e objetivos específicos do cliente.
+                </p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { Tables } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import { CheckCircle2, X, Zap, Crown, Sparkles, ArrowRight, Clock } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle2, X, Zap, Crown, Sparkles, ArrowRight, Clock, ChevronDown } from 'lucide-react';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
 
 type Campaign = Tables<'campaigns'>;
@@ -86,6 +86,7 @@ const plans = [
 
 export function PricingSection({ campaign }: PricingSectionProps) {
   const colors = useCampaignColors(campaign);
+  const [expandedPlan, setExpandedPlan] = useState<string | null>('crescimento'); // Plano mais popular já expandido
   
   const scrollToCapture = () => {
     document.getElementById('capture')?.scrollIntoView({ behavior: 'smooth' });
@@ -264,17 +265,42 @@ export function PricingSection({ campaign }: PricingSectionProps) {
 
                   {/* Included Features */}
                   <div className="mb-6">
-                    <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">
-                      O que está incluso
-                    </div>
-                    <ul className="space-y-2.5">
-                      {plan.included.map((feature, fIdx) => (
-                        <li key={fIdx} className="flex items-start gap-2.5">
-                          <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: colors.primary.solid }} />
-                          <span className="text-sm text-slate-300 leading-relaxed">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <button
+                      onClick={() => setExpandedPlan(expandedPlan === plan.id ? null : plan.id)}
+                      className="w-full flex items-center justify-between text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4 hover:text-slate-300 transition-colors"
+                    >
+                      <span>O que está incluso</span>
+                      <motion.div
+                        animate={{ rotate: expandedPlan === plan.id ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </motion.div>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {expandedPlan === plan.id && (
+                        <motion.ul
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="space-y-2.5 overflow-hidden"
+                        >
+                          {plan.included.map((feature, fIdx) => (
+                            <motion.li
+                              key={fIdx}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: fIdx * 0.05 }}
+                              className="flex items-start gap-2.5"
+                            >
+                              <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: colors.primary.solid }} />
+                              <span className="text-sm text-slate-300 leading-relaxed">{feature}</span>
+                            </motion.li>
+                          ))}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                   {/* Not Included (if any) */}

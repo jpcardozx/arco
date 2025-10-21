@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useCallback, useMemo, useState, useId } from 'react';
+import React, { useCallback, useMemo, useState, useId, useRef } from 'react';
 import type { Tables } from '@/types/supabase';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion';
 import {
   Calendar,
   MessageCircle,
@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
+import { OptimizedImage } from '@/components/ui/optimized-image';
+import { landingImages } from '@/lib/landing-images';
 
 /** Types */
 // Ajuste conforme o tipo real no seu Supabase
@@ -125,6 +127,23 @@ export function HowItWorksSection({ campaign, className }: HowItWorksSectionProp
   const reduceMotion = useReducedMotion();
   const colors = useCampaignColors(campaign);
   const sectionId = useId();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // S-TIER PARALLAX: 3-layer depth for HowItWorks
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    restDelta: 0.0005
+  });
+
+  const yBackground = useTransform(smoothProgress, [0, 1], ['0%', '25%']);
+  const yContent = useTransform(smoothProgress, [0, 1], ['0%', '8%']);
+  const ySteps = useTransform(smoothProgress, [0, 1], ['0%', '4%']);
 
   // Chave controlada para os colapsáveis (stepIndex-itemIndex)
   const [openMap, setOpenMap] = useState<Record<string, boolean>>({});
@@ -145,31 +164,25 @@ export function HowItWorksSection({ campaign, className }: HowItWorksSectionProp
 
   return (
     <section
+      ref={sectionRef}
+      id="how-it-works"
       aria-labelledby={`${sectionId}-title`}
       className={cn(
         'relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950',
         className,
       )}
     >
-      {/* Texture sutil */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:48px_48px]" />
+      {/* PARALLAX LAYER 1: Background texture (deepest) */}
+      <motion.div 
+        style={{ y: yBackground }}
+        className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:48px_48px] opacity-30 will-change-transform" 
+      />
 
-      {/* Orbs de gradiente */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          aria-hidden
-          className="absolute top-[18%] left-[14%] w-[520px] h-[520px] rounded-full blur-[120px] opacity-[0.06]"
-          style={{ backgroundColor: primary }}
-        />
-        <div
-          aria-hidden
-          className="absolute bottom-[22%] right-[16%] w-[440px] h-[440px] rounded-full blur-[110px] opacity-[0.06]"
-          style={{ backgroundColor: secondary }}
-        />
-      </div>
-
-      {/* Conteúdo */}
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-32">
+      {/* PARALLAX LAYER 2: Main content */}
+      <motion.div 
+        style={{ y: yContent }}
+        className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-32 will-change-transform"
+      >
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <motion.div
@@ -372,8 +385,69 @@ export function HowItWorksSection({ campaign, className }: HowItWorksSectionProp
               Primeiros resultados: 48-72h. Otimização contínua: 90 dias. ROI típico: 4-6 meses.
             </p>
           </motion.div>
+
+          {/* Visual Examples Row */}
+          <motion.div
+            className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {/* Professional Service Image */}
+            <div className="relative group overflow-hidden rounded-xl border border-slate-700/50 bg-slate-800/30">
+              <OptimizedImage
+                src={landingImages.services.hair2.webp}
+                alt={landingImages.services.hair2.alt}
+                width={600}
+                height={400}
+                className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
+                placeholderType="professionalService"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold px-2 py-1 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                    EXECUÇÃO
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-white">Técnica profissional em ação</p>
+              </div>
+            </div>
+
+            {/* Cosmetics Products Image */}
+            <div className="relative group overflow-hidden rounded-xl border border-slate-700/50 bg-slate-800/30">
+              <OptimizedImage
+                src={landingImages.products.cosmetics.webp}
+                alt={landingImages.products.cosmetics.alt}
+                width={600}
+                height={400}
+                className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
+                placeholderType="products"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold px-2 py-1 rounded bg-violet-500/20 text-violet-400 border border-violet-500/30">
+                    PRODUTOS
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-white">Portfólio premium de serviços</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.p
+            className="mt-4 text-xs text-center text-slate-500"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+          >
+            * Imagens ilustrativas de ambientes de referência para demonstrar padrão de qualidade esperado.
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

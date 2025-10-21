@@ -17,7 +17,9 @@
       "mcp__chrome-devtools__evaluate_script",
       "Bash(npx supabase db dump:*)",
       "Bash(npx supabase:*)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(pnpm install)",
+      "Bash(pnpm typecheck)"
     ],
     "deny": []
   }
