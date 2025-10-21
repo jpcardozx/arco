@@ -388,8 +388,9 @@ function validatePayload(
 // MAIN HANDLER
 // ============================================================================
 
-serve(async (req) => {
-  // Handle CORS
+// HANDLER FUNCTION
+serve(async (req: Request) => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }

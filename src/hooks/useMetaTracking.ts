@@ -149,13 +149,14 @@ export function useMetaTracking() {
   }, []);
 
   /**
-   * Envia evento direto para Supabase Edge Function
+   * Envia evento para API local (backend)
    *
-   * Fluxo:
-   * 1. Gera event_id (dedup frontend cache 1h)
-   * 2. Coleta fbp/fbc cookies
-   * 3. POST para Edge Function
-   * 4. Edge Function: dedup, hash, enriquece, Meta API
+   * Fluxo SEGURO:
+   * 1. Frontend gera event_id (dedup cache 1h)
+   * 2. POST para /api/meta/conversions (local, sem credenciais)
+   * 3. Backend usa SERVICE_ROLE_KEY para chamar Edge Function
+   * 4. Edge Function valida + dedup + hash + enriquece + Meta API
+   * 5. Resposta volta ao frontend
    */
   const trackEvent = useCallback(
     async (data: MetaTrackingEventData): Promise<MetaTrackingResponse> => {
@@ -179,16 +180,16 @@ export function useMetaTracking() {
           fbc,
         };
 
-        console.log("📤 [Meta Tracking] Enviando para Edge Function", logContext);
+        console.log("📤 [Meta Tracking] Enviando para API local", logContext);
 
-        // POST direto para Supabase Edge Function
-        const edgeFunctionUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/meta-conversions-webhook`;
+        // POST para API local (backend)
+        // Backend cuida da autenticação com Supabase
+        const apiUrl = `/api/meta/conversions`;
 
-        const response = await fetch(edgeFunctionUrl, {
+        const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Event-ID": eventId,
           },
           body: JSON.stringify({
             event_name: data.eventName,

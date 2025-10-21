@@ -19,7 +19,8 @@
       "Bash(npx supabase:*)",
       "Bash(npm run build)",
       "Bash(pnpm install)",
-      "Bash(pnpm typecheck)"
+      "Bash(pnpm typecheck)",
+      "Bash(git log --all -S \"EAA\" --oneline)"
     ],
     "deny": []
   }

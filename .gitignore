@@ -135,3 +135,17 @@ docs/.vitepress/cache
 *.tar.gz
 *.rar
 *.7z
+
+# Security: Sensitive documentation
+SECURITY_ACTION_REQUIRED.md
+SECURITY_TOKEN_ROTATED.md
+docs/SECURE_*.md
+docs/tokens/
+docs/secrets/
+docs/*_TOKEN*.md
+docs/*_SECRET*.md
+docs/*_CREDENTIAL*.md
+
+# Security: Backup files with env
+.env.local.bak*
+.env.*.bak*
