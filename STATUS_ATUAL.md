@@ -1,53 +1,52 @@
-# 🎯 STATUS ATUAL - Meta Conversions API
+# 🎯 STATUS ATUAL - Meta Conversions API (ATUALIZADO)
 
-**Data**: 21 de outubro de 2025, 15:30  
-**Atualização**: Deploy completo, aguardando token válido
+**Data**: 21 de outubro de 2025, 16:10  
+**Status**: JWT ✅ Validado | Meta API ⚠️ Error 400
 
 ---
 
-## ✅ O QUE ESTÁ FUNCIONANDO
+## ✅ VALIDAÇÕES COMPLETADAS (Esta Sessão)
 
-### 1. **Edge Function Deployada** (15:06 UTC)
+### 1. **JWT/Autenticação** ✅
+- SERVICE_ROLE_KEY atualizado e renovado
+- Edge Function aceita Bearer token (sem "Invalid JWT")
+- Backend API implementado: `src/app/api/meta/conversions/route.ts`
+
+### 2. **Arquitetura 3-Camadas** ✅
 ```
-Status: ACTIVE
-Version: 1
-URL: https://vkclegvrqprevcdgosan.supabase.co/functions/v1/meta-conversions-webhook
+Frontend → Backend API → Edge Function → Meta CAPI
+   ✅          ✅            ✅              ⚠️ 400
 ```
 
-### 2. **Secrets Configurados**
+### 3. **Secrets** ✅
 ```bash
-✅ META_DATASET_ID=1574079363975678
-✅ META_CONVERSION_API_TOKEN=[configurado]
-✅ META_TEST_EVENT_CODE=TEST12345
+✅ META_CONVERSION_API_TOKEN (presente e lido)
+✅ META_DATASET_ID (presente)
+✅ SUPABASE_SERVICE_ROLE_KEY (renovado)
+✅ META_TEST_EVENT_CODE (TEST12345)
 ```
 
-### 3. **Ambiente Atualizado**
-```env
-# .env.local (staging)
-NEXT_PUBLIC_SUPABASE_URL="https://vkclegvrqprevcdgosan.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJ...[production key]"
+### 4. **Código Pronto** ✅
 ```
-
-### 4. **Arquitetura Implementada**
-```
-✅ src/hooks/useMetaTracking.ts (382 linhas)
-✅ src/components/CtwaButton.tsx (production-ready)
-✅ supabase/functions/meta-conversions-webhook/index.ts (561 linhas)
-✅ scripts/deploy-meta-smart.sh (auto-deploy)
+✅ src/hooks/useMetaTracking.ts (chama /api/meta/conversions)
+✅ src/app/api/meta/conversions/route.ts (novo backend)
+✅ supabase/functions/meta-conversions-webhook/index.ts (funcionando)
+✅ src/providers/MetaPixelProvider.tsx (ativo)
 ```
 
 ---
 
-## 🔴 BLOQUEIO ATUAL
+## ⚠️ PROBLEMA ATUAL
 
-### **Token Meta sem Permissão**
+### **Meta API Error 400**
 
-**Erro detectado**:
+**Resposta obtida**:
 ```json
 {
-  "error": {
-    "message": "(#100) Missing Permission",
-    "type": "OAuthException",
+  "success": false,
+  "error": "Meta API error: 400",
+  "requestId": "trace_1761074780996_b34k9wy6n"
+}
     "code": 100
   }
 }
