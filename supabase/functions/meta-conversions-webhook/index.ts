@@ -12,8 +12,10 @@
  *
  * Variáveis de ambiente necessárias:
  * - META_DATASET_ID
- * - META_CONVERSION_API_TOKEN
+ * - META_CONVERSION_API_TOKEN (rotacionado 21/10/2025 16:30)
  * - META_TEST_EVENT_CODE (opcional)
+ *
+ * Última atualização: 21/10/2025 - Token Meta renovado
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -218,6 +220,14 @@ async function sendToMetaAPI(
   const metaDatasetId = Deno.env.get("META_DATASET_ID");
   const metaToken = Deno.env.get("META_CONVERSION_API_TOKEN");
 
+  // DEBUG: Log token status
+  logEvent("DEBUG", "Meta credentials check", {
+    ...context,
+    datasetId: metaDatasetId ? "present" : "MISSING",
+    tokenLength: metaToken ? metaToken.length : 0,
+    tokenPrefix: metaToken ? metaToken.substring(0, 20) : "NONE",
+  });
+
   if (!metaDatasetId || !metaToken) {
     const error = "Meta credentials not configured";
     logEvent("ERROR", error, { ...context, credentials_check: "failed" });
@@ -226,7 +236,7 @@ async function sendToMetaAPI(
 
   const endpoint = `https://graph.facebook.com/v24.0/${metaDatasetId}/events?access_token=${metaToken}`;
 
-  const metaPayload = {
+  const metaPayload: any = {
     data: [payload],
   };
 
@@ -242,6 +252,8 @@ async function sendToMetaAPI(
       ...context,
       endpoint: endpoint.replace(metaToken, "***"),
       payload: JSON.stringify(metaPayload),
+      tokenPrefix: metaToken.substring(0, 20),
+      datasetId: metaDatasetId,
     });
 
     const response = await fetch(endpoint, {
@@ -252,7 +264,22 @@ async function sendToMetaAPI(
       body: JSON.stringify(metaPayload),
     });
 
-    const result = await response.json();
+    let result;
+    try {
+      result = await response.json();
+    } catch (e) {
+      const rawText = await response.text();
+      logEvent("ERROR", "Failed to parse Meta response as JSON", {
+        ...context,
+        status: response.status,
+        rawResponse: rawText,
+      });
+      return { 
+        success: false, 
+        error: `Meta API error: ${response.status} (invalid JSON)`,
+        response: { raw: rawText }
+      };
+    }
 
     if (!response.ok) {
       const error = `Meta API error: ${response.status}`;
@@ -491,7 +518,6 @@ serve(async (req: Request) => {
         ...payload!.custom_data,
       },
       action_source: "system_generated",
-      is_test: payload!.is_test,
     };
 
     logEvent("DEBUG", "Built Meta payload", {
@@ -507,6 +533,7 @@ serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error: metaResult.error,
+          metaResponse: metaResult.response,
           requestId: traceId,
         }),
         {
