@@ -74,10 +74,10 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
   };
 
   const benefits = [
-    'Acesso imediato ao sistema completo',
-    'Consultoria gratuita de 30 minutos',
-    'Suporte prioritário via WhatsApp',
-    'Sem compromisso ou cartão de crédito',
+    'Análise personalizada do seu contexto',
+    'Suporte direto via WhatsApp',
+    'Transparência total sobre processo',
+    'Sem compromisso antes de decidir',
   ];
 
   return (
@@ -106,10 +106,10 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Urgency Badge */}
+          {/* Information Badge */}
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 border"
-            style={{ 
+            style={{
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
               borderColor: `${colors.primary.solid}40`
             }}
@@ -119,24 +119,24 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
             transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <Clock className="w-4 h-4" style={{ color: colors.primary.solid }} />
-            <span className="text-sm font-semibold text-white">Últimas vagas com consultoria gratuita</span>
+            <span className="text-sm font-semibold text-white">Vamos entender seu contexto</span>
           </motion.div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-white">
-            Comece{' '}
-            <span 
+            Comece com{' '}
+            <span
               className="bg-gradient-to-r bg-clip-text text-transparent"
-              style={{ 
-                backgroundImage: `linear-gradient(to right, 
-                  color-mix(in srgb, ${colors.primary.solid} 70%, white), 
+              style={{
+                backgroundImage: `linear-gradient(to right,
+                  color-mix(in srgb, ${colors.primary.solid} 70%, white),
                   color-mix(in srgb, ${colors.secondary.solid} 60%, white))`
               }}
             >
-              hoje mesmo
+              uma conversa
             </span>
           </h2>
           <p className="text-base sm:text-lg text-slate-400 max-w-xl mx-auto">
-            Preencha abaixo e receba acesso imediato + consultoria estratégica personalizada
+            Compartilhe suas informações para que possamos entender melhor seu cenário e propor um caminho adequado
           </p>
         </motion.div>
 
@@ -207,6 +207,124 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
               />
             </div>
 
+            {/* Optional Fields Toggle */}
+            <motion.button
+              type="button"
+              onClick={() => setShowOptionalFields(!showOptionalFields)}
+              className="w-full flex items-center justify-between p-3 sm:p-4 rounded-lg border transition-all hover:bg-white/5"
+              style={{ borderColor: 'rgba(255, 255, 255, 0.12)' }}
+              initial={false}
+            >
+              <span className="text-sm text-slate-400 font-medium">
+                Informações adicionais (opcional)
+              </span>
+              <motion.div
+                animate={{ rotate: showOptionalFields ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="w-4 h-4 text-slate-400" />
+              </motion.div>
+            </motion.button>
+
+            {/* Optional Fields */}
+            <motion.div
+              initial={false}
+              animate={showOptionalFields ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="space-y-5 sm:space-y-6 pt-4 border-t" style={{ borderColor: 'rgba(255, 255, 255, 0.08)' }}>
+                {/* Biggest Challenge */}
+                <div>
+                  <label htmlFor="challenge" className="block text-sm font-semibold text-slate-300 mb-3">
+                    Qual é seu maior desafio atualmente?
+                  </label>
+                  <select
+                    id="challenge"
+                    value={formData.biggest_challenge}
+                    onChange={(e) => setFormData({ ...formData, biggest_challenge: e.target.value })}
+                    className="w-full h-12 sm:h-14 px-4 text-base text-white bg-white/5 border-2 rounded-lg transition-colors appearance-none cursor-pointer"
+                    style={{ borderColor: 'rgba(255, 255, 255, 0.12)' }}
+                    disabled={isSubmitting}
+                  >
+                    <option value="">Selecionar...</option>
+                    <option value="low_volume">Baixo volume de clientes</option>
+                    <option value="high_cost">Custo de aquisição elevado</option>
+                    <option value="poor_quality">Qualidade dos clientes</option>
+                    <option value="technology">Tecnologia e ferramentas</option>
+                    <option value="staff">Gestão e capacitação</option>
+                    <option value="other">Outro</option>
+                  </select>
+                </div>
+
+                {/* Urgency */}
+                <div>
+                  <label htmlFor="urgency" className="block text-sm font-semibold text-slate-300 mb-3">
+                    Qual é seu timeline?
+                  </label>
+                  <select
+                    id="urgency"
+                    value={formData.urgency}
+                    onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
+                    className="w-full h-12 sm:h-14 px-4 text-base text-white bg-white/5 border-2 rounded-lg transition-colors appearance-none cursor-pointer"
+                    style={{ borderColor: 'rgba(255, 255, 255, 0.12)' }}
+                    disabled={isSubmitting}
+                  >
+                    <option value="">Selecionar...</option>
+                    <option value="immediate">Urgente (esta semana)</option>
+                    <option value="this_month">Este mês</option>
+                    <option value="this_quarter">Próximos 3 meses</option>
+                    <option value="exploring">Apenas explorando</option>
+                    <option value="not_sure">Ainda não tenho certeza</option>
+                  </select>
+                </div>
+
+                {/* Monthly Revenue */}
+                <div>
+                  <label htmlFor="revenue" className="block text-sm font-semibold text-slate-300 mb-3">
+                    Faturamento mensal aproximado
+                  </label>
+                  <select
+                    id="revenue"
+                    value={formData.monthly_revenue}
+                    onChange={(e) => setFormData({ ...formData, monthly_revenue: e.target.value })}
+                    className="w-full h-12 sm:h-14 px-4 text-base text-white bg-white/5 border-2 rounded-lg transition-colors appearance-none cursor-pointer"
+                    style={{ borderColor: 'rgba(255, 255, 255, 0.12)' }}
+                    disabled={isSubmitting}
+                  >
+                    <option value="">Selecionar...</option>
+                    <option value="under_10k">Até R$ 10 mil</option>
+                    <option value="10k_50k">R$ 10 a 50 mil</option>
+                    <option value="50k_100k">R$ 50 a 100 mil</option>
+                    <option value="100k_500k">R$ 100 a 500 mil</option>
+                    <option value="over_500k">Acima de R$ 500 mil</option>
+                  </select>
+                </div>
+
+                {/* Ad Experience */}
+                <div>
+                  <label htmlFor="experience" className="block text-sm font-semibold text-slate-300 mb-3">
+                    Experiência com publicidade digital
+                  </label>
+                  <select
+                    id="experience"
+                    value={formData.ad_experience}
+                    onChange={(e) => setFormData({ ...formData, ad_experience: e.target.value })}
+                    className="w-full h-12 sm:h-14 px-4 text-base text-white bg-white/5 border-2 rounded-lg transition-colors appearance-none cursor-pointer"
+                    style={{ borderColor: 'rgba(255, 255, 255, 0.12)' }}
+                    disabled={isSubmitting}
+                  >
+                    <option value="">Selecionar...</option>
+                    <option value="never">Nunca tentei</option>
+                    <option value="unsuccessful">Tentei, não deu certo</option>
+                    <option value="moderate">Tenho um pouco de experiência</option>
+                    <option value="strong">Experiência sólida</option>
+                    <option value="very_strong">Experiência avançada</option>
+                  </select>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Error Message */}
             {error && (
               <motion.div
@@ -227,7 +345,7 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
               type="submit"
               size="lg"
               className="w-full h-14 sm:h-16 text-base sm:text-lg font-bold text-white rounded-xl shadow-xl transition-all duration-300 hover:scale-[1.02]"
-              style={{ 
+              style={{
                 backgroundImage: `linear-gradient(to right, ${colors.primary.solid}, ${colors.secondary.solid})`
               }}
               disabled={isSubmitting}
@@ -235,11 +353,11 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Processando...
+                  Enviando...
                 </>
               ) : (
                 <>
-                  Quero Começar Agora
+                  Continuar
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </>
               )}
