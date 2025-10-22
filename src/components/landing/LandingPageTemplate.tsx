@@ -73,19 +73,19 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
       {/* 1. Hero */}
       <HeroSection campaign={campaign} />
 
-      <SectionDivider variant="wave" />
+      <SectionDivider variant="gradient" />
 
       {/* 2. System Overview - Pilares integrados + Before/After */}
       <SystemOverviewSection campaign={campaign} />
 
-      <SectionDivider variant="fade" />
+      <SectionDivider variant="depth" />
 
       {/* 3. How It Works - Processo detalhado com timeline */}
       <HowItWorksSection campaign={campaign} />
 
       <TransitionBridge
         campaign={campaign}
-        text="Veja quem já validou este sistema"
+        text="Veja quem já testou este sistema"
         icon={TrendingUp}
         variant="icon"
       />
@@ -97,7 +97,7 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
 
       <TransitionBridge
         campaign={campaign}
-        text="Entenda a jornada de implementação"
+        text="Entenda como os melhores implementaram"
         icon={Calendar}
         variant="icon"
       />
@@ -105,7 +105,7 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
       {/* 5. Implementation Guide - Timeline 90 dias */}
       <ImplementationGuideSection campaign={campaign} />
 
-      <SectionDivider variant="wave" />
+      <SectionDivider variant="gradient" />
 
       {/* 6. Value Investment - Pricing transparente */}
       <Suspense fallback={<SectionSkeleton />}>
@@ -114,7 +114,7 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
 
       <TransitionBridge
         campaign={campaign}
-        text="Pronto? Vamos entender seu contexto"
+        text="Pronto para começar uma conversa?"
         icon={Zap}
         variant="icon"
       />
