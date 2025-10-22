@@ -26,20 +26,36 @@ function getResendClient() {
 
 // Validation schema for lead capture
 const leadCaptureSchema = z.object({
+  // Core fields (required)
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
   email: z.string().email('Email inválido'),
   phone: z.string().min(10, 'Telefone inválido').max(15),
+
+  // Campaign tracking
   campaign_slug: z.string().optional(),
   campaign_id: z.string().uuid().optional(),
   source: z.string().default('landing_page'),
-  
+
   // UTM parameters
   utm_source: z.string().optional(),
   utm_medium: z.string().optional(),
   utm_campaign: z.string().optional(),
   utm_term: z.string().optional(),
   utm_content: z.string().optional(),
-  
+
+  // Segmentation fields (optional - for lead quality/intent)
+  biggest_challenge: z.string().optional(),
+  // Values: 'low_volume', 'high_cost', 'poor_quality', 'technology', 'staff', 'other'
+
+  urgency: z.string().optional(),
+  // Values: 'immediate', 'this_month', 'this_quarter', 'exploring', 'not_sure'
+
+  monthly_revenue: z.string().optional(),
+  // Values: 'under_10k', '10k_50k', '50k_100k', '100k_500k', 'over_500k'
+
+  ad_experience: z.string().optional(),
+  // Values: 'never', 'unsuccessful', 'moderate', 'strong', 'very_strong'
+
   // Additional fields
   message: z.string().optional(),
   company: z.string().optional(),
@@ -113,7 +129,13 @@ export async function POST(request: NextRequest) {
           message: validatedData.message,
           ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
           user_agent: request.headers.get('user-agent'),
-          submitted_at: new Date().toISOString()
+          submitted_at: new Date().toISOString(),
+
+          // Segmentation data for lead scoring/intent
+          biggest_challenge: validatedData.biggest_challenge || null,
+          urgency: validatedData.urgency || null,
+          monthly_revenue: validatedData.monthly_revenue || null,
+          ad_experience: validatedData.ad_experience || null,
         }
       })
       .select()

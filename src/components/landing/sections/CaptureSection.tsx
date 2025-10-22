@@ -5,7 +5,7 @@ import type { Tables } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
-import { Loader2, ArrowRight, Shield, CheckCircle2, Clock } from 'lucide-react';
+import { Loader2, ArrowRight, Shield, CheckCircle2, Clock, ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
 import { useMetaTracking } from '@/hooks/useMetaTracking';
@@ -20,14 +20,19 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
   const router = useRouter();
   const colors = useCampaignColors(campaign);
   const { trackLead } = useMetaTracking();
-  
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
+    biggest_challenge: '',
+    urgency: '',
+    monthly_revenue: '',
+    ad_experience: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showOptionalFields, setShowOptionalFields] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
