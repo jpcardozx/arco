@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,META_DATASET_ID,META_CONVERSION_API_TOKEN index.ts",
+    "deploy": "supabase functions deploy meta-retry-queue"
+  }
+}

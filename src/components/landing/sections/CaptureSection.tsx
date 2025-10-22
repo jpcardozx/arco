@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Loader2, ArrowRight, Shield, CheckCircle2, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
+import { useMetaTracking } from '@/hooks/useMetaTracking';
 
 type Campaign = Tables<'campaigns'>;
 
@@ -18,6 +19,8 @@ interface CaptureSectionProps {
 export function CaptureSection({ campaign }: CaptureSectionProps) {
   const router = useRouter();
   const colors = useCampaignColors(campaign);
+  const { trackLead } = useMetaTracking();
+  
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -47,6 +50,15 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
       if (!response.ok) {
         throw new Error('Erro ao enviar formulário');
       }
+
+      // Track Lead event to Meta
+      await trackLead({
+        email: formData.email,
+        phone: formData.phone,
+        firstName: formData.name.split(' ')[0],
+        lastName: formData.name.split(' ').slice(1).join(' '),
+        source: `lp_${campaign.slug}`,
+      });
 
       // Redirect to success page
       router.push(`/lp/${campaign.slug}/success` as any);

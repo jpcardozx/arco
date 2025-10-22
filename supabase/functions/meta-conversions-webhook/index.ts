@@ -152,63 +152,92 @@ function logEvent(
 }
 
 // ============================================================================
-// DEDUPLICATION (IN-MEMORY com TTL)
+// DEDUPLICATION (DATABASE - Persistent)
 // ============================================================================
 
-interface DedupEntry {
-  eventId: string;
-  timestamp: number;
-  expiresAt: number;
-}
-
-const DEDUP_STORE = new Map<string, DedupEntry>();
-const DEDUP_TTL_MS = 3600000; // 1 hora
-
 /**
- * Verifica se evento já foi processado
+ * Simple in-memory dedup (temporary) - use backend for persistent dedup
+ * NOTA: REST API from Deno Edge Functions não funciona bem com SERVICE_ROLE_KEY
+ * Solução real: dedup implementada no backend API route
  */
-function checkDedup(eventId: string): { isDuplicate: boolean; duplicateOf?: string } {
-  const key = `meta_${eventId}`;
-  const entry = DEDUP_STORE.get(key);
+const dedupCache = new Map<string, number>();
+const DEDUP_TTL = 3600000; // 1 hora
 
-  if (entry) {
-    if (Date.now() < entry.expiresAt) {
-      return { isDuplicate: true, duplicateOf: entry.eventId };
-    } else {
-      DEDUP_STORE.delete(key);
+async function checkDedup(eventId: string): Promise<boolean> {
+  try {
+    const timestamp = dedupCache.get(eventId);
+    if (!timestamp) return false;
+
+    // Se expirou, remover
+    if (Date.now() - timestamp > DEDUP_TTL) {
+      dedupCache.delete(eventId);
+      return false;
     }
+
+    logEvent("DEBUG", "Dedup cache hit", { eventId });
+    return true;
+  } catch (error) {
+    logEvent("WARN", "Dedup check exception", { error: String(error), eventId });
+    return false;
   }
-
-  return { isDuplicate: false };
 }
 
 /**
- * Registra evento como processado
+ * Registra evento como processado (em-memory)
  */
-function recordDedup(eventId: string): void {
-  const key = `meta_${eventId}`;
-  DEDUP_STORE.set(key, {
-    eventId,
-    timestamp: Date.now(),
-    expiresAt: Date.now() + DEDUP_TTL_MS,
-  });
-}
-
-/**
- * Limpa entradas expiradas (garbage collection)
- */
-function cleanupDedup(): void {
-  const now = Date.now();
-  for (const [key, entry] of DEDUP_STORE.entries()) {
-    if (now > entry.expiresAt) {
-      DEDUP_STORE.delete(key);
-    }
+async function recordDedup(eventId: string): Promise<void> {
+  try {
+    dedupCache.set(eventId, Date.now());
+    logEvent("DEBUG", "Dedup recorded", { eventId });
+  } catch (error) {
+    logEvent("WARN", "Failed to record dedup", { error: String(error) });
   }
 }
 
 // ============================================================================
 // META CONVERSIONS API
 // ============================================================================
+
+/**
+ * Log de evento para observabilidade
+ */
+async function logEventToDB(
+  eventId: string,
+  traceId: string,
+  eventName: string,
+  status: string,
+  fbtrace_id?: string,
+  error?: string,
+  duration?: number
+): Promise<void> {
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!supabaseUrl || !serviceRoleKey) return;
+
+    await fetch(`${supabaseUrl}/rest/v1/meta_events_log`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${serviceRoleKey}`,
+        "apikey": serviceRoleKey,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal",
+      },
+      body: JSON.stringify({
+        event_id: eventId,
+        trace_id: traceId,
+        event_name: eventName,
+        status: status,
+        meta_fbtrace_id: fbtrace_id || null,
+        error_message: error || null,
+        request_duration_ms: duration || null,
+      }),
+    });
+  } catch (e) {
+    logEvent("WARN", "Failed to log event to DB", { error: String(e) });
+  }
+}
 
 /**
  * Envia evento para Meta Conversions API com retry
@@ -481,12 +510,19 @@ serve(async (req: Request) => {
     const eventId = ensureEventId(payload!.event_id);
     context.eventId = eventId;
 
-    // Check deduplication
-    const dedupCheck = checkDedup(eventId);
-    if (dedupCheck.isDuplicate) {
+    // Check deduplication (now async)
+    const isDuplicate = await checkDedup(eventId);
+    if (isDuplicate) {
       context.isDuplicate = true;
-      context.duplicateOf = dedupCheck.duplicateOf;
       logEvent("WARN", "Duplicate event detected", context);
+
+      // Log to DB
+      await logEventToDB(
+        eventId,
+        traceId,
+        payload!.event_name,
+        "duplicate"
+      );
 
       return new Response(
         JSON.stringify({
@@ -494,7 +530,6 @@ serve(async (req: Request) => {
           error: "Duplicate event",
           isDuplicate: true,
           requestId: traceId,
-          duplicateOf: dedupCheck.duplicateOf,
         }),
         {
           status: 409,
@@ -526,9 +561,22 @@ serve(async (req: Request) => {
     });
 
     // Send to Meta API
+    const sendStart = Date.now();
     const metaResult = await sendToMetaAPI(metaPayload, context);
+    const sendDuration = Date.now() - sendStart;
 
     if (!metaResult.success) {
+      // Log failure
+      await logEventToDB(
+        eventId,
+        traceId,
+        payload!.event_name,
+        "failed",
+        undefined,
+        metaResult.error,
+        sendDuration
+      );
+
       return new Response(
         JSON.stringify({
           success: false,
@@ -543,15 +591,26 @@ serve(async (req: Request) => {
       );
     }
 
-    // Record in dedup store
-    recordDedup(eventId);
+    // Record in dedup store (async)
+    await recordDedup(eventId);
 
-    // Cleanup old dedup entries
-    cleanupDedup();
+    // Log success
+    const fbtrace = metaResult.response?.fbtrace_id;
+    await logEventToDB(
+      eventId,
+      traceId,
+      payload!.event_name,
+      "success",
+      fbtrace,
+      undefined,
+      sendDuration
+    );
 
     logEvent("INFO", "Event processed successfully", {
       ...context,
       isDuplicate: false,
+      fbtrace,
+      duration: sendDuration,
     });
 
     return new Response(

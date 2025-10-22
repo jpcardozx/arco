@@ -8,7 +8,6 @@ import { DashboardHeader } from '@/components/dashboard/dashboard-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDashboardUser } from '@/hooks/useDashboardUser'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { dashboardLogger } from '@/lib/supabase/dashboard-logger'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
@@ -26,28 +25,28 @@ export default function DashboardLayout({
   // Log page views
   useEffect(() => {
     if (pathname) {
-      dashboardLogger.pageView(pathname)
+      console.log('[Dashboard] Page view:', pathname)
     }
   }, [pathname])
 
   const handleSignOut = async () => {
     try {
-      dashboardLogger.auth('logout')
+      console.log('[Dashboard] Logging out...')
       await supabase.auth.signOut()
       redirect('/login')
     } catch (error) {
-      dashboardLogger.error('logout_failed', error as Error)
+      console.error('[Dashboard] Logout failed:', error)
     }
   }
 
   const handleMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen)
-    dashboardLogger.action('mobile_menu_toggle', { open: !mobileMenuOpen })
+    console.log('[Dashboard] Mobile menu toggled')
   }
 
   const handleSidebarToggle = () => {
     setSidebarCollapsed(!sidebarCollapsed)
-    dashboardLogger.action('sidebar_toggle', { collapsed: !sidebarCollapsed })
+    console.log('[Dashboard] Sidebar toggled')
   }
 
   if (loading) {

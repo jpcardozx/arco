@@ -1,11 +1,12 @@
 'use client';
 
 import type { Tables } from '@/types/supabase';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { ArrowDown, AlertCircle, TrendingUp, Calendar, GitBranch, Zap } from 'lucide-react';
 import SectionContainer from '@/components/animation/SectionContainer';
 import SectionDivider from '@/components/animation/SectionDivider';
+import { useMetaTracking } from '@/hooks/useMetaTracking';
 
 // Hero: Eager load (above the fold, critical for LCP)
 import { HeroSection } from './sections/HeroSection';
@@ -52,6 +53,19 @@ interface LandingPageTemplateProps {
 }
 
 export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
+  // Track PageView + ViewContent on mount
+  useEffect(() => {
+    // PageView (automático via Pixel)
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'ViewContent', {
+        content_name: campaign.name,
+        content_category: 'landing_page',
+        content_ids: [campaign.id],
+        content_type: 'product',
+      });
+    }
+  }, [campaign.id, campaign.name]);
+
   return (
     <main className="min-h-screen">
       {/* 1. Hero */}

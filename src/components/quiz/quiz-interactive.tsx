@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
-import { dashboardLogger } from '@/lib/supabase/dashboard-logger'
+
 import { createClient } from '@/lib/supabase/client'
 
 const SECTION_ICONS = {
@@ -95,13 +95,11 @@ export function QuizInteractive() {
 
   useEffect(() => {
     if (step === 'quiz') {
-      dashboardLogger.pageView('/quiz', { section: currentSection?.id })
     }
   }, [step, state.currentSection])
 
   const handleStart = () => {
     setStep('contact')
-    dashboardLogger.action('quiz_started', { config: QUIZ_CONFIG.title })
   }
 
   const handleContactSubmit = (e: React.FormEvent) => {
@@ -112,7 +110,6 @@ export function QuizInteractive() {
     }
 
     setStep('quiz')
-    dashboardLogger.action('quiz_contact_submitted', { email: contactInfo.email })
   }
 
   const handleAnswer = (value: string | string[] | number) => {
@@ -147,7 +144,6 @@ export function QuizInteractive() {
         currentSection: prev.currentSection + 1,
         currentQuestion: 0,
       }))
-      dashboardLogger.action('quiz_section_completed', { 
         section: currentSection.id,
         nextSection: QUIZ_SECTIONS[state.currentSection + 1]?.id 
       })
@@ -196,7 +192,6 @@ export function QuizInteractive() {
     // Salvar no Supabase
     saveQuizResult(quizResult)
 
-    dashboardLogger.action('quiz_completed', {
       score: quizResult.profile.score,
       leadScore: quizResult.profile.leadScore,
       verticals: quizResult.profile.verticals,
@@ -230,11 +225,9 @@ export function QuizInteractive() {
 
       // Clear localStorage after successful save
       localStorage.removeItem('quiz_progress')
-      dashboardLogger.action('quiz_saved_to_db', { email: contactInfo.email })
     } catch (error) {
       console.error('❌ Erro ao salvar quiz:', error)
       setSaveError('Não foi possível salvar seus resultados. Você ainda pode agendar uma consultoria.')
-      dashboardLogger.action('quiz_save_error', {
         email: contactInfo.email,
         error: error instanceof Error ? error.message : String(error)
       })
@@ -242,7 +235,6 @@ export function QuizInteractive() {
   }
 
   const handleDownloadReport = async () => {
-    dashboardLogger.action('quiz_report_download_requested', { email: contactInfo.email })
 
     try {
       // Send email with results via API
@@ -260,7 +252,6 @@ export function QuizInteractive() {
         throw new Error('Falha ao enviar relatório')
       }
 
-      dashboardLogger.action('quiz_report_sent', { email: contactInfo.email })
     } catch (error) {
       console.error('Error sending report:', error)
       // Fallback: redirect to contact page with pre-filled data
@@ -269,7 +260,6 @@ export function QuizInteractive() {
   }
 
   const handleScheduleCall = () => {
-    dashboardLogger.action('quiz_schedule_call_clicked', { email: contactInfo.email })
     window.location.href = '/agendamentos'
   }
 

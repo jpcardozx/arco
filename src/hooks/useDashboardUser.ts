@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { User } from '@supabase/supabase-js'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { dashboardLogger } from '@/lib/supabase/dashboard-logger'
 
 export interface DashboardUser extends User {
   tier?: 'free' | 'paid' | 'admin'
@@ -41,7 +40,6 @@ export function useDashboardUser(): UseDashboardUserReturn {
 
       if (!authUser) {
         setUser(null)
-        dashboardLogger.log('auth', 'user_not_found')
         return
       }
 
@@ -67,15 +65,10 @@ export function useDashboardUser(): UseDashboardUserReturn {
       }
 
       setUser(dashboardUser)
-      dashboardLogger.setUserId(authUser.id)
-      dashboardLogger.log('auth', 'user_loaded', {
-        userId: authUser.id,
-        tier: dashboardUser.tier,
-      })
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to fetch user')
       setError(error)
-      dashboardLogger.error('user_fetch_failed', error)
+      console.error('Failed to fetch user:', error)
     } finally {
       setLoading(false)
     }
@@ -97,11 +90,9 @@ export function useDashboardUser(): UseDashboardUserReturn {
 
       // Refresh user data
       await fetchUser()
-      
-      dashboardLogger.action('profile_updated', { updates })
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to update profile')
-      dashboardLogger.error('profile_update_failed', error)
+      console.error('Failed to update profile:', error)
       throw error
     }
   }
@@ -112,8 +103,6 @@ export function useDashboardUser(): UseDashboardUserReturn {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        dashboardLogger.auth(event as any, { session: !!session })
-        
         if (event === 'SIGNED_OUT') {
           setUser(null)
         } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {

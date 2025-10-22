@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { dashboardLogger } from '@/lib/utils/dashboard-logger'
 
 export interface UserTask {
   id: string
@@ -26,15 +25,12 @@ export function useUserTasks(date?: Date) {
   const dateString = targetDate.toISOString().split('T')[0]
 
   useEffect(() => {
-    dashboardLogger.logHookMount('useUserTasks', { date: dateString })
-    return () => dashboardLogger.logHookUnmount('useUserTasks')
   }, [dateString])
 
   return useQuery<UserTask[]>({
     queryKey: ['user-tasks', dateString],
     queryFn: async () => {
       const startTime = performance.now()
-      dashboardLogger.logQuery(['user-tasks', dateString], 'loading')
 
       try {
         const { data, error } = await supabase.rpc('get_user_tasks', {
@@ -42,18 +38,14 @@ export function useUserTasks(date?: Date) {
         })
 
         if (error) {
-          dashboardLogger.logQuery(['user-tasks', dateString], 'error', undefined, error)
           throw new Error(`Failed to fetch user tasks: ${error.message}`)
         }
 
         const duration = Math.round(performance.now() - startTime)
         const tasks = (data as UserTask[]) || []
-        dashboardLogger.logQuery(['user-tasks', dateString], 'success', { count: tasks.length })
-        dashboardLogger.success('useUserTasks', `Fetched ${tasks.length} tasks in ${duration}ms`)
 
         return tasks
       } catch (err) {
-        dashboardLogger.error('useUserTasks', 'Query failed', err)
         throw err
       }
     },

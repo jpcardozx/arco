@@ -51,6 +51,32 @@ function validatePayload(body: any): { valid: boolean; error?: string } {
   return { valid: true };
 }
 
+// In-memory dedup cache (simple and effective)
+const dedupCache = new Map<string, number>();
+
+/**
+ * Verifica deduplicação em memória (rápido, local)
+ */
+function checkDedupLocal(eventId: string): boolean {
+  const timestamp = dedupCache.get(eventId);
+  if (!timestamp) return false;
+
+  // Se expirou (>1h), removeu
+  if (Date.now() - timestamp > 3600000) {
+    dedupCache.delete(eventId);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Registra deduplicação em memória
+ */
+function recordDedupLocal(eventId: string): void {
+  dedupCache.set(eventId, Date.now());
+}
+
 /**
  * Gera trace ID para correlação de requests
  */
@@ -113,7 +139,22 @@ export async function POST(req: NextRequest) {
     }
 
     // Log de entrada (sem expor dados sensíveis)
-    console.log(`[Meta API] ${traceId} - Received ${body.event_name} event`);
+    const eventId = body.event_id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    console.log(`[Meta API] ${traceId} - Received ${body.event_name} event (${eventId})`);
+
+    // Verificar deduplicação LOCAL (mais rápido)
+    if (checkDedupLocal(eventId)) {
+      console.warn(`[Meta API] ${traceId} - Duplicate event blocked: ${eventId}`);
+      return NextResponse.json(
+        {
+          error: "Duplicate event",
+          isDuplicate: true,
+          traceId,
+          eventId,
+        },
+        { status: 409 }
+      );
+    }
 
     // Chamar Edge Function com SERVICE_ROLE_KEY (JWT válido)
     const edgeFunctionUrl = `${supabaseUrl}/functions/v1/meta-conversions-webhook`;
@@ -150,17 +191,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Sucesso
+    // Sucesso - registrar no dedup cache
     console.log(
       `[Meta API] ${traceId} - Success (${duration}ms):`,
       result.success ? "Event tracked" : "Warning"
     );
-    
+
+    if (result.success) {
+      recordDedupLocal(eventId);
+    }
+
     return NextResponse.json(
-      { 
+      {
         ...result,
-        traceId 
-      }, 
+        traceId,
+        eventId
+      },
       { status: 200 }
     );
   } catch (error) {

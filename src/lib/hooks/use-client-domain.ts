@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { dashboardLogger } from '@/lib/utils/dashboard-logger'
 
 export interface SSLData {
   enabled: boolean
@@ -53,31 +52,24 @@ export function useClientDomain() {
   const supabase = getSupabaseClient()
 
   useEffect(() => {
-    dashboardLogger.logHookMount('useClientDomain')
-    return () => dashboardLogger.logHookUnmount('useClientDomain')
   }, [])
 
   return useQuery<DomainData | null>({
     queryKey: ['client-domain'],
     queryFn: async () => {
       const startTime = performance.now()
-      dashboardLogger.logQuery(['client-domain'], 'loading')
 
       try {
         const { data, error } = await supabase.rpc('get_client_domain')
 
         if (error) {
-          dashboardLogger.logQuery(['client-domain'], 'error', undefined, error)
           throw new Error(`Failed to fetch client domain: ${error.message}`)
         }
 
         const duration = Math.round(performance.now() - startTime)
-        dashboardLogger.logQuery(['client-domain'], 'success', data)
-        dashboardLogger.success('useClientDomain', `Data fetched in ${duration}ms`)
 
         return data as unknown as DomainData | null
       } catch (err) {
-        dashboardLogger.error('useClientDomain', 'Query failed', err)
         throw err
       }
     },

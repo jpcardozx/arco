@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { dashboardLogger } from '@/lib/utils/dashboard-logger'
 
 export interface UserLead {
   id: string
@@ -24,15 +23,12 @@ export function useUserLeads(limit = 10) {
   const supabase = getSupabaseClient()
 
   useEffect(() => {
-    dashboardLogger.logHookMount('useUserLeads', { limit })
-    return () => dashboardLogger.logHookUnmount('useUserLeads')
   }, [limit])
 
   return useQuery<UserLead[]>({
     queryKey: ['user-leads', limit],
     queryFn: async () => {
       const startTime = performance.now()
-      dashboardLogger.logQuery(['user-leads'], 'loading')
 
       try {
         const { data, error } = await supabase.rpc('get_user_leads', {
@@ -40,18 +36,14 @@ export function useUserLeads(limit = 10) {
         })
 
         if (error) {
-          dashboardLogger.logQuery(['user-leads'], 'error', undefined, error)
           throw new Error(`Failed to fetch user leads: ${error.message}`)
         }
 
         const duration = Math.round(performance.now() - startTime)
         const leads = (data as UserLead[]) || []
-        dashboardLogger.logQuery(['user-leads'], 'success', { count: leads.length })
-        dashboardLogger.success('useUserLeads', `Fetched ${leads.length} leads in ${duration}ms`)
 
         return leads
       } catch (err) {
-        dashboardLogger.error('useUserLeads', 'Query failed', err)
         throw err
       }
     },
