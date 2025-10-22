@@ -144,9 +144,6 @@ export function QuizInteractive() {
         currentSection: prev.currentSection + 1,
         currentQuestion: 0,
       }))
-        section: currentSection.id,
-        nextSection: QUIZ_SECTIONS[state.currentSection + 1]?.id 
-      })
     } else {
       // Próxima pergunta
       setState(prev => ({
@@ -191,11 +188,6 @@ export function QuizInteractive() {
 
     // Salvar no Supabase
     saveQuizResult(quizResult)
-
-      score: quizResult.profile.score,
-      leadScore: quizResult.profile.leadScore,
-      verticals: quizResult.profile.verticals,
-    })
   }
 
   const saveQuizResult = async (quizResult: any) => {
@@ -228,9 +220,6 @@ export function QuizInteractive() {
     } catch (error) {
       console.error('❌ Erro ao salvar quiz:', error)
       setSaveError('Não foi possível salvar seus resultados. Você ainda pode agendar uma consultoria.')
-        email: contactInfo.email,
-        error: error instanceof Error ? error.message : String(error)
-      })
     }
   }
 

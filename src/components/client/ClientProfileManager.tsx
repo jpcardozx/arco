@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
-import { Database, TablesInsert, TablesUpdate } from '@/lib/supabase/database.types'
+import { Database, TablesInsert, TablesUpdate } from '@/types/database.types'
 import { PremiumButton, CTAButton } from '@/components/ui/premium-button'
 import { SmartLoader } from '@/components/ui/smart-loader'
 import { 
