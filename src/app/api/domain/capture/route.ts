@@ -136,6 +136,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Send email notification (non-blocking)
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/domain-analysis`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          domain,
+          sessionId,
+          requestId: request.id,
+          metadata: {
+            utmSource: metadata?.utmSource,
+            utmMedium: metadata?.utmMedium,
+            utmCampaign: metadata?.utmCampaign,
+          },
+        }),
+      }).catch((emailError) => {
+        // Log but don't fail the request if email fails
+        console.warn('[API] Email notification failed:', emailError);
+      });
+    } catch (emailError) {
+      console.warn('[API] Email notification error (non-blocking):', emailError);
+    }
+
     // Success response
     return NextResponse.json({
       success: true,
