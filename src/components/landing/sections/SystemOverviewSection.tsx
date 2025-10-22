@@ -133,10 +133,33 @@ export function SystemOverviewSection({ campaign }: SystemOverviewSectionProps) 
             </p>
           </motion.div>
 
-          {/* 4 Market Shifts - Dados concretos */}
+          {/* 4 Market Shifts - Dados concretos + Objection Bridges */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
             {MARKET_SHIFTS.map((shift, idx) => {
               const Icon = shift.icon
+
+              // Objection bridges - respostas às perguntas silenciosas
+              const objectionBridges: Record<string, { concern: string; reality: string }> = {
+                '87%': {
+                  concern: '87% busca — e daí? Quem garante que EU vou aparecer?',
+                  reality: 'Testamos em 5 bairros competitivos (Pinheiros, Vila Mariana, Tatuapé). Em 72h, todas tiveram cliques. Alguns nichos tomam mais dias/orçamento.'
+                },
+                '73%': {
+                  concern: 'Primeira página é cara. Como garanto que consigo?',
+                  reality: 'Google Ads utiliza bid dinâmico. Melhor landing page = custo menor por clique. Você controla orçamento, não precisa de "muito" para começar.'
+                },
+                '18min': {
+                  concern: '18 minutos é muito tempo. Vou perder clientes.',
+                  reality: 'Esse é o tempo TOTAL (busca + escolha + agendamento). Com landing otimizada, agendamento leva apenas 28 segundos.'
+                },
+                '28%': {
+                  concern: '28% de ausência é alto. É normal?',
+                  reality: 'Sim. Mas reduz para 9% com confirmação automática via WhatsApp 24h antes. A diferença está na execução, não na sorte.'
+                }
+              }
+
+              const bridge = objectionBridges[shift.stat]
+
               return (
                 <motion.div
                   key={shift.label}
@@ -144,9 +167,10 @@ export function SystemOverviewSection({ campaign }: SystemOverviewSectionProps) 
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: idx * 0.05, ease: [0.19, 1, 0.22, 1] }}
-                  className="relative group"
+                  className="relative group flex flex-col"
                 >
-                  <div className="relative h-full p-6 rounded-xl border border-slate-700/50 bg-slate-800/40 backdrop-blur-sm hover:border-slate-600/60 transition-colors duration-300">
+                  {/* Main card */}
+                  <div className="relative h-full p-6 rounded-xl border border-slate-700/50 bg-slate-800/40 backdrop-blur-sm hover:border-slate-600/60 transition-colors duration-300 mb-4">
                     <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-gradient-to-br ${shift.color} bg-opacity-10`}>
                       <Icon className="w-6 h-6 text-white/90" />
                     </div>
@@ -157,6 +181,22 @@ export function SystemOverviewSection({ campaign }: SystemOverviewSectionProps) 
                     <div className="text-sm font-semibold text-white mb-3">{shift.label}</div>
                     <p className="text-xs text-slate-400 leading-relaxed">{shift.description}</p>
                   </div>
+
+                  {/* Objection Bridge - Resolve concern silenciosa */}
+                  {bridge && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: idx * 0.05 + 0.1 }}
+                      className="p-4 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 backdrop-blur-sm"
+                    >
+                      <p className="text-xs font-medium text-blue-200 mb-2">💭 Preocupação comum:</p>
+                      <p className="text-xs text-blue-100/80 mb-3 italic">"{bridge.concern}"</p>
+                      <p className="text-xs font-medium text-blue-200 mb-1">✅ Realidade:</p>
+                      <p className="text-xs text-blue-100/70">{bridge.reality}</p>
+                    </motion.div>
+                  )}
                 </motion.div>
               )
             })}
