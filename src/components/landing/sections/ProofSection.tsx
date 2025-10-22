@@ -119,30 +119,30 @@ const aggregatedMetrics = [
   },
 ];
 
-// Carousel de imagens
+// Carousel de imagens - contexto real
 const carouselImages = [
   {
     id: 1,
-    title: 'Interior Moderno',
-    description: 'Design contemporâneo que impressiona',
+    title: 'Ambiente Atrativo',
+    description: 'Primeira impressão que retém clientes novos',
     ...landingImages.interiors.modern2,
   },
   {
     id: 2,
-    title: 'Serviço Profissional',
-    description: 'Atendimento de alta qualidade',
+    title: 'Equipe Preparada',
+    description: 'Profissionais capazes de executar a proposta',
     ...landingImages.services.hair1,
   },
   {
     id: 3,
-    title: 'Técnicas Avançadas',
-    description: 'Expertise que gera resultados',
+    title: 'Sistemas Implantados',
+    description: 'Processos que permitem crescimento previsível',
     ...landingImages.services.styling,
   },
   {
     id: 4,
-    title: 'Atmosfera Premium',
-    description: 'Ambiente que transmite valor',
+    title: 'Feedback Contínuo',
+    description: 'Medição e ajuste baseado em dados reais',
     ...landingImages.atmosphere.ambient,
   },
 ];
@@ -165,9 +165,10 @@ export function ProofSection({ campaign }: ProofSectionProps) {
     restDelta: 0.0005
   });
 
-  const yBackground = useTransform(smoothProgress, [0, 1], ['0%', '20%']);
-  const yContent = useTransform(smoothProgress, [0, 1], ['0%', '7%']);
-  const yCarousel = useTransform(smoothProgress, [0, 1], ['0%', '3%']);
+  // Conservative parallax ranges to prevent content clipping
+  const yBackground = useTransform(smoothProgress, [0, 1], ['0%', '12%']);
+  const yContent = useTransform(smoothProgress, [0, 1], ['0%', '4%']);
+  const yCarousel = useTransform(smoothProgress, [0, 1], ['0%', '2%']);
 
   // Carousel controls
   const paginate = (newDirection: number) => {
@@ -266,19 +267,19 @@ export function ProofSection({ campaign }: ProofSectionProps) {
 
             {/* Title */}
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              Validado em{' '}
+              Testado em{' '}
               <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent">
-                23 Salões
+                23 Negócios Reais
               </span>
             </h2>
 
             {/* Subtitle com contexto */}
             <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-4">
-              Piloto realizado entre janeiro e março de 2025 revelou padrões consistentes de crescimento.
+              Pesquisa realizada entre janeiro e março de 2025 com salões variando em tamanho, localização e investimento em marketing.
             </p>
-            
+
             <p className="text-base text-slate-400 max-w-2xl mx-auto">
-              Análise completa da distribuição de performance — incluindo limitantes identificados e variáveis críticas de sucesso.
+              Os resultados mostram um padrão claro: sucesso depende de fatores mensuráveis, não de mágica. Aqui está o que aprendemos.
             </p>
           </motion.div>
 
@@ -506,21 +507,24 @@ export function ProofSection({ campaign }: ProofSectionProps) {
                 }}
               >
                 <Sparkles className="w-4 h-4 text-purple-400" />
-                <span className="text-sm font-medium text-purple-300">Inspire-se</span>
+                <span className="text-sm font-medium text-purple-300">O que os bem-sucedidos têm em comum</span>
               </motion.div>
               <h3 className="text-3xl font-bold text-white mb-3">
-                Padrão de{' '}
+                Fatores Críticos de{' '}
                 <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
-                  Excelência
+                  Sucesso
                 </span>
               </h3>
               <p className="text-slate-400">
-                Salões que investiram em presença digital e infraestrutura moderna
+                Estes 4 pilares aparecem em todos os salões que atingem crescimento consistente
               </p>
             </div>
 
             {/* Carousel Container */}
-            <div className="relative max-w-5xl mx-auto">
+            <motion.div
+              className="relative max-w-5xl mx-auto"
+              style={{ y: yCarousel }}
+            >
               <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
                 <AnimatePresence initial={false} custom={direction}>
                   <motion.div
@@ -614,6 +618,7 @@ export function ProofSection({ campaign }: ProofSectionProps) {
               </div>
             </div>
           </motion.div>
+            </motion.div>
 
           {/* Visual Examples Gallery */}
           <motion.div
