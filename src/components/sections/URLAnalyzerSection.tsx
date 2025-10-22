@@ -4,6 +4,7 @@
  * Copy maduro sem promessas vazias
  * 
  * UPDATED: Agora captura dados imediatamente via API
+ * + Meta Pixel tracking integrado
  */
 'use client';
 
@@ -33,6 +34,7 @@ import {
   getUTMParams,
   getRequestMetadata 
 } from '@/lib/utils/session';
+import { useMetaTracking } from '@/hooks/useMetaTracking';
 
 interface AnalysisMetric {
   icon: React.ElementType;
@@ -49,6 +51,9 @@ export function URLAnalyzerSection() {
   const [sessionId, setSessionId] = useState('');
   const [showResultsModal, setShowResultsModal] = useState(false);
   const [lastAnalyzedDomain, setLastAnalyzedDomain] = useState('');
+
+  // Meta Pixel tracking
+  const { trackEvent } = useMetaTracking();
 
   // Initialize session ID on mount
   useEffect(() => {
@@ -142,6 +147,30 @@ export function URLAnalyzerSection() {
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Falha ao capturar análise');
+      }
+
+      // ✅ NEW: Track Meta Pixel Lead event
+      try {
+        await trackEvent({
+          eventName: 'Lead',
+          userData: {
+            email: `anonymous_${sessionId.substring(0, 8)}@domain-analyzer.arco`,
+            // Pixel aceita email "anonymous" para tracking sem PII
+          },
+          customData: {
+            content_name: 'url_analyzer_submission',
+            content_category: 'lead_magnet',
+            value: 0,
+            currency: 'BRL',
+            domain: cleanDomain,
+            source: 'url_analyzer',
+            request_id: result.data?.requestId,
+          },
+        });
+        console.log('✅ Meta Lead event tracked for domain:', cleanDomain);
+      } catch (pixelError) {
+        // Non-blocking: falha no pixel não impede a análise
+        console.warn('⚠️ Meta Pixel tracking failed:', pixelError);
       }
 
       // Show results modal instead of redirecting

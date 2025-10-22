@@ -2,6 +2,7 @@
  * Consultoria Highlight Section - Homepage
  * Seção que promove o sistema de agendamentos na página inicial
  * Design: Dark mode, glassmorphism, animações sutis
+ * + Meta Pixel tracking integrado
  */
 
 'use client'
@@ -16,10 +17,12 @@ import {
   Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import { useMetaTracking } from '@/hooks/useMetaTracking'
 
 const consultingTypes = [
   {
@@ -52,6 +55,33 @@ const consultingTypes = [
 ]
 
 export function ConsultoriaHighlightSection() {
+  const router = useRouter();
+  const { trackEvent } = useMetaTracking();
+
+  const handleScheduleClick = async () => {
+    // Track Meta Pixel Schedule event
+    try {
+      await trackEvent({
+        eventName: 'Schedule',
+        userData: {
+          email: 'anonymous@schedule-cta.arco',
+        },
+        customData: {
+          content_name: 'consultoria_highlight_cta',
+          content_category: 'scheduling',
+          content_type: 'button_click',
+          value: 0,
+          currency: 'BRL',
+        },
+      });
+    } catch (e) {
+      console.warn('Meta tracking failed:', e);
+    }
+    
+    // Navigate
+    router.push('/agendamentos');
+  };
+
   return (
     <section className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       {/* Subtle background */}
@@ -143,16 +173,15 @@ export function ConsultoriaHighlightSection() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-                <Link href="/agendamentos" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-auto px-8 py-6 text-lg font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-xl hover:shadow-2xl transition-all duration-300"
-                  >
-                    <Calendar className="w-5 h-5 mr-2" />
-                    Ver Horários Disponíveis
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto px-8 py-6 text-lg font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-xl hover:shadow-2xl transition-all duration-300"
+                  onClick={handleScheduleClick}
+                >
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Ver Horários Disponíveis
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-400">

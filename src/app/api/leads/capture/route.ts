@@ -12,6 +12,7 @@ import {
   validationErrorResponse,
   internalErrorResponse
 } from '@/lib/api/api-response';
+import { scoreLeadAfterCapture } from '@/lib/leads/lead-scoring';
 
 // Helper to get Resend client
 function getResendClient() {
@@ -147,6 +148,20 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('[Lead Capture] Lead saved to database:', lead.id);
+
+    // 1b. Score the lead automatically
+    try {
+      const scoreBreakdown = await scoreLeadAfterCapture(
+        lead.id,
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      );
+
+      console.log('[Lead Capture] Lead scored:', scoreBreakdown.qualification, `(score: ${scoreBreakdown.totalScore})`);
+    } catch (scoringError) {
+      console.error('[Lead Capture] Failed to score lead:', scoringError);
+      // Don't throw - lead is saved, scoring is enhancement
+    }
 
     // 2. Update campaign stats
     if (campaign) {

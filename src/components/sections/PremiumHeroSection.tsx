@@ -35,6 +35,8 @@ import {
 } from 'lucide-react';
 import { cn, designTokens } from '@/design-system/tokens';
 import { ParticleBackground } from '@/components/effects/ParticleBackground';
+import { useMetaTracking } from '@/hooks/useMetaTracking';
+import { useRouter } from 'next/navigation';
 
 // Types
 interface PremiumBadgeProps {
@@ -717,6 +719,8 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 300], [0, 100]);
+  const router = useRouter();
+  const { trackEvent } = useMetaTracking();
 
   // Track mouse position for subtle parallax effects with throttling
   useEffect(() => {
@@ -975,7 +979,33 @@ export const PremiumHeroSection: React.FC<PremiumHeroSectionProps> = ({
                         boxShadow: `0 10px 30px rgba(20, 184, 166, 0.25), inset 0 1px 0 rgba(255,255,255,0.15)`,
                         border: '1px solid rgba(20, 184, 166, 0.2)'
                       }}
-                      onClick={primaryCta.onClick}
+                      onClick={async () => {
+                        // Track Meta Pixel event
+                        try {
+                          await trackEvent({
+                            eventName: 'ViewContent',
+                            userData: {
+                              email: 'anonymous@hero-cta.arco',
+                            },
+                            customData: {
+                              content_name: 'hero_cta_primary',
+                              content_category: 'navigation',
+                              content_type: 'button_click',
+                              value: 0,
+                              currency: 'BRL',
+                            },
+                          });
+                        } catch (e) {
+                          console.warn('Meta tracking failed:', e);
+                        }
+                        
+                        // Execute original onClick or navigate
+                        if (primaryCta.onClick) {
+                          primaryCta.onClick();
+                        } else if (primaryCta.href) {
+                          router.push(primaryCta.href);
+                        }
+                      }}
                       aria-label={`${primaryCta.text}`}
                     >
                       <motion.span 
