@@ -149,3 +149,5 @@ docs/*_CREDENTIAL*.md
 # Security: Backup files with env
 .env.local.bak*
 .env.*.bak*
+*.env.local
+*.env.production
