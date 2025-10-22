@@ -1,7 +1,7 @@
 'use client';
 
 import type { Tables } from '@/types/supabase';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { ArrowDown, AlertCircle, TrendingUp, Calendar, GitBranch, Zap } from 'lucide-react';
 import SectionContainer from '@/components/animation/SectionContainer';
@@ -30,7 +30,7 @@ const ValueInvestmentSection = dynamic<{ campaign: Campaign }>(
   { ssr: false, loading: () => <SectionSkeleton /> }
 );
 
-const CaptureSection = dynamic<{ campaign: Campaign }>(
+const CaptureSection = dynamic<{ campaign: Campaign; prefilledChallenge?: string | null }>(
   () => import('./sections/CaptureSection').then(mod => ({ default: mod.CaptureSection })),
   { ssr: false, loading: () => <SectionSkeleton /> }
 );
@@ -53,6 +53,8 @@ interface LandingPageTemplateProps {
 }
 
 export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
+  const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
+
   // Track PageView + ViewContent on mount
   useEffect(() => {
     // PageView (automático via Pixel)
@@ -112,19 +114,25 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
 
       <TransitionBridge
         campaign={campaign}
-        text="Pronto? Agende uma análise gratuita"
+        text="Pronto? Vamos entender seu contexto"
         icon={Zap}
         variant="icon"
       />
 
-      {/* 7. Capture Form - CTA Principal */}
+      {/* 7. Intent Checkpoint - Qualificar o lead antes do formulário */}
+      <IntentCheckpoint
+        campaign={campaign}
+        onIntentSelected={setSelectedChallenge}
+      />
+
+      {/* 8. Capture Form - CTA Principal */}
       <Suspense fallback={<SectionSkeleton />}>
-        <CaptureSection campaign={campaign} />
+        <CaptureSection campaign={campaign} prefilledChallenge={selectedChallenge} />
       </Suspense>
 
       <SectionDivider variant="fade" />
 
-      {/* 8. Policies & Guarantees */}
+      {/* 9. Policies & Guarantees */}
       <PoliciesSection campaign={campaign} />
     </main>
   );

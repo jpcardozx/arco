@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Tables } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,9 +14,10 @@ type Campaign = Tables<'campaigns'>;
 
 interface CaptureSectionProps {
   campaign: Campaign;
+  prefilledChallenge?: string | null;
 }
 
-export function CaptureSection({ campaign }: CaptureSectionProps) {
+export function CaptureSection({ campaign, prefilledChallenge }: CaptureSectionProps) {
   const router = useRouter();
   const colors = useCampaignColors(campaign);
   const { trackLead } = useMetaTracking();
@@ -30,6 +31,18 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
     monthly_revenue: '',
     ad_experience: '',
   });
+
+  // Auto-populate challenge from Intent Checkpoint selection
+  useEffect(() => {
+    if (prefilledChallenge) {
+      setFormData(prev => ({
+        ...prev,
+        biggest_challenge: prefilledChallenge
+      }));
+      // Expand optional fields if challenge is pre-filled
+      setShowOptionalFields(true);
+    }
+  }, [prefilledChallenge]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showOptionalFields, setShowOptionalFields] = useState(false);
@@ -81,7 +94,7 @@ export function CaptureSection({ campaign }: CaptureSectionProps) {
   ];
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950" data-section="capture">
       {/* Subtle Texture */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:48px_48px]" />
       
