@@ -14,6 +14,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
 interface MetaConversionPayload {
   event_name: string;
@@ -43,38 +44,70 @@ function validatePayload(body: any): { valid: boolean; error?: string } {
     return { valid: false, error: "Missing or invalid user_data" };
   }
 
-  // Pelo menos email ou phone deve estar presente
-  if (!body.user_data.email && !body.user_data.phone) {
-    return { valid: false, error: "user_data must have email or phone" };
+  // Pelo menos UM desses deve estar presente:
+  // - email ou phone (PII)
+  // - client_ip_address + client_user_agent (_fbp/_fbc também ajuda)
+  const hasEmail = !!body.user_data.email;
+  const hasPhone = !!body.user_data.phone;
+  const hasIP = !!body.user_data.client_ip_address;
+  const hasUA = !!body.user_data.client_user_agent;
+  const hasFBP = !!body.user_data.fbp;
+  const hasFBC = !!body.user_data.fbc;
+
+  if (!hasEmail && !hasPhone && !(hasIP && hasUA) && !hasFBP && !hasFBC) {
+    return {
+      valid: false,
+      error: "user_data must have: (email OR phone) OR (IP + UA) OR (_fbp/_fbc)"
+    };
   }
 
   return { valid: true };
 }
 
-// In-memory dedup cache (simple and effective)
-const dedupCache = new Map<string, number>();
+// ============================================================================
+// DEDUPLICATION: Database-backed (PRIMARY KEY)
+// ============================================================================
+// Usa PRIMARY KEY (event_name, event_id) na tabela meta_events_dedup
+// Idempotência: duplicate_key_value erro → responde 200 + is_duplicate=true
+// Mais seguro que in-memory em serverless (evita cold start data loss)
 
 /**
- * Verifica deduplicação em memória (rápido, local)
+ * Registra evento na tabela de dedup
+ * Retorna true se era duplicado, false se novo
  */
-function checkDedupLocal(eventId: string): boolean {
-  const timestamp = dedupCache.get(eventId);
-  if (!timestamp) return false;
+async function checkAndRecordDedup(
+  eventName: string,
+  eventId: string,
+  supabaseClient: any
+): Promise<boolean> {
+  try {
+    // Tentar inserir na tabela dedup
+    const { error } = await supabaseClient
+      .from('meta_events_dedup')
+      .insert({
+        event_name: eventName,
+        event_id: eventId,
+        created_at: new Date(),
+        expires_at: new Date(Date.now() + 3600000), // 1h TTL
+      });
 
-  // Se expirou (>1h), removeu
-  if (Date.now() - timestamp > 3600000) {
-    dedupCache.delete(eventId);
-    return false;
+    // Se PRIMARY KEY constraint viola, era duplicado
+    if (error?.code === '23505') {
+      // unique_violation
+      return true; // Duplicado
+    }
+
+    if (error && error.code !== '23505') {
+      // Outro erro de database - log e deixa passar
+      console.warn(`[Meta API] Dedup insert warning: ${error.message}`);
+      return false; // Não bloqueia
+    }
+
+    return false; // Novo evento
+  } catch (e) {
+    console.error(`[Meta API] Dedup check exception: ${String(e)}`);
+    return false; // Não bloqueia em erro
   }
-
-  return true;
-}
-
-/**
- * Registra deduplicação em memória
- */
-function recordDedupLocal(eventId: string): void {
-  dedupCache.set(eventId, Date.now());
 }
 
 /**
@@ -142,17 +175,28 @@ export async function POST(req: NextRequest) {
     const eventId = body.event_id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     console.log(`[Meta API] ${traceId} - Received ${body.event_name} event (${eventId})`);
 
-    // Verificar deduplicação LOCAL (mais rápido)
-    if (checkDedupLocal(eventId)) {
-      console.warn(`[Meta API] ${traceId} - Duplicate event blocked: ${eventId}`);
+    // Criar cliente Supabase com SERVICE_ROLE_KEY
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
+
+    // Verificar deduplicação via DATABASE (PRIMARY KEY)
+    // Retorna true se duplicado, false se novo
+    const isDuplicate = await checkAndRecordDedup(
+      body.event_name,
+      eventId,
+      supabase
+    );
+
+    if (isDuplicate) {
+      console.warn(`[Meta API] ${traceId} - Duplicate event detected: ${eventId}`);
       return NextResponse.json(
         {
           error: "Duplicate event",
           isDuplicate: true,
           traceId,
           eventId,
+          message: "Event already processed in the last 1 hour"
         },
-        { status: 409 }
+        { status: 200 } // 200 OK (idempotent) ao invés de 409
       );
     }
 
@@ -191,15 +235,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Sucesso - registrar no dedup cache
+    // Sucesso - evento já foi registrado na tabela dedup durante o check
     console.log(
       `[Meta API] ${traceId} - Success (${duration}ms):`,
       result.success ? "Event tracked" : "Warning"
     );
-
-    if (result.success) {
-      recordDedupLocal(eventId);
-    }
 
     return NextResponse.json(
       {
