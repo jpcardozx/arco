@@ -9,7 +9,7 @@ echo ""
 # 1. Testar conexão Supabase
 echo "1️⃣ Testando conexão com Supabase..."
 WEBHOOK_COUNT=$(curl -s \
-  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
+  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
   "https://vkclegvrqprevcdgosan.supabase.co/rest/v1/webhook_events?select=count" | jq -r '.[0].count')
 
 if [ -n "$WEBHOOK_COUNT" ]; then
@@ -42,8 +42,8 @@ echo ""
 # 3. Inserir webhook de teste diretamente no DB
 echo "3️⃣ Inserindo webhook de teste no database..."
 INSERT_RESULT=$(curl -s -X POST \
-  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
+  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
   -H "Content-Type: application/json" \
   -H "Prefer: return=representation" \
   "https://vkclegvrqprevcdgosan.supabase.co/rest/v1/webhook_events" \
@@ -69,7 +69,7 @@ echo ""
 echo "4️⃣ Verificando se webhook está visível..."
 sleep 1
 NEW_COUNT=$(curl -s \
-  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
+  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
   "https://vkclegvrqprevcdgosan.supabase.co/rest/v1/webhook_events?select=count" | jq -r '.[0].count')
 
 echo "   📊 Webhooks antes: $WEBHOOK_COUNT"
@@ -86,7 +86,7 @@ echo ""
 # 5. Buscar último webhook
 echo "5️⃣ Buscando último webhook registrado..."
 LAST_WEBHOOK=$(curl -s \
-  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
+  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
   "https://vkclegvrqprevcdgosan.supabase.co/rest/v1/webhook_events?select=*&order=received_at.desc&limit=1")
 
 echo "$LAST_WEBHOOK" | jq '.[0] | {id, gateway, event_type, processed, received_at}'

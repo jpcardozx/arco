@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Preference } from 'mercadopago';
 import { mercadoPagoClient, MP_CONFIG } from '@/lib/payments/mercadopago/client';
 import { logger } from '@/lib/logger';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 import { createPreferenceLimiter, getClientIp, checkRateLimit } from '@/lib/rate-limiting/checkout-limiter';
 
 // Helper to get Supabase client (lazy initialization)

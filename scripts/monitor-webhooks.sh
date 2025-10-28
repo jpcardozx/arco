@@ -33,8 +33,8 @@ echo ""
 # Função para verificar webhooks no Supabase
 check_webhooks() {
     local count=$(curl -s \
-        -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
-        -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
+        -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
+        -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
         "https://vkclegvrqprevcdgosan.supabase.co/rest/v1/webhook_events?select=count" \
         2>/dev/null | jq -r '.[0].count' 2>/dev/null)
     
@@ -59,8 +59,8 @@ while true; do
         
         # Buscar último webhook
         LAST_WEBHOOK=$(curl -s \
-            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
-            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY2xlZ3ZycXByZXZjZGdvc2FuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1ODM0NDAsImV4cCI6MjA3NTE1OTQ0MH0.d4ldEvZEfufwnmw4koYR4fscu4rtRPXXiQvgRwPSdwA" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.YOUR_SUPABASE_KEY_HERE" \
             "https://vkclegvrqprevcdgosan.supabase.co/rest/v1/webhook_events?select=*&order=received_at.desc&limit=1" \
             2>/dev/null)
         

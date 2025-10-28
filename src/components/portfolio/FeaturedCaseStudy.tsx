@@ -73,7 +73,7 @@ export default function FeaturedCaseStudy() {
                   {/* Logo */}
                   <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg p-2">
                     <Image
-                      src="/ipeLogo.png"
+                      src="/logos/ipeLogo.png"
                       alt="Imobiliária Ipê"
                       width={48}
                       height={48}

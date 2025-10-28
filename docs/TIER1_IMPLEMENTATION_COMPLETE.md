@@ -140,7 +140,7 @@ Status: Ready for use
 
 **Environment Variables Required:**
 ```bash
-RESEND_API_KEY=re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+RESEND_API_KEY=re_XXXXXXXXXXXXXXXXXXXXXXXX
 NEXT_PUBLIC_APP_URL=https://consultingarco.com
 SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key>
 ```
@@ -299,13 +299,13 @@ curl -X POST http://localhost:3000/api/lead-magnet \
 
 ```bash
 # .env.local (development)
-RESEND_API_KEY=re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+RESEND_API_KEY=re_XXXXXXXXXXXXXXXXXXXXXXXX
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 SUPABASE_SERVICE_ROLE_KEY=<your-service-key>
 
 # Vercel (production)
 # Add in Vercel Dashboard > Settings > Environment Variables
-RESEND_API_KEY=re_FfQAjozL_...
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 NEXT_PUBLIC_APP_URL=https://consultingarco.com
 SUPABASE_SERVICE_ROLE_KEY=<your-service-key>
 ```

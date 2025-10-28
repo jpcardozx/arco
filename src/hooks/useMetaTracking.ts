@@ -15,6 +15,7 @@
 import { useCallback, useRef } from 'react';
 import type { MetaEventName } from '@/lib/tracking/meta-conversions-api';
 import { generateEventId } from '@/lib/tracking/meta-conversions-api';
+import { evaluateEMQ, trackEMQ } from '@/lib/analytics/emq-monitoring';
 
 // ============================================================================
 // TYPES
@@ -81,7 +82,9 @@ function getFBC(): string | undefined {
   const fbcCookie = getCookie('_fbc');
   if (fbcCookie) return fbcCookie;
 
-  // Tentar obter da URL
+  // Tentar obter da URL (apenas no browser)
+  if (typeof window === 'undefined') return undefined;
+  
   const urlParams = new URLSearchParams(window.location.search);
   const fbclid = urlParams.get('fbclid');
   
@@ -180,7 +183,25 @@ export function useMetaTracking() {
           fbc,
         };
 
-        console.log("📤 [Meta Tracking] Enviando para API local", logContext);
+        // Extra.10: Avaliar e trackear EMQ (Event Match Quality)
+        const emqData = evaluateEMQ({
+          event_name: data.eventName,
+          user_data: {
+            fbp,
+            fbc,
+            em: data.userData.email, // Will be hashed server-side
+            ph: data.userData.phone,
+            external_id: undefined, // Could add user ID if available
+            client_ip_address: undefined, // Collected server-side
+            client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+          },
+        });
+        trackEMQ(emqData);
+
+        console.log("📤 [Meta Tracking] Enviando para API local", {
+          ...logContext,
+          emq: emqData.score.toFixed(1),
+        });
 
         // POST para API local (backend)
         // Backend cuida da autenticação com Supabase
@@ -395,5 +416,3 @@ export function useMetaTracking() {
     trackContact,
   };
 }
-
-export default useMetaTracking;

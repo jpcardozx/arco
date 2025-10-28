@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Supabase Client - Unified and Simplified
  * Single source of truth for all Supabase clients

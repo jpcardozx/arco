@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import type { Tables } from '@/types/supabase';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 import { landingImages } from '@/lib/landing-images';
-import { 
-  BarChart3, 
-  TrendingUp, 
+import {
+  BarChart3,
+  TrendingUp,
   TrendingDown,
   AlertTriangle,
-  CheckCircle2, 
+  CheckCircle2,
   ArrowRight,
   Shield,
   Target,
@@ -21,7 +21,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
+  ChevronDown,
 } from 'lucide-react';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
 
 type Campaign = Tables<'campaigns'>;
@@ -44,78 +50,118 @@ const resultsDistribution = [
   {
     tier: 'Excepcional',
     range: 'Alta captação consistente',
-    percentage: 'Minoria',
+    percentage: 'Minoria (~10-15%)',
     accentColor: '#10b981', // Green
     icon: Award,
-    context: 'Perfil ideal: investimento sustentado, região densa, posicionamento premium, capacidade operacional livre.',
-    reality: 'Não é mágica — é alinhamento de múltiplos fatores: orçamento + mercado + execução.',
+    context: 'Profissional com marca estabelecida em região densa. Investe consistente. Pode absorver 15+ agendamentos/mês.',
+    reality: 'Não é mágica — é alinhamento: orçamento adequado + mercado receptivo + execução disciplinada.',
+    faqs: [
+      {
+        question: 'Como sei se estou nesse perfil?',
+        answer: 'Você já tem fluxo orgânico (indicações, redes sociais), consegue investir R$800-1.500/mês em anúncios sem comprometer operação, e seu ticket médio está acima de R$100. Sua agenda comporta 15+ novos agendamentos mensais sem sobrecarga.',
+      },
+      {
+        question: 'Quanto tempo para atingir esse nível?',
+        answer: 'Geralmente 8-12 semanas de calibragem contínua. As primeiras 3-4 semanas são testes, depois começa a estabilizar. Não é instantâneo, mas o padrão se estabelece de forma previsível.',
+      },
+    ],
   },
   {
     tier: 'Objetivo alcançado',
     range: 'Captação previsível mensal',
-    percentage: 'Maioria',
+    percentage: 'Maioria (~50-60%)',
     accentColor: '#3b82f6', // Blue
     icon: Target,
-    context: 'Configuração sólida: investimento adequado, mercado responsivo, automação funcionando, posicionamento claro.',
-    reality: 'Resultado esperado para quem segue o sistema. Torna-se previsível após fase de calibragem.',
+    context: 'Investimento consistente. Mercado responsivo. Sistema funcionando. Consegue prever fluxo mensal.',
+    reality: 'Resultado esperado de quem segue o processo. Levada ~8-12 semanas para se tornar previsível.',
+    faqs: [
+      {
+        question: 'O que significa "previsível"?',
+        answer: 'Você consegue estimar quantos agendamentos virão no próximo mês com base no investimento. Não precisa torcer para a agenda encher — você planeja sabendo o que esperar. Isso muda completamente o controle do negócio.',
+      },
+      {
+        question: 'Qual o investimento típico nesse tier?',
+        answer: 'Entre R$450-800/mês em anúncios. O retorno varia com ticket médio e taxa de conversão, mas a maioria consegue pelo menos 8-12 agendamentos confirmados mensais. Ticket de R$80 já torna o sistema viável.',
+      },
+    ],
   },
   {
     tier: 'Em desenvolvimento',
     range: 'Início gradual',
-    percentage: 'Comum',
+    percentage: 'Comum (~20-25%)',
     accentColor: '#f59e0b', // Amber
     icon: TrendingUp,
-    context: 'Fase inicial: ainda calibrando algoritmos, testando mensagens, ou mercado competitivo demandando ajustes.',
-    reality: 'Crescimento progressivo. Parcela significativa evolui para tier superior após consolidação.',
+    context: 'Fases iniciais de calibragem. Algoritmos ainda aprendem. Testes ainda rodando.',
+    reality: 'Fase esperada. A maioria evolui para tier superior nos 2-3 meses seguintes com ajustes.',
+    faqs: [
+      {
+        question: 'Estou "travado" ou é normal?',
+        answer: 'Se está nas primeiras 6-8 semanas, é normal. Os algoritmos do Meta levam tempo para aprender quem converte melhor. Se após 10 semanas continua sem padrão, aí revisamos orçamento, criativos ou público.',
+      },
+      {
+        question: 'O que faço para acelerar?',
+        answer: 'Aumente ligeiramente o orçamento (algoritmo aprende mais rápido com mais dados), teste novos criativos (vídeos costumam performar melhor que imagens estáticas), e garanta que o follow-up com leads seja rápido (resposta em até 2h aumenta conversão).',
+      },
+    ],
   },
   {
     tier: 'Abaixo do esperado',
     range: 'Resultados limitados',
-    percentage: 'Minoria',
+    percentage: 'Minoria (~5-10%)',
     accentColor: '#ef4444', // Red
     icon: AlertTriangle,
-    context: 'Limitantes estruturais: restrição orçamentária severa, mercado saturado/pouco denso, ou modelo de negócio incompatível.',
-    reality: 'Honestidade: sem condições mínimas, sistema não compensa. Melhor focar em outras estratégias.',
+    context: 'Orçamento insuficiente, mercado muito competitivo, ou serviço com baixa demanda local.',
+    reality: 'Sem condições mínimas, o sistema não compensa. Melhor explorar outras estratégias (indicação, fidelização).',
+    faqs: [
+      {
+        question: 'Quando o sistema não é para mim?',
+        answer: 'Se seu orçamento está abaixo de R$400/mês, ou seu ticket médio é inferior a R$50, ou você está em cidade muito pequena (menos de 30 mil habitantes), o custo por aquisição tende a não compensar. Nesses casos, indicação e fidelização dão melhor retorno.',
+      },
+      {
+        question: 'Posso reverter esse cenário?',
+        answer: 'Depende da causa. Se é orçamento baixo, aumentar para R$600+ costuma mudar o jogo. Se é ticket baixo, revisar precificação ou focar em serviços premium. Se é mercado pequeno, talvez o digital não seja o canal principal agora.',
+      },
+    ],
   },
 ];
 
-// Métricas agregadas (não casos individuais fictícios)
+// Impactos observáveis (não promessas, apenas padrões)
 const aggregatedMetrics = [
   {
-    id: 'acquisition-cost',
-    label: 'Custo de aquisição',
-    value: 'Competitivo',
+    id: 'customer-flow',
+    label: 'Fluxo de clientes',
+    value: 'Previsível',
     icon: Users,
     accentColor: '#3b82f6',
-    detail: 'Varia conforme região (capital vs interior), tipo de serviço e competição local. Contexto importa mais que número absoluto.',
-    benchmark: 'Viável quando ticket de serviço justifica investimento. Precisa haver margem saudável.',
+    detail: 'Deixa de ser "esperança" para ser previsão. Você planeja mês que vem baseado em dados deste mês.',
+    benchmark: 'Diferencial: saber com semanas de antecedência quantos agendamentos vêm, não descobrir surpreso.',
   },
   {
-    id: 'time-to-breakeven',
-    label: 'Tempo até retorno',
-    value: 'Gradual',
+    id: 'ramp-up',
+    label: 'Tempo até funcionar',
+    value: '8-12 semanas',
     icon: Calendar,
     accentColor: '#8b5cf6',
-    detail: 'Início: calibragem com poucos resultados. Meio: aceleração. Consolidação: previsibilidade.',
-    benchmark: 'Padrão esperado: melhora progressiva nas primeiras semanas. Estagnação demanda revisão.',
+    detail: 'Primeiras 2-3 semanas: testes. Semanas 4-8: otimização. Semana 9+: padrão estável.',
+    benchmark: 'Se após 6 semanas nada aconteceu, revisamos. Não é "pague e espere".',
   },
   {
     id: 'no-show-reduction',
-    label: 'Redução de faltas',
-    value: 'Significativa',
+    label: 'Quem aparece',
+    value: 'Mais gente',
     icon: CheckCircle2,
     accentColor: '#10b981',
-    detail: 'Confirmação automatizada + lembretes reduzem drasticamente ausências. Impacto direto em faturamento previsível.',
-    benchmark: 'Menos desperdício de horário = mais capacidade produtiva sem custo adicional.',
+    detail: 'Automação reduz esquecimento. Confirmação automática + lembrete 24h faz diferença.',
+    benchmark: 'Bônus: você recupera tempo que gastaria relembrando cliente. Agenda mais limpa.',
   },
   {
-    id: 'time-savings',
-    label: 'Tempo economizado',
-    value: 'Substancial',
+    id: 'operational-load',
+    label: 'Seu tempo',
+    value: 'Menos WhatsApp',
     icon: Zap,
     accentColor: '#f59e0b',
-    detail: 'Agendamento automático + confirmações eliminam trabalho manual repetitivo (WhatsApp, telefone, ida/volta).',
-    benchmark: 'Horas recuperadas podem ser reinvestidas em atendimento ou gestão estratégica.',
+    detail: 'Agendamento e confirmação saem da sua carga manual. Você responde, sistema automatiza.',
+    benchmark: 'Tempo recuperado: ~5-10h/mês em média. Pode reinvestir em atendimento ou descanso.',
   },
 ];
 
@@ -170,8 +216,8 @@ export function ProofSection({ campaign }: ProofSectionProps) {
   const yContent = useTransform(smoothProgress, [0, 1], ['0%', '4%']);
   const yCarousel = useTransform(smoothProgress, [0, 1], ['0%', '2%']);
 
-  // Carousel controls
-  const paginate = (newDirection: number) => {
+  // Carousel controls - memoized for performance
+  const paginate = useCallback((newDirection: number) => {
     setDirection(newDirection);
     setCurrentSlide((prev) => {
       const next = prev + newDirection;
@@ -179,8 +225,9 @@ export function ProofSection({ campaign }: ProofSectionProps) {
       if (next >= carouselImages.length) return 0;
       return next;
     });
-  };
+  }, [carouselImages.length]);
 
+  // Carousel animation variants - optimized for 60fps
   const slideVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 1000 : -1000,
@@ -198,10 +245,23 @@ export function ProofSection({ campaign }: ProofSectionProps) {
     }),
   };
 
+  // Keyboard navigation for carousel - memoized
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      paginate(-1);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      paginate(1);
+    }
+  }, [paginate]);
+
+  // Swipe detection constants
   const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset: number, velocity: number) => {
+  const swipePower = useCallback((offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
-  };
+  }, []);
 
   return (
     <section 
@@ -361,7 +421,7 @@ export function ProofSection({ campaign }: ProofSectionProps) {
 
                     {/* Context */}
                     <div className="space-y-3 mb-4">
-                      <div 
+                      <div
                         className="p-4 rounded-xl border-l-4"
                         style={{
                           backgroundColor: `${tier.accentColor}08`,
@@ -379,15 +439,55 @@ export function ProofSection({ campaign }: ProofSectionProps) {
                       <div className="flex items-start gap-2 p-3 rounded-lg"
                         style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}
                       >
-                        <CheckCircle2 
-                          className="w-4 h-4 flex-shrink-0 mt-0.5" 
-                          style={{ color: tier.accentColor }} 
+                        <CheckCircle2
+                          className="w-4 h-4 flex-shrink-0 mt-0.5"
+                          style={{ color: tier.accentColor }}
                         />
                         <p className="text-xs text-slate-300 leading-relaxed">
                           <strong style={{ color: tier.accentColor }}>Realidade:</strong> {tier.reality}
                         </p>
                       </div>
                     </div>
+
+                    {/* Collapsibles discretos */}
+                    {tier.faqs && tier.faqs.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        {tier.faqs.map((faq, faqIdx) => (
+                          <Collapsible key={faqIdx}>
+                            <CollapsibleTrigger className="w-full group">
+                              <div
+                                className="flex items-center justify-between gap-2 p-3 rounded-lg border transition-all duration-200 hover:border-opacity-60"
+                                style={{
+                                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                                  borderColor: `${tier.accentColor}20`,
+                                }}
+                              >
+                                <span className="text-xs font-medium text-slate-300 text-left">
+                                  {faq.question}
+                                </span>
+                                <ChevronDown
+                                  className="w-4 h-4 flex-shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                                  style={{ color: tier.accentColor }}
+                                />
+                              </div>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                              <div
+                                className="mt-2 p-4 rounded-lg border-l-2"
+                                style={{
+                                  backgroundColor: `${tier.accentColor}05`,
+                                  borderLeftColor: `${tier.accentColor}40`,
+                                }}
+                              >
+                                <p className="text-xs text-slate-300 leading-relaxed">
+                                  {faq.answer}
+                                </p>
+                              </div>
+                            </CollapsibleContent>
+                          </Collapsible>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -524,6 +624,11 @@ export function ProofSection({ campaign }: ProofSectionProps) {
             <motion.div
               className="relative max-w-5xl mx-auto"
               style={{ y: yCarousel }}
+              onKeyDown={handleKeyDown}
+              tabIndex={0}
+              role="region"
+              aria-label="Fatores críticos de sucesso - galeria de imagens"
+              aria-live="polite"
             >
               <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
                 <AnimatePresence initial={false} custom={direction}>
@@ -541,7 +646,7 @@ export function ProofSection({ campaign }: ProofSectionProps) {
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={1}
-                    onDragEnd={(e, { offset, velocity }) => {
+                    onDragEnd={(_e, { offset, velocity }) => {
                       const swipe = swipePower(offset.x, velocity.x);
                       if (swipe < -swipeConfidenceThreshold) {
                         paginate(1);
@@ -584,41 +689,44 @@ export function ProofSection({ campaign }: ProofSectionProps) {
                 {/* Navigation Buttons */}
                 <button
                   onClick={() => paginate(-1)}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 z-20"
-                  aria-label="Previous image"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 z-20 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
+                  aria-label={`Imagem anterior (${currentSlide + 1} de ${carouselImages.length})`}
+                  title="Navegar para imagem anterior (ou use a seta esquerda)"
                 >
-                  <ChevronLeft className="w-5 h-5 text-white" />
+                  <ChevronLeft className="w-5 h-5 text-white" aria-hidden="true" />
                 </button>
                 <button
                   onClick={() => paginate(1)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 z-20"
-                  aria-label="Next image"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 z-20 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
+                  aria-label={`Próxima imagem (${currentSlide + 1} de ${carouselImages.length})`}
+                  title="Navegar para próxima imagem (ou use a seta direita)"
                 >
-                  <ChevronRight className="w-5 h-5 text-white" />
+                  <ChevronRight className="w-5 h-5 text-white" aria-hidden="true" />
                 </button>
               </div>
 
               {/* Dots Indicator */}
-              <div className="flex justify-center gap-2 mt-6">
-                {carouselImages.map((_, idx) => (
+              <div className="flex justify-center gap-2 mt-6" role="group" aria-label="Controles de navegação do carrossel">
+                {carouselImages.map((image, idx) => (
                   <button
                     key={idx}
                     onClick={() => {
                       setDirection(idx > currentSlide ? 1 : -1);
                       setCurrentSlide(idx);
                     }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 ${
                       idx === currentSlide
                         ? 'w-8 bg-purple-400'
                         : 'w-2 bg-slate-600 hover:bg-slate-500'
                     }`}
-                    aria-label={`Go to slide ${idx + 1}`}
+                    aria-label={`Ir para ${image.title}`}
+                    aria-current={idx === currentSlide ? 'true' : 'false'}
+                    title={image.title}
                   />
                 ))}
               </div>
-            </div>
-          </motion.div>
             </motion.div>
+          </motion.div>
 
           {/* Visual Examples Gallery */}
           <motion.div

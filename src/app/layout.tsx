@@ -1,10 +1,16 @@
+import '@/lib/polyfills';
 import type { Metadata } from 'next';
 import { ToastProvider } from '@/components/providers/toast-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider, ThemeScript } from '@/components/providers/theme-provider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { UnifiedNavigation } from '@/design-system/navigation';
+import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
+import { PrivacyConsentBanner } from '@/components/analytics/PrivacyConsentBanner';
+import { MetaPixel, MetaPixelScript } from '@/components/meta-pixel';
+import { CookieConsentBanner } from '@/components/cookie-consent-banner';
+import { LocalBusinessSchema } from '@/components/seo/local-business-schema';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -41,7 +47,7 @@ export const metadata: Metadata = {
     title: 'ARCO | Premium Web & Traffic Services',
     description: 'Sophisticated web infrastructure and traffic optimization for enterprise excellence. Strategic consulting with quantified results.',
     siteName: 'ARCO',
-    url: 'https://arco.com',
+    url: 'https://consultingarco.com',
     images: [
       {
         url: '/logo-v2.png',
@@ -80,46 +86,30 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <ThemeScript />
+        <LocalBusinessSchema />
+        <MetaPixelScript />
         <link rel="icon" type="image/png" href="/favicon.png" />
-        {/* Meta Pixel Script - Static injection in head for early initialization */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1677581716961792');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1677581716961792&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
       </head>
       <body className="antialiased" suppressHydrationWarning>
+        
         <ThemeProvider>
-          <ErrorBoundary>
-            <QueryProvider>
-              <UnifiedNavigation variant="corporate" theme="auto" showParticles={true} />
-              <main className="min-h-screen">
-                {children}
-              </main>
-              <Footer variant="default" showPreFooter={true} />
-              <ToastProvider />
-            </QueryProvider>
-          </ErrorBoundary>
+          <AnalyticsProvider autoInit={true}>
+            <ErrorBoundary>
+              <QueryProvider>
+                <MetaPixel />
+                <Header />
+                <main className="min-h-screen">
+                  {children}
+                </main>
+                <Footer variant="default" showPreFooter={true} />
+                <ToastProvider />
+
+                {/* Analytics & Consent Components */}
+                <PrivacyConsentBanner />
+                <CookieConsentBanner />
+              </QueryProvider>
+            </ErrorBoundary>
+          </AnalyticsProvider>
         </ThemeProvider>
       </body>
     </html>

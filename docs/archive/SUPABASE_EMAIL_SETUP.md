@@ -28,7 +28,7 @@ No dashboard Supabase:
 SMTP Host: smtp.resend.com
 SMTP Port: 587
 SMTP Username: resend
-SMTP Password: re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+SMTP Password: re_XXXXXXXXXXXXXXXXXXXXXXXX
 Sender Email: arco@consultingarco.com
 Sender Name: ARCO Consulting
 ```
@@ -162,7 +162,7 @@ https://resend.com/emails
    ```bash
    # Testar via cURL:
    curl -X POST https://api.resend.com/emails \
-     -H "Authorization: Bearer re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou" \
+     -H "Authorization: Bearer re_XXXXXXXXXXXXXXXXXXXXXXXX" \
      -H "Content-Type: application/json" \
      -d '{
        "from": "arco@consultingarco.com",

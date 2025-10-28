@@ -1,8 +1,21 @@
 /**
- * UI Components (shadcn/ui)
+ * UI Components Library
  * 
- * Componentes prontos e acessíveis baseados em Radix UI
- * Integrados com design system ARCO
+ * @module components/ui
+ * @description Accessible components based on Radix UI + shadcn/ui
+ * Integrated with ARCO design system tokens
+ * 
+ * @see {@link https://ui.shadcn.com/docs Shadcn UI Documentation}
+ * @see {@link /src/design-system/tokens.ts ARCO Design Tokens}
+ * 
+ * @example
+ * ```tsx
+ * import { Button, Card, Badge } from '@/components/ui'
+ * 
+ * <Button variant="default" size="lg">Click me</Button>
+ * <Card className="p-6">Content</Card>
+ * <Badge variant="success">Active</Badge>
+ * ```
  */
 
 // Form Components
@@ -21,3 +34,6 @@ export { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 export { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+
+// New: Animated components (consolidated from deleted files)
+export { AnimatedBorder, GlowBorder } from "./animated-border";

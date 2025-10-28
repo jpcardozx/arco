@@ -921,7 +921,7 @@ Resultado: Domain Analyzer 100% funcional com dados reais
 📦 Complexidade: LOW
 
 Tarefas:
-1. Conectar Resend API key (já existe: re_FfQAjozL_...)
+1. Conectar Resend API key (adicionar variável de ambiente)
 2. Criar template de welcome email
 3. Criar template de lead magnet delivery
 4. Testar envio em /api/lead-magnet

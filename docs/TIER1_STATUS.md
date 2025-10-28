@@ -222,7 +222,7 @@ npx supabase db push
 ### Step 2: Set Environment Variables (5 min)
 ```bash
 # .env.local
-RESEND_API_KEY=re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+RESEND_API_KEY=re_XXXXXXXXXXXXXXXXXXXXXXXX
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 SUPABASE_SERVICE_ROLE_KEY=<your-key>
 ```

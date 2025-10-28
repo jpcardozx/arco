@@ -34,7 +34,7 @@ SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
 
 # Resend (Email)
-RESEND_API_KEY=re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+RESEND_API_KEY=re_XXXXXXXXXXXXXXXXXXXXXXXX
 
 # Stripe (Payments)
 STRIPE_SECRET_KEY=sk_live_...  # ou sk_test_...
@@ -118,7 +118,7 @@ npx supabase functions deploy lighthouse-scan --project-ref vkclegvrqprevcdgosan
 ```bash
 # Set secrets for edge functions
 npx supabase secrets set \
-  RESEND_API_KEY="re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou" \
+  RESEND_API_KEY="re_XXXXXXXXXXXXXXXXXXXXXXXX" \
   STRIPE_SECRET_KEY="sk_test_..." \
   STRIPE_WEBHOOK_SECRET="whsec_..." \
   ADMIN_EMAIL="arco@consultingarco.com" \
@@ -526,7 +526,7 @@ curl -X POST https://vkclegvrqprevcdgosan.supabase.co/functions/v1/<function-nam
 ```bash
 # Test Resend API
 curl https://api.resend.com/emails \
-  -H "Authorization: Bearer re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou" \
+  -H "Authorization: Bearer re_XXXXXXXXXXXXXXXXXXXXXXXX" \
   -H "Content-Type: application/json" \
   -d '{
     "from": "arco@consultingarco.com",

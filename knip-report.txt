@@ -1,0 +1,404 @@
+Unused files (314)
+mcp/agents/real-intelligence-analyzer.ts
+mcp/clients/arco-intelligence-tester.ts
+mcp/core/arco-business-calculator.ts
+mcp/core/business-intelligence-engine.ts
+mcp/core/production-optimization.ts
+mcp/core/real-analytics-client.ts
+mcp/core/simplified-mcp-server.ts
+mcp/core/web-vitals-analyzer.ts
+mcp/integrations/chrome-devtools-examples.ts
+mcp/integrations/external-api-manager.ts
+mcp/integrators/enhanced-real-data-collector.ts
+mcp/integrators/ui-ux-analysis-integrator.ts
+mcp/knowledge/arco-knowledge-base.ts
+mcp/scripts/analyze-border-radius.ts
+mcp/scripts/analyze-navbar.ts
+mcp/scripts/analyze-services-performance.ts
+mcp/scripts/critical-navbar-analysis.ts
+mcp/scripts/health-check.ts
+mcp/scripts/live-navbar-fix.ts
+mcp/scripts/real-live-analysis.ts
+mcp/scripts/robust-mcp-analyzer.ts
+mcp/scripts/run-comprehensive-tests.ts
+mcp/scripts/start-expert-mcp.ts
+mcp/scripts/start-simplified-server.ts
+mcp/scripts/week1a-validation.ts
+mcp/servers/arco-consolidated-intelligence-server.ts
+mcp/servers/arco-layout-diagnostic.ts
+mcp/servers/arco-mcp-server.ts
+mcp/servers/arco-unified-intelligence-server.ts
+mcp/servers/chrome-devtools-mcp-integration.ts
+mcp/types/real-performance-data.ts
+mcp/types/strategic-intelligence.ts
+scripts/analyze-project.js
+scripts/analyze-tailwind-usage.js
+scripts/check-nextui-compatibility.js
+scripts/check-package-manager.js
+scripts/check-webhooks.ts
+scripts/cleanup-unused-css.js
+scripts/create-sample-checklist.ts
+scripts/design-system-integrator.ts
+scripts/diagnose-classes.js
+scripts/diagnose-server-errors.js
+scripts/diagnose-simple.js
+scripts/enable-leads-rls.ts
+scripts/format-project.js
+scripts/generate-email-previews.ts
+scripts/import-fixer.ts
+scripts/index-critical-docs.ts
+scripts/index-systems.ts
+scripts/mcp-memory-index.ts
+scripts/optimize-images.js
+scripts/performance-monitor.js
+scripts/reload-postgrest-schema.ts
+scripts/remove-unused-css.js
+scripts/root-organizer.ts
+scripts/seed-database.ts
+scripts/send-test-emails-v2.ts
+scripts/send-test-emails.ts
+scripts/simplify-structure.ts
+scripts/structural-cleanup-real.ts
+scripts/submit-sitemap.js
+scripts/test-meta-api.ts
+scripts/test-professional-email.ts
+scripts/total-unification.ts
+scripts/validate-implementation.js
+scripts/validate-patches.js
+scripts/validate-tailwind-patches.js
+scripts/validate-tailwind-v4-compatibility.js
+scripts/verify-analysis-db.ts
+scripts/verify-resend.ts
+scripts/verify-rls.ts
+src/components/CtwaButton.tsx
+src/components/HomePageClient.tsx
+src/components/MatureHero.tsx
+src/components/SuccessCases.tsx
+src/components/agendamentos/CheckoutMP.tsx
+src/components/agendamentos/ConsultoriaCard.tsx
+src/components/agendamentos/DateTimePicker.tsx
+src/components/agendamentos/EnhancedConsultoriaCard.tsx
+src/components/agendamentos/Hero.tsx
+src/components/agendamentos/sections/FinalCTASection.tsx
+src/components/agendamentos/sections/ProcessTimeline.tsx
+src/components/agendamentos/sections/SocialProofSection.tsx
+src/components/analytics/AnalyticsDashboard.tsx
+src/components/analytics/ClientAnalyticsProvider.tsx
+src/components/analytics/EMQDashboard.tsx
+src/components/analytics/TrackableButton.tsx
+src/components/analytics/TrackableLink.tsx
+src/components/analytics/TrackableSection.tsx
+src/components/assessment/AssessmentFAQ.tsx
+src/components/assessment/NurturePathsSection.tsx
+src/components/assessment/ProcessExpectationsSection.tsx
+src/components/checklist/EnhancedChecklistInterface.tsx
+src/components/client/ClientProfileManager.tsx
+src/components/dashboard/EnhancedDashboard.tsx
+src/components/dashboard/TaskModal.tsx
+src/components/dashboard/action-card.tsx
+src/components/dashboard/index.ts
+src/components/dashboard/info-card.tsx
+src/components/dashboard/metric-card.tsx
+src/components/dashboard/opportunity-card.tsx
+src/components/dashboard/quick-links.tsx
+src/components/dashboard/setup-progress.tsx
+src/components/dashboard/sidebar.tsx
+src/components/dashboard/stats-grid.tsx
+src/components/debug/supabase-debug-panel.tsx
+src/components/effects/BackgroundVariations.tsx
+src/components/examples/LeadCaptureFormExample.tsx
+src/components/examples/MetaTrackingIntegration.tsx
+src/components/forms/FreeAuditForm.tsx
+src/components/index.ts
+src/components/landing/IntentCheckpoint.tsx
+src/components/landing/OptimizedImage.tsx
+src/components/landing/ProfessionalCTA.tsx
+src/components/landing/SalaoBeautyAssets.tsx
+src/components/landing/ServiceCard.tsx
+src/components/landing/assets/LandingIcon.tsx
+src/components/landing/assets/LandingIllustrations.tsx
+src/components/landing/assets/icon-map.ts
+src/components/landing/assets/index.ts
+src/components/landing/sections/BeautyServicesShowcase.tsx
+src/components/landing/sections/ComparisonSection.tsx
+src/components/landing/sections/HeroSectionEnhanced.tsx
+src/components/landing/sections/IntentSelectorSection.tsx
+src/components/landing/sections/PreviewSection.tsx
+src/components/landing/sections/PricingSection.tsx
+src/components/landing/sections/SystemOverviewSection.tsx
+src/components/landing/sections/index.ts
+src/components/landing/three/PhoneMockup3D.tsx
+src/components/layout/DashboardSidebar.tsx
+src/components/layout/Grid.tsx
+src/components/layout/index.ts
+src/components/layout/modern-layout.tsx
+src/components/lead-capture/lead-capture-form.tsx
+src/components/modals/LeadCaptureModal.tsx
+src/components/notifications/NotificationSystem.tsx
+src/components/partner/PartnerComponents.tsx
+src/components/partner/PartnerHero.tsx
+src/components/partner/ProjectPortfolio.tsx
+src/components/partner/TechnicalExpertise.tsx
+src/components/payment/index.ts
+src/components/performance/WebVitalsMonitor.tsx
+src/components/portfolio/AvailabilityRates.tsx
+src/components/portfolio/DevelopmentApproach.tsx
+src/components/portfolio/OpenSourceContributions.tsx
+src/components/portfolio/PerformanceMetrics.tsx
+src/components/portfolio/WorkShowcase.tsx
+src/components/primitives/Badge/Badge.tsx
+src/components/primitives/Card/Card.tsx
+src/components/primitives/Typography/Typography.tsx
+src/components/primitives/index.ts
+src/components/relume/CTARelume.tsx
+src/components/relume/CardRelume.tsx
+src/components/relume/FeaturesGridRelume.tsx
+src/components/relume/HeroRelume.tsx
+src/components/relume/SectionRelume.tsx
+src/components/relume/StatsRelume.tsx
+src/components/relume/TestimonialRelume.tsx
+src/components/relume/index.ts
+src/components/sections/AboutSection.tsx
+src/components/sections/DecisionCTA.tsx
+src/components/sections/EnhancedHero.tsx
+src/components/sections/EnhancedROICalculator.tsx
+src/components/sections/FeaturesSection.tsx
+src/components/sections/MethodologySection.tsx
+src/components/sections/MethodologyTeaser.tsx
+src/components/sections/OptimizedClientStories.tsx
+src/components/sections/PerformanceProofSection.tsx
+src/components/sections/PremiumShowcase.tsx
+src/components/sections/ProfessionalAssessmentBridge.tsx
+src/components/sections/ProfessionalNavigation.tsx
+src/components/sections/ROICalculator.enhanced.tsx
+src/components/sections/ROICalculator.original.tsx
+src/components/sections/ROICalculator.tsx
+src/components/sections/SectionHeader.tsx
+src/components/sections/StrategicVelocity/components.tsx
+src/components/sections/StrategicVelocity/constants.ts
+src/components/sections/StrategicVelocity/data.ts
+src/components/sections/StrategicVelocity/index.tsx
+src/components/sections/StrategicVelocitySection.tsx
+src/components/sections/UnifiedHeroSection.tsx
+src/components/sections/UnifiedSocialProof.tsx
+src/components/sections/UnifiedValueProposition.tsx
+src/components/sections/contact/ContactCTA.tsx
+src/components/sections/contact/ContactFAQ.tsx
+src/components/sections/contact/ContactForm.tsx
+src/components/sections/contact/ContactHero.tsx
+src/components/sections/contact/ContactInfo.tsx
+src/components/sections/contact/ContactMap.tsx
+src/components/sections/contact/NextStepsTimeline.tsx
+src/components/sections/contact/ObjectionHandlingFAQ.tsx
+src/components/sections/contact/ProfessionalContactSection.tsx
+src/components/sections/contact/index.ts
+src/components/sections/glass-components.tsx
+src/components/sections/index.ts
+src/components/sections/mature.tsx
+src/components/sections/optimized/ProfessionalJourney.tsx
+src/components/sections/optimized/VariationComponents.tsx
+src/components/sections/optimized/index.ts
+src/components/system/index.ts
+src/components/theme/ThemeToggle.tsx
+src/components/ui/AnimatedCollapsible.tsx
+src/components/ui/Feedback.tsx
+src/components/ui/FunnelProgress.tsx
+src/components/ui/accordion.tsx
+src/components/ui/animated-border.tsx
+src/components/ui/empty-state.tsx
+src/components/ui/enhanced-toast.tsx
+src/components/ui/image-optimized.tsx
+src/components/ui/index.ts
+src/components/ui/navigation-menu.tsx
+src/components/ui/sheet.tsx
+src/components/ui/skeleton-loader.tsx
+src/components/ui/sonner.tsx
+src/components/ui/stat-card.tsx
+src/components/ui/toaster.tsx
+src/components/ui/tooltip.tsx
+src/contexts/user-preferences.tsx
+src/design-system/navigation/hooks/useNavigation.ts
+src/design-system/navigation/tokens.ts
+src/design-system/tokens/arco-brand-colors.ts
+src/design-system/tokens/colors-premium.ts
+src/design-system/tokens/relume-tokens.ts
+src/hooks/useAnalytics.ts
+src/hooks/useAssetLoader.ts
+src/hooks/useEnhancedChecklist.ts
+src/hooks/useFunnelTracking.ts
+src/hooks/useImageOptimization.ts
+src/hooks/useResponsiveGrid.ts
+src/hooks/useScrollProgress.ts
+src/hooks/useUnifiedChecklist.ts
+src/lib/agendamentos/animations.ts
+src/lib/agendamentos/assets.tsx
+src/lib/analytics/event-queue.ts
+src/lib/analytics/feature-flags.ts
+src/lib/analytics/funnel-events.ts
+src/lib/analytics/landing-page-cvr.ts
+src/lib/analytics/types.ts
+src/lib/api/auth-middleware.ts
+src/lib/core/api-performance.ts
+src/lib/core/arco-intelligence.ts
+src/lib/core/content-content-strategy.ts
+src/lib/core/content-strategy.ts
+src/lib/core/content.ts
+src/lib/core/context-tester.ts
+src/lib/core/decision-tracker.ts
+src/lib/core/mcp-analytics.ts
+src/lib/core/mcp-logger.ts
+src/lib/core/performance.ts
+src/lib/core/types.ts
+src/lib/core/web-vitals.ts
+src/lib/email/resend-service.ts
+src/lib/email/templates/booking-confirmation.template.ts
+src/lib/email/templates/confirmation.tsx
+src/lib/email/templates/password-reset.template.ts
+src/lib/env.ts
+src/lib/figma-mcp-extractor.ts
+src/lib/landing-asset-manifest.ts
+src/lib/leads/email-verification.ts
+src/lib/meta-pixel.ts
+src/lib/micro-transitions.ts
+src/lib/motion.ts
+src/lib/performance-optimizations.ts
+src/lib/portfolioAnalytics.ts
+src/lib/posthog/cohorts.ts
+src/lib/posthog/experiments.ts
+src/lib/qa-progressive.ts
+src/lib/qa-runner.ts
+src/lib/qa-validate.ts
+src/lib/schemas/form-schemas.ts
+src/lib/scroll-optimizer.ts
+src/lib/services/pdf-aliquotas-service.ts
+src/lib/stores/dashboard-store.ts
+src/lib/supabase.ts
+src/lib/supabase/admin.ts
+src/lib/supabase/index.ts
+src/lib/supabase/lead-capture.ts
+src/lib/transitions.ts
+src/lib/types/shared.ts
+src/lib/types/supabase-helpers.ts
+src/lib/ui/animations.ts
+src/lib/ui/badge-animations.ts
+src/lib/ui/finance-content.ts
+src/lib/ui/fonts.ts
+src/lib/ui/index.ts
+src/lib/ui/optimistic-updates.ts
+src/lib/ui/useLanguageDetection.ts
+src/lib/ui/useOptimizedAnimation.ts
+src/lib/ui/useTransitionAnimation.ts
+src/lib/ui/useUserPreferences.ts
+src/lib/utils/cn.ts
+src/lib/utils/user-preferences.ts
+src/lib/utils/utils-cn.ts
+src/lib/utils/utils-connection-utils.ts
+src/lib/utils/utils-feature-variants.ts
+src/lib/utils/utils-language-utils.ts
+src/lib/utils/utils-path-utils.ts
+src/lib/utils/utils-portfolioAnalytics.ts
+src/lib/utils/utils-ui-utils.ts
+src/lib/utils/utils-user-preferences.ts
+src/lib/utils/utils-with-translation.tsx
+src/lib/utils/utils.ts
+src/lib/web-vitals-optimizer.ts
+src/lib/web-vitals.ts
+src/providers/MetaPixelProvider.tsx
+src/styles/background-system.ts
+src/styles/beauty-theme.ts
+src/styles/design-tokens.ts
+src/styles/tailwind-loader.ts
+src/types/arco-section.ts
+src/types/database.ts
+src/types/mercadopago.types.ts
+src/types/supabase-old.ts
+src/types/unified.ts
+Unused dependencies (1)
+package.json: @floating-ui/react, @google-analytics/data, @lottiefiles/react-lottie-player, @modelcontextprotocol/sdk, @prisma/client, @radix-ui/react-accordion, @radix-ui/react-alert-dialog, @radix-ui/react-navigation-menu, @radix-ui/react-popover, @radix-ui/react-tooltip, @react-email/components, @react-email/tailwind, @react-spring/web, @types/winston, @uidotdev/usehooks, @vercel/analytics, axios, chart.js, dotenv, lottie-react, next-themes, node, prisma, react-chartjs-2, react-email, react-spring, react-syntax-highlighter, react-use, react-virtualized-auto-sizer, react-window, swr, web-vitals, zustand
+Unused devDependencies (1)
+package.json: @testing-library/jest-dom, @types/react-countup, chrome-devtools-mcp, critters, date-fns-tz, del-cli, eslint, eslint-config-next, eslint-plugin-storybook, jest-environment-jsdom, npm-check-updates, puppeteer, qrcode.react, react-day-picker, react-hot-toast, ts-jest, ts-node, turbo
+Unlisted dependencies (1)
+postcss.config.cjs: postcss
+Unlisted binaries (1)
+package.json: rimraf, playwright, supabase, tsx, bundle-analyzer
+Unused exports (46)
+src/components/ErrorBoundary.tsx: useErrorBoundary
+src/components/cookie-consent-banner.tsx: hasAnalyticsConsent, clearConsent
+src/components/providers/theme-provider.tsx: useTheme
+src/components/sections/figma/index.tsx: FigmaHero, FigmaPillars, FigmaVelocity, FigmaTestimonials, FigmaResources, SectionDivider
+src/components/seo/local-business-schema.tsx: ArticleSchema, FAQSchema, BreadcrumbSchema
+src/components/trust-badges.tsx: SocialProofStats
+src/components/ui/collapsible-section.tsx: CollapsibleGroup
+src/components/ui/enhanced-loading.tsx: LoadingSpinner
+src/components/ui/premium-button.tsx: SecondaryButton, GradientButton
+src/components/ui/progress-ring.tsx: MultiRingProgress
+src/design-system/core/theme.tsx: useTheme
+src/hooks/useCampaignColors.ts: useGradientStyle
+src/hooks/useParallax.ts: useMouseParallax, useScrollProgress
+src/lib/analytics/emq-monitoring.ts: default
+src/lib/analytics/posthog-config.ts: getPostHog, isPostHogEnabled
+src/lib/analytics/session-quality.ts: default
+src/lib/api/api-response.ts: unauthorizedResponse, forbiddenResponse, notFoundResponse
+src/lib/api/fetch-with-retry.ts: checkoutAPIFetch
+src/lib/asset-manifest.ts: getIcon, getOptimizedImage, getIconsArray
+src/lib/auth/password-authorization.ts: RBACManager
+src/lib/auth/rbac.ts: getAuthorizedMenuItems
+src/lib/auth/role-utils.ts: useUserRole, getRoleLabel, getRoleBadgeColor, hasHigherRole
+src/lib/design-system/components/index.tsx: Input, Select
+src/lib/email/config.ts: EMAIL_SETTINGS
+src/lib/email/disposable-domains.ts: blockDomain, validateBulkEmails
+src/lib/google-search-console.ts: findOpportunities
+src/lib/hooks/use-admin.ts: useRecentActivity, useAuditLog, useRecordHistory, useUsers, useUpdateUserRole, useCleanupAuditLogs
+src/lib/hooks/use-analytics-data.ts: useTopPages, useTrafficSources
+src/lib/landing-images.ts: getLandingImage, sectionRecommendations, optimizationStats
+src/lib/landing/colors.ts: getGradientClasses, getGradientStyle
+src/lib/leads/email-automation.ts: createDefaultEmailTemplates, getEmailSequence, getLeadEmails, unsubscribeLead, trackEmailOpen, trackEmailClick
+src/lib/leads/lead-scoring.ts: getHotLeads, getWarmLeads, getLeadStats, recordLeadEngagement, getLeadScoreBreakdown
+src/lib/meta-capi-helpers.ts: generateEventId, isValidMetaEvent
+src/lib/payments/mercadopago/orders.ts: createOrder
+src/lib/posthog/server.ts: identifyUser, aliasUser, shutdownPostHog, groupUser, getFeatureFlag, batchTrackEvents
+src/lib/rate-limiting/checkout-limiter.ts: webhookLimiter, testPageLimiter
+src/lib/simple-context-manager.ts: getArcoContext, recordDecision, setCurrentWork
+src/lib/supabase/auth.ts: signOut, getSession, getCurrentUser, updatePassword, onAuthStateChange
+src/lib/supabase/client.ts: createSupabaseServerClient
+src/lib/tracking/meta-conversions-api.ts: getMetaConversionsAPI
+src/lib/utils/lead-scoring.ts: classifyLead
+src/lib/utils/session.ts: getSessionId, clearSession
+src/lib/utils/whatsapp-demo.ts: generateDemoStats
+src/lib/validations/contact.ts: successMessages, errorMessages
+src/types/database.types.ts: Constants
+src/types/supabase.ts: Constants
+Unused exported types (12)
+src/design-system/tokens.ts: DesignTokens
+src/lib/analytics/session-quality.ts: ErrorClick
+src/lib/api/api-response.ts: ApiResponse
+src/lib/asset-manifest.ts: IconColor, Icon, OptimizedImage
+src/lib/auth/types.ts: AuthSession, RegisterData, ResetPasswordData, ChangePasswordData
+src/lib/email/types.ts: EmailProvider, EmailTemplate, EmailQueueItem, EmailSequence
+src/lib/hooks/use-admin.ts: User
+src/lib/supabase/client.ts: TablesUpdate, WebhookEvent, PaymentTransaction, PaymentTransactionInsert, Subscription, SubscriptionInsert, SubscriptionPlan, PaymentMethod
+src/types/agendamentos.ts: QualificationResponse, ConsultantAvailability, DiscountCode, AvailableDate, QualificationFormData, BookingFormData, CreateBookingResponse, CreatePreferenceResponse, ValidateDiscountResponse, AvailableSlotsResponse, BookingAnalytics, BookingNotification, BookingUpdate, AvailabilityUpdate, AnimationConfig, StaggerConfig, Challenge, BudgetRange, UrgencyOption, CompanySizeOption
+src/types/agendamentos.types.ts: CreateBookingRequest, BookingWithDetails
+src/types/database.types.ts: Tables, TablesInsert, TablesUpdate, Enums, CompositeTypes
+src/types/supabase.ts: TablesInsert, TablesUpdate, Enums, CompositeTypes
+Duplicate exports (20)
+src/components/analytics/AnalyticsProvider.tsx: AnalyticsProvider, default
+src/components/analytics/PrivacyConsentBanner.tsx: PrivacyConsentBanner, default
+src/components/animation/SectionContainer.tsx: SectionContainer, default
+src/components/effects/ParticleBackground.tsx: ParticleBackground, default
+src/components/landing/sections/LeadMagnetSection.tsx: LeadMagnetSection, default
+src/components/landing/sections/ROICalculatorSection.tsx: ROICalculatorSection, default
+src/components/layout/SimplifiedNavigation.tsx: SimplifiedNavigation, default
+src/components/primitives/Button/Button.tsx: Button, default
+src/components/primitives/Container/Container.tsx: Container, default
+src/components/sections/PremiumHeroSection.tsx: PremiumHeroSection, default
+src/components/sections/TransitionBridge.tsx: TransitionBridge, default
+src/components/sections/figma/index.tsx: FigmaPlaceholder, MethodologyHero, ProcessStandards, FunnelAllocation, ImplementationProcess, DataEvidence, FigmaFinalCTA, FigmaHero, FigmaPillars, FigmaVelocity, FigmaTestimonials, FigmaResources, SectionDivider, default
+src/design-system/tokens.ts: designTokens, default
+src/lib/hooks/useWhatsApp.ts: useWhatsApp, default
+src/lib/payments/mercadopago/client.ts: mercadoPagoClient, default
+src/lib/services/whatsapp-business-api.ts: WhatsAppBusinessAPI, default
+src/lib/stores/whatsapp-store.ts: useWhatsAppStore, default
+src/lib/supabase/client.ts: createSupabaseBrowserClient, getSupabaseClient, createClient, default
+src/lib/supabase/server.ts: createSupabaseServer, createClient
+src/lib/tracking/meta-conversions-api.ts: MetaConversionsAPI, default

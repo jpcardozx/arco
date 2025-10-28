@@ -3,6 +3,14 @@ const nextConfig = {
   // Critical build performance optimizations
   reactStrictMode: true,
   
+  // Server-side external packages (browser-only)
+  serverExternalPackages: [
+    'posthog-js',
+    'three',
+    '@react-three/fiber',
+    '@react-three/drei',
+  ],
+  
   // Next.js 15 Turbopack configuration
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -28,35 +36,36 @@ const nextConfig = {
   
   experimental: {
     scrollRestoration: true,
-    typedRoutes: true,
-    // Simpler experimental features
-    // Aggressive package optimization
+    typedRoutes: true, // ✅ Webpack suporta
+    
+    // Build performance optimizations (CRITICAL para velocidade)
     optimizePackageImports: [
       'lucide-react',
       'framer-motion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-tabs',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tooltip',
       'recharts',
       'react-icons',
-      '@nextui-org/react',
-      'clsx',
-      'tailwind-merge'
     ],
-    // Optimization features for performance and build speed
+    
+    // Speed optimizations
     optimizeCss: true,
-    esmExternals: true,
-    forceSwcTransforms: true,
+    forceSwcTransforms: true, // ✅ Webpack suporta
+    
+    // Parallel compilation (CRITICAL)
+    workerThreads: true,
+    cpus: 4,
   },
   
-  // Build optimizations
+  // Build optimizations (AGGRESSIVE - Pareto 80/20)
   typescript: {
-    ignoreBuildErrors: false,
+    // Skip type checking during build (faz no CI/pre-commit)
+    ignoreBuildErrors: true,
   },
   eslint: {
-    // Ignore ESLint warnings during production builds
-    // This allows the build to complete while still showing warnings in dev
+    // Skip linting durante build (faz no CI/pre-commit)
     ignoreDuringBuilds: true,
   },
   
@@ -64,6 +73,9 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   
+  // Desabilita source maps em produção (reduz tempo de build)
+  productionBrowserSourceMaps: false,
+
   // Aggressive modular imports for tree shaking
   modularizeImports: {
     'react-icons': {
@@ -112,34 +124,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  
-  // Simplified webpack config to avoid chunk loading errors
-  webpack: (config, { isServer, dev }) => {
-    // Watch optimizations for faster rebuilds
-    config.watchOptions = {
-      ...config.watchOptions,
-      ignored: /node_modules/,
-      aggregateTimeout: 200,
-      poll: false,
-    };
-
-    // Development optimizations
-    if (dev) {
-      config.optimization.removeAvailableModules = false;
-      config.optimization.removeEmptyChunks = false;
-      config.optimization.splitChunks = false;
-    }
-
-    // Exclude MercadoPago files from build in production
-    if (!dev && isServer) {
-      config.externals = config.externals || [];
-      config.externals.push({
-        'mercadopago': 'commonjs mercadopago',
-      });
-    }
-    
-    return config;
   },
 };
 

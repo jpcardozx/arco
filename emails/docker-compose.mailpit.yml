@@ -1,0 +1,24 @@
+# Mailpit - Local SMTP Testing
+# Lightweight email testing tool
+# UI: http://localhost:8025
+# SMTP: localhost:1025
+
+version: '3.8'
+
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: arco-mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"  # Web UI
+      - "1025:1025"  # SMTP server
+    environment:
+      MP_MAX_MESSAGES: 500
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    volumes:
+      - mailpit-data:/data
+
+volumes:
+  mailpit-data:

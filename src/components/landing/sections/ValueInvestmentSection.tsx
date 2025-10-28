@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { Tables } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, X, Zap, Crown, Sparkles, ArrowRight, Clock, ChevronDown } from 'lucide-react';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
+import posthog from 'posthog-js';
 
 type Campaign = Tables<'campaigns'>;
 
@@ -47,7 +48,7 @@ const plans = [
     id: 'crescimento',
     name: 'Crescimento',
     icon: Zap,
-    subtitle: 'Mais escolhido (83%)',
+    subtitle: 'Mais escolhido',
     monthlyFee: 497,
     adBudget: { min: 600, recommended: 750 },
     popular: true,
@@ -87,13 +88,71 @@ const plans = [
 export function ValueInvestmentSection({ campaign }: ValueInvestmentSectionProps) {
   const colors = useCampaignColors(campaign);
   const [expandedPlan, setExpandedPlan] = useState<string | null>('crescimento'); // Plano mais popular já expandido
-  
+  const sectionRef = useRef<HTMLElement>(null);
+  const viewTrackedRef = useRef(false);
+  const guaranteeRef = useRef<HTMLDivElement>(null);
+  const guaranteeTrackedRef = useRef(false);
+
+  // Track pricing section view (50% in viewport)
+  useEffect(() => {
+    if (viewTrackedRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            posthog.capture('pricing_section_viewed', {
+              campaign_id: campaign.id,
+            });
+            viewTrackedRef.current = true;
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [campaign.id]);
+
+  // Track guarantee view (when enters viewport)
+  useEffect(() => {
+    if (guaranteeTrackedRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            posthog.capture('pricing_guarantee_viewed', {
+              campaign_id: campaign.id,
+            });
+            guaranteeTrackedRef.current = true;
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    if (guaranteeRef.current) {
+      observer.observe(guaranteeRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [campaign.id]);
+
   const scrollToCapture = () => {
     document.getElementById('capture')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+    >
       {/* Subtle Texture */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:48px_48px]" />
       
@@ -154,21 +213,72 @@ export function ValueInvestmentSection({ campaign }: ValueInvestmentSectionProps
                 →
               </div>
               <div className="text-center">
-                <div 
-                  className="text-sm font-semibold mb-1"
-                  style={{ color: colors.primary.solid }}
+                <div
+                  className="text-sm font-semibold mb-1 text-slate-400"
                 >
-                  Desconto lançamento (-40%)
+                  Investimento inicial
                 </div>
-                <div 
+                <div
                   className="text-3xl sm:text-4xl font-bold"
                   style={{ color: colors.primary.solid }}
                 >
                   R$ {setupFee.earlyAdopter.toLocaleString('pt-BR')}
                 </div>
                 <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 mt-2">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>Só até 31/01/2025 • 8 vagas</span>
+                  Pagamento único
+                </div>
+              </div>
+            </div>
+
+            {/* GARANTIA DE PROCESSO */}
+            <div
+              ref={guaranteeRef}
+              className="inline-flex flex-col gap-3 px-6 py-5 rounded-xl border-2 mt-6 max-w-2xl"
+              style={{
+                background: `linear-gradient(135deg, ${colors.primary.solid}08 0%, ${colors.secondary.solid}08 100%)`,
+                borderColor: `${colors.primary.solid}40`
+              }}
+            >
+              <div className="flex items-start gap-3">
+                <div
+                  className="w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center mt-0.5"
+                  style={{
+                    background: `linear-gradient(135deg, ${colors.primary.solid}15 0%, ${colors.secondary.solid}15 100%)`,
+                    border: `1px solid ${colors.primary.solid}40`
+                  }}
+                >
+                  <CheckCircle2 className="w-5 h-5" style={{ color: colors.primary.solid }} />
+                </div>
+                <div className="text-left flex-1">
+                  <p className="text-sm font-bold text-white mb-2">
+                    Garantia de Entrega Técnica
+                  </p>
+                  <ul className="text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                    <li className="flex items-start gap-2">
+                      <span className="text-slate-500 flex-shrink-0">→</span>
+                      <span>Landing page no ar em <strong className="text-white">7 dias úteis</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-slate-500 flex-shrink-0">→</span>
+                      <span>Anúncios aprovados e rodando em <strong className="text-white">48-72h</strong> após materiais</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-slate-500 flex-shrink-0">→</span>
+                      <span>WhatsApp API configurado e <strong className="text-white">testado com mensagem real</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-slate-500 flex-shrink-0">→</span>
+                      <span>Dashboard com tracking funcionando (eventos medidos)</span>
+                    </li>
+                  </ul>
+                  <p className="text-xs text-slate-400 mt-3 pt-3 border-t" style={{ borderColor: `${colors.primary.solid}20` }}>
+                    Se qualquer parte técnica falhar por nossa responsabilidade,
+                    <strong className="text-white"> reembolso de 100% do setup</strong>.
+                  </p>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Resultado de agendamentos depende de orçamento investido, qualidade de materiais e região.
+                    Não garantimos número específico de agendamentos.
+                  </p>
                 </div>
               </div>
             </div>
@@ -209,7 +319,7 @@ export function ValueInvestmentSection({ campaign }: ValueInvestmentSectionProps
                           backgroundImage: `linear-gradient(135deg, ${colors.primary.solid} 0%, ${colors.secondary.solid} 100%)`
                         }}
                       >
-                        83% escolhem este
+                        Popular
                       </div>
                     </div>
                   )}
@@ -341,6 +451,16 @@ export function ValueInvestmentSection({ campaign }: ValueInvestmentSectionProps
                           total_first_month: plan.totalFirstMonth
                         });
                       }
+
+                      // PostHog tracking
+                      posthog.capture('pricing_tier_selected', {
+                        campaign_id: campaign.id,
+                        tier_id: plan.id,
+                        tier_name: plan.name,
+                        monthly_fee: plan.monthlyFee,
+                        total_first_month: plan.totalFirstMonth,
+                      });
+
                       scrollToCapture();
                     }}
                   >
@@ -368,13 +488,13 @@ export function ValueInvestmentSection({ campaign }: ValueInvestmentSectionProps
               Dá pra parcelar?
             </h3>
             <div className="grid sm:grid-cols-2 gap-4 text-sm text-slate-300">
-              <div className="p-4 rounded-xl border" style={{ 
+              <div className="p-4 rounded-xl border" style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 borderColor: `${colors.primary.solid}30`
               }}>
                 <div className="font-semibold text-white mb-1">Setup (R$ 897)</div>
-                <div>Até 3x sem juros no cartão</div>
-                <div className="text-xs text-slate-400 mt-1">3 × R$ 299</div>
+                <div>Pagamento via cartão ou PIX</div>
+                <div className="text-xs text-slate-400 mt-1">Pagamento único</div>
               </div>
               <div className="p-4 rounded-xl border" style={{ 
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',

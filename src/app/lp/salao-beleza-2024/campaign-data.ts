@@ -8,17 +8,17 @@ export const salaoBeleza2024Campaign = {
   name: 'Salão de Beleza - Sistema 2024',
   slug: 'salao-beleza-2024',
 
-  // Hero - Contexto profundo
-  hero_title: 'Transforme Seu Salão em Máquina de Vendas Previsível',
-  hero_subtitle: 'Clientes encontram você no Google, agendam sozinhos, confirmam automaticamente. De 0 a 18+ agendamentos novos por mês.',
-  hero_badge: 'Método testado em 23 salões • Resultado: +125% agendamentos médios',
+  // Hero - Consultivo, honesto, sem promessas específicas
+  hero_title: 'Seu salão merece clientes previsíveis',
+  hero_subtitle: 'Sistema de captura testado em 23 salões. Cada resultado é diferente — vamos calcular uma projeção realista para o seu caso.',
+  hero_badge: '23 salões ativos • Dados reais, transparentes',
 
   // Business Model
   description: 'Solução completa de captura de clientes para salões. Anúncios segmentados + Landing page otimizada + Agendamento automático + WhatsApp de confirmação.',
 
   // Meta
-  meta_title: 'Mais Clientes para Seu Salão | Sistema de Captura Automatizada',
-  meta_description: 'Ganhe 8-18 clientes novos por mês com anúncios inteligentes. Sistema testado em 23 salões com ROI comprovado.',
+  meta_title: 'Sistema de Captura para Salões | Resultados Transparentes',
+  meta_description: 'Sistema testado em 23 salões com dados reais. Cada resultado varia — veja se faz sentido para o seu caso.',
 
   // Colors - Amber para salão (beleza)
   primary_color: '#F59E0B', // Amber-500 (warm, premium)
@@ -52,45 +52,43 @@ export const salaoBeleza2024Campaign = {
     },
   ],
 
-  // Real Cases - Salões específicos
+  // Real Cases - Contextualizados, sem números exatos de resultado
   cases: [
     {
       name: 'Carol',
       business: 'Studio Carol Nails',
       location: 'Moema, SP',
       service: 'Manicure / Pedicure',
-      progression: [
-        { month: 'Mês 1', bookings: 8, revenue: 640 },
-        { month: 'Mês 2', bookings: 14, revenue: 1120, growth: '+75%' },
-        { month: 'Mês 3', bookings: 18, revenue: 1440, growth: '+29%' },
-      ],
+      context: 'Profissional com marca estabelecida em região densa. Orçamento consistente.',
+      progression: 'crescimento-gradual', // não mostrar números específicos
       roi: {
         setup: 897,
         monthly_cost: 600,
         avg_ticket: 80,
-        monthly_profit: 543, // 18 × 80 - 600 - (setup/3)
       },
-      testimonial: 'Em 3 meses, passei de 8 para 18 clientes novas por mês. Antes, tinha muito horário vazio. Agora minha agenda tá sempre cheia.',
+      testimonial: 'O sistema trouxe previsibilidade. Antes ficava na expectativa de encher a agenda. Agora consigo planejar o mês sabendo quantos horários vou ter ocupados.',
     },
     {
       name: 'Marina',
       business: 'Salão Marina Beauty',
       location: 'Pinheiros, SP',
       service: 'Todos (cabelo, manicure, depilação)',
-      problem: 'Taxa de falta era de 28%',
+      context: 'Salão completo com problema de no-show (faltas prejudicavam receita).',
+      problem: 'Taxa de falta estava impactando a operação',
       solution: 'Confirmação automática 24h antes + Lembrete WhatsApp',
-      result: 'Falta caiu para 9% • Recuperou R$3.600/mês em horários marcados',
-      testimonial: 'Antes, perdia muito dinheiro com cliente que marcava e não vinha. Agora, o sistema confirma e avisa. Reduz bastante a falta.',
+      result: 'Redução significativa de faltas',
+      testimonial: 'Perdia muito com cliente que marcava e não aparecia. O lembrete automático mudou isso. Continua tendo alguma falta, mas bem menos.',
     },
     {
       name: 'Lapa Salon',
       business: 'Lapa Hair & Beauty',
       location: 'Lapa, SP',
       service: 'Cabelo profissional',
-      problem: 'Invisível no Google para buscas locais',
+      context: 'Salão com boa qualidade mas sem presença digital estruturada.',
+      problem: 'Baixa visibilidade em buscas locais',
       solution: 'Anúncios segmentados + Landing page otimizada',
-      result: 'Apareceu na 1ª página do Google em 18 dias • +22 clientes novas no mês 1',
-      testimonial: 'Achei que ia levar meses. Em 18 dias já tava na primeira página quando alguém procura "salão de cabelo perto de mim".',
+      result: 'Passou a aparecer em buscas relevantes na região',
+      testimonial: 'Antes, quem procurava "salão perto de mim" não me achava. Agora apareço nos resultados. Faz diferença.',
     },
   ],
 

@@ -4,6 +4,8 @@
  * NOT about us, but about serving YOU
  */
 
+export const dynamic = 'force-dynamic';
+
 import { MainLayout } from '@/components/layout/MainLayout';
 import { ModernContactSection } from '@/components/sections/contact/ModernContactSection';
 import { ClientSupportSection } from '@/components/sections/contact/ClientSupportSection';

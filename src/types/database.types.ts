@@ -7,30 +7,10 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -295,7 +275,7 @@ export type Database = {
       }
       analytics_events: {
         Row: {
-          created_at: string
+          created_at: string | null
           event_data: Json | null
           event_type: string
           id: string
@@ -307,7 +287,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           event_data?: Json | null
           event_type: string
           id?: string
@@ -319,7 +299,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           event_data?: Json | null
           event_type?: string
           id?: string
@@ -590,7 +570,7 @@ export type Database = {
           created_at: string
           device_type: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           lead_id: string | null
           os: string | null
           page_url: string
@@ -616,7 +596,7 @@ export type Database = {
           created_at?: string
           device_type?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           lead_id?: string | null
           os?: string | null
           page_url: string
@@ -642,7 +622,7 @@ export type Database = {
           created_at?: string
           device_type?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           lead_id?: string | null
           os?: string | null
           page_url?: string
@@ -1649,6 +1629,7 @@ export type Database = {
           end_time: string
           id: string
           is_active: boolean | null
+          max_bookings_per_slot: number | null
           start_time: string
           updated_at: string | null
           valid_from: string | null
@@ -1661,6 +1642,7 @@ export type Database = {
           end_time: string
           id?: string
           is_active?: boolean | null
+          max_bookings_per_slot?: number | null
           start_time: string
           updated_at?: string | null
           valid_from?: string | null
@@ -1673,6 +1655,7 @@ export type Database = {
           end_time?: string
           id?: string
           is_active?: boolean | null
+          max_bookings_per_slot?: number | null
           start_time?: string
           updated_at?: string | null
           valid_from?: string | null
@@ -1908,6 +1891,7 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           current_uses: number | null
+          description: string | null
           discount_type: string
           discount_value: number
           id: string
@@ -1924,6 +1908,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           current_uses?: number | null
+          description?: string | null
           discount_type: string
           discount_value: number
           id?: string
@@ -1940,6 +1925,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           current_uses?: number | null
+          description?: string | null
           discount_type?: string
           discount_value?: number
           id?: string
@@ -2206,10 +2192,210 @@ export type Database = {
           },
         ]
       }
+      email_queue: {
+        Row: {
+          campaign_id: string | null
+          clicked_at: string | null
+          created_at: string | null
+          failed_reason: string | null
+          html_content: string
+          id: string
+          lead_id: string
+          opened_at: string | null
+          resend_message_id: string | null
+          scheduled_for: string | null
+          sent_at: string | null
+          status: string | null
+          subject: string
+          template_id: string | null
+          to_email: string
+          to_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          clicked_at?: string | null
+          created_at?: string | null
+          failed_reason?: string | null
+          html_content: string
+          id?: string
+          lead_id: string
+          opened_at?: string | null
+          resend_message_id?: string | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string | null
+          subject: string
+          template_id?: string | null
+          to_email: string
+          to_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          clicked_at?: string | null
+          created_at?: string | null
+          failed_reason?: string | null
+          html_content?: string
+          id?: string
+          lead_id?: string
+          opened_at?: string | null
+          resend_message_id?: string | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string | null
+          subject?: string
+          template_id?: string | null
+          to_email?: string
+          to_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_queue_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "active_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_queue_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "email_queue_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_queue_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "active_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_queue_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_queue_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_leads_detailed"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "email_queue_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_sequence_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          current_step: number | null
+          id: string
+          last_email_sent_at: string | null
+          lead_id: string
+          sequence_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          current_step?: number | null
+          id?: string
+          last_email_sent_at?: string | null
+          lead_id: string
+          sequence_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          current_step?: number | null
+          id?: string
+          last_email_sent_at?: string | null
+          lead_id?: string
+          sequence_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sequence_progress_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "active_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_sequence_progress_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_sequence_progress_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_leads_detailed"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "email_sequence_progress_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "email_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_sequences: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       email_templates: {
         Row: {
           body_html: string
           body_text: string | null
+          campaign_id: string | null
           category: string | null
           created_at: string | null
           id: string
@@ -2223,6 +2409,7 @@ export type Database = {
         Insert: {
           body_html: string
           body_text?: string | null
+          campaign_id?: string | null
           category?: string | null
           created_at?: string | null
           id?: string
@@ -2236,6 +2423,7 @@ export type Database = {
         Update: {
           body_html?: string
           body_text?: string | null
+          campaign_id?: string | null
           category?: string | null
           created_at?: string | null
           id?: string
@@ -2246,7 +2434,105 @@ export type Database = {
           updated_at?: string | null
           variables?: string[] | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "email_templates_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "active_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_templates_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "email_templates_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_verifications: {
+        Row: {
+          attempt_count: number | null
+          created_at: string | null
+          email: string
+          expires_at: string | null
+          id: string
+          is_deliverable: boolean | null
+          lead_id: string
+          max_attempts: number | null
+          smtp_valid: boolean | null
+          status: string | null
+          updated_at: string | null
+          validation_source: string | null
+          verification_method: string | null
+          verification_token: string
+          verified_at: string | null
+        }
+        Insert: {
+          attempt_count?: number | null
+          created_at?: string | null
+          email: string
+          expires_at?: string | null
+          id?: string
+          is_deliverable?: boolean | null
+          lead_id: string
+          max_attempts?: number | null
+          smtp_valid?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+          validation_source?: string | null
+          verification_method?: string | null
+          verification_token: string
+          verified_at?: string | null
+        }
+        Update: {
+          attempt_count?: number | null
+          created_at?: string | null
+          email?: string
+          expires_at?: string | null
+          id?: string
+          is_deliverable?: boolean | null
+          lead_id?: string
+          max_attempts?: number | null
+          smtp_valid?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+          validation_source?: string | null
+          verification_method?: string | null
+          verification_token?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_verifications_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "active_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_verifications_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_verifications_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_leads_detailed"
+            referencedColumns: ["lead_id"]
+          },
+        ]
       }
       file_shares: {
         Row: {
@@ -2331,6 +2617,72 @@ export type Database = {
           type?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      free_audits: {
+        Row: {
+          breakdown: Json | null
+          client_id: string | null
+          conversion_date: string | null
+          converted_to_client: boolean | null
+          created_at: string | null
+          email: string
+          first_follow_up_at: string | null
+          follow_up_count: number | null
+          follow_up_stage: string | null
+          id: string
+          metrics: Json | null
+          monthly_revenue_loss: number | null
+          name: string
+          potential_monthly_gain: number | null
+          updated_at: string | null
+          urgency_classification: string | null
+          urgency_score: number | null
+          website_url: string
+          yearly_revenue_loss: number | null
+        }
+        Insert: {
+          breakdown?: Json | null
+          client_id?: string | null
+          conversion_date?: string | null
+          converted_to_client?: boolean | null
+          created_at?: string | null
+          email: string
+          first_follow_up_at?: string | null
+          follow_up_count?: number | null
+          follow_up_stage?: string | null
+          id?: string
+          metrics?: Json | null
+          monthly_revenue_loss?: number | null
+          name: string
+          potential_monthly_gain?: number | null
+          updated_at?: string | null
+          urgency_classification?: string | null
+          urgency_score?: number | null
+          website_url: string
+          yearly_revenue_loss?: number | null
+        }
+        Update: {
+          breakdown?: Json | null
+          client_id?: string | null
+          conversion_date?: string | null
+          converted_to_client?: boolean | null
+          created_at?: string | null
+          email?: string
+          first_follow_up_at?: string | null
+          follow_up_count?: number | null
+          follow_up_stage?: string | null
+          id?: string
+          metrics?: Json | null
+          monthly_revenue_loss?: number | null
+          name?: string
+          potential_monthly_gain?: number | null
+          updated_at?: string | null
+          urgency_classification?: string | null
+          urgency_score?: number | null
+          website_url?: string
+          yearly_revenue_loss?: number | null
         }
         Relationships: []
       }
@@ -2590,6 +2942,97 @@ export type Database = {
           },
         ]
       }
+      lead_scoring_rules: {
+        Row: {
+          campaign_id: string
+          challenge_primary_weight: number | null
+          challenge_secondary_weight: number | null
+          created_at: string | null
+          email_verified_bonus: number | null
+          engagement_multiplier: number | null
+          experience_moderate_weight: number | null
+          experience_none_weight: number | null
+          experience_strong_weight: number | null
+          id: string
+          intent_exploring_weight: number | null
+          intent_immediate_weight: number | null
+          intent_not_sure_weight: number | null
+          intent_this_month_weight: number | null
+          intent_this_quarter_weight: number | null
+          message_provided_bonus: number | null
+          revenue_high_weight: number | null
+          revenue_low_weight: number | null
+          revenue_medium_weight: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          campaign_id: string
+          challenge_primary_weight?: number | null
+          challenge_secondary_weight?: number | null
+          created_at?: string | null
+          email_verified_bonus?: number | null
+          engagement_multiplier?: number | null
+          experience_moderate_weight?: number | null
+          experience_none_weight?: number | null
+          experience_strong_weight?: number | null
+          id?: string
+          intent_exploring_weight?: number | null
+          intent_immediate_weight?: number | null
+          intent_not_sure_weight?: number | null
+          intent_this_month_weight?: number | null
+          intent_this_quarter_weight?: number | null
+          message_provided_bonus?: number | null
+          revenue_high_weight?: number | null
+          revenue_low_weight?: number | null
+          revenue_medium_weight?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          challenge_primary_weight?: number | null
+          challenge_secondary_weight?: number | null
+          created_at?: string | null
+          email_verified_bonus?: number | null
+          engagement_multiplier?: number | null
+          experience_moderate_weight?: number | null
+          experience_none_weight?: number | null
+          experience_strong_weight?: number | null
+          id?: string
+          intent_exploring_weight?: number | null
+          intent_immediate_weight?: number | null
+          intent_not_sure_weight?: number | null
+          intent_this_month_weight?: number | null
+          intent_this_quarter_weight?: number | null
+          message_provided_bonus?: number | null
+          revenue_high_weight?: number | null
+          revenue_low_weight?: number | null
+          revenue_medium_weight?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_scoring_rules_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "active_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_scoring_rules_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_analytics"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "lead_scoring_rules_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           analysis_id: string | null
@@ -2606,15 +3049,24 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           email: string
+          email_verification_status: string | null
+          email_verified: boolean | null
+          email_verified_at: string | null
+          email_verified_source: string | null
+          engagement_score: number | null
+          fit_score: number | null
           full_name: string | null
           id: string
-          ip_address: unknown | null
+          intent_score: number | null
+          ip_address: unknown
           landing_page_url: string | null
+          last_engagement_at: string | null
           lead_score: number | null
           metadata: Json | null
           notes: string | null
           phone: string | null
           priority: string | null
+          qualification_status: string | null
           referrer: string | null
           score: number | null
           sent_to_crm: boolean | null
@@ -2644,15 +3096,24 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           email: string
+          email_verification_status?: string | null
+          email_verified?: boolean | null
+          email_verified_at?: string | null
+          email_verified_source?: string | null
+          engagement_score?: number | null
+          fit_score?: number | null
           full_name?: string | null
           id?: string
-          ip_address?: unknown | null
+          intent_score?: number | null
+          ip_address?: unknown
           landing_page_url?: string | null
+          last_engagement_at?: string | null
           lead_score?: number | null
           metadata?: Json | null
           notes?: string | null
           phone?: string | null
           priority?: string | null
+          qualification_status?: string | null
           referrer?: string | null
           score?: number | null
           sent_to_crm?: boolean | null
@@ -2682,15 +3143,24 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           email?: string
+          email_verification_status?: string | null
+          email_verified?: boolean | null
+          email_verified_at?: string | null
+          email_verified_source?: string | null
+          engagement_score?: number | null
+          fit_score?: number | null
           full_name?: string | null
           id?: string
-          ip_address?: unknown | null
+          intent_score?: number | null
+          ip_address?: unknown
           landing_page_url?: string | null
+          last_engagement_at?: string | null
           lead_score?: number | null
           metadata?: Json | null
           notes?: string | null
           phone?: string | null
           priority?: string | null
+          qualification_status?: string | null
           referrer?: string | null
           score?: number | null
           sent_to_crm?: boolean | null
@@ -2728,6 +3198,126 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      meta_circuit_breaker: {
+        Row: {
+          error_count: number | null
+          id: number
+          is_open: boolean | null
+          last_error: string | null
+          opened_at: string | null
+        }
+        Insert: {
+          error_count?: number | null
+          id?: number
+          is_open?: boolean | null
+          last_error?: string | null
+          opened_at?: string | null
+        }
+        Update: {
+          error_count?: number | null
+          id?: number
+          is_open?: boolean | null
+          last_error?: string | null
+          opened_at?: string | null
+        }
+        Relationships: []
+      }
+      meta_events_dedup: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          expires_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          expires_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          expires_at?: string | null
+        }
+        Relationships: []
+      }
+      meta_events_log: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          event_id: string
+          event_name: string
+          id: number
+          meta_fbtrace_id: string | null
+          request_duration_ms: number | null
+          status: string
+          trace_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          event_id: string
+          event_name: string
+          id?: number
+          meta_fbtrace_id?: string | null
+          request_duration_ms?: number | null
+          status: string
+          trace_id: string
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          event_id?: string
+          event_name?: string
+          id?: number
+          meta_fbtrace_id?: string | null
+          request_duration_ms?: number | null
+          status?: string
+          trace_id?: string
+        }
+        Relationships: []
+      }
+      meta_retry_queue: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: number
+          last_error: string | null
+          max_retries: number | null
+          next_retry_at: string | null
+          payload: Json
+          retry_count: number | null
+          status: string
+          trace_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: number
+          last_error?: string | null
+          max_retries?: number | null
+          next_retry_at?: string | null
+          payload: Json
+          retry_count?: number | null
+          status?: string
+          trace_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: number
+          last_error?: string | null
+          max_retries?: number | null
+          next_retry_at?: string | null
+          payload?: Json
+          retry_count?: number | null
+          status?: string
+          trace_id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       notification_queue: {
         Row: {
@@ -4272,12 +4862,14 @@ export type Database = {
           avatar_url: string | null
           company_name: string | null
           created_at: string
+          email: string | null
           full_name: string | null
           id: string
           monthly_analysis_count: number | null
           monthly_support_tickets: number | null
           phone: string | null
           phone_encrypted: string | null
+          role: string | null
           storage_used_mb: number | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -4292,12 +4884,14 @@ export type Database = {
           avatar_url?: string | null
           company_name?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string | null
           id: string
           monthly_analysis_count?: number | null
           monthly_support_tickets?: number | null
           phone?: string | null
           phone_encrypted?: string | null
+          role?: string | null
           storage_used_mb?: number | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -4312,12 +4906,14 @@ export type Database = {
           avatar_url?: string | null
           company_name?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string | null
           id?: string
           monthly_analysis_count?: number | null
           monthly_support_tickets?: number | null
           phone?: string | null
           phone_encrypted?: string | null
+          role?: string | null
           storage_used_mb?: number | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -5160,16 +5756,61 @@ export type Database = {
         }
         Relationships: []
       }
+      v_audits_dashboard: {
+        Row: {
+          audit_date: string | null
+          avg_urgency: number | null
+          conversions: number | null
+          hot_leads: number | null
+          total_audits: number | null
+          total_monthly_loss: number | null
+          warm_leads: number | null
+        }
+        Relationships: []
+      }
+      v_hot_audit_leads: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string | null
+          monthly_revenue_loss: number | null
+          name: string | null
+          urgency_score: number | null
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          monthly_revenue_loss?: number | null
+          name?: string | null
+          urgency_score?: number | null
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          monthly_revenue_loss?: number | null
+          name?: string | null
+          urgency_score?: number | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       activate_subscription: {
         Args: { p_payment_id: string; p_subscription_id: string }
         Returns: boolean
       }
-      calculate_mrr: {
-        Args: Record<PropertyKey, never>
-        Returns: number
+      archive_old_analyses: { Args: never; Returns: undefined }
+      auto_verify_email_simple: {
+        Args: { p_email: string; p_lead_id: string }
+        Returns: boolean
       }
+      calculate_lead_score: { Args: { lead_id: string }; Returns: number }
+      calculate_mrr: { Args: never; Returns: number }
       calculate_revenue_metrics: {
         Args: { p_end_date?: string; p_start_date?: string }
         Returns: Json
@@ -5178,44 +5819,21 @@ export type Database = {
         Args: { p_cancel_at_period_end?: boolean; p_subscription_id: string }
         Returns: boolean
       }
-      check_domain_health: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      check_security: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      check_uptime: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_expired_domain_validations: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_expired_presignups: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      cleanup_expired_shares: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      cleanup_old_activity_logs: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      check_domain_health: { Args: never; Returns: undefined }
+      check_security: { Args: never; Returns: undefined }
+      check_uptime: { Args: never; Returns: undefined }
+      cleanup_expired_domain_validations: { Args: never; Returns: undefined }
+      cleanup_expired_presignups: { Args: never; Returns: number }
+      cleanup_expired_shares: { Args: never; Returns: number }
+      cleanup_old_activity_logs: { Args: never; Returns: undefined }
       cleanup_old_audit_logs: {
         Args: { days_to_keep?: number }
         Returns: number
       }
-      cleanup_old_webhook_events: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      cleanup_old_audit_logs_v2: { Args: never; Returns: undefined }
+      cleanup_old_webhook_events: { Args: never; Returns: number }
       column_exists: {
-        Args: { column_name: string; table_name: string }
+        Args: { p_column_name: string; p_table_name: string }
         Returns: boolean
       }
       convert_quiz_lead_to_client: {
@@ -5226,6 +5844,13 @@ export type Database = {
         Args: { p_client_id: string; p_data?: Json }
         Returns: string
       }
+      create_email_verification: {
+        Args: { p_email: string; p_lead_id: string }
+        Returns: {
+          verification_id: string
+          verification_token: string
+        }[]
+      }
       create_personalized_checklist: {
         Args: { p_client_id: string; p_title?: string }
         Returns: string
@@ -5234,26 +5859,12 @@ export type Database = {
         Args: { p_description?: string; p_title?: string; p_user_id: string }
         Returns: string
       }
-      decrypt_sensitive: {
-        Args: { encrypted_data: string }
-        Returns: string
-      }
-      downgrade_to_free: {
-        Args: { p_user_id: string }
-        Returns: undefined
-      }
-      encrypt_sensitive: {
-        Args: { data: string }
-        Returns: string
-      }
-      get_admin_stats: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_app_setting: {
-        Args: { setting_key: string }
-        Returns: string
-      }
+      decrypt_sensitive: { Args: { encrypted_data: string }; Returns: string }
+      downgrade_to_free: { Args: { p_user_id: string }; Returns: undefined }
+      encrypt_sensitive: { Args: { data: string }; Returns: string }
+      generate_verification_token: { Args: never; Returns: string }
+      get_admin_stats: { Args: never; Returns: Json }
+      get_app_setting: { Args: { setting_key: string }; Returns: string }
       get_audit_log: {
         Args: {
           filter_action?: string
@@ -5280,10 +5891,7 @@ export type Database = {
           time_slot: string
         }[]
       }
-      get_checklist_stats: {
-        Args: { p_checklist_id: string }
-        Returns: Json
-      }
+      get_checklist_stats: { Args: { p_checklist_id: string }; Returns: Json }
       get_checklist_with_stats: {
         Args: { p_checklist_id: string }
         Returns: {
@@ -5304,34 +5912,30 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_client_domain: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
+      get_client_domain: { Args: never; Returns: Json }
+      get_client_metrics: { Args: never; Returns: Json }
+      get_client_metrics_enhanced: { Args: never; Returns: Json }
+      get_client_stats: { Args: { p_client_id: string }; Returns: Json }
+      get_client_timeline: { Args: { p_limit?: number }; Returns: Json }
+      get_conversion_metrics: { Args: never; Returns: Json }
+      get_email_analytics: {
+        Args: {
+          p_campaign_id?: string
+          p_end_date?: string
+          p_start_date?: string
+        }
+        Returns: {
+          bounce_rate: number
+          click_rate: number
+          open_rate: number
+          total_bounced: number
+          total_clicked: number
+          total_failed: number
+          total_opened: number
+          total_sent: number
+        }[]
       }
-      get_client_metrics: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_client_metrics_enhanced: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_client_stats: {
-        Args: { p_client_id: string }
-        Returns: Json
-      }
-      get_client_timeline: {
-        Args: { p_limit?: number }
-        Returns: Json
-      }
-      get_conversion_metrics: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_email_summary: {
-        Args: { p_user_id: string }
-        Returns: Json
-      }
+      get_email_summary: { Args: { p_user_id: string }; Returns: Json }
       get_financial_summary: {
         Args: { p_period?: string; p_user_id: string }
         Returns: {
@@ -5343,16 +5947,10 @@ export type Database = {
           transaction_count: number
         }[]
       }
-      get_leads_stats: {
-        Args: { p_user_id: string }
-        Returns: Json
-      }
-      get_monthly_revenue: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      get_leads_stats: { Args: { p_user_id: string }; Returns: Json }
+      get_monthly_revenue: { Args: never; Returns: number }
       get_qualified_uncontacted_leads: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           company: string
           days_since_quiz: number
@@ -5385,10 +5983,7 @@ export type Database = {
           user_email: string
         }[]
       }
-      get_storage_usage: {
-        Args: { user_uuid: string }
-        Returns: number
-      }
+      get_storage_usage: { Args: { user_uuid: string }; Returns: number }
       get_user_active_subscription: {
         Args: { p_user_id: string }
         Returns: {
@@ -5429,14 +6024,8 @@ export type Database = {
           transaction_id: string
         }[]
       }
-      get_user_stats: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_user_storage_usage: {
-        Args: { p_user_id: string }
-        Returns: Json
-      }
+      get_user_stats: { Args: never; Returns: Json }
+      get_user_storage_usage: { Args: { p_user_id: string }; Returns: Json }
       get_user_tasks: {
         Args: { p_date?: string }
         Returns: {
@@ -5466,13 +6055,19 @@ export type Database = {
           tier: string
         }[]
       }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
+      increment_email_sequence_step: {
+        Args: { p_lead_id: string }
+        Returns: undefined
       }
-      is_paid_tier: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
+      increment_lead_score: {
+        Args: { p_lead_id: string; p_points: number }
+        Returns: undefined
+      }
+      is_admin: { Args: never; Returns: boolean }
+      is_paid_tier: { Args: never; Returns: boolean }
+      mark_email_bounced: {
+        Args: { p_lead_id: string; p_reason?: string }
+        Returns: undefined
       }
       permanent_delete_old_items: {
         Args: { p_days_threshold?: number }
@@ -5490,10 +6085,12 @@ export type Database = {
         }
         Returns: Json
       }
+      reset_monthly_limits: { Args: never; Returns: undefined }
       restore_deleted: {
         Args: { p_record_id: string; p_table_name: string }
         Returns: boolean
       }
+      schedule_next_email: { Args: { p_lead_id: string }; Returns: string }
       seed_default_financial_categories: {
         Args: { p_user_id: string }
         Returns: undefined
@@ -5506,26 +6103,17 @@ export type Database = {
         }
         Returns: boolean
       }
-      table_exists: {
-        Args: { table_name: string }
-        Returns: boolean
-      }
-      trigger_domain_check: {
-        Args: Record<PropertyKey, never>
+      table_exists: { Args: { p_table_name: string }; Returns: boolean }
+      trigger_domain_check: { Args: never; Returns: undefined }
+      trigger_security_check: { Args: never; Returns: undefined }
+      trigger_uptime_check: { Args: never; Returns: undefined }
+      unsubscribe_lead: { Args: { p_lead_id: string }; Returns: undefined }
+      update_audit_follow_up: {
+        Args: { audit_id: string; new_stage: string }
         Returns: undefined
       }
-      trigger_security_check: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      trigger_uptime_check: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      upgrade_to_paid: {
-        Args: { p_user_id: string }
-        Returns: undefined
-      }
+      update_lead_engagement: { Args: { lead_id: string }; Returns: undefined }
+      upgrade_to_paid: { Args: { p_user_id: string }; Returns: undefined }
       upsert_subscription: {
         Args: {
           p_current_period_end?: string
@@ -5537,6 +6125,13 @@ export type Database = {
           p_user_id: string
         }
         Returns: string
+      }
+      verify_email_token: {
+        Args: { p_lead_id: string; p_token: string }
+        Returns: {
+          message: string
+          success: boolean
+        }[]
       }
     }
     Enums: {
@@ -5689,9 +6284,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       booking_status_enum: [
@@ -5725,4 +6317,3 @@ export const Constants = {
     },
   },
 } as const
-

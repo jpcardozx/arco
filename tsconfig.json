@@ -141,7 +141,8 @@
     "docs/examples/**/*",
     "src/__tests__/**/*",
     "mcp/**/*",
-    "supabase/functions/**/*"
+    "supabase/functions/**/*",
+    "scripts/**/*"
   ],
   "ts-node": {
     "compilerOptions": {

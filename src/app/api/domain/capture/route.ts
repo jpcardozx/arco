@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 
 /**
  * API ROUTE: /api/domain/capture
- * 
+ *
  * Captures domain analysis request IMMEDIATELY when user submits
  * Before any identification - tracks anonymous user by session_id
- * 
+ *
  * Priority: P0 - CRITICAL
  */
+
+// Temporarily disable edge runtime to debug build
+// export const runtime = 'edge';
 
 const captureSchema = z.object({
   domain: z

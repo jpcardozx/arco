@@ -21,7 +21,9 @@
  * 9. Contact + Certifications (0.5x) - Form + Badges (ÚLTIMA)
  */
 
-'use client';
+'use client'
+
+export const dynamic = 'force-dynamic';;
 
 import dynamicImport from 'next/dynamic';
 import { WhatsAppButton } from '@/components/primitives/WhatsAppButton';

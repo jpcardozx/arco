@@ -4,7 +4,7 @@
  * Inspirado no PremiumHeroSection de /jpcardozx
  * Orquestração premium com:
  * - Glassmorphism sofisticado
- * - ParticleBackground (sem pedras girando)
+ * - ParticleField isolado (SSR safe)
  * - Typography scale profissional
  * - Motion design elegante
  * - CTAs premium com gradients
@@ -15,9 +15,7 @@
 
 import React, { useRef, Suspense } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Points, PointMaterial } from '@react-three/drei'
-import * as THREE from 'three'
+import dynamic from 'next/dynamic'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -31,50 +29,15 @@ import {
   ChevronDown
 } from 'lucide-react'
 import { cn, designTokens } from '@/design-system/tokens'
-import { ParticleBackground } from '@/components/effects/ParticleBackground'
 
-/**
- * Three.js Minimal Depth System - Subtle Particles Only
- * Creates minimal visual depth without overwhelming the content
- */
-function MinimalDepthLayer() {
-  const particlesRef = useRef<THREE.Points>(null)
-  
-  // Single minimal layer
-  const createMinimalLayer = (count: number) => {
-    const pos = new Float32Array(count * 3)
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 35      // x spread
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 18   // y spread
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10   // z depth
-    }
-    return pos
+// Three.js Component - Lazy loaded, SSR disabled
+const ParticleField = dynamic(
+  () => import('@/components/three/ParticleField').then(mod => ({ default: mod.ParticleField })),
+  { 
+    ssr: false,
+    loading: () => <div className="absolute inset-0 bg-gradient-to-b from-slate-950 to-slate-900" />
   }
-
-  const positions = React.useMemo(() => createMinimalLayer(30), [])  // Only 30 particles total
-
-  useFrame((state) => {
-    const time = state.clock.elapsedTime
-    
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = time * 0.02  // Very slow rotation
-      particlesRef.current.position.y = Math.sin(time * 0.2) * 0.15  // Gentle float
-    }
-  })
-
-  return (
-    <Points ref={particlesRef} positions={positions} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        color="#60a5fa"
-        size={1.2}
-        sizeAttenuation={true}
-        depthWrite={false}
-        opacity={0.25}  // Very subtle
-      />
-    </Points>
-  )
-}
+)
 
 interface PremiumHeroProps {
   onStartBooking: () => void
@@ -241,18 +204,17 @@ export function PremiumHero({ onStartBooking }: PremiumHeroProps) {
         />
 
         {/* Three.js Scene - PRIMARY VISUAL ELEMENT */}
-        <div className="absolute inset-0 opacity-70">
-          <Suspense fallback={null}>
-            <Canvas
-              camera={{ position: [0, 0, 6], fov: 75 }}
-              gl={{ antialias: false, alpha: true }}
-              dpr={[1, 1.5]}
-            >
-              <ambientLight intensity={0.6} />
-              <MinimalDepthLayer />
-            </Canvas>
-          </Suspense>
-        </div>
+        <Suspense fallback={null}>
+          <ParticleField 
+            count={30}
+            speed={0.02}
+            spread={8}
+            color="#60a5fa"
+            size={1.2}
+            opacity={0.25}
+            className="opacity-70"
+          />
+        </Suspense>
 
         {/* Elegant Glass Overlay - Frosted effect */}
         <div className="absolute inset-0 pointer-events-none">

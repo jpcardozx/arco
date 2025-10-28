@@ -151,3 +151,7 @@ docs/*_CREDENTIAL*.md
 .env.*.bak*
 *.env.local
 *.env.production
+
+# Competitive research and analysis (internal use only)
+/copy/
+/docs/sessions/

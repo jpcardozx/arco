@@ -5,6 +5,8 @@
 
 'use client'
 
+export const dynamic = 'force-dynamic';
+
 import { HeroWithImageSection } from '@/components/landing/HeroWithImageSection'
 import { ServicesIconsGrid } from '@/components/landing/ServicesIconsGrid'
 import { TestimonialsWithImage } from '@/components/landing/TestimonialsWithImage'

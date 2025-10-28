@@ -20,8 +20,19 @@
       "Bash(npm run build)",
       "Bash(pnpm install)",
       "Bash(pnpm typecheck)",
-      "Bash(git log --all -S \"EAA\" --oneline)"
+      "Bash(git log --all -S \"EAA\" --oneline)",
+      "WebFetch(domain:www.manyrequests.com)",
+      "WebFetch(domain:glossgenius.com)",
+      "WebFetch(domain:www.joinblvd.com)",
+      "WebFetch(domain:www.growbo.com)",
+      "Bash(mv /home/jpcardozx/projetos/arco/copy/05_UX_PROGRESSIVE_DISCLOSURE.md /home/jpcardozx/projetos/arco/copy/_DEPRECATED_05_UX.md)",
+      "Bash(git log:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "context7",
+    "supabase"
+  ]
 }

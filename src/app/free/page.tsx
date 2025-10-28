@@ -4,6 +4,8 @@
  * Design System: Glassmorphic + Gradient + Premium UX
  */
 
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { LeadMagnetHero } from '@/components/sections/leadmagnet/LeadMagnetHero';

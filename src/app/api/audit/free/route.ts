@@ -12,7 +12,7 @@
 
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
 import {
   successResponse,

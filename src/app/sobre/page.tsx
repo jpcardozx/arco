@@ -6,7 +6,9 @@
  * Tom: sóbrio, profissional, neutro, sem pitches
  */
 
-'use client';
+'use client'
+
+export const dynamic = 'force-dynamic';;
 
 import React from 'react';
 import { SobreHeroSection } from '@/components/sobre/SobreHeroSection';

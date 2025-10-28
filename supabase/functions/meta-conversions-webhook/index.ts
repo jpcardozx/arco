@@ -123,6 +123,31 @@ async function hashPhone(phone: string, countryCode: string = "55"): Promise<str
 }
 
 /**
+ * Extrai _fbp e _fbc dos cookies da requisição
+ * Melhora EMQ ao capturar dados de tracking do Meta Pixel
+ */
+function extractFbParams(req: Request): { fbp?: string; fbc?: string } {
+  const cookies = req.headers.get("cookie") || "";
+  const cookieObj: Record<string, string> = {};
+
+  cookies.split(";").forEach((cookie) => {
+    const [key, value] = cookie.trim().split("=");
+    if (key && value) {
+      cookieObj[key] = decodeURIComponent(value);
+    }
+  });
+
+  // Extrai fbclid da URL se disponível (para construir fbc)
+  const url = new URL(req.url);
+  const fbclid = url.searchParams.get("fbclid");
+
+  return {
+    fbp: cookieObj["_fbp"] || undefined,
+    fbc: fbclid ? `fb.1.${Date.now()}.${fbclid}` : cookieObj["_fbc"] || undefined,
+  };
+}
+
+/**
  * Gera event_id se não fornecido
  */
 function ensureEventId(input?: string): string {
@@ -247,7 +272,7 @@ async function sendToMetaAPI(
   context: Partial<TrackingContext>
 ): Promise<{ success: boolean; response?: any; error?: string }> {
   const metaDatasetId = Deno.env.get("META_DATASET_ID");
-  const metaToken = Deno.env.get("META_CONVERSION_API_TOKEN");
+  const metaToken = Deno.env.get("META_CONVERSION_API_ACCESS_TOKEN");
 
   // DEBUG: Log token status
   logEvent("DEBUG", "Meta credentials check", {

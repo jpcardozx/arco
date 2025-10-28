@@ -1,0 +1,29 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "cache": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": [],
+      "cache": true
+    },
+    "typecheck": {
+      "outputs": [],
+      "cache": true
+    }
+  },
+  "globalDependencies": [
+    ".env.local",
+    ".env.production",
+    "tsconfig.json",
+    "next.config.mjs",
+    "tailwind.config.mjs"
+  ]
+}

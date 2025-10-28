@@ -14,7 +14,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@/lib/supabase/server';
 
 interface MetaConversionPayload {
   event_name: string;

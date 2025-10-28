@@ -1,6 +1,6 @@
 'use client';
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useSearchParams, useRouter } from 'next/navigation';

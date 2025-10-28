@@ -16,6 +16,7 @@ import {
   Users,
   CheckCircle2,
   Bell,
+  ArrowRight,
 } from 'lucide-react';
 import {
   Collapsible,
@@ -24,8 +25,6 @@ import {
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
-import { OptimizedImage } from '@/components/ui/optimized-image';
-import { landingImages } from '@/lib/landing-images';
 
 /** Types */
 // Ajuste conforme o tipo real no seu Supabase
@@ -48,58 +47,58 @@ const fadeInUp = (delay = 0) => ({
 const DEFAULT_STEPS = [
   {
     title: 'Anúncios segmentados por localização e intenção de busca',
-    subtitle: 'Investimento direcionado para pessoas próximas ao seu salão, com interesse real no serviço.',
-    badge: 'Primeiros resultados em 48-72h',
+    subtitle: 'Coloca seu serviço na frente de quem está procurando naquele momento. Você paga só por quem clica.',
+    badge: 'Primeiros cliques em 48-72h',
     icon: Target,
-    description: 'Configuramos campanhas no Google e Meta (Instagram/Facebook) para exibir seu anúncio quando alguém pesquisa serviços de beleza na sua região, ou demonstra comportamento compatível com seu público-alvo. O modelo é custo por clique: você paga apenas quando alguém interage com o anúncio.',
-    why: 'Google e Meta ajustam o custo por clique baseado na qualidade do anúncio e taxa de conversão. Anúncios bem estruturados, com landing pages rápidas e oferta clara, recebem descontos automáticos no lance — reduzindo custo de aquisição ao longo do tempo.',
+    description: 'Quando alguém digita "manicure perto de mim" ou "depilação [seu bairro]" no Google, ou está vendo stories sobre beleza no Instagram, seu anúncio aparece. Configuramos a campanha para mostrar exatamente para quem tem mais chance de agendar com você — por localização, serviço buscado e comportamento anterior.',
+    why: 'Você só paga quando alguém clica. Ao contrário de distribuir panfletos (onde você paga por 1.000 e talvez 5 vejam), aqui cada clique é alguém genuinamente interessado. Quanto melhor seu site de agendamento, mais barato fica cada clique — o Google recompensa sites que convertem bem.',
     items: [
-      { 
+      {
         icon: Target,
-        q: 'Como funciona a segmentação de público?', 
-        a: 'Utilizamos três camadas de filtro: (1) Raio geográfico configurável em torno do seu endereço; (2) Palavras-chave de intenção (ex: "manicure perto de mim", "depilação [bairro]"); (3) Perfil comportamental — pessoas que já demonstraram interesse em serviços similares. O Meta também utiliza "audiências semelhantes" (lookalike), identificando perfis parecidos com seus melhores clientes.' 
+        q: 'Quanto custa cada clique? E se ninguém agendar?',
+        a: 'Depende do seu serviço e região. Manicure em São Paulo: R$ 1,50-3,50 por clique. Microblading em cidades menores: R$ 0,80-1,50. Você controla o orçamento diário — quer gastar R$ 50/dia? OK. R$ 200/dia? Também. Se alguém clica mas não agenda, não tem problema: você só paga pelo clique. É por isso que o site de agendamento rápido importa — reduz cliques "perdidos".'
       },
-      { 
+      {
         icon: Clock,
-        q: 'Qual o tempo até começar a ver agendamentos?', 
-        a: 'A campanha entra no ar em até 48 horas após aprovação. Os primeiros cliques aparecem entre 2-6 horas. O primeiro agendamento depende de fatores como dia da semana e qualidade da oferta — normalmente ocorre entre 24-72h. Nos primeiros 7-10 dias, os algoritmos estão em fase de aprendizado, testando variações de público e ajustando entrega. A partir do segundo mês, com mais dados históricos, a performance tende a melhorar entre 40-60% mantendo o mesmo orçamento.' 
+        q: 'E se a campanha não tiver tração no primeiro mês?',
+        a: 'Nos primeiros 7-10 dias, o Google testa diferentes públicos e horários pra descobrir quem mais clica. É normal começar com CPCs altos e poucas conversões. Depois disso, os algoritmos aprendem. Mas se em 2-3 semanas não houver cliques, revisamos: talvez seu anúncio tenha uma foto fraca, ou palavras-chave não batam com sua região. A gente mexe. Não é "pague e espere".'
       },
-      { 
+      {
         icon: TrendingUp,
-        q: 'Por que os resultados melhoram com o tempo?', 
-        a: 'Algoritmos de machine learning precisam de volume de dados para otimizar. Nas primeiras semanas, Google e Meta testam diferentes segmentos de público e horários. Com base em quem efetivamente agenda (não apenas clica), eles refinam a entrega para perfis de maior conversão. Exemplo real: uma profissional obteve 8 agendamentos no mês 1, 14 no mês 2 e 18 no mês 3, com orçamento fixo. A melhoria é resultado do aprendizado contínuo da plataforma.' 
+        q: 'Funciona melhor com muitos clientes antigos ou começando do zero?',
+        a: 'Começa do zero? Tudo bem. A gente busca "personas" — tipo: mulheres 25-45 anos que buscam serviços de beleza próximos. Com seus primeiros agendamentos, a gente refina ainda mais: "ah, na verdade suas melhores clientes são mulheres 30-40 que buscam entre 14h-18h". Depois de 2-3 meses com dados reais, sua campanha fica 30-50% mais barata porque o Google aprendeu exatamente quem agenda com você.'
       },
     ],
   },
   {
     title: 'Página de agendamento otimizada para conversão mobile',
-    subtitle: 'Sistema que permite ao cliente visualizar serviços, horários e confirmar reserva de forma autônoma.',
-    badge: 'Tempo médio de agendamento: 28 segundos',
+    subtitle: 'Cliente escolhe data, hora e serviço sozinho. Você recebe notificado e pode cobrar no ato se quiser.',
+    badge: 'Agendamento em menos de 30 segundos',
     icon: Calendar,
-    description: 'Desenvolvemos uma interface mobile-first com carregamento inferior a 1 segundo, exibindo catálogo de serviços com valores transparentes e calendário sincronizado em tempo real. O cliente seleciona, confirma e, se configurado, realiza pagamento antecipado via PIX ou cartão. Você recebe notificação automática.',
-    why: 'Estudos indicam que 67% dos usuários abandonam páginas com carregamento superior a 3 segundos. Adicionalmente, 58% desistem quando não encontram preços claros ou precisam abrir outro canal para obter informações básicas. Transparência e velocidade reduzem fricção no funil de conversão.',
+    description: 'Você compartilha um link no WhatsApp (ou ele chega pelo anúncio). Cliente abre, vê todos seus serviços com preços, escolhe data/hora e confirma. Você recebe notificação automática. Sem precisar ficar trocando mensagem dizendo "qual horário você quer?" — a maioria dos agendamentos é feita em menos de 30 segundos.',
+    why: 'Quando o cliente vê preço já ali, pronta, não desiste achando "vou ligar depois". Você não fica digitando mensagens. Não tem aquele problema de "ah, mas essa cliente acha o preço alto" no meio da conversa. Tudo resolvido em 30 segundos. Tempo = dinheiro, e você tira esse overhead.',
     items: [
-      { 
+      {
         icon: DollarSign,
-        q: 'Como altero preços ou adiciono novos serviços?', 
-        a: 'O painel administrativo permite edição em tempo real — você ajusta valores, inclui novos procedimentos (ex: "alongamento de gel") ou bloqueia horários específicos. Alterações refletem imediatamente no site. Não há dependência de desenvolvedor nem custo adicional por modificação. A maioria dos usuários domina a interface em 10-15 minutos.' 
+        q: 'E se eu quiser cobrar antecipado por PIX/cartão?',
+        a: 'Você ativa no painel. Cliente agenda e na hora já paga pelo PIX ou cartão. O horário fica automaticamente bloqueado pra você — não precisa você fazer nada. Se quiser aceitar cartão, a gente integra com Stripe/iugu (taxa: 2,99% + R$ 0,30 por transação). PIX é grátis. A gente também oferece a opção "cobrar no dia" se preferir.'
       },
-      { 
+      {
         icon: Users,
-        q: 'Como funciona o pagamento antecipado? E se a cliente não comparecer?', 
-        a: 'Você define a política: (1) Pagamento obrigatório no ato da reserva (PIX ou cartão) — horário fica bloqueado; (2) Pagamento presencial opcional — você decide se aceita ou não. Em caso de pagamento antecipado e não comparecimento, o valor não é reembolsado (conforme termos aceitos no checkout). Dados de mercado indicam que profissionais que exigem pagamento antecipado relatam redução de 70-90% em no-shows.' 
+        q: 'Como eu mudo preço, adiciono serviço novo ou bloqueio horários?',
+        a: 'Painel super simples. Você entra, clica em "Serviços", muda o preço do alongamento de R$ 50 pra R$ 60. Pronto. Adiciona "aplicação de acrílico"? Clica em "+", coloca preço e quanto tempo leva. Quer bloquear segunda-feira porque tá em férias? Entra em Calendário e marca como indisponível. Tudo muda automático no link que você manda pro cliente.'
       },
-      { 
+      {
         icon: Sparkles,
-        q: 'Cliente pode remarcar? Posso bloquear dias específicos?', 
-        a: 'Você configura janela de remarcação (padrão: até 24h antes). Após esse prazo, remarcação requer contato direto. Para bloquear dias — férias, feriados, eventos — basta marcar como indisponível no calendário; o horário deixa de aparecer para agendamento online. Útil para controlar capacidade em períodos de alta demanda.' 
+        q: 'Cliente pode remarcar ou cancelar depois de agendar?',
+        a: 'Você escolhe. Opção 1: cliente pode remarcar sozinho até 24h antes (e a gente avisa ele automaticamente). Opção 2: cliente só pode cancelar e reagendar se ligar pra você. A maioria das profissionais usa a opção 1 porque reduz mensagens — cliente clica em "remarcar" e pronto. Se tiver pagado antecipado, continua valendo pro novo horário.'
       },
     ],
   },
   {
     title: 'Automação de confirmação e lembretes via WhatsApp Business API',
-    subtitle: 'Comunicação programada que reduz ausências e libera tempo operacional.',
-    badge: 'WhatsApp Business API oficial',
+    subtitle: 'Um lembrete 24h antes: reduz quem não aparece. Sem ficar enchendo o WhatsApp do cliente.',
+    badge: 'Via WhatsApp Business API',
     icon: MessageCircle,
     description: 'Integramos com WhatsApp Business API (plataforma oficial Meta, identificada com selo verde) para enviar confirmações automáticas logo após o agendamento e lembretes 24h antes do horário marcado. Mensagens personalizadas incluem nome, serviço, data/hora e endereço. Custo por mensagem varia entre R$ 0,15-0,35, dependendo do tipo.',
     why: 'No-show é um dos maiores custos ocultos para profissionais autônomos. Estudos mostram que lembretes 24h antes reduzem ausências em 38-42%. A confirmação imediata também aumenta comprometimento psicológico — clientes que recebem mensagem estruturada apresentam taxa de comparecimento 3x superior versus agendamentos sem confirmação.',
@@ -179,39 +178,41 @@ export function HowItWorksSection({ campaign, className }: HowItWorksSectionProp
       />
 
       {/* PARALLAX LAYER 2: Main content */}
-      <motion.div 
+      <motion.div
         style={{ y: yContent }}
-        className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-32 will-change-transform"
+        className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-16 sm:py-20 md:py-24 lg:py-32 pb-20 md:pb-32 will-change-transform"
       >
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <motion.div
-            className="text-center max-w-4xl mx-auto mb-12 md:mb-16"
+            className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
             variants={fadeInUp()}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.35 }}
           >
+            {/* Badge PRÉ-H2 */}
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-6"
+              style={{
+                background: `linear-gradient(135deg, ${primary}15 0%, ${secondary}10 100%)`,
+                border: `1px solid ${primary}30`,
+                color: primary,
+              }}
+            >
+              <Zap className="w-3.5 h-3.5" />
+              Processo transparente
+            </div>
+
             <h2
               id={`${sectionId}-title`}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.1] text-white mb-4"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-white mb-6"
             >
-              Como funciona o sistema de{' '}
-              <span
-                className="bg-clip-text text-transparent bg-gradient-to-r"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`,
-                }}
-              >
-                aquisição e agendamento
-              </span>
+              Como você consegue clientes confirmados, sem saturar seu WhatsApp
             </h2>
+
             <p className="text-base sm:text-lg text-slate-400 leading-relaxed">
-              Três componentes integrados para gerar demanda previsível e reduzir trabalho operacional.
-              <br />
-              <span className="text-slate-300 font-medium">
-                Anúncios segmentados + landing page otimizada + automação de confirmação.
-              </span>
+              Três etapas que funcionam em paralelo: você tira uma demanda do ar e coloca na sua agenda.
             </p>
           </motion.div>
 
@@ -370,82 +371,101 @@ export function HowItWorksSection({ campaign, className }: HowItWorksSectionProp
             })}
           </div>
 
-          {/* CTA final */}
+          {/* CTA Final - Direcionamento Consultivo */}
           <motion.div
-            className="mt-10 sm:mt-12 flex flex-col items-center gap-3"
+            className="mt-16 sm:mt-20"
             variants={fadeInUp(0.3)}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <p className="text-slate-300 text-sm sm:text-base text-center max-w-2xl font-medium">
-              Sistema testado em centenas de profissionais de beleza e bem-estar.
-            </p>
-            <p className="text-slate-400 text-xs sm:text-sm text-center max-w-xl">
-              Primeiros resultados: 48-72h. Otimização contínua: 90 dias. ROI típico: 4-6 meses.
-            </p>
-          </motion.div>
-
-          {/* Visual Examples Row */}
-          <motion.div
-            className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {/* Professional Service Image */}
-            <div className="relative group overflow-hidden rounded-xl border border-slate-700/50 bg-slate-800/30">
-              <OptimizedImage
-                src={landingImages.services.hair2.webp}
-                alt={landingImages.services.hair2.alt}
-                width={600}
-                height={400}
-                className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-                placeholderType="professionalService"
+            <div
+              className="relative rounded-2xl border-2 p-8 sm:p-10 backdrop-blur-sm"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                borderColor: `${primary}30`,
+              }}
+            >
+              {/* Gradient accent */}
+              <div
+                className="absolute inset-0 opacity-5 rounded-2xl"
+                style={{
+                  background: `linear-gradient(135deg, ${primary}, ${secondary})`
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold px-2 py-1 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                    EXECUÇÃO
-                  </span>
+
+              <div className="relative z-10">
+                <div className="flex items-start gap-4 mb-6">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{
+                      backgroundColor: `${primary}15`,
+                      border: `2px solid ${primary}40`,
+                    }}
+                  >
+                    <CheckCircle2 className="w-6 h-6" style={{ color: primary }} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                      Próximo passo: entender se faz sentido pro seu caso
+                    </h3>
+                    <p className="text-base text-slate-300 leading-relaxed">
+                      Não é pra todo mundo. Se você investe menos de R$400/mês em marketing,
+                      ou seu ticket médio é inferior a R$50, talvez indicação e fidelização
+                      tragam melhor retorno agora.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-sm font-medium text-white">Técnica profissional em ação</p>
+
+                <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                  <div
+                    className="p-4 rounded-xl border-l-4"
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                      borderLeftColor: primary,
+                    }}
+                  >
+                    <p className="text-sm font-bold text-white mb-1">Funciona melhor se:</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                      Ticket R$70+, orçamento R$600+/mês, região com demanda,
+                      capacidade de absorver 8-15 novos agendamentos mensais
+                    </p>
+                  </div>
+                  <div
+                    className="p-4 rounded-xl border-l-4"
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                      borderLeftColor: secondary,
+                    }}
+                  >
+                    <p className="text-sm font-bold text-white mb-1">Não compensa se:</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                      Orçamento abaixo de R$400, ticket abaixo de R$50,
+                      cidade muito pequena, ou agenda já saturada
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                  <motion.a
+                    href="#capture"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white shadow-lg transition-all duration-300"
+                    style={{
+                      background: `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`,
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span>Analisar meu cenário</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </motion.a>
+                  <p className="text-xs text-slate-500 text-center sm:text-left">
+                    Diagnóstico rápido • Sem compromisso • Resposta em 24h
+                  </p>
+                </div>
               </div>
             </div>
-
-            {/* Cosmetics Products Image */}
-            <div className="relative group overflow-hidden rounded-xl border border-slate-700/50 bg-slate-800/30">
-              <OptimizedImage
-                src={landingImages.products.cosmetics.webp}
-                alt={landingImages.products.cosmetics.alt}
-                width={600}
-                height={400}
-                className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-                placeholderType="products"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold px-2 py-1 rounded bg-violet-500/20 text-violet-400 border border-violet-500/30">
-                    PRODUTOS
-                  </span>
-                </div>
-                <p className="text-sm font-medium text-white">Portfólio premium de serviços</p>
-              </div>
-            </div>
           </motion.div>
-
-          <motion.p
-            className="mt-4 text-xs text-center text-slate-500"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-          >
-            * Imagens ilustrativas de ambientes de referência para demonstrar padrão de qualidade esperado.
-          </motion.p>
         </div>
       </motion.div>
     </section>

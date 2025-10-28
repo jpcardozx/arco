@@ -1,13 +1,21 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import type { Tables } from '@/types/supabase';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Target, Zap, Shield, TrendingUp } from 'lucide-react';
+import {
+  ChartBarIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  CalculatorIcon,
+  ArrowRightIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline';
 import { useCampaignColors } from '@/hooks/useCampaignColors';
 import { useParallax } from '@/hooks/useParallax';
 import { OptimizedImage } from '@/components/ui/optimized-image';
+import posthog from 'posthog-js';
 
 type Campaign = Tables<'campaigns'>;
 
@@ -19,12 +27,54 @@ export function HeroSection({ campaign }: HeroSectionProps) {
   const colors = useCampaignColors(campaign);
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  
+  const viewTrackedRef = useRef(false);
+
   // Use hook customizado de parallax (já otimizado)
   const bgParallax = useParallax(bgRef, { speed: 0.3, enableOnMobile: false });
 
-  const scrollToCapture = () => {
-    document.getElementById('capture')?.scrollIntoView({ behavior: 'smooth' });
+  // Track hero view (50% in viewport)
+  useEffect(() => {
+    if (viewTrackedRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            posthog.capture('hero_viewed', {
+              campaign_id: campaign.id,
+              campaign_name: campaign.name,
+            });
+            viewTrackedRef.current = true;
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [campaign.id, campaign.name]);
+
+  const scrollToCalculator = () => {
+    posthog.capture('hero_cta_primary_clicked', {
+      cta_text: 'Calcular Potencial',
+      intent: 'high',
+      campaign_id: campaign.id,
+    });
+    document.getElementById('roi-calculator')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollToProof = () => {
+    posthog.capture('hero_cta_secondary_clicked', {
+      cta_text: 'Ver Dados Completos',
+      intent: 'medium',
+      campaign_id: campaign.id,
+    });
+    document.getElementById('proof')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -38,7 +88,7 @@ export function HeroSection({ campaign }: HeroSectionProps) {
         style={bgParallax.style}
         className="absolute inset-0"
       >
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-35">
           <OptimizedImage
             src="/landing/images/anabelle-carite-_wofGSSFb1Q-unsplash.webp"
             alt="Ambiente elegante de salão profissional"
@@ -47,177 +97,125 @@ export function HeroSection({ campaign }: HeroSectionProps) {
             className="w-full h-full object-cover"
             objectFit="cover"
           />
-          {/* Gradient overlay FORTALECIDO para melhor legibilidade */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-900/80 to-slate-950/95" />
+          {/* Gradient overlay (clarear para mostrar ambiente) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/75 to-slate-950/90" />
         </div>
       </div>
 
       {/* Texture grid estático (sem parallax para evitar conflito) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:80px_80px] opacity-15" />
 
-      {/* Conteúdo principal - SEM transform para evitar cortar */}
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-20 sm:py-24 md:py-28 lg:py-36">
-        <div className="flex flex-col items-center text-center w-full max-w-5xl mx-auto space-y-10 sm:space-y-12">
-          
-          {/* Badge */}
+      {/* Conteúdo principal */}
+      <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 lg:px-16 py-24 sm:py-32 md:py-40">
+        <div className="flex flex-col items-center text-center w-full max-w-5xl mx-auto space-y-12">
+
+          {/* Badge - Dados reais */}
           <motion.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-slate-800/70 border border-slate-700/60 backdrop-blur-md shadow-lg">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-slate-800/70 border border-teal-500/20 backdrop-blur-md shadow-lg">
+              <ChartBarIcon className="w-4 h-4 text-teal-400" />
               <span className="text-sm font-medium text-slate-200">
-                Metodologia Verificada
+                23 salões ativos
               </span>
               <div className="w-px h-4 bg-slate-600" />
-              <span className="text-sm font-semibold text-white">
-                Estruturação de Oferta
+              <span className="text-sm font-semibold text-slate-100">
+                Dados reais, transparentes
               </span>
             </div>
           </motion.div>
 
-          {/* Headline - Integração profundidade luz/sombra */}
+          {/* Headline - Consultivo */}
           <motion.h1
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.06] max-w-4xl"
-            style={{ 
-              textShadow: '0 2px 24px rgba(0,0,0,0.6), 0 0 48px rgba(0,0,0,0.3)' 
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.05] max-w-4xl"
+            style={{
+              textShadow: '0 2px 24px rgba(0,0,0,0.6)'
             }}
           >
             <span className="text-slate-100">
-              Cliente te encontra,{' '}
+              Seu salão merece
             </span>
-            <span 
-              className="relative inline-block"
-              style={{
-                background: `linear-gradient(135deg, 
-                  ${colors.primary.solid} 0%, 
-                  ${colors.secondary.solid} 50%,
-                  ${colors.primary.solid} 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                filter: 'brightness(1.3) saturate(1.2)',
-                textShadow: 'none'
-              }}
-            >
-              <span style={{ 
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: `linear-gradient(135deg, 
-                  ${colors.primary.solid}40 0%, 
-                  ${colors.secondary.solid}40 100%)`,
-                filter: 'blur(16px)',
-                zIndex: -1
-              }} />
-              agenda sozinho
-            </span>
-            <span className="text-slate-100">
-              , confirma{' '}
-            </span>
-            <span className="text-slate-400">
-              automaticamente
+            <br />
+            <span className="text-teal-400">
+              clientes previsíveis
             </span>
           </motion.h1>
 
-          {/* Subheadline - LEGIBILIDADE MELHORADA */}
+          {/* Subheadline - Consultivo + Transparente */}
           <motion.p
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
-            className="text-lg sm:text-xl text-slate-300 max-w-3xl leading-relaxed drop-shadow-lg"
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="text-xl sm:text-2xl text-slate-300 max-w-3xl leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}
           >
-            Piloto realizado entre janeiro e março de 2025 revelou{' '}
-            <strong className="text-slate-100 font-semibold">padrões consistentes de crescimento</strong>.{' '}
-            Análise completa da distribuição de performance — incluindo limitantes identificados e{' '}
-            <strong className="text-slate-100 font-semibold">variáveis críticas de sucesso</strong>.
+            Sistema de captura testado em 23 salões.{' '}
+            <strong className="text-slate-100 font-semibold">Cada resultado é diferente</strong>{' '}
+            — vamos calcular uma projeção realista para o seu caso.
           </motion.p>
 
-          {/* Key Benefits - Integração luz/sombra */}
+          {/* Key Benefits - Com Heroicons */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35, ease: [0.19, 1, 0.22, 1] }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl"
+            transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full max-w-4xl"
           >
             {/* Benefit 1: Visibilidade */}
-            <div 
-              className="group relative p-5 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/[0.1] hover:border-white/[0.15] transition-all duration-300 backdrop-blur-sm"
-              style={{
-                boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.05), 0 2px 12px rgba(0,0,0,0.3)'
-              }}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="group relative p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 hover:border-teal-500/30 transition-all duration-300 backdrop-blur-sm"
             >
-              <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 relative"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary.solid}15 0%, ${colors.secondary.solid}15 100%)`,
-                  boxShadow: `0 0 20px ${colors.primary.solid}20, inset 0 1px 0 rgba(255,255,255,0.1)`
-                }}
-              >
-                <Target className="w-5 h-5" style={{ color: colors.primary.solid, filter: 'drop-shadow(0 0 4px currentColor)' }} />
+              <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center mb-4">
+                <ChartBarIcon className="w-6 h-6 text-teal-400" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-100 mb-2">
                 Te encontram no Google
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                87% das clientes buscam no Google antes de decidir. Sistema posiciona você nos primeiros resultados.
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Anúncios segmentados para quem busca seu serviço na sua região.
               </p>
-            </div>
+            </motion.div>
 
             {/* Benefit 2: Automação */}
-            <div 
-              className="group relative p-5 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/[0.1] hover:border-white/[0.15] transition-all duration-300 backdrop-blur-sm"
-              style={{
-                boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.05), 0 2px 12px rgba(0,0,0,0.3)'
-              }}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="group relative p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 hover:border-teal-500/30 transition-all duration-300 backdrop-blur-sm"
             >
-              <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 relative"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary.solid}15 0%, ${colors.secondary.solid}15 100%)`,
-                  boxShadow: `0 0 20px ${colors.primary.solid}20, inset 0 1px 0 rgba(255,255,255,0.1)`
-                }}
-              >
-                <Zap className="w-5 h-5" style={{ color: colors.primary.solid, filter: 'drop-shadow(0 0 4px currentColor)' }} />
+              <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center mb-4">
+                <SparklesIcon className="w-6 h-6 text-teal-400" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-100 mb-2">
                 Agenda sozinho 24/7
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Cliente escolhe horário, confirma automaticamente. Lembretes via WhatsApp reduzem no-show de 28% para 9%.
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Cliente escolhe horário e confirma. WhatsApp automático reduz falta.
               </p>
-            </div>
+            </motion.div>
 
             {/* Benefit 3: Transparência */}
-            <div 
-              className="group relative p-5 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/[0.1] hover:border-white/[0.15] transition-all duration-300 backdrop-blur-sm"
-              style={{
-                boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.05), 0 2px 12px rgba(0,0,0,0.3)'
-              }}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="group relative p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 hover:border-teal-500/30 transition-all duration-300 backdrop-blur-sm"
             >
-              <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 relative"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary.solid}15 0%, ${colors.secondary.solid}15 100%)`,
-                  boxShadow: `0 0 20px ${colors.primary.solid}20, inset 0 1px 0 rgba(255,255,255,0.1)`
-                }}
-              >
-                <Shield className="w-5 h-5" style={{ color: colors.primary.solid, filter: 'drop-shadow(0 0 4px currentColor)' }} />
+              <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center mb-4">
+                <ShieldCheckIcon className="w-6 h-6 text-teal-400" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-100 mb-2">
                 Dados em tempo real
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Veja quantas pessoas clicaram, quantas agendaram, quanto custou cada cliente. Transparência total.
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Veja cliques, agendamentos e custo por cliente. Transparência total.
               </p>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Refined CTAs - Professional Sizing with enhanced animations */}
@@ -241,6 +239,7 @@ export function HeroSection({ campaign }: HeroSectionProps) {
                   boxShadow: `0 10px 40px -10px ${colors.primary.solid}40`,
                 }}
                 onClick={() => {
+                  // GA4 tracking
                   if (typeof window !== 'undefined' && window.gtag) {
                     window.gtag('event', 'cta_click', {
                       cta_type: 'primary',
@@ -248,7 +247,16 @@ export function HeroSection({ campaign }: HeroSectionProps) {
                       section: 'hero'
                     });
                   }
-                  scrollToCapture();
+
+                  // PostHog tracking
+                  posthog.capture('hero_cta_clicked', {
+                    cta_type: 'primary',
+                    cta_text: 'Calcular Potencial',
+                    intent: 'high',
+                    campaign_id: campaign.id,
+                  });
+
+                  scrollToCalculator();
                 }}
               >
                 {/* Shine effect on hover */}
@@ -259,8 +267,8 @@ export function HeroSection({ campaign }: HeroSectionProps) {
                   transition={{ duration: 0.6, ease: "easeInOut" }}
                 />
                 <span className="relative z-10 flex items-center justify-center">
-                  Ver Disponibilidade
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  Calcular Potencial do Meu Salão
+                  <ArrowRightIcon className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </Button>
             </motion.div>
@@ -276,6 +284,7 @@ export function HeroSection({ campaign }: HeroSectionProps) {
                 variant="ghost"
                 className="border border-white/[0.12] hover:bg-white/[0.06] hover:border-white/[0.18] text-white px-8 py-6 text-base rounded-xl font-semibold transition-all duration-300 w-full"
                 onClick={() => {
+                  // GA4 tracking
                   if (typeof window !== 'undefined' && window.gtag) {
                     window.gtag('event', 'cta_click', {
                       cta_type: 'secondary',
@@ -283,10 +292,19 @@ export function HeroSection({ campaign }: HeroSectionProps) {
                       section: 'hero'
                     });
                   }
-                  document.getElementById('proof')?.scrollIntoView({ behavior: 'smooth' });
+
+                  // PostHog tracking
+                  posthog.capture('hero_cta_clicked', {
+                    cta_type: 'secondary',
+                    cta_text: 'Ver Dados Completos',
+                    intent: 'medium',
+                    campaign_id: campaign.id,
+                  });
+
+                  scrollToProof();
                 }}
               >
-                Ver Casos Reais
+                Ver Dados Completos
               </Button>
             </motion.div>
           </motion.div>
@@ -320,14 +338,14 @@ export function HeroSection({ campaign }: HeroSectionProps) {
             <div className="hidden sm:block w-1 h-1 rounded-full bg-slate-700" />
 
             <div className="flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-500/60" />
+              <ArrowTrendingUpIcon className="w-3.5 h-3.5 text-emerald-500/60" />
               <span>ROI médio de 340%</span>
             </div>
 
             <div className="hidden sm:block w-1 h-1 rounded-full bg-slate-700" />
 
             <div className="flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" style={{ color: `${colors.accent.text}60` }} />
+              <SparklesIcon className="w-3.5 h-3.5 text-teal-500/60" />
               <span>Resultados em 7-10 dias</span>
             </div>
           </motion.div>

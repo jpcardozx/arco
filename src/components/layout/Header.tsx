@@ -6,7 +6,7 @@
 'use client';
 
 import React from 'react';
-import { RefinedPremiumNavigation } from '../navigation/RefinedPremiumNavigation';
+import { SimplifiedNavigation } from './SimplifiedNavigation';
 
 interface HeaderProps {
     variant?: 'default' | 'transparent' | 'solid' | 'hybrid';
@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
 
     return (
         <header className="relative">
-            <RefinedPremiumNavigation />
+            <SimplifiedNavigation />
         </header>
     );
 };

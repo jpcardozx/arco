@@ -108,7 +108,7 @@ export interface MetaConversionsAPIResponse {
 const META_CONFIG = {
   API_VERSION: 'v24.0',
   DATASET_ID: process.env.META_DATASET_ID || '1574079363975678',
-  ACCESS_TOKEN: process.env.META_CONVERSION_API_TOKEN || '',
+  ACCESS_TOKEN: process.env.META_CONVERSION_API_ACCESS_TOKEN || '',
   TEST_EVENT_CODE: process.env.META_TEST_EVENT_CODE || '',
   CRM_NAME: 'ARCO WebDev',
 } as const;

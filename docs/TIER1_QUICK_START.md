@@ -24,7 +24,7 @@ python scripts/domain_validator.py google.com
 
 ```bash
 # .env.local (desenvolvimento)
-RESEND_API_KEY=re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+RESEND_API_KEY=re_XXXXXXXXXXXXXXXXXXXXXXXX
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_SUPABASE_URL=https://vkclegvrqprevcdgosan.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>

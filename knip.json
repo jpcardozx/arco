@@ -1,0 +1,40 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": [
+        "src/app/**/*.{ts,tsx}",
+        "src/middleware.ts",
+        "src/lib/polyfills.ts",
+        "next.config.mjs",
+        "tailwind.config.mjs"
+      ],
+      "project": [
+        "src/**/*.{ts,tsx}",
+        "scripts/**/*.{ts,js,mjs}",
+        "mcp/**/*.{ts,tsx}"
+      ],
+      "ignore": [
+        "**/*.test.{ts,tsx}",
+        "**/__tests__/**",
+        "**/*.stories.{ts,tsx}",
+        ".storybook/**",
+        "docs/**",
+        "config/**",
+        "copy/**"
+      ],
+      "ignoreDependencies": [
+        "@storybook/*",
+        "storybook"
+      ]
+    }
+  },
+  "ignore": [
+    "node_modules/**",
+    ".next/**",
+    "dist/**",
+    "build/**"
+  ],
+  "ignoreExportsUsedInFile": true,
+  "includeEntryExports": false
+}

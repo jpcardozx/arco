@@ -10,11 +10,11 @@ import { useMetaTracking } from '@/hooks/useMetaTracking';
 
 // Hero: Eager load (above the fold, critical for LCP)
 import { HeroSection } from './sections/HeroSection';
+import { ROICalculatorSection } from './sections/ROICalculatorSection';
+import { LeadMagnetSection } from './sections/LeadMagnetSection';
 
 // Core sections - Eager load
 import { TransitionBridge } from './TransitionBridge';
-import { IntentCheckpoint } from './IntentCheckpoint';
-import { SystemOverviewSection } from './sections/SystemOverviewSection'; // NOVO - Fusão de SolutionArchitecture + MarketContext
 import { HowItWorksSection } from './sections/HowItWorksSection';
 import { ImplementationGuideSection } from './sections/ImplementationGuideSection';
 import { PoliciesSection } from './sections/PoliciesSection';
@@ -53,7 +53,6 @@ interface LandingPageTemplateProps {
 }
 
 export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
-  const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
 
   // Track PageView + ViewContent on mount
   useEffect(() => {
@@ -75,25 +74,27 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
 
       <SectionDivider variant="gradient" />
 
-      {/* 2. System Overview - Pilares integrados + Before/After */}
-      <SystemOverviewSection campaign={campaign} />
+      {/* 2. How It Works - EDUCAR primeiro (processo detalhado) */}
+      <HowItWorksSection campaign={campaign} />
 
       <SectionDivider variant="depth" />
 
-      {/* 3. How It Works - Processo detalhado com timeline */}
-      <HowItWorksSection campaign={campaign} />
-
       <TransitionBridge
         campaign={campaign}
-        text="Veja quem já testou este sistema"
+        text="Transparência: veja a distribuição real de resultados"
         icon={TrendingUp}
         variant="icon"
       />
 
-      {/* 4. Proof - Social proof + Carousel + Gallery */}
+      {/* 3. Proof - PROVAR com dados (4 tiers transparentes) */}
       <Suspense fallback={<SectionSkeleton />}>
         <ProofSection campaign={campaign} />
       </Suspense>
+
+      <SectionDivider variant="gradient" />
+
+      {/* 4. ROI Calculator - CALCULAR (agora faz sentido) */}
+      <ROICalculatorSection campaignId={campaign.id} />
 
       <TransitionBridge
         campaign={campaign}
@@ -114,21 +115,13 @@ export function LandingPageTemplate({ campaign }: LandingPageTemplateProps) {
 
       <TransitionBridge
         campaign={campaign}
-        text="Pronto para começar uma conversa?"
+        text="Quer dados específicos do seu caso?"
         icon={Zap}
         variant="icon"
       />
 
-      {/* 7. Intent Checkpoint - Qualificar o lead antes do formulário */}
-      <IntentCheckpoint
-        campaign={campaign}
-        onIntentSelected={setSelectedChallenge}
-      />
-
-      {/* 8. Capture Form - CTA Principal */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <CaptureSection campaign={campaign} prefilledChallenge={selectedChallenge} />
-      </Suspense>
+      {/* 7. Lead Magnet - Oferta de VALOR (PDF com benchmarks) */}
+      <LeadMagnetSection campaignId={campaign.id} />
 
       <SectionDivider variant="fade" />
 

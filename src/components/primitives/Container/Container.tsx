@@ -1,74 +1,40 @@
-import React from 'react';
-import { designTokens } from '@/design-system/tokens';
+/**
+ * Container Primitive - Lightweight responsive container
+ */
+import { ReactNode, HTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
 
-export interface ContainerProps {
-  children?: React.ReactNode;
-  className?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full' | 'screen';
-  padding?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  center?: boolean;
-  background?: 'none' | 'default' | 'subtle' | 'surface' | 'elevated';
-  as?: React.ElementType;
+export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  padding?: string
 }
 
-export const Container: React.FC<ContainerProps> = ({
-  children,
-  className = '',
+export function Container({ 
+  children, 
+  className, 
   size = 'lg',
-  padding = 'md',
-  center = true,
-  background = 'none',
-  as: Component = 'div'
-}) => {
-  // ARCO Container Sizes - Professional Layout System
-  const sizeClasses = {
-    xs: 'max-w-xs',      // 320px - Mobile content
-    sm: 'max-w-sm',      // 384px - Small cards
-    md: 'max-w-2xl',     // 672px - Reading width
-    lg: 'max-w-4xl',     // 896px - Main content
-    xl: 'max-w-6xl',     // 1152px - Wide layouts
-    '2xl': 'max-w-7xl',  // 1280px - Max content
-    '3xl': 'max-w-8xl',  // 1536px - Ultra wide
-    full: 'max-w-full',  // 100% - No limit
-    screen: 'min-h-screen' // Full viewport height
-  };
-
-  // ARCO Spacing System - Consistent Padding
-  const paddingClasses = {
-    none: '',
-    xs: 'px-4 py-2',     // 16px 8px
-    sm: 'px-6 py-3',     // 24px 12px
-    md: 'px-8 py-4',     // 32px 16px
-    lg: 'px-12 py-6',    // 48px 24px
-    xl: 'px-16 py-8',    // 64px 32px
-    '2xl': 'px-24 py-12' // 96px 48px
-  };
-
-  // ARCO Background Variants
-  const backgroundClasses = {
-    none: '',
-    default: 'bg-white dark:bg-neutral-900',
-    subtle: 'bg-neutral-50 dark:bg-neutral-800',
-    surface: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700',
-    elevated: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-lg'
-  };
-
-  const centerClass = center ? 'mx-auto' : '';
-
-  const combinedClasses = [
-    centerClass,
-    sizeClasses[size],
-    paddingClasses[padding],
-    backgroundClasses[background],
-    className
-  ].filter(Boolean).join(' ');
-
+  padding,
+  ...props 
+}: ContainerProps) {
   return (
-    // @ts-expect-error - Dynamic component prop type
-    <Component className={combinedClasses}>
+    <div
+      className={cn(
+        'mx-auto w-full px-4 sm:px-6 lg:px-8',
+        {
+          'max-w-3xl': size === 'sm',
+          'max-w-5xl': size === 'md',
+          'max-w-7xl': size === 'lg',
+          'max-w-screen-xl': size === 'xl',
+          'max-w-none': size === 'full',
+        },
+        className
+      )}
+      {...props}
+    >
       {children}
-    </Component>
-  );
-};
+    </div>
+  )
+}
 
-export default Container;
+export default Container

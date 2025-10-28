@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Supabase Clients - Tipados e Centralizados
  * 

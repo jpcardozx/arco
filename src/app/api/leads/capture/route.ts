@@ -6,13 +6,18 @@
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 import {
   successResponse,
   validationErrorResponse,
   internalErrorResponse
 } from '@/lib/api/api-response';
 import { scoreLeadAfterCapture } from '@/lib/leads/lead-scoring';
+
+// Analytics imports
+import { trackEvent } from '@/lib/posthog/server';
+import { hashData, normalizePhone, getClientIp } from '@/lib/meta-capi-helpers';
+
 
 // Helper to get Resend client
 function getResendClient() {
@@ -30,12 +35,20 @@ const leadCaptureSchema = z.object({
   // Core fields (required)
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
   email: z.string().email('Email inválido'),
-  phone: z.string().min(10, 'Telefone inválido').max(15),
+  
+  // Phone optional for lead magnet, required for other sources
+  phone: z.string().min(10, 'Telefone inválido').max(15).optional(),
+
+  // Segment (for lead magnet)
+  segment: z.enum(['ecommerce', 'saas', 'marketplace', 'servicos', 'outro']).optional(),
 
   // Campaign tracking
   campaign_slug: z.string().optional(),
   campaign_id: z.string().uuid().optional(),
   source: z.string().default('landing_page'),
+
+  // Consent (for CAPI/PostHog)
+  consent: z.boolean().default(false),
 
   // UTM parameters
   utm_source: z.string().optional(),
@@ -46,16 +59,9 @@ const leadCaptureSchema = z.object({
 
   // Segmentation fields (optional - for lead quality/intent)
   biggest_challenge: z.string().optional(),
-  // Values: 'low_volume', 'high_cost', 'poor_quality', 'technology', 'staff', 'other'
-
   urgency: z.string().optional(),
-  // Values: 'immediate', 'this_month', 'this_quarter', 'exploring', 'not_sure'
-
   monthly_revenue: z.string().optional(),
-  // Values: 'under_10k', '10k_50k', '50k_100k', '100k_500k', 'over_500k'
-
   ad_experience: z.string().optional(),
-  // Values: 'never', 'unsuccessful', 'moderate', 'strong', 'very_strong'
 
   // Additional fields
   message: z.string().optional(),
@@ -161,6 +167,66 @@ export async function POST(request: NextRequest) {
     } catch (scoringError) {
       console.error('[Lead Capture] Failed to score lead:', scoringError);
       // Don't throw - lead is saved, scoring is enhancement
+    }
+
+    // 1c. DUAL TRACKING: PostHog + Meta CAPI
+    try {
+      // PostHog server-side tracking
+      await trackEvent({
+        distinctId: validatedData.email,
+        event: 'lead_captured',
+        properties: {
+          name: validatedData.name,
+          source: validatedData.source,
+          segment: validatedData.segment,
+          has_phone: !!validatedData.phone,
+          campaign_id: campaign?.id,
+          campaign_slug: validatedData.campaign_slug,
+          utm_source: validatedData.utm_source,
+          utm_medium: validatedData.utm_medium,
+          utm_campaign: validatedData.utm_campaign,
+        },
+        sendNow: true,
+      });
+
+      // Meta CAPI tracking (if consent given)
+      if (validatedData.consent) {
+        const clientIp = getClientIp(request);
+        const userAgent = request.headers.get('user-agent') || '';
+
+        const metaResponse = await fetch(`${request.nextUrl.origin}/api/meta/track`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_name: 'Lead',
+            event_time: Math.floor(Date.now() / 1000),
+            event_source_url: request.headers.get('referer') || request.nextUrl.origin,
+            user_data: {
+              em: await hashData(validatedData.email),
+              ph: validatedData.phone ? await hashData(validatedData.phone.replace(/\D/g, '')) : undefined,
+              fn: await hashData(validatedData.name.split(' ')[0]),
+              ln: await hashData(validatedData.name.split(' ').slice(1).join(' ') || validatedData.name.split(' ')[0]),
+              client_ip_address: clientIp,
+              client_user_agent: userAgent,
+            },
+            custom_data: {
+              content_category: validatedData.segment || 'lead_magnet',
+              source: validatedData.source,
+            },
+          }),
+        });
+
+        if (!metaResponse.ok) {
+          console.error('[Lead Capture] Meta CAPI failed:', await metaResponse.text());
+        } else {
+          console.log('[Lead Capture] Meta CAPI tracked successfully');
+        }
+      }
+
+      console.log('[Lead Capture] Dual tracking completed');
+    } catch (trackingError) {
+      console.error('[Lead Capture] Tracking error:', trackingError);
+      // Don't throw - lead is saved, tracking is enhancement
     }
 
     // 2. Update campaign stats

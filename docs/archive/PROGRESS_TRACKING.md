@@ -120,7 +120,7 @@
 ### Email Service (Resend)
 ```bash
 Status: ✅ Configured
-API Key: re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou
+API Key: re_XXXXXXXXXXXXXXXXXXXXXXXX
 From: arco@consultingarco.com
 Service: src/lib/email/resend-service.ts
 ```
@@ -184,7 +184,7 @@ Service: src/lib/email/resend-service.ts
 
 ### Email & Communications
 - **Resend** (Transactional emails)
-  - API Key: `re_FfQAjozL_6GzKoCpiANzqmv5TxFRhg2ou`
+  - API Key: `re_XXXXXXXXXXXXXXXXXXXXXXXX`
   - Domain: `arco@consultingarco.com`
 
 ### UI & Styling
