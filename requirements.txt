@@ -1,4 +1,0 @@
-# Python dependencies for domain validator
-dnspython==2.6.1
-python-whois==0.9.4
-requests==2.31.0
