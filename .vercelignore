@@ -3,3 +3,14 @@ src/lib/payments/mercadopago/
 src/app/api/checkout/
 src/app/api/mercadopago/
 src/app/api/webhooks/mercadopago/
+
+# Ignore Python directories and files (not used in Vercel deployment)
+api/
+intelligence/
+scripts/
+requirements.txt
+*.pyc
+__pycache__/
+.venv/
+venv/
+*.egg-info/
