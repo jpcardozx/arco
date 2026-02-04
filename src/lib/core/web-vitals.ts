@@ -31,8 +31,8 @@ function reportWebVitals(metric: Metric, componentName?: string) {
     ...metric,
     timestamp: Date.now(),
     metricType: 'web-vitals',
-    route: window.location.pathname,
-    userAgent: navigator.userAgent,
+    route: typeof window !== 'undefined' ? window.location.pathname : '/',
+    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
   };
 
   // Adicionar nome do componente se fornecido

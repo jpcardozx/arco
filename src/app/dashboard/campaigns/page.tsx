@@ -70,9 +70,6 @@ export default function CampaignsPage() {
             setLoading(false)
         }
     }
-
-
-
     const getStatusBadge = (status: Campaign['status']) => {
         const styles = {
             draft: 'bg-gray-100 text-gray-800',

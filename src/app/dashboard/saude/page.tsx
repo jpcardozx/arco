@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getCurrentUser, getPerformanceMetrics, getUptimeData } from '@/app/dashboard/actions'
 import { TierGate } from '@/components/dashboard/tier-gate'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

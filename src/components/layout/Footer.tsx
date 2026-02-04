@@ -6,9 +6,9 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Phone,
   Mail,
@@ -16,22 +16,12 @@ import {
   ArrowRight,
   ArrowUp,
   CheckCircle2,
-  Clock,
   Shield,
-  Zap,
-  Github,
-  Linkedin,
-  Twitter,
   Send,
-  Award,
-  Users,
-  TrendingUp,
-  Star,
   ExternalLink,
   Copy,
   Loader2,
-  AlertCircle,
-  Lock
+  AlertCircle
 } from 'lucide-react';
 import { cn, designTokens } from '@/design-system/tokens';
 import { Button } from '../primitives/Button/Button';
@@ -74,37 +64,6 @@ const useClipboard = (timeout = 2000) => {
   return { copied, copy };
 };
 
-// Hook: Counter Animation
-const useCountUp = (end: number, duration = 2000) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  useEffect(() => {
-    if (!isInView) return;
-
-    let startTime: number;
-    let rafId: number;
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const easeProgress = 1 - Math.pow(2, -10 * progress);
-      setCount(Math.floor(end * easeProgress));
-
-      if (progress < 1) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        setCount(end);
-      }
-    };
-
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [isInView, end, duration]);
-
-  return { count, ref };
-};
 
 interface FooterProps {
   variant?: 'default' | 'minimal';
@@ -156,74 +115,6 @@ const footerNav = {
     ] as FooterLink[]
   }
 };
-
-// Impact Metrics (PreFooter - o que entregamos)
-const impactMetrics = [
-  {
-    icon: Users,
-    value: 200,
-    displayValue: "200+",
-    label: "Empresas Transformadas",
-    subLabel: "Desde 2020",
-    color: "teal"
-  },
-  {
-    icon: TrendingUp,
-    value: 350,
-    displayValue: "+350%",
-    label: "Crescimento Médio",
-    subLabel: "ROI Comprovado",
-    color: "orange"
-  },
-  {
-    icon: Star,
-    value: 49,
-    displayValue: "4.9/5",
-    label: "Satisfação NPS",
-    subLabel: "Avaliação clientes",
-    color: "amber"
-  },
-  {
-    icon: Zap,
-    value: 98,
-    displayValue: "98+",
-    label: "Performance",
-    subLabel: "PageSpeed Score",
-    color: "emerald"
-  }
-];
-
-// Reliability Metrics (Footer Bottom - confiabilidade técnica)
-const reliabilityMetrics = [
-  {
-    icon: Shield,
-    value: "99.9%",
-    label: "Disponibilidade",
-    subLabel: "Uptime garantido",
-    color: "teal"
-  },
-  {
-    icon: Clock,
-    value: "<2h",
-    label: "Tempo de Resposta",
-    subLabel: "Atendimento técnico",
-    color: "blue"
-  },
-  {
-    icon: Zap,
-    value: "98+",
-    label: "Performance Score",
-    subLabel: "Core Web Vitals",
-    color: "emerald"
-  },
-  {
-    icon: CheckCircle2,
-    value: "LGPD",
-    label: "Conformidade",
-    subLabel: "Dados protegidos",
-    color: "purple"
-  }
-];
 
 // Certifications and badges
 const certifications = [
@@ -447,114 +338,11 @@ const NewsletterForm = () => {
   );
 };
 
-// Component: Metric Card com Counter Animation
-const MetricCard: React.FC<{
-  metric: typeof impactMetrics[0];
-  colorClass: string;
-  delay: number;
-}> = ({ metric, colorClass, delay }) => {
-  const { count, ref } = useCountUp(metric.value, 2000);
-  const IconComponent = metric.icon;
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
-      className="text-center group"
-    >
-      <motion.div 
-        className={cn("inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 transition-all", colorClass)}
-        whileHover={{ scale: 1.15, rotate: 5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <IconComponent className="w-6 h-6" strokeWidth={2} />
-      </motion.div>
-      <div className="text-white font-black text-2xl mb-1">
-        {metric.displayValue.includes('%') || metric.displayValue.includes('+') || metric.displayValue.includes('.') 
-          ? metric.displayValue 
-          : count > 0 ? `${count}+` : metric.displayValue}
-      </div>
-      <div className="text-white/90 font-semibold text-sm mb-0.5">
-        {metric.label}
-      </div>
-      <div className="text-white/50 text-xs">
-        {metric.subLabel}
-      </div>
-    </motion.div>
-  );
-};
-
-// Component: Reliability Metrics Row - Profissionalizado
-const ReliabilityMetricsRow = () => {
-  const reducedMotion = useReducedMotion();
-  
-  const getColorClasses = (color: string) => {
-    const colors: Record<string, { bg: string, text: string, glow: string }> = {
-      teal: { bg: 'bg-teal-500/10', text: 'text-teal-400', glow: 'group-hover:shadow-teal-500/20' },
-      blue: { bg: 'bg-blue-500/10', text: 'text-blue-400', glow: 'group-hover:shadow-blue-500/20' },
-      emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', glow: 'group-hover:shadow-emerald-500/20' },
-      purple: { bg: 'bg-purple-500/10', text: 'text-purple-400', glow: 'group-hover:shadow-purple-500/20' }
-    };
-    return colors[color] || colors.teal;
-  };
-  
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
-      {reliabilityMetrics.map((metric, index) => {
-        const Icon = metric.icon;
-        const colors = getColorClasses(metric.color);
-        
-        return (
-          <motion.div 
-            key={metric.label}
-            className={cn(
-              "relative group p-4 rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-default",
-              "bg-gradient-to-br from-white/5 to-transparent hover:from-white/10 shadow-lg",
-              colors.glow
-            )}
-            initial={reducedMotion ? {} : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={reducedMotion ? {} : { y: -4, scale: 1.02 }}
-          >
-            {/* Subtle gradient overlay on hover */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <motion.div 
-                className={cn("w-11 h-11 rounded-lg flex items-center justify-center mb-3 transition-all", colors.bg)}
-                whileHover={reducedMotion ? {} : { rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              >
-                <Icon className={cn("w-5 h-5", colors.text)} strokeWidth={2.5} />
-              </motion.div>
-              
-              <div className="text-white font-black text-xl sm:text-2xl mb-1 tracking-tight">
-                {metric.value}
-              </div>
-              <div className="text-white/80 font-semibold text-xs sm:text-sm mb-0.5">
-                {metric.label}
-              </div>
-              <div className="text-white/50 text-xs">
-                {metric.subLabel}
-              </div>
-            </div>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
-
 // Pre-Footer CTA Section
 const PreFooterCTA = () => {
   return (
     <section 
-      className="relative py-20 overflow-hidden"
+      className="relative py-14 sm:py-20 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e293b 100%)'
       }}
@@ -764,10 +552,10 @@ export const Footer: React.FC<FooterProps> = ({
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative z-10">
-          
-          {/* Top Section - Brand + Newsletter (Mobile-First) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12 mb-12 sm:mb-16 pb-12 sm:pb-16 border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20 relative z-10">
+
+          {/* Top Section - Brand + Newsletter */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12 mb-10 sm:mb-14 pb-10 sm:pb-14 border-b border-white/10">
             
             {/* Brand Column - Premium (Mobile-First) */}
             <div className="md:col-span-2 lg:col-span-1">
@@ -782,10 +570,10 @@ export const Footer: React.FC<FooterProps> = ({
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-teal-500/20 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <div className="absolute inset-0 rounded-2xl border border-teal-400/0 group-hover:border-teal-400/30 group-hover:shadow-[0_0_30px_-5px_rgba(20,184,166,0.3)] transition-all duration-500" />
                   
-                  <img 
-                    src="/logos/vertical/white.png" 
-                    alt="ARCO" 
-                    className="h-28 w-auto relative z-10 opacity-90 group-hover:opacity-100 transition-opacity duration-500"
+                  <img
+                    src="/logos/vertical/white.png"
+                    alt="ARCO"
+                    className="h-20 sm:h-28 w-auto relative z-10 opacity-90 group-hover:opacity-100 transition-opacity duration-500"
                   />
                 </motion.div>
               </Link>
@@ -841,7 +629,7 @@ export const Footer: React.FC<FooterProps> = ({
             {/* Newsletter Column - Enhanced (Mobile-First) */}
             <div className="md:col-span-2 lg:pl-8 xl:pl-12">
               <motion.div 
-                className="relative bg-gradient-to-br from-teal-500/10 via-teal-600/5 to-transparent border border-teal-400/20 rounded-2xl p-8 lg:p-10 group"
+                className="relative bg-gradient-to-br from-teal-500/10 via-teal-600/5 to-transparent border border-teal-400/20 rounded-2xl p-6 sm:p-8 lg:p-10 group"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -891,7 +679,7 @@ export const Footer: React.FC<FooterProps> = ({
                   </div>
                 </motion.a>
 
-                <div className="flex items-center gap-3 text-white/80 p-3 sm:p-4 rounded-xl border border-transparent">
+                <div className="flex items-center gap-3 text-white/80 p-3 sm:p-4 rounded-xl border border-white/10">
                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-4 h-4" strokeWidth={2} />
                   </div>
@@ -904,8 +692,8 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
-          {/* Middle Section - Enhanced Navigation */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 mb-16">
+          {/* Middle Section - Navigation */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 sm:gap-x-8 gap-y-10 sm:gap-y-12 mb-12 sm:mb-16">
             {/* Navigation Columns */}
             {Object.entries(footerNav).map(([key, section]) => (
               <div key={key}>
@@ -965,13 +753,10 @@ export const Footer: React.FC<FooterProps> = ({
             ))}
           </div>
 
-          {/* Bottom Section - Enhanced */}
-          <div className="border-t border-white/10 pt-10">
-            {/* Reliability Metrics Row - Technical Trust */}
-            <ReliabilityMetricsRow />
-
+          {/* Bottom Section */}
+          <div className="border-t border-white/10 pt-8">
             {/* Legal Row */}
-            <div className="flex flex-col lg:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5">
+            <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
               <div className="flex flex-col sm:flex-row items-center gap-4 text-sm order-2 lg:order-1">
                 <p className="text-white/50">
                   © {currentYear} ARCO. Todos os direitos reservados.
@@ -979,36 +764,92 @@ export const Footer: React.FC<FooterProps> = ({
                 
                 <div className="h-4 w-px bg-white/10 hidden sm:block" />
                 
-                {/* Developer Credit com Framer Motion */}
+                {/* Developer Credit - Animated Signature */}
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  className="flex items-center gap-2 text-xs"
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="group relative inline-flex"
                 >
-                  <span className="text-white/40">Desenvolvido por</span>
-                  <motion.a
-                    href="/jpcardozo"
-                    className="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-400/30 transition-all duration-300"
-                    whileHover={{ scale: 1.05, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span className="text-teal-400 font-semibold">@jpcardozo</span>
-                    <motion.svg
-                      className="w-3 h-3 text-teal-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      initial={{ x: 0 }}
-                      whileHover={{ x: 2 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </motion.svg>
-                  </motion.a>
+                  <div className="relative inline-flex rounded-2xl p-[1.5px] overflow-visible">
+                    {/* Animated conic-gradient border */}
+                    <div
+                      className="absolute inset-0 rounded-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+                      style={{
+                        background: `conic-gradient(
+                          from var(--arco-angle) at 50% 50%,
+                          transparent,
+                          transparent 10%,
+                          rgba(20, 184, 166, 0.5) 20%,
+                          rgba(16, 185, 129, 0.6) 35%,
+                          rgba(245, 158, 11, 0.6) 55%,
+                          rgba(249, 115, 22, 0.5) 70%,
+                          transparent 85%,
+                          transparent
+                        )`,
+                        animation: 'arco-border-spin 6s linear infinite',
+                      }}
+                    />
+                    {/* Glow layer */}
+                    <div
+                      className="absolute inset-[-2px] rounded-2xl opacity-0 group-hover:opacity-100 blur-[2px] transition-opacity duration-700"
+                      style={{
+                        background: `conic-gradient(
+                          from var(--arco-angle) at 50% 50%,
+                          transparent,
+                          rgba(20, 184, 166, 0.3),
+                          rgba(245, 158, 11, 0.3),
+                          transparent
+                        )`,
+                        animation: 'arco-border-spin 6s linear infinite',
+                      }}
+                    />
+                    {/* Card */}
+                    <div className="relative z-10 flex items-center gap-2.5 sm:gap-3 rounded-[15px] px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-br from-slate-900/95 via-slate-950/98 to-black/95 backdrop-blur-md border border-white/[0.08] shadow-2xl transition-all duration-700 group-hover:shadow-[0_8px_32px_rgba(20,184,166,0.15),0_0_0_1px_rgba(245,158,11,0.1)] group-hover:border-white/[0.12]">
+                      {/* Label + pulse dot */}
+                      <div className="flex items-center gap-2">
+                        <div className="relative">
+                          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-tr from-teal-400 to-amber-400 animate-pulse" />
+                          <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-teal-400 blur-[3px] animate-pulse" />
+                        </div>
+                        <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400/90 group-hover:text-slate-300 transition-colors duration-500">
+                          Desenvolvido por
+                        </span>
+                      </div>
+                      {/* Divider */}
+                      <div className="w-px h-5 bg-gradient-to-b from-transparent via-slate-600/50 to-transparent" />
+                      {/* GitHub link */}
+                      <a
+                        href="https://github.com/jpcardozx"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/link relative flex items-center gap-1.5 transition-all duration-300 hover:scale-105"
+                      >
+                        <svg className="w-4 h-4 text-slate-400 group-hover/link:text-teal-400 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <span className="font-mono text-xs sm:text-sm font-bold bg-gradient-to-r from-teal-200 via-emerald-200 to-amber-300 bg-clip-text text-transparent group-hover/link:from-teal-300 group-hover/link:via-emerald-300 group-hover/link:to-amber-400 transition-all">
+                          jpcardozx
+                        </span>
+                        <span className="absolute -bottom-0.5 left-5 right-0 h-[1px] bg-gradient-to-r from-teal-400/0 via-teal-400/80 to-amber-400/80 scale-x-0 group-hover/link:scale-x-100 origin-left transition-transform duration-300" />
+                      </a>
+                    </div>
+                  </div>
+                  {/* Ambient glow */}
+                  <div className="absolute inset-0 -z-10 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl bg-gradient-to-r from-teal-500/20 via-emerald-500/20 to-amber-500/20 transition-opacity duration-700" />
                 </motion.div>
+                <style>{`
+                  @property --arco-angle {
+                    syntax: '<angle>';
+                    initial-value: 0deg;
+                    inherits: false;
+                  }
+                  @keyframes arco-border-spin {
+                    from { --arco-angle: 0deg; }
+                    to { --arco-angle: 360deg; }
+                  }
+                `}</style>
               </div>
 
               <div className="flex flex-wrap justify-center gap-6 text-xs order-1 lg:order-2">

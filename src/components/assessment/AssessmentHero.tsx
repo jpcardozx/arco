@@ -241,6 +241,7 @@ export const AssessmentHero = ({ onStartAssessment }: AssessmentHeroProps) => {
                     wrapper="span"
                     speed={50}
                     repeat={Infinity}
+                    preRenderFirstString={true}
                   />
                 </span>
               </h1>

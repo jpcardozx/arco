@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { spawn } from 'child_process'
-import { createClient } from '@/lib/supabase/server'
+import { createSupabaseAdmin } from '@/lib/supabase/server'
 import {
   successResponse,
   validationErrorResponse,
@@ -139,16 +139,7 @@ async function validateDomainWithPython(domain: string): Promise<DomainValidatio
  */
 async function getCachedValidation(domain: string): Promise<DomainValidationResult | null> {
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
+    const supabase = await createSupabaseAdmin()
 
     const { data, error } = await supabase
       .from('domain_validations')
@@ -165,11 +156,11 @@ async function getCachedValidation(domain: string): Promise<DomainValidationResu
       domain: data.domain,
       isValid: data.dns_valid,
       isAvailable: data.is_available,
-      dnsRecords: data.dns_records || { a: [], mx: [], txt: [] },
+      dnsRecords: (data.dns_records as { a: string[]; mx: string[]; txt: string[] }) || { a: [], mx: [], txt: [] },
       sslValid: data.ssl_valid,
       suggestions: data.suggestions || [],
       cachedUntil: data.cached_until,
-      performanceScore: data.lighthouse_score
+      performanceScore: data.lighthouse_score ?? undefined
     }
   } catch (error) {
     console.error('[Domain Validator] Cache lookup error:', error)
@@ -182,16 +173,7 @@ async function getCachedValidation(domain: string): Promise<DomainValidationResu
  */
 async function cacheValidation(result: DomainValidationResult): Promise<void> {
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
+    const supabase = await createSupabaseAdmin()
 
     await supabase
       .from('domain_validations')

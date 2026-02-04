@@ -1,4 +1,3 @@
-import '@/lib/polyfills';
 import type { Metadata } from 'next';
 import { ToastProvider } from '@/components/providers/toast-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
@@ -18,16 +17,16 @@ export const metadata: Metadata = {
   title: 'ARCO | Web & Tráfego',
   description: 'web infrastructure and traffic optimization services for discerning businesses. Strategic technical consulting with quantified ROI and measurable performance improvements.',
   keywords: [
-    'web services', 
-    'traffic optimization', 
-    'enterprise consulting', 
+    'web services',
+    'traffic optimization',
+    'enterprise consulting',
     'performance engineering',
     'conversion optimization',
     'technical strategy',
     'infrastructure consulting',
     'digital excellence'
   ],
-  authors: [{ name: 'ARCO', url: 'https://arco.com' }],
+  authors: [{ name: 'ARCO', url: 'https://consultingarco.com' }],
   creator: 'ARCO',
   publisher: 'ARCO',
   robots: {
@@ -43,27 +42,21 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
-    title: 'ARCO | Premium Web & Traffic Services',
-    description: 'Sophisticated web infrastructure and traffic optimization for enterprise excellence. Strategic consulting with quantified results.',
-    siteName: 'ARCO',
+    locale: 'pt_BR',
+    title: 'arco | Premium Web & Traffic Services',
+    description: 'Aplicações web e otimização de tráfego para operações de empresas e profissionais independentes.',
+    siteName: 'arco',
     url: 'https://consultingarco.com',
     images: [
       {
         url: '/logo-v2.png',
         width: 1200,
         height: 630,
-        alt: 'ARCO - Premium Web & Traffic Services',
+        alt: 'arco - Premium Web & Traffic Services',
       },
     ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'ARCO | Premium Web & Traffic Services',
-    description: 'Sophisticated web infrastructure and traffic optimization for enterprise excellence.',
-    creator: '@arco',
-    images: ['/logo-v2.png'],
-  },
+
   icons: {
     icon: [
       { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
@@ -83,35 +76,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
+
       <head>
         <ThemeScript />
         <LocalBusinessSchema />
         <MetaPixelScript />
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
-      <body className="antialiased" suppressHydrationWarning>
-        
-        <ThemeProvider>
-          <AnalyticsProvider autoInit={true}>
-            <ErrorBoundary>
-              <QueryProvider>
-                <MetaPixel />
-                <Header />
-                <main className="min-h-screen">
-                  {children}
-                </main>
-                <Footer variant="default" showPreFooter={true} />
-                <ToastProvider />
 
-                {/* Analytics & Consent Components */}
-                <PrivacyConsentBanner />
-                <CookieConsentBanner />
-              </QueryProvider>
-            </ErrorBoundary>
-          </AnalyticsProvider>
+      <body className="antialiased">
+        <ThemeProvider>
+          <QueryProvider>
+            <Header />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer variant="default" showPreFooter={true} />
+          </QueryProvider>
         </ThemeProvider>
       </body>
+
     </html>
   );
 }

@@ -6,7 +6,7 @@
 
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
+import { createSupabaseAdmin } from '@/lib/supabase/server'
 import {
   successResponse,
   validationErrorResponse,
@@ -172,16 +172,7 @@ export async function POST(request: NextRequest) {
     let analysis_id = null
     
     if (save_history) {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        {
-          auth: {
-            autoRefreshToken: false,
-            persistSession: false
-          }
-        }
-      )
+      const supabase = await createSupabaseAdmin()
 
       try {
         // 1. Create analysis request

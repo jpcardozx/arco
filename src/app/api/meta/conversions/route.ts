@@ -14,7 +14,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from '@/lib/supabase/server';
+import { createSupabaseAdmin } from '@/lib/supabase/server';
 
 interface MetaConversionPayload {
   event_name: string;
@@ -176,7 +176,7 @@ export async function POST(req: NextRequest) {
     console.log(`[Meta API] ${traceId} - Received ${body.event_name} event (${eventId})`);
 
     // Criar cliente Supabase com SERVICE_ROLE_KEY
-    const supabase = createClient(supabaseUrl, serviceRoleKey);
+    const supabase = await createSupabaseAdmin();
 
     // Verificar deduplicação via DATABASE (PRIMARY KEY)
     // Retorna true se duplicado, false se novo

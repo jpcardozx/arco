@@ -6,7 +6,7 @@
  */
 'use client';
 
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
@@ -202,6 +202,11 @@ const metrics = [
 ];
 
 export default function DevelopmentApproach() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -217,20 +222,22 @@ export default function DevelopmentApproach() {
       className="relative py-20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
     >
       {/* Code Matrix Three.js Background */}
-      <div className="absolute inset-0 opacity-30">
-        <Canvas
-          camera={{ position: [0, 2, 10], fov: 50 }}
-          gl={{ antialias: true, alpha: true }}
-          dpr={[1, 2]}
-        >
-          <ambientLight intensity={0.4} />
-          <pointLight position={[8, 8, 8]} intensity={1} color="#14b8a6" />
-          <pointLight position={[-8, -8, -8]} intensity={0.7} color="#0ea5e9" />
-          <pointLight position={[0, 10, 0]} intensity={0.5} color="#8b5cf6" />
-          <spotLight position={[0, 15, 0]} intensity={0.8} angle={0.6} penumbra={0.5} color="#14b8a6" />
-          <CodeMatrix />
-        </Canvas>
-      </div>
+      {isMounted && (
+        <div className="absolute inset-0 opacity-30">
+          <Canvas
+            camera={{ position: [0, 2, 10], fov: 50 }}
+            gl={{ antialias: true, alpha: true }}
+            dpr={[1, 2]}
+          >
+            <ambientLight intensity={0.4} />
+            <pointLight position={[8, 8, 8]} intensity={1} color="#14b8a6" />
+            <pointLight position={[-8, -8, -8]} intensity={0.7} color="#0ea5e9" />
+            <pointLight position={[0, 10, 0]} intensity={0.5} color="#8b5cf6" />
+            <spotLight position={[0, 15, 0]} intensity={0.8} angle={0.6} penumbra={0.5} color="#14b8a6" />
+            <CodeMatrix />
+          </Canvas>
+        </div>
+      )}
 
       {/* Subtle gradient overlays */}
       <motion.div

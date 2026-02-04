@@ -1,6 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic'
 
 import { PaymentBrick } from '@/components/payment/PaymentBrick';
 import { CheckoutSummary } from '@/components/payment/CheckoutSummary';

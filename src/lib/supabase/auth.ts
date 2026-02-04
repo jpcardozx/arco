@@ -61,7 +61,7 @@ export async function signUp(credentials: SignUpCredentials) {
         full_name: credentials.full_name,
         ...credentials.metadata,
       },
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
+      emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : undefined,
     },
   })
 
@@ -126,7 +126,7 @@ export async function resetPassword(email: string) {
   const supabase = createSupabaseBrowserClient()
   
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/auth/reset-password`,
+    redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/auth/reset-password` : undefined,
   })
 
   if (error) {

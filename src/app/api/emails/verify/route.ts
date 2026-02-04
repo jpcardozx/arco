@@ -7,7 +7,7 @@
 
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@/lib/supabase/server';
+import { createSupabaseAdmin } from '@/lib/supabase/server';
 import {
   successResponse,
   validationErrorResponse,
@@ -34,16 +34,7 @@ export async function POST(request: NextRequest) {
     console.log('[Email Verification] Processing verification for lead:', lead_id);
 
     // Create Supabase client
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    );
+    const supabase = await createSupabaseAdmin();
 
     // Call database function to verify token
     const { data, error } = await supabase.rpc('verify_email_token', {
@@ -99,16 +90,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Create Supabase client
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    );
+    const supabase = await createSupabaseAdmin();
 
     // Call database function to verify token
     const { data, error } = await supabase.rpc('verify_email_token', {

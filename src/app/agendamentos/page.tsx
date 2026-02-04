@@ -1,6 +1,5 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -128,8 +127,10 @@ export default function AgendamentosPage() {
     setShowQualification(false)
     
     // Scroll to consultoria selection
-    const consultoriaSection = document.getElementById('consultorias')
-    consultoriaSection?.scrollIntoView({ behavior: 'smooth' })
+    if (typeof document !== 'undefined') {
+      const consultoriaSection = document.getElementById('consultorias')
+      consultoriaSection?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   const handleSelectConsultoria = (id: string) => {

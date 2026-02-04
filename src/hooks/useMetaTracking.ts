@@ -85,8 +85,8 @@ function getFBC(): string | undefined {
   // Tentar obter da URL (apenas no browser)
   if (typeof window === 'undefined') return undefined;
   
-  const urlParams = new URLSearchParams(window.location.search);
-  const fbclid = urlParams.get('fbclid');
+  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const fbclid = urlParams?.get('fbclid');
   
   if (fbclid) {
     // Formato: fb.1.timestamp.fbclid
@@ -196,11 +196,11 @@ export function useMetaTracking() {
             client_user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
           },
         });
-        trackEMQ(emqData);
+        trackEMQ('conversion', emqData);
 
         console.log("📤 [Meta Tracking] Enviando para API local", {
           ...logContext,
-          emq: emqData.score.toFixed(1),
+          emq: emqData,
         });
 
         // POST para API local (backend)

@@ -1,6 +1,6 @@
 'use client';
 
-export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs';
 
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useState } from 'react';

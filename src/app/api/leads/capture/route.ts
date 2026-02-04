@@ -6,7 +6,7 @@
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
-import { createClient } from '@/lib/supabase/server';
+import { createSupabaseAdmin } from '@/lib/supabase/server';
 import {
   successResponse,
   validationErrorResponse,
@@ -83,16 +83,7 @@ export async function POST(request: NextRequest) {
     console.log('[Lead Capture] Processing submission:', validatedData.email);
 
     // 1. Save to Supabase leads table
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    );
+    const supabase = await createSupabaseAdmin();
 
     // Get campaign info if provided
     let campaign = null;
@@ -157,13 +148,9 @@ export async function POST(request: NextRequest) {
 
     // 1b. Score the lead automatically
     try {
-      const scoreBreakdown = await scoreLeadAfterCapture(
-        lead.id,
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
+      const scoreBreakdown = await scoreLeadAfterCapture(lead.id);
 
-      console.log('[Lead Capture] Lead scored:', scoreBreakdown.qualification, `(score: ${scoreBreakdown.totalScore})`);
+      console.log('[Lead Capture] Lead scored:', `score: ${scoreBreakdown.score}`);
     } catch (scoringError) {
       console.error('[Lead Capture] Failed to score lead:', scoringError);
       // Don't throw - lead is saved, scoring is enhancement

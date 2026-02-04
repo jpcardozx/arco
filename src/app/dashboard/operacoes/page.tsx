@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getCurrentUser, getUserProjects, getUserTickets, getUserFiles } from '@/app/dashboard/actions'
 import { EmptyState } from '@/components/dashboard/empty-states'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

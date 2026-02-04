@@ -30,6 +30,8 @@ export function AgendamentosHero({ onStartBooking }: AgendamentosHeroProps) {
 
   // Mouse-follow gradient blob
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth) * 100,
@@ -189,9 +191,11 @@ export function AgendamentosHero({ onStartBooking }: AgendamentosHeroProps) {
                 size="lg"
                 variant="outline"
                 onClick={() => {
-                  document.getElementById('consultorias')?.scrollIntoView({ 
-                    behavior: 'smooth' 
-                  })
+                  if (typeof document !== 'undefined') {
+                    document.getElementById('consultorias')?.scrollIntoView({ 
+                      behavior: 'smooth' 
+                    })
+                  }
                 }}
                 className="px-8 py-6 text-lg font-semibold border-2 backdrop-blur-sm"
               >

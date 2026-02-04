@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next'
 import { LandingPageTemplate } from '@/components/landing/LandingPageTemplate'
 import { salaoBeleza2024Campaign } from './campaign-data'

@@ -5,7 +5,7 @@
  */
 'use client';
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -327,21 +327,30 @@ function ProcessStepCard({ step, index }: { step: ProcessStep; index: number }) 
 }
 
 export default function ProcessMethodology() {
+  const [isMounted, setIsMounted] = useState(false);
+  const [openPhases, setOpenPhases] = useState<string[]>(['discovery']);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Three.js Background */}
-      <div className="absolute inset-0 opacity-20">
-        <Canvas
-          camera={{ position: [0, 0, 8], fov: 75 }}
-          gl={{ antialias: false, alpha: true }}
-          dpr={[1, 1.5]}
-        >
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={0.8} color="#14b8a6" />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} color="#3b82f6" />
-          <FloatingGeometry />
-        </Canvas>
-      </div>
+      {isMounted && (
+        <div className="absolute inset-0 opacity-30">
+          <Canvas
+            camera={{ position: [0, 0, 8], fov: 75 }}
+            gl={{ antialias: false, alpha: true }}
+            dpr={[1, 1.5]}
+          >
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} intensity={0.8} color="#14b8a6" />
+            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#3b82f6" />
+            <FloatingGeometry />
+          </Canvas>
+        </div>
+      )}
 
       {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(20,184,166,0.1)_0%,transparent_50%)]" />

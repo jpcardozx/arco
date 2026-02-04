@@ -2,16 +2,28 @@
 const nextConfig = {
   // Critical build performance optimizations
   reactStrictMode: true,
-  
+
+  // Typed Routes (movido de experimental para root)
+  typedRoutes: true,
+
+  // Logging para debug de build errors
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+
   // Server-side external packages (browser-only)
   serverExternalPackages: [
     'posthog-js',
     'three',
     '@react-three/fiber',
     '@react-three/drei',
+    'pino',
+    'pino-pretty',
   ],
-  
-  // Next.js 15 Turbopack configuration
+
+  // Next.js 16 Images configuration
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -33,14 +45,14 @@ const nextConfig = {
       },
     ],
   },
-  
+
   experimental: {
     scrollRestoration: true,
-    typedRoutes: true, // ✅ Webpack suporta
-    
-    // Build performance optimizations (CRITICAL para velocidade)
+
+    // Build performance optimizations
+    // Note: lucide-react removido - Turbopack otimiza automaticamente
     optimizePackageImports: [
-      'lucide-react',
+      'phosphor-react',
       'framer-motion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
@@ -49,41 +61,42 @@ const nextConfig = {
       'recharts',
       'react-icons',
     ],
-    
+
     // Speed optimizations
     optimizeCss: true,
-    forceSwcTransforms: true, // ✅ Webpack suporta
-    
-    // Parallel compilation (CRITICAL)
-    workerThreads: true,
-    cpus: 4,
+
+    // Parallel compilation - disabled temporariamente (Worker errors)
+    // workerThreads: process.env.NODE_ENV !== 'production',
+    // cpus: process.env.NODE_ENV !== 'production' ? 4 : undefined,
   },
-  
-  // Build optimizations (AGGRESSIVE - Pareto 80/20)
-  typescript: {
-    // Skip type checking during build (faz no CI/pre-commit)
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    // Skip linting durante build (faz no CI/pre-commit)
-    ignoreDuringBuilds: true,
-  },
-  
+
   // Performance optimizations
   poweredByHeader: false,
   compress: true,
-  
+
   // Desabilita source maps em produção (reduz tempo de build)
   productionBrowserSourceMaps: false,
 
-  // Aggressive modular imports for tree shaking
+  // Turbopack config (Next.js 16+) - empty to use default
+  turbopack: {},
+
+  // Webpack configuration - Fix DataCloneError
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Fix para serialização (GitHub Issue #69096)
+      config.output.publicPath = "";
+    }
+    return config;
+  },
+
+  // Modular imports for tree shaking
+  // Note: Turbopack já otimiza lucide-react automaticamente no Next.js 16
   modularizeImports: {
     'react-icons': {
       transform: 'react-icons/{{member}}',
     },
-    'lucide-react': {
-      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
-      skipDefaultConversion: true,
+    'phosphor-react': {
+      transform: 'phosphor-react/dist/icons/{{member}}',
     },
     '@nextui-org/react': {
       transform: '@nextui-org/react/dist/{{member}}',

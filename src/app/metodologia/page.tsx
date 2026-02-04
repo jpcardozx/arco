@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { MainLayout } from '@/components/layout/MainLayout';
 import {
   MethodologyHero,

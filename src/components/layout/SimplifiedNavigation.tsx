@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { Container } from '../primitives/Container/Container';
 import { Button } from '../primitives/Button/Button';
 import { useTracking } from '../../lib/useTracking';
-import { Menu, X, Target, Briefcase, Calendar, User } from 'lucide-react';
+import { Menu, X, Target, Briefcase, Calendar, Code2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const SimplifiedNavigation: React.FC = () => {
@@ -139,9 +139,9 @@ export const SimplifiedNavigation: React.FC = () => {
                             className="flex items-center gap-2.5 text-teal-500 hover:text-teal-600 font-medium transition-all duration-300 group relative py-1"
                             onClick={() => handleLinkClick('nav_developer_clicked', '/jpcardozo')}
                         >
-                            <User className="w-4 h-4 group-hover:scale-110 transition-all duration-300" />
+                            <Code2 className="w-4 h-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" />
                             <span className="relative">
-                                Desenvolvedor
+                                Portfolio Técnico
                                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
                             </span>
                         </Link>
@@ -268,8 +268,8 @@ export const SimplifiedNavigation: React.FC = () => {
                                     }`}
                                     onClick={() => handleLinkClick('nav_developer_mobile', '/jpcardozo')}
                                 >
-                                    <User className="w-5 h-5 group-hover:scale-110 transition-all duration-300" />
-                                    <span>Desenvolvedor</span>
+                                    <Code2 className="w-5 h-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" />
+                                    <span>Portfolio Técnico</span>
                                 </Link>
                                 
                                 <div className={`px-2 pt-4 mt-2 border-t ${

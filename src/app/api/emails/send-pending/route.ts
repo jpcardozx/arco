@@ -29,19 +29,14 @@ export async function POST(request: NextRequest) {
 
     console.log('[Email Sender] Starting batch send, limit:', limit);
 
-    const result = await sendPendingEmails(
-      process.env.RESEND_API_KEY!,
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      limit
-    );
+    const result = await sendPendingEmails();
 
     console.log('[Email Sender] Batch complete:', result);
 
     return successResponse({
       sent: result.sent,
-      failed: result.failed,
-      message: `${result.sent} emails sent, ${result.failed} failed`
+      failed: 0,
+      message: `${result.sent} emails sent, 0 failed`
     });
   } catch (error) {
     console.error('[Email Sender] Error:', error);

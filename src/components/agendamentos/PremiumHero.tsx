@@ -142,14 +142,18 @@ const ScrollIndicator = () => (
     aria-label="Rolar para baixo"
     tabIndex={0}
     onClick={() => {
-      const section = document.getElementById('consultorias')
-      section?.scrollIntoView({ behavior: 'smooth' })
+      if (typeof document !== 'undefined') {
+        const section = document.getElementById('consultorias')
+        section?.scrollIntoView({ behavior: 'smooth' })
+      }
     }}
     onKeyDown={(e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
-        const section = document.getElementById('consultorias')
-        section?.scrollIntoView({ behavior: 'smooth' })
+        if (typeof document !== 'undefined') {
+          const section = document.getElementById('consultorias')
+          section?.scrollIntoView({ behavior: 'smooth' })
+        }
       }
     }}
   >
@@ -361,8 +365,10 @@ export function PremiumHero({ onStartBooking }: PremiumHeroProps) {
                 size="lg"
                 variant="outline"
                 onClick={() => {
-                  const section = document.getElementById('consultorias')
-                  section?.scrollIntoView({ behavior: 'smooth' })
+                  if (typeof document !== 'undefined') {
+                    const section = document.getElementById('consultorias')
+                    section?.scrollIntoView({ behavior: 'smooth' })
+                  }
                 }}
                 className="px-8 py-6 text-lg font-semibold border-2 backdrop-blur-sm text-white border-white/20 hover:bg-white/10"
               >

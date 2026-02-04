@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createSupabaseAdmin } from '@/lib/supabase/server';
 import { logger } from '@/lib/logger';
 import crypto from 'crypto';
 
 // Helper to get Supabase client (lazy initialization)
-function getSupabaseClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
-  if (!url || !key) {
-    throw new Error('Supabase configuration missing');
-  }
-  
-  return createClient(url, key);
+async function getSupabaseClient() {
+  return await createSupabaseAdmin();
 }
 
 /**
@@ -64,7 +57,7 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
   
   try {
-    const supabase = getSupabaseClient();
+    const supabase = await getSupabaseClient();
     
     // 1. Extract headers
     const signature = request.headers.get('x-signature');

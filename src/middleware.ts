@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 /**
  * Enhanced secure authentication middleware with robust security controls
@@ -85,53 +84,10 @@ export async function middleware(req: NextRequest) {
   response.headers.set('Cache-Control', 'private, no-store, max-age=0, must-revalidate');
     
   // ------------------------------------------------------------
-  // Role-Based Access Control for Admin Routes
+  // Route awareness (no auth checks in middleware)
   // ------------------------------------------------------------
   const { pathname } = req.nextUrl;
   const token = req.cookies.get('__Secure-next-auth.session-token');
-  
-  // Validar acesso a rotas de admin
-  if (pathname.startsWith('/dashboard/admin') || pathname.startsWith('/api/admin')) {
-    try {
-      // Criar cliente Supabase para middleware
-      let supabaseResponse = NextResponse.next({ request: req })
-      
-      const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-          cookies: {
-            get(name: string) {
-              return req.cookies.get(name)?.value
-            },
-            set(name: string, value: string, options: CookieOptions) {
-              supabaseResponse.cookies.set({ name, value, ...options })
-            },
-            remove(name: string, options: CookieOptions) {
-              supabaseResponse.cookies.set({ name, value: '', ...options })
-            },
-          },
-        }
-      )
-      
-      const { data: { user }, error } = await supabase.auth.getUser()
-      
-      if (error || !user || user.user_metadata?.role !== 'admin') {
-        // Redirecionar não-admins de volta ao dashboard
-        if (pathname.startsWith('/dashboard/admin')) {
-          return NextResponse.redirect(new URL('/dashboard', req.url))
-        }
-        // Retornar 403 para APIs
-        return new NextResponse(
-          JSON.stringify({ error: 'Acesso negado. Apenas administradores.' }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
-        )
-      }
-    } catch (error) {
-      console.error('[Middleware] Error checking admin access:', error)
-      return NextResponse.redirect(new URL('/login', req.url))
-    }
-  }
     
   if (process.env.NODE_ENV === 'development') {
     console.log(`[Middleware] Access to ${pathname} ${token ? '(Authenticated)' : '(Unauthenticated)'}`);

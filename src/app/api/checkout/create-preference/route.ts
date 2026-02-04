@@ -2,19 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Preference } from 'mercadopago';
 import { mercadoPagoClient, MP_CONFIG } from '@/lib/payments/mercadopago/client';
 import { logger } from '@/lib/logger';
-import { createClient } from '@/lib/supabase/server';
+import { createSupabaseAdmin } from '@/lib/supabase/server';
 import { createPreferenceLimiter, getClientIp, checkRateLimit } from '@/lib/rate-limiting/checkout-limiter';
 
 // Helper to get Supabase client (lazy initialization)
-function getSupabaseClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
-  if (!url || !key) {
-    throw new Error('Supabase configuration missing');
-  }
-  
-  return createClient(url, key);
+async function getSupabaseClient() {
+  return await createSupabaseAdmin();
 }
 
 export async function POST(request: NextRequest) {
@@ -61,12 +54,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'PlanId obrigatório' }, { status: 400 });
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = await getSupabaseClient();
 
     // Buscar plano do banco de dados
     const { data: plan, error: planError } = await supabase
-      .from('plans')
-      .select('id, slug, name, price, description, features')
+      .from('subscription_plans')
+      .select('id, slug, name, price_monthly, description, features')
       .eq('slug', planId)
       .single();
 
@@ -116,8 +109,8 @@ export async function POST(request: NextRequest) {
           {
             id: plan.id,
             title: `Assinatura ${plan.name} - ARCO`,
-            description: plan.description,
-            unit_price: plan.price / 100, // Converter centavos para reais
+            description: plan.description || undefined,
+            unit_price: (plan.price_monthly || 0) / 100, // Converter centavos para reais
             quantity: 1,
             currency_id: 'BRL',
           },
@@ -167,7 +160,7 @@ export async function POST(request: NextRequest) {
       subscriptionId,
       plan: {
         ...plan,
-        price: plan.price, // Manter em centavos no frontend
+        price: plan.price_monthly, // Manter em centavos no frontend
       },
     });
   } catch (error) {

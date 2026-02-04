@@ -122,8 +122,10 @@ export function AgendamentosHero({ onStartBooking }: AgendamentosHeroProps) {
                 size="lg"
                 variant="outline"
                 onClick={() => {
-                  const section = document.getElementById('consultorias')
-                  section?.scrollIntoView({ behavior: 'smooth' })
+                  if (typeof document !== 'undefined') {
+                    const section = document.getElementById('consultorias')
+                    section?.scrollIntoView({ behavior: 'smooth' })
+                  }
                 }}
                 className="border-slate-700 text-slate-200 hover:bg-slate-800"
               >

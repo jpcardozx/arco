@@ -32,6 +32,9 @@ const sessionId = crypto.randomUUID()
  * Send metric to analytics endpoint
  */
 async function sendToAnalytics(metric: WebVitalMetric) {
+  // Only run in browser
+  if (typeof window === 'undefined') return
+  
   try {
     const analyticsData: AnalyticsData = {
       metric_name: metric.name,

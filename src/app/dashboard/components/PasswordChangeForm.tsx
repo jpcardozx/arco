@@ -106,7 +106,6 @@ export default function PasswordChangeForm({
             const request: PasswordChangeRequest = {
                 currentPassword: formData.currentPassword,
                 newPassword: formData.newPassword,
-                confirmPassword: formData.confirmPassword,
             }
 
             if (isOwnPassword) {
@@ -118,7 +117,7 @@ export default function PasswordChangeForm({
                 }
             }
 
-            if (request.newPassword !== request.confirmPassword) {
+            if (formData.newPassword !== formData.confirmPassword) {
                 setResult({ type: 'error', message: 'As senhas não coincidem.' });
                 setLoading(false);
                 return;

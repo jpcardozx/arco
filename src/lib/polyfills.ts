@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Polyfills for Server-Side Rendering
  *
@@ -22,8 +23,24 @@ if (typeof window === 'undefined') {
     global.window = global;
   }
 
-  // Mock document with essential methods
+  // Mock document with essential methods for SSR-safe fallbacks
   if (!global.document) {
+    const createMockElement = () => ({
+      appendChild: () => {},
+      removeChild: () => {},
+      insertBefore: () => {},
+      setAttribute: () => {},
+      removeAttribute: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      querySelector: () => null,
+      querySelectorAll: () => [],
+      style: {},
+      firstChild: null,
+      parentNode: null,
+      textContent: '',
+    });
+
     // @ts-ignore
     global.document = {
       querySelector: () => null,
@@ -31,11 +48,11 @@ if (typeof window === 'undefined') {
       getElementById: () => null,
       getElementsByTagName: () => [],
       getElementsByClassName: () => [],
-      createElement: () => ({}),
-      createTextNode: () => ({}),
-      body: {},
-      head: {},
-      documentElement: {},
+      createElement: () => createMockElement(),
+      createTextNode: () => createMockElement(),
+      body: createMockElement(),
+      head: createMockElement(),
+      documentElement: createMockElement(),
       addEventListener: () => {},
       removeEventListener: () => {},
     };

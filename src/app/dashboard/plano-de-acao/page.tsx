@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getPlaybooks } from '@/app/dashboard/actions'
 import { PlaybooksList } from '@/components/dashboard/playbooks-list'
 import { EmptyState } from '@/components/dashboard/empty-states'

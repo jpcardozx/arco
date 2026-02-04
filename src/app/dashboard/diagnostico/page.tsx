@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getUserAnalyses, getCurrentUser } from '@/app/dashboard/actions'
 import { AnalysesList } from '@/components/dashboard/analyses-list'
 import { EmptyState } from '@/components/dashboard/empty-states'

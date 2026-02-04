@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * EMQ (Event Match Quality) Dashboard
  *

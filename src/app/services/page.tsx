@@ -1,6 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic'
 
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Badge } from '@/components/ui/badge';

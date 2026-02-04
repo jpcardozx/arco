@@ -1,32 +1,69 @@
-import winston from 'winston';
+/**
+ * Production-ready logger using Pino
+ * Auto-configures based on environment
+ */
+
+import pino from 'pino'
+
+const isDevelopment = process.env.NODE_ENV === 'development'
+const isServer = typeof window === 'undefined'
 
 // Configuração do logger
-const logger = winston.createLogger({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.errors({ stack: true }),
-    winston.format.json()
-  ),
-  defaultMeta: {
-    service: 'arco-backend',
-    environment: process.env.NODE_ENV,
-  },
-  transports: [
-    // Console (sempre ativo)
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.printf(({ level, message, timestamp, ...meta }) => {
-          const metaStr = Object.keys(meta).length ? JSON.stringify(meta, null, 2) : '';
-          return `${timestamp} [${level}]: ${message} ${metaStr}`;
-        })
-      ),
-    }),
-  ],
-});
+export const logger = isServer
+  ? pino({
+      level: isDevelopment ? 'debug' : 'info',
+      transport: isDevelopment
+        ? {
+            target: 'pino-pretty',
+            options: {
+              colorize: true,
+              translateTime: 'SYS:standard',
+              ignore: 'pid,hostname',
+            },
+          }
+        : undefined,
+      formatters: {
+        level: (label) => {
+          return { level: label }
+        },
+      },
+    })
+  : // Browser fallback
+    {
+      debug: (...args: any[]) => console.debug('[DEBUG]', ...args),
+      info: (...args: any[]) => console.info('[INFO]', ...args),
+      warn: (...args: any[]) => console.warn('[WARN]', ...args),
+      error: (...args: any[]) => console.error('[ERROR]', ...args),
+      fatal: (...args: any[]) => console.error('[FATAL]', ...args),
+      trace: (...args: any[]) => console.trace('[TRACE]', ...args),
+      child: () => logger,
+    } as any
 
-// CloudWatch transport removido - usar logs nativos da Vercel/plataforma
-// Para produção, logs são automaticamente coletados pela plataforma de hosting
+// Helper functions para logging estruturado
+export const logError = (error: Error, context?: Record<string, any>) => {
+  logger.error(
+    {
+      err: {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      },
+      context,
+      timestamp: new Date().toISOString(),
+    },
+    'Error occurred'
+  )
+}
 
-export { logger };
+export const logPerformance = (metric: string, duration: number, metadata?: Record<string, any>) => {
+  logger.info(
+    {
+      metric,
+      duration,
+      ...metadata,
+    },
+    'Performance metric'
+  )
+}
+
+export default logger
