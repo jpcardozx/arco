@@ -60,26 +60,26 @@ export function InstallPrompt() {
             {isIOS ? (
               <>
                 <h3 className="text-lg font-semibold text-white mb-1">
-                  Instale o ARCO no seu dispositivo
+                  Adicione o ARCO à tela de início
                 </h3>
                 <p className="text-sm text-slate-300">
-                  Toque no <span className="inline-flex items-center text-white font-medium">⎋</span> e selecione{' '}
+                  Toque no <span className="text-white font-medium">⎋</span> e selecione{' '}
                   <strong className="text-white">Adicionar à tela de início</strong>.
                 </p>
               </>
             ) : (
               <>
                 <h3 className="text-lg font-semibold text-white mb-1">
-                  Instale o ARCO no seu dispositivo
+                  Adicione o ARCO à tela de início
                 </h3>
                 <p className="text-sm text-slate-300">
-                  Acesse mais rápido, mesmo sem conexão.
+                  Acesso direto ao dashboard e serviços.
                 </p>
                 <button
                   onClick={handleInstall}
                   className="mt-3 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                 >
-                  Instalar
+                  Adicionar
                 </button>
               </>
             )}
