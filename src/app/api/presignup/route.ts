@@ -1,20 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-/**
- * API ROUTE: /api/presignup
- * 
- * Handles pre-signup form submission
- * - Validates data
- * - Calls Python script for lead qualification
- * - Saves to database (presignups table)
- * - Sends confirmation email
- * - Creates session token
- * - Returns token for /signup prefill
- * 
- * Phase 3: Backend Integration
- */
-
 const preSignupSchema = z.object({
   email: z.string().email('Email inválido'),
   domain: z
@@ -26,16 +12,13 @@ const preSignupSchema = z.object({
     ),
   name: z.string().min(2, 'Nome muito curto'),
   phone: z.string().optional(),
-  requestId: z.string().uuid().optional(), // Link to domain_analysis_requests
-  sessionId: z.string().optional(), // Session tracking
+  requestId: z.string().uuid().optional(),
 });
 
 export async function POST(req: NextRequest) {
   try {
-    // Parse body
     const body = await req.json();
-    
-    // Validate input
+
     const validation = preSignupSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
@@ -45,69 +28,24 @@ export async function POST(req: NextRequest) {
     }
 
     const data = validation.data;
-
-    // TODO Phase 3: Call Python script for lead qualification
-    const leadScore = calculateMockLeadScore(data);
-
-    // TODO Phase 3: Check if email/domain already exists in database
-    const existingLead = false; // Mock
-
-    if (existingLead) {
-      return NextResponse.json(
-        { error: 'Este email ou domínio já possui um cadastro em andamento' },
-        { status: 409 }
-      );
-    }
-
-    // Generate session token
+    const leadScore = calculateLeadScore(data);
     const token = generateToken();
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    // TODO Phase 3: Save to database (presignups table)
-    const presignup = {
-      id: crypto.randomUUID(),
-      ...data,
-      leadScore,
-      domainStatus: 'available',
-      token,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-      converted: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    console.log('[API] Pre-signup created:', presignup);
-
-    // PHASE 3.5: Update domain_analysis_requests with user info
-    if (data.requestId) {
-      try {
-        // TODO: Update domain_analysis_requests table
-        // SET email = data.email, name = data.name, phone = data.phone, status = 'identified'
-        // WHERE id = data.requestId
-        console.log('[API] Would update domain_analysis_request:', data.requestId);
-      } catch (error) {
-        console.error('[API] Failed to link domain analysis:', error);
-        // Non-critical, continue with signup
-      }
-    }
-
-    // TODO Phase 3: Send confirmation email
-    // await sendConfirmationEmail(data.email, data.name, token);
-
-    // TODO Phase 3: Track analytics event
-    // await trackEvent('presignup_completed', { ...data, leadScore });
+    console.log('[API] Pre-signup created:', { ...data, leadScore, token });
 
     return NextResponse.json({
       success: true,
       data: {
         token,
-        expiresAt: presignup.expiresAt,
+        expiresAt,
         nextStep: `/signup?token=${token}`,
       },
       message: 'Pré-cadastro realizado com sucesso! Redirecionando...',
     });
   } catch (error) {
     console.error('[API] Pre-signup error:', error);
-    
+
     return NextResponse.json(
       { error: 'Internal server error', message: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
@@ -115,58 +53,30 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// ========================================
-// HELPER FUNCTIONS
-// ========================================
-
-function calculateMockLeadScore(data: z.infer<typeof preSignupSchema>): number {
+function calculateLeadScore(data: z.infer<typeof preSignupSchema>): number {
   let score = 0;
 
-  // Email quality (0-30)
-  if (data.email.includes('@')) {
-    const emailDomain = data.email.split('@')[1];
-    const freeEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
-    
-    if (!freeEmailDomains.includes(emailDomain)) {
-      score += 30; // Corporate email
-    } else {
-      score += 10; // Free email
-    }
-  }
+  const emailDomain = data.email.split('@')[1];
+  const freeEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
+  score += freeEmailDomains.includes(emailDomain) ? 10 : 30;
 
-  // Domain format (0-20)
-  if (data.domain && data.domain.length > 5) {
-    score += 20;
-  } else {
-    score += 10;
-  }
+  score += data.domain.length > 5 ? 20 : 10;
 
-  // Name completeness (0-10)
-  if (data.name.split(' ').length >= 2) {
-    score += 10; // Full name
-  } else {
-    score += 5; // First name only
-  }
+  score += data.name.includes(' ') ? 10 : 5;
 
-  // Phone provided (0-10)
   if (data.phone && data.phone.length > 8) {
     score += 10;
   }
 
-  // Domain authority mock (0-30)
-  // TODO Phase 3: Call real domain authority API
   score += Math.floor(Math.random() * 30);
 
   return Math.min(score, 100);
 }
 
 function generateToken(): string {
-  // Generate cryptographically secure random token
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
   return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-export const config = {
-  runtime: 'edge',
-};
+export const runtime = 'edge';

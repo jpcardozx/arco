@@ -5,7 +5,7 @@
  */
 'use client';
 
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -63,16 +63,10 @@ function ParticleField() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={particles.positions.length / 3}
-          array={particles.positions}
-          itemSize={3}
           args={[particles.positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={particles.colors.length / 3}
-          array={particles.colors}
-          itemSize={3}
           args={[particles.colors, 3]}
         />
       </bufferGeometry>
@@ -268,19 +262,26 @@ function ExpertiseCard({ area, index }: { area: ExpertiseArea; index: number }) 
 }
 
 export default function ExpertiseMatrix() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
     <section className="relative py-20 bg-slate-950 overflow-hidden">
       {/* Three.js Particle Field Background */}
-      <div className="absolute inset-0 opacity-15">
-        <Canvas
-          camera={{ position: [0, 0, 8], fov: 60 }}
-          gl={{ antialias: true, alpha: true }}
-          dpr={[1, 2]}
-        >
-          <ambientLight intensity={0.5} />
-          <ParticleField />
-        </Canvas>
-      </div>
+      {isMounted && (
+        <div className="absolute inset-0 opacity-15">
+          <Canvas
+            camera={{ position: [0, 0, 8], fov: 60 }}
+            gl={{ antialias: true, alpha: true }}
+            dpr={[1, 2]}
+          >
+            <ambientLight intensity={0.5} />
+            <ParticleField />
+          </Canvas>
+        </div>
+      )}
 
       {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(20,184,166,0.15)_0%,transparent_50%)]" />
