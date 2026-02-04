@@ -42,6 +42,14 @@ export const SimplifiedNavigation: React.FC = () => {
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
+    // Dynamic theme-color: match nav background on Android status bar
+    useEffect(() => {
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+            meta.setAttribute('content', scrolled ? '#0f172a' : '#ffffff');
+        }
+    }, [scrolled]);
+
     const handleCtaClick = () => {
         trackEvent('nav_cta_clicked');
         setIsMobileMenuOpen(false);
@@ -58,9 +66,9 @@ export const SimplifiedNavigation: React.FC = () => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed top-0 w-full z-50 backdrop-blur-md border-b transition-all duration-500 ${
-                scrolled 
-                    ? 'bg-slate-950/95 border-white/10 shadow-lg shadow-black/20' 
+            className={`fixed top-0 w-full z-50 backdrop-blur-md border-b transition-all duration-500 safe-area-top ${
+                scrolled
+                    ? 'bg-slate-950/95 border-white/10 shadow-lg shadow-black/20'
                     : 'bg-white/95 border-slate-200/50 shadow-sm'
             }`}
         >

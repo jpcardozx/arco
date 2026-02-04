@@ -150,6 +150,7 @@ body {
   text-rendering: optimizeLegibility;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  min-height: 100dvh;
 }
 
 ::selection {
@@ -234,6 +235,15 @@ body {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* ========================================
+   iOS SAFE AREAS — notch / Dynamic Island
+   ======================================== */
+
+/* Background fills behind notch; content pushed below it */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
 }
 
 /* ========================================

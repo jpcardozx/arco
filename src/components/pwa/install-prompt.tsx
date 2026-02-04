@@ -46,9 +46,10 @@ export function InstallPrompt() {
 
   return (
     <div
-      className={`fixed bottom-0 inset-x-0 bg-slate-900/95 backdrop-blur-sm border-t border-slate-800 p-4 z-50 shadow-2xl transition-transform duration-300 ${
+      className={`fixed bottom-0 inset-x-0 bg-slate-900/95 backdrop-blur-sm border-t border-slate-800 px-4 pt-4 z-50 shadow-2xl transition-transform duration-300 ${
         isClosing ? 'translate-y-full' : 'translate-y-0'
       }`}
+      style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))' }}
       role="dialog"
       aria-label="Instalar aplicativo"
     >

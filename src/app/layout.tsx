@@ -69,6 +69,12 @@ export const metadata: Metadata = {
     ],
     shortcut: '/favicon.png',
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    viewportFit: 'cover',
+  },
+  themeColor: '#0f172a',
 };
 
 export default function RootLayout({
@@ -84,6 +90,8 @@ export default function RootLayout({
         <LocalBusinessSchema />
         <MetaPixelScript />
         <link rel="icon" type="image/png" href="/favicon.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
 
       <body className="antialiased">
