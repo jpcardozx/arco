@@ -4,13 +4,5 @@
       "path": "/api/seo/sync-daily",
       "schedule": "0 6 * * *"
     }
-  ],
-  "build": {
-    "env": {
-      "VERCEL_FORCE_NO_BUILD_CACHE": "1"
-    }
-  },
-  "github": {
-    "silent": true
-  }
+  ]
 }
