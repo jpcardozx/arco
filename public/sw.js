@@ -6,6 +6,7 @@
 const CACHE_NAME = 'arco-performance-v1'
 const STATIC_CACHE = 'arco-static-v1'
 const RUNTIME_CACHE = 'arco-runtime-v1'
+const DYNAMIC_CACHE = RUNTIME_CACHE
 
 // Recursos críticos para cache imediato
 const CRITICAL_RESOURCES = [
@@ -14,6 +15,14 @@ const CRITICAL_RESOURCES = [
   '/manifest.json',
   '/favicon.ico',
   '/optimized/', // Imagens otimizadas
+]
+
+const STATIC_ASSETS = [
+  ...CRITICAL_RESOURCES,
+  '/favicon.png',
+  '/favicon.ico',
+  '/icons/logo-v2-192.png',
+  '/offline',
 ]
 
 // Assets to cache on demand
@@ -199,11 +208,42 @@ async function syncWebVitals() {
   }
 }
 
+function openWebVitalsDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('arco-pwa', 1)
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result
+      if (!db.objectStoreNames.contains('web-vitals')) {
+        db.createObjectStore('web-vitals', { autoIncrement: true })
+      }
+    }
+
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error)
+  })
+}
+
 async function getStoredWebVitals() {
-  // Implementation depends on IndexedDB or other storage
-  return []
+  const db = await openWebVitalsDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('web-vitals', 'readonly')
+    const store = transaction.objectStore('web-vitals')
+    const request = store.getAll()
+
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error)
+  })
 }
 
 async function clearStoredWebVitals() {
-  // Implementation depends on storage method
+  const db = await openWebVitalsDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('web-vitals', 'readwrite')
+    const store = transaction.objectStore('web-vitals')
+    const request = store.clear()
+
+    request.onsuccess = () => resolve()
+    request.onerror = () => reject(request.error)
+  })
 }

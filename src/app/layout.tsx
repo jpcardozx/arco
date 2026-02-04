@@ -10,6 +10,8 @@ import { PrivacyConsentBanner } from '@/components/analytics/PrivacyConsentBanne
 import { MetaPixel, MetaPixelScript } from '@/components/meta-pixel';
 import { CookieConsentBanner } from '@/components/cookie-consent-banner';
 import { LocalBusinessSchema } from '@/components/seo/local-business-schema';
+import { PWAProvider } from '@/components/providers/pwa-provider';
+import { InstallPrompt } from '@/components/pwa/install-prompt';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -67,7 +69,6 @@ export const metadata: Metadata = {
     ],
     shortcut: '/favicon.png',
   },
-  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -88,11 +89,14 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           <QueryProvider>
-            <Header />
-            <main className="min-h-screen">
-              {children}
-            </main>
-            <Footer variant="default" showPreFooter={true} />
+            <PWAProvider>
+              <Header />
+              <main className="min-h-screen">
+                {children}
+              </main>
+              <Footer variant="default" showPreFooter={true} />
+              <InstallPrompt />
+            </PWAProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>
