@@ -1,0 +1,7 @@
+ echo "=== DIAGNSTICO TERMINAL ===" && echo "USER: $USER" && echo "SHELL: $SHELL" && echo "TERM: $TERM" && echo "TTY: $(tty 2>/dev/null || echo 'N/A')" && echo "PS1 definido: ${PS1:+SIM}" && echo "" && stty -a 2>/dev/null | head -3
+ ls -lah ~/.bashrc ~/.bash_profile ~/.profile 2>&1
+ reset
+ cat ~/.bashrc | head -50
+ chmod +x /home/jpcardozx/projetos/arco/fix-terminal-emergency.sh
+  DEBUG COMPLETO - Arquivos criados:
+- fix-terminal-emergency.sh (executEcho- TERMINAL_DEBUG_REPORT.md (diagn "ssstico)"
