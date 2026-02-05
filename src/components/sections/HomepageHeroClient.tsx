@@ -1,30 +1,26 @@
 /**
  * HOMEPAGE HERO CLIENT WRAPPER
- * 
- * Client Component que usa dynamic import com ssr: false
- * para carregar o HomepageHeroUltimate (Three.js + Background)
+ *
+ * Client Component com import otimizado do novo hero editorial
+ * Performance-first, sem overhead de Three.js
  */
 'use client';
 
 import dynamic from 'next/dynamic';
 
-// Dynamic import do Hero Ultimate com Three.js + Background (client-side only)
-const HomepageHeroUltimate = dynamic(() => import('./HomepageHeroUltimate'), {
+// Dynamic import do Hero Editorial (otimizado para performance)
+const HomepageHeroNew = dynamic(() => import('./HomepageHeroNew'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-      <div className="flex flex-col items-center gap-5">
-        <div className="relative h-14 w-14">
-          <div className="absolute inset-0 rounded-full border border-slate-700/70" />
-          <div className="absolute inset-0 rounded-full border-2 border-teal-400/15 border-t-teal-400 animate-spin" />
-          <div className="absolute inset-2 rounded-full border border-teal-400/25 animate-pulse" />
+    <div className="w-full h-screen bg-slate-950 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="relative h-12 w-12">
+          <div className="absolute inset-0 rounded-xl border border-slate-700" />
+          <div className="absolute inset-1 rounded-lg border border-slate-600 animate-pulse" />
         </div>
         <div className="text-center">
-          <p className="text-slate-200 text-sm font-semibold tracking-wide">
+          <p className="text-slate-200 text-sm font-medium tracking-wide">
             Carregando...
-          </p>
-          <p className="text-slate-500 text-xs mt-1">
-            Seja bem vindo.
           </p>
         </div>
       </div>
@@ -33,5 +29,5 @@ const HomepageHeroUltimate = dynamic(() => import('./HomepageHeroUltimate'), {
 });
 
 export function HomepageHeroClient() {
-  return <HomepageHeroUltimate />;
+  return <HomepageHeroNew />;
 }
