@@ -14,13 +14,15 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Play, CheckCircle } from 'lucide-react';
+import { ArrowRight, Play, CheckCircle, Sparkles, Zap } from 'lucide-react';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 
-// Typing animation hook
+// Typing animation hook with cursor control
 function useTypingEffect(text: string, speed: number = 100) {
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [showCursor, setShowCursor] = useState(true);
 
   useEffect(() => {
     if (currentIndex < text.length) {
@@ -29,10 +31,17 @@ function useTypingEffect(text: string, speed: number = 100) {
         setCurrentIndex(prev => prev + 1);
       }, speed);
       return () => clearTimeout(timeout);
+    } else if (!isTypingComplete) {
+      setIsTypingComplete(true);
+      // Wait 4 seconds after typing completes, then fade out cursor
+      const fadeTimeout = setTimeout(() => {
+        setShowCursor(false);
+      }, 4000);
+      return () => clearTimeout(fadeTimeout);
     }
-  }, [currentIndex, text, speed]);
+  }, [currentIndex, text, speed, isTypingComplete]);
 
-  return displayText;
+  return { displayText, isTypingComplete, showCursor };
 }
 
 export default function HomepageHeroNew() {
@@ -47,7 +56,7 @@ export default function HomepageHeroNew() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   // Typing effect for main headline
-  const typedText = useTypingEffect("Seu site atual está travando o crescimento?", 80);
+  const { displayText: typedText, isTypingComplete, showCursor } = useTypingEffect("Seu site atual está travando o crescimento?", 80);
 
   // Analytics tracking
   const trackCTAClick = (ctaType: string, ctaText: string, href: string) => {
@@ -58,7 +67,7 @@ export default function HomepageHeroNew() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-24 bg-black"
+      className="relative min-h-screen flex items-center overflow-hidden pt-32 lg:pt-36 bg-black"
     >
       {/* ULTIMATE SOPHISTICATED BACKGROUND - Premium architectural design */}
       <div className="absolute inset-0">
@@ -287,6 +296,63 @@ export default function HomepageHeroNew() {
             {/* Left Column - Main Content */}
             <div className="lg:col-span-7 space-y-16 lg:space-y-20">
 
+              {/* Premium Badge - Elegant & Tech */}
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 1, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
+                className="inline-block mb-6 lg:mb-8"
+              >
+                <div className="group relative inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-teal-500/10 border border-teal-500/20 backdrop-blur-xl overflow-hidden">
+                  {/* Animated background shimmer */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
+                    animate={{
+                      x: ['-200%', '200%'],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'linear',
+                      repeatDelay: 2,
+                    }}
+                  />
+                  
+                  {/* Sparkle icon with pulse */}
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    <Sparkles className="w-4 h-4 text-teal-400" />
+                  </motion.div>
+                  
+                  <span className="relative text-sm font-semibold text-teal-100 tracking-tight">
+                    Desenvolvimento de Alta Performance
+                  </span>
+                  
+                  {/* Subtle pulsing dot */}
+                  <motion.div
+                    className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                    animate={{
+                      scale: [1, 1.3, 1],
+                      opacity: [1, 0.7, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                </div>
+              </motion.div>
+
               {/* Main Headline - Typography aprimorada */}
               <div className="space-y-8 lg:space-y-12">
                 <motion.div
@@ -304,11 +370,25 @@ export default function HomepageHeroNew() {
                     }}
                   >
                     {typedText}
+                    {/* Cursor inline - aparece junto com o texto */}
                     <motion.span
-                      animate={{ opacity: [1, 0] }}
-                      transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-                      className="inline-block w-1 bg-white ml-3"
-                      style={{ height: '0.8em' }}
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: showCursor ? [1, 0.3, 1] : 0
+                      }}
+                      transition={{
+                        opacity: showCursor 
+                          ? { duration: 1, repeat: Infinity, ease: "easeInOut" }
+                          : { duration: 0.8, ease: [0.16, 1, 0.3, 1] } // Elegant fade out
+                      }}
+                      className="inline-block w-0.5 bg-gradient-to-b from-teal-400 via-emerald-400 to-teal-500"
+                      style={{ 
+                        height: '0.85em',
+                        marginLeft: '0.15em',
+                        verticalAlign: 'baseline',
+                        boxShadow: showCursor ? '0 0 8px rgba(20, 184, 166, 0.6), 0 0 12px rgba(16, 185, 129, 0.3)' : 'none',
+                        filter: showCursor ? 'blur(0.3px)' : 'blur(0px)',
+                      }}
                     />
                     {/* Subtle text glow */}
                     <span
@@ -388,67 +468,147 @@ export default function HomepageHeroNew() {
                 ))}
               </motion.div>
 
-              {/* CTAs Premium - Refined Professional Design */}
+              {/* CTAs Premium - S-Tier UI/UX Design */}
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, delay: 2.0, ease: [0.23, 1, 0.32, 1] }}
-                className="flex flex-col sm:flex-row gap-4 pt-0"
+                className="flex flex-col sm:flex-row gap-5 pt-0"
               >
-                {/* Primary CTA - Elegant with gradient border */}
+                {/* Primary CTA - Magnetic Interaction + Gradient Magic */}
                 <Link
                   href="/jpcardozx"
                   onClick={() => trackCTAClick('primary', 'Ver Cases e Projetos', '/jpcardozx')}
                   className="group relative inline-block"
                 >
                   <motion.div
-                    whileHover={{ scale: 1.02, y: -3 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ 
+                      scale: 1.03,
+                      y: -4,
+                      transition: { type: 'spring', stiffness: 400, damping: 10 }
+                    }}
+                    whileTap={{ scale: 0.97 }}
                     className="relative"
                   >
-                    {/* Animated gradient border */}
-                    <div className="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-500 group-hover:from-teal-400 group-hover:via-emerald-400 group-hover:to-teal-400 transition-all duration-300">
-                      <div className="w-full h-full bg-white rounded-[14px]" />
-                    </div>
-                    <div className="relative px-8 py-4 bg-white rounded-2xl">
-                      <span className="flex items-center justify-center gap-2 font-bold text-base text-slate-900 tracking-tight">
-                        Ver Cases e Projetos
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    {/* Rotating gradient border - Apple style */}
+                    <motion.div 
+                      className="absolute -inset-[1px] rounded-[17px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: 'linear-gradient(90deg, #14b8a6, #10b981, #14b8a6)',
+                        backgroundSize: '200% 100%',
+                      }}
+                      animate={{
+                        backgroundPosition: ['0% 50%', '200% 50%'],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: 'linear',
+                      }}
+                    />
+                    
+                    {/* Main button */}
+                    <div className="relative px-8 py-4 bg-white rounded-2xl shadow-lg shadow-teal-500/20 group-hover:shadow-xl group-hover:shadow-teal-500/30 transition-all duration-300">
+                      <span className="flex items-center justify-center gap-2.5 font-bold text-base text-slate-900 tracking-tight">
+                        <span className="relative">
+                          Ver Cases e Projetos
+                          {/* Underline on hover */}
+                          <motion.span
+                            className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-teal-500 to-emerald-500"
+                            initial={{ width: 0 }}
+                            whileHover={{ width: '100%' }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </span>
+                        <motion.div
+                          animate={{
+                            x: [0, 3, 0],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                          }}
+                        >
+                          <ArrowRight className="w-5 h-5 text-teal-600" />
+                        </motion.div>
                       </span>
                     </div>
-                    {/* Subtle glow on hover */}
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-500/0 via-emerald-500/0 to-teal-500/0 group-hover:from-teal-500/20 group-hover:via-emerald-500/20 group-hover:to-teal-500/20 blur-xl transition-all duration-300 -z-10" />
+                    
+                    {/* Outer glow effect */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-500/0 via-emerald-500/0 to-teal-500/0 group-hover:from-teal-500/30 group-hover:via-emerald-500/30 group-hover:to-teal-500/30 blur-2xl transition-all duration-500 -z-10" />
                   </motion.div>
                 </Link>
 
-                {/* Secondary CTA - Glass morphism with neon accent */}
+                {/* Secondary CTA - Neumorphic Glass with Neon Pulse */}
                 <Link
                   href="/agendamentos"
                   onClick={() => trackCTAClick('secondary', 'Análise Técnica Gratuita', '/agendamentos')}
                   className="group relative inline-block"
                 >
                   <motion.div
-                    whileHover={{ scale: 1.02, y: -3 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ 
+                      scale: 1.03,
+                      y: -4,
+                      transition: { type: 'spring', stiffness: 400, damping: 10 }
+                    }}
+                    whileTap={{ scale: 0.97 }}
                     className="relative"
                   >
-                    {/* Glass container with gradient border */}
-                    <div
-                      className="px-8 py-4 rounded-2xl backdrop-blur-xl border-2 border-slate-700/50 group-hover:border-teal-500/50 transition-all duration-500 relative overflow-hidden"
+                    {/* Glass morphism container */}
+                    <div className="relative px-8 py-4 rounded-2xl backdrop-blur-2xl border border-slate-700/40 group-hover:border-teal-500/60 transition-all duration-500 overflow-hidden"
                       style={{
-                        background: 'rgba(15, 23, 42, 0.8)',
+                        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%)',
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
                       }}
                     >
-                      {/* Animated background glow */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-teal-500/0 via-teal-500/5 to-emerald-500/0 group-hover:from-teal-500/10 group-hover:via-teal-500/15 group-hover:to-emerald-500/10 transition-all duration-500" />
+                      {/* Animated shine effect */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: 'linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.15), transparent)',
+                        }}
+                        animate={{
+                          x: ['-200%', '200%'],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          repeatDelay: 1,
+                          ease: 'easeInOut',
+                        }}
+                      />
 
-                      <span className="flex items-center justify-center gap-2 font-bold text-base text-slate-200 group-hover:text-white transition-colors relative z-10 tracking-tight">
-                        <Play className="w-5 h-5 text-teal-400" />
+                      <span className="flex items-center justify-center gap-2.5 font-bold text-base text-slate-200 group-hover:text-white transition-colors relative z-10 tracking-tight">
+                        <motion.div
+                          animate={{
+                            rotate: [0, 360],
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: 'linear',
+                          }}
+                        >
+                          <Zap className="w-5 h-5 text-teal-400 group-hover:text-teal-300 transition-colors" />
+                        </motion.div>
                         Análise Técnica Gratuita
                       </span>
                     </div>
-                    {/* Ambient glow */}
-                    <div className="absolute inset-0 rounded-2xl bg-teal-500/0 group-hover:bg-teal-500/20 blur-xl transition-all duration-500 -z-10" />
+                    
+                    {/* Neon glow pulse */}
+                    <motion.div 
+                      className="absolute inset-0 rounded-2xl bg-teal-500/20 blur-xl -z-10"
+                      animate={{
+                        opacity: [0.3, 0.6, 0.3],
+                        scale: [0.95, 1.05, 0.95],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
                   </motion.div>
                 </Link>
               </motion.div>
